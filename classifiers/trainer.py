@@ -1,5 +1,7 @@
 from svmutil import *
+from numpy.random import rand
 import numpy as np
+import matplotlib.pyplot as plt
 
 def trainSVM(featArr, clusArr, labArr) :
 
@@ -34,7 +36,25 @@ def main():
     clusters = [cl1,cl2]
     features = np.array([[1, 2], [3, 9], [3, 9], [3, 9], [3, 9], [3, 9], [3, 9], [3, 9]])
     labels = np.array([1,3,2,3,2,1,2,2])
+<<<<<<< Updated upstream
     trainSVM(features, clusters,labels)
+=======
+
+    #trainSVM(features, clusters,labels)
+    
+    for color in ['red', 'green', 'blue']:
+        n = 750
+        x, y = rand(2, n)
+        print x
+        scale = 200.0 * rand(n)
+        plt.scatter(x, y, c=color, s=scale, label=color,
+                    alpha=0.3, edgecolors='none')
+
+    plt.legend()
+    plt.grid(True)
+    
+    plt.show()
+>>>>>>> Stashed changes
 
     probabilities = computeProb(len(labels),clusters)
 
@@ -44,3 +64,6 @@ def main():
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')
+
+
+
