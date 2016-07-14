@@ -2,7 +2,7 @@ from svmutil import *
 import numpy as np
 
 def trainSVM(featArr, clusArr, labArr) :
-    
+
     label = labArr.tolist()
     order = 0
     for i in clusArr:
@@ -21,6 +21,12 @@ def trainSVM(featArr, clusArr, labArr) :
         svm_save_model('clus' + `order` + '.model', m)
         order+=1
 
+def computeProb(numIns, clusArr):
+    prob = []
+    for c in clusArr:
+        prob.append(float(len(c))/numIns)
+    return prob
+
 def main():
 
     cl1 = np.array([0, 1, 2,4,6])
@@ -28,8 +34,11 @@ def main():
     clusters = [cl1,cl2]
     features = np.array([[1, 2], [3, 9], [3, 9], [3, 9], [3, 9], [3, 9], [3, 9], [3, 9]])
     labels = np.array([1,3,2,3,2,1,2,2])
-
     trainSVM(features, clusters,labels)
+
+    probabilities = computeProb(len(labels),clusters)
+
+    print probabilities
 
     
 if __name__ == '__main__':
