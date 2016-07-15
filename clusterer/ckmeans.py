@@ -15,7 +15,7 @@ class CKMeans:
     def __init__(self, consArr, featArr, k):
 
         self.consArr = consArr
-        self.featArr = featArr
+        self.featArr = np.transpose(featArr)
         self.k = k
         self.clusterList = []
     
@@ -61,6 +61,7 @@ class CKMeans:
                 break
             
             ############ Assign each instance of feature matrix to a cluster #############
+            
             for i, line in enumerate(self.featArr):
                 # i : id of the instance
                 # line : points of that instance
@@ -99,18 +100,24 @@ class CKMeans:
             for i in range(0, self.k):
                 oldCenters[i] = self.clusterList[1][i]
                 
-            # Find new centers of each cluster    
-            for clus in self.clusterList:
-                # clus : Tuple (Cluster, Center of the cluster)
+            # Find new centers of each cluster
+            dim = self.featArr.shape[1] #720    
+            for order in range(0, self.k):
                 
-                dimX = clus[0].shape(1)
-                dimY = clus[0].shape(0)             
-                for i in range(0,dimX):
+                # clus : Tuple (Cluster, Center of the cluster)
+                clus = self.clusterList[order] 
+                clusLength = len(clus[0][0])
+                
+                for i in range(0, dim):
+                    # i : order that we're in (0...719)
+                    
                     coorSum = 0
-                    coorSum = np.sum(clus[0][:,i])
-                    coorSum /= dimY
-                    clus[1][i] = coorSum
-            
+                    for j in clus[0]:
+                        # j : id of the instance
+                        coorSum += self.featArr[j][i]      
+                    coorSum /= clusLength
+                    self.clusterList[1][order][i] = coorSum
+
             # Empty out the assigned instances of clusters
             for i in range(0, self.k):
                 self.clusterList[0][i] = np.array([])
