@@ -161,12 +161,6 @@ def visualiseAfterClustering(out,features):
               x = features.tolist()[i]
               scale = 80
 
-<<<<<<< HEAD
-
-
-
-=======
->>>>>>> 452d59305a6b4c66553af21737179f9454a4803f
               plt.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black')
 
