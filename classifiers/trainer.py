@@ -4,7 +4,6 @@ Ahmet BAGLAN - Arda ICMEZ
 14.07.2016
 """
 from svmutil import *
-from numpy.random import rand
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -20,9 +19,8 @@ def trainSVM(featArr, clusArr, labArr) :
             y.append(label[j])
             x.append(featArr[j].tolist())
 
-        print y, x
         prob  = svm_problem(y, x)
-        param = svm_parameter('-t 2 -c 4')  # Gamma missing
+        param = svm_parameter('-t 2 -c 4 -g 0.125 -b 1')  # Gamma missing
         
         m = svm_train(prob, param)
         svm_save_model('clus' + `order` + '.model', m)
@@ -84,9 +82,7 @@ def main():
 
 #################################################
 
-   
 
-    
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')
