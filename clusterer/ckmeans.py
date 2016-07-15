@@ -27,7 +27,7 @@ class CKMeans:
         
         for i in range(0,self.k):
             self.clusterList.append(np.array([]))
-            center = self.featArr[i]
+            center = self.featArr[i] ## TODO : RANDOM ASSIGNMENT OF CENTERS
             self.centerList.append(center)
         print self.clusterList[0], "----", self.clusterList[1]
         print self.centerList[0], "----", self.centerList[1]
@@ -53,9 +53,9 @@ class CKMeans:
         iterCounter = 0
         
         #Old centers of clusters
-        oldCenters = np.zeros(self.k)
-        
-        while iterCounter < 1 :
+        oldCenters = np.zeros([self.k, len(self.featArr[0]) ])
+        print oldCenters
+        while iterCounter < 5 :
             print iterCounter, "ITER++"
             
             #Check for convergence
@@ -64,8 +64,12 @@ class CKMeans:
                 difference += np.linalg.norm(oldCenters[i] - self.centerList[i])
                 
             if difference == 0:
-                break
-            
+                #break
+                pass
+            # Empty out the assigned instances of clusters
+            for i in range(0, self.k):
+                self.clusterList[i] = np.array([])
+                
             ############ Assign each instance of feature matrix to a cluster #############
             
             for i, line in enumerate(self.featArr):
@@ -104,49 +108,41 @@ class CKMeans:
                 print i, "assigned to", clusNum, self.clusterList[0],self.clusterList[1]
                 
             for i in self.clusterList:
-                print i[0],i[1]
+                print i
             ########################################################################
-            """
+            
             # Save current cluster centers
             for i in range(0, self.k):
-                #oldCenters[i] = self.clusterList[1][i]
-                print self.clusterList[1][i], "Saving clusters"
-                
+                oldCenters[i] = self.centerList[i]
+                print oldCenters[i], "Saving clusters"
+               
             # Find new centers of each cluster
-            dim = self.featArr.shape[1] #720    
+            dim = self.featArr.shape[1] #720
             for order in range(0, self.k):
                 
-                # clus : Tuple (Cluster, Center of the cluster)
                 clus = self.clusterList[order]
-                print clus[0],clus[1]
-                clusLength = len(clus[0])
-                print clusLength,"Cluster uzunlugu"
+                clusLength = len(clus)
                 
                 for i in range(0, dim):
                     # i : order that we're in (0...719)
                     
                     coorSum = 0
-                    for j in clus[0]:
+                    for j in clus:
                         # j : id of the instance
                         coorSum += self.featArr[j][i]      
                     coorSum /= clusLength
-                    self.clusterList[1][order][i] = coorSum
-
-            # Empty out the assigned instances of clusters
-            for i in range(0, self.k):
-                self.clusterList[0][i] = np.array([])
-            """
+                    self.centerList[order][i] = coorSum
+                             
             # Increment the counter
             iterCounter += 1        
         
-        return self.clusterList
-
+        return (self.clusterList,self.centerList)
 
 
 def visualiseBeforeClustering(out,features):
     color = 'black'
     for cluster in out[0]:
-        for i in cluster:
+        for i in cluster.astype(int):
               x = features.tolist()[i]
               scale = 80
               plt.scatter(x[0], x[1], c=color, s=scale, label=color,
@@ -160,16 +156,16 @@ def visualiseAfterClustering(out,features):
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
-        for i in cluster:
+            
+        for i in cluster.astype(int):
               x = features.tolist()[i]
               scale = 80
-
 
               plt.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black')
 
     plt.grid(True)
-
+    
     
 def main():
 
@@ -177,10 +173,12 @@ def main():
     isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
     test = getConstraints(7, isFull, classId);
     features = np.array([[3,6,5,1,3,2,8],[2,3,3,1,9,5,3]])
-    kmeans = CKMeans(test,features,2)    
-    kmeans.getCKMeans()
-    CKMeans()
-   
+    kmeans = CKMeans(test,features,3)
+    output = kmeans.getCKMeans()
+    print output[0]
+    print output[1]
+    visualiseAfterClustering(output,np.transpose(features))
+    plt.show()
 
 if __name__ == '__main__':
     main()
