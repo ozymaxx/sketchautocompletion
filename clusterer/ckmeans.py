@@ -22,7 +22,7 @@ class CKMeans:
     def initCluster(self):
         #method to initialize the cluster
         
-        for i in range(0,k):
+        for i in range(0,self.k):
             cluster = np.array([])
             center = self.featArr[i]
             self.clusterList.append((cluster,center))
@@ -44,59 +44,80 @@ class CKMeans:
     def CKMeans(self) :
         # method to apply CK_Means
         
-        # Assign each instance of feature matrix to a cluster
-        for i, line in enumerate(self.featArr):
-            # i : id of the instance
-            # line : points of that instance
+        # Counter to limit the number of iterations
+        iterCounter = 0
+        
+        #Old centers of clusters
+        oldCenters = np.arrayzeros(self.k)
+        
+        while iterCounter < 20 :
             
-            availClus = []
-            for j in self.clusterList:
-                # j : Tuple (Cluster, Center of the cluster)
+            #Check for convergence
+            difference = 0
+            for i in range(0, self.k):
+                difference += np.linalg.norm(oldCenters[i] - clus[1][i])
                 
-                constraint = self.violateConstraints(i, j[0])
-                if not constraint:
-                    availClus.append(j)
+            if difference == 0:
+                break
+            
+            # Assign each instance of feature matrix to a cluster
+            for i, line in enumerate(self.featArr):
+                # i : id of the instance
+                # line : points of that instance
+                
+                availClus = []
+                for j in self.clusterList:
+                    # j : Tuple (Cluster, Center of the cluster)
                     
-            if not availClus:
-                print "ERROR : No available clusters found"
+                    constraint = self.violateConstraints(i, j[0])
+                    if not constraint:
+                        availClus.append(j)
+                        
+                if not availClus:
+                    print "ERROR : No available clusters found"
+                    continue
+                    
+                # Find the closest cluster
+                minDist = sys.maxint
+                clusNum = 0
+                counter = 0
                 
-            # Find the closest cluster
-            minDist = sys.maxint
-            clusNum = 0
-            counter = 0
+                for clus in availClus:
+                    # clus : Tuple (Cluster, Center of the cluster)
+                    
+                    dist = np.linalg.norm(line - clus[1])
+                    if dist <= minDist:
+                        minDist = dist
+                        clusNum =counter
+                    counter+=1
+                
+                # Assign the instance to the cluster
+                self.clusterList[clusNum][0].append(line)
             
-            for clus in availClus:
+            # Save current cluster centers
+            for i in range(0, self.k):
+                oldCenters[i] = self.clusterList[1][i]
+                
+            # Find new centers of each cluster    
+            for clus in self.clusterList:
                 # clus : Tuple (Cluster, Center of the cluster)
                 
-                dist = np.linalg.norm(line - clus[1])
-                if dist <= minDist:
-                    minDist = dist
-                    clusNum =counter
-                counter+=1
+                dimX = clus[0].shape(1)
+                dimY = clus[0].shape(0)
+                
+                for i in range(0,dimX):
+                    coorSum = 0
+                    coorSum = np.sum(clus[0][:,i])
+                    coorSum /= dimY
+                    clus[1][i] = coorSum
             
-            # Assign the instance to the cluster
-            self.clusterList[clusNum][0].append(line)
-        
-        # Find new centers of each cluster    
-        for clus in self.clusterList:
-            # clus : Tuple (Cluster, Center of the cluster)
+            # Empty out the assigned instances of clusters
+            for i in range(0, self.k):
+                self.clusterList[0][i] = np.array([])
             
-            dimX = clus[0].shape(1)
-            dimY = clus[0].shape(0)
-            
-            for i in range(0,dimX):
-                coorSum = 0
-                coorSum = np.sum(clus[0][:,i])
-                coorSum /= dimY
-                clus[1][i] = coorSum
-        
-        # Empty out the assigned instances of clusters
-        for i in range(0, len(self.clusterList)):
-            self.clusterList[0][i] = np.array([])
-            
-        """
-        TODO : Check the convergence, return cluster list
-        """
+            # Increment the counter
+            iterCounter += 1        
+
         
 def main():
 ########## Test Case  ########################
