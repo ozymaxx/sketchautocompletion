@@ -23,7 +23,4 @@ def getConstraints(size, isFull, classId):
                         else:
                             cons[index][index2] = CANNOT_LINK
     return cons
-classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
-isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
-test = getConstraints(7, isFull, classId)
-print (test)
+
