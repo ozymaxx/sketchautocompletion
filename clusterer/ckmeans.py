@@ -55,12 +55,12 @@ class CKMeans:
             #Check for convergence
             difference = 0
             for i in range(0, self.k):
-                difference += np.linalg.norm(oldCenters[i] - clus[1][i])
+                difference += np.linalg.norm(oldCenters[i] - self.clusterList[1][i])
                 
             if difference == 0:
                 break
             
-            # Assign each instance of feature matrix to a cluster
+            ############ Assign each instance of feature matrix to a cluster #############
             for i, line in enumerate(self.featArr):
                 # i : id of the instance
                 # line : points of that instance
@@ -80,8 +80,7 @@ class CKMeans:
                 # Find the closest cluster
                 minDist = sys.maxint
                 clusNum = 0
-                counter = 0
-                
+                counter = 0              
                 for clus in availClus:
                     # clus : Tuple (Cluster, Center of the cluster)
                     
@@ -92,8 +91,10 @@ class CKMeans:
                     counter+=1
                 
                 # Assign the instance to the cluster
-                self.clusterList[clusNum][0].append(line)
+                self.clusterList[clusNum][0].append(i)
             
+                ########################################################################
+
             # Save current cluster centers
             for i in range(0, self.k):
                 oldCenters[i] = self.clusterList[1][i]
@@ -103,8 +104,7 @@ class CKMeans:
                 # clus : Tuple (Cluster, Center of the cluster)
                 
                 dimX = clus[0].shape(1)
-                dimY = clus[0].shape(0)
-                
+                dimY = clus[0].shape(0)             
                 for i in range(0,dimX):
                     coorSum = 0
                     coorSum = np.sum(clus[0][:,i])
@@ -118,13 +118,10 @@ class CKMeans:
             # Increment the counter
             iterCounter += 1        
 
-        
-def main():
-########## Test Case  ########################
-
-
+        return self.clusterList
     
-#################################################
+def main():
+
     CKMeans()
    
 
