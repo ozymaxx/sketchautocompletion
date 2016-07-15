@@ -6,6 +6,9 @@ Amir H - Arda I
 import numpy as np
 from getConstraints import *
 import sys
+import matplotlib.pyplot as plt
+import matplotlib.cm as cm
+
 
 class CKMeans:
     
@@ -137,6 +140,36 @@ class CKMeans:
             iterCounter += 1        
         
         return self.clusterList
+
+
+
+def visualiseBeforeClustering(out,features):
+    color = 'black'
+    for cluster in out[0]:
+        for i in cluster:
+              x = features.tolist()[i]
+              scale = 80
+              plt.scatter(x[0], x[1], c=color, s=scale, label=color,
+                    alpha=0.5, edgecolors='black')
+    plt.figure()
+    plt.grid(True)
+
+def visualiseAfterClustering(out,features):
+    colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
+    index = 0
+    for cluster in out[0]:
+        index+=1
+        color = colorList[index-1]
+        for i in cluster:
+              x = features.tolist()[i]
+              scale = 80
+
+
+              plt.scatter(x[0], x[1], c=color, s=scale, label=color,
+                    alpha=0.5, edgecolors='black')
+
+    plt.grid(True)
+
     
 def main():
 
@@ -146,6 +179,9 @@ def main():
     features = np.array([[3,6,5,1,3,2,8],[2,3,3,1,9,5,3]])
     kmeans = CKMeans(test,features,2)    
     kmeans.getCKMeans()
+    CKMeans()
+   
+
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')
