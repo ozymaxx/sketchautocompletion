@@ -154,6 +154,8 @@ def visualiseAfterClustering(out,features):
               scale = 80
 
 
+
+
               plt.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black')
 
