@@ -34,13 +34,41 @@ def computeProb(numIns, clusArr):
         prob.append(float(len(c))/numIns)
     return prob
 
+def plotClassCluster(features,labels,clusArr):
+    x = features.tolist()
+    y = labels.tolist()
+
+    scale = 80
+    color = 'purple'
+    numClus = len(clusArr)
+    marker = 0
+    for j in range(0,len(y)):
+        if(y[j] == 1):
+            color = 'red'
+        elif(y[j] == 2):
+            color = 'blue'
+        else:
+            color = 'green'
+        for k in range(numClus):
+            if( j in clusArr[k]):
+                marker = k
+
+        plt.scatter(x[j][0], x[j][1], c=color, s=scale, label=color,
+            alpha=0.5, edgecolors='black', marker = (numClus+1,marker+1))
+
+    plt.grid(True)
+    plt.show()
+
+
+
 def main():
 ########## Test Case  ########################
     cl1 = np.array([0, 1, 2,4,6])
-    cl2 = np.array([3,5,7])
-    clusters = [cl1,cl2]
-    features = np.array([[1, 2], [2, 4], [5, 3], [1, 1], [3, 9], [2, 5], [8, 3], [3, 2]])
-    labels = np.array([1,3,2,3,2,1,2,2])
+    cl2 = np.array([3,5,7,9])
+    cl3 = np.array([8,10])
+    clusters = [cl1,cl2,cl3]
+    features = np.array([[1, 2], [2, 4], [5, 3], [1, 1], [3, 9], [2, 5], [8, 3], [3, 2],[2,2],[3,5],[4,4]])
+    labels = np.array([1,3,2,3,2,1,2,2,1,2,3])
 
     trainSVM(features, clusters,labels)
 
@@ -52,24 +80,7 @@ def main():
 
 ########## Do plotting  ########################
 
-    x = features.tolist()
-    y = labels.tolist()
-
-    scale = 80
-    color = 'purple'
-    for j in range(0,len(y)):
-        if(y[j] == 1):
-            color = 'red'
-        elif(y[j] == 2):
-            color = 'blue'
-        else:
-            color = 'green'
-        
-        plt.scatter(x[j][0], x[j][1], c=color, s=scale, label=color,
-            alpha=0.5, edgecolors='black') 
-
-    plt.grid(True)
-    plt.show()
+    plotClassCluster(features,labels,clusters)
 
 #################################################
 
