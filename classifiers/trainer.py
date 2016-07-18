@@ -52,7 +52,7 @@ def plotClassCluster(features,labels,clusArr):
                 marker = k
 
         plt.scatter(x[j][0], x[j][1], c=color, s=scale, label=color,
-            alpha=0.5, edgecolors='black', marker = (numClus+1,marker+1))
+            alpha=0.5, edgecolors='black', marker = (numClus +1,marker+1))
 
     plt.grid(True)
     plt.show()
