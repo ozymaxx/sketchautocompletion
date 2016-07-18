@@ -11,9 +11,7 @@ import matplotlib.cm as cm
 
 
 class CKMeans:
-    
     def __init__(self, consArr, featArr, k):
-
         self.consArr = consArr
         self.featArr = np.transpose(featArr)
         self.k = k
@@ -36,16 +34,17 @@ class CKMeans:
         # method to check if the instance violates the constraints (part of CK-Means)
         # data : id of the instance
         # cluster : current cluster in which we're checking the condition
-        
+        print self.consArr
         for i in self.consArr[data]:
-            if(i == self.MUST_LINK):
+            if (i == self.MUST_LINK):
                 if i not in cluster:
                     return True
-            elif(i == self.CANNOT_LINK):
+            elif (i == self.CANNOT_LINK):
                 if i in cluster:
                     return True
+
         return False
-    
+
     def getCKMeans(self) :
         # method to apply CK_Means
         self.initCluster()
@@ -130,8 +129,9 @@ class CKMeans:
                     for j in clus:
                         # j : id of the instance
                         coorSum += self.featArr[j][i]      
-                    coorSum /= clusLength
-                    self.centerList[order][i] = coorSum
+                    if coorSum != 0:
+                        coorSum /= clusLength
+                        self.centerList[order][i] = coorSum
                              
             # Increment the counter
             iterCounter += 1        
@@ -168,7 +168,40 @@ def visualiseAfterClustering(out,features):
     
     
 def main():
+    NUMPOINTS = 10;
+    NUMCLASS = 5;
+    POINTSPERCLASS = NUMPOINTS/NUMCLASS
 
+    xmin = 0;
+    xmax = 100;
+    ymin = 0;
+    ymax = 100;
+
+    features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
+    isFull = [0]*NUMPOINTS
+    classId = list()
+    index = 0
+
+    for i in range(0, NUMCLASS):cd 
+        classId.extend([i]*POINTSPERCLASS)
+        centerx = int(numpy.random.random()*xmax - xmin)
+        centery = int(numpy.random.random()*ymax - ymin)
+
+        for j in range(0, POINTSPERCLASS):
+            datax = int(numpy.random.normal(loc = centerx, scale = 2))
+            datay = int(numpy.random.normal(loc = centery, scale = 2))
+
+            features[0][index] = datax
+            features[1][index] = datay
+            index += 1
+
+    test = getConstraints(NUMPOINTS, isFull, classId);
+    kmeans = CKMeans(test,features,NUMCLASS)
+    output = kmeans.getCKMeans()
+    visualiseAfterClustering(output, np.transpose(features))
+    plt.show()
+
+    '''
     classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
     isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
     test = getConstraints(7, isFull, classId);
@@ -179,7 +212,7 @@ def main():
     print output[1]
     visualiseAfterClustering(output,np.transpose(features))
     plt.show()
-
+    '''
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')
