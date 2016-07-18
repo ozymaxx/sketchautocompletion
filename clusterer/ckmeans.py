@@ -139,18 +139,6 @@ class CKMeans:
         
         return (self.clusterList,self.centerList)
 
-
-def visualiseBeforeClustering(out,features):
-    color = 'black'
-    for cluster in out[0]:
-        for i in cluster.astype(int):
-              x = features.tolist()[i]
-              scale = 80
-              plt.scatter(x[0], x[1], c=color, s=scale, label=color,
-                    alpha=0.5, edgecolors='black')
-    plt.figure()
-    plt.grid(True)
-
 def visualiseBeforeClustering2(features):
     color = 'black'
     for x in features.tolist():
@@ -198,10 +186,6 @@ def main():
     isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
     test = getConstraints(7, isFull, classId);
     print test
-
-
-
-
     features = np.array([[3,6,5,1,3,2,8],[2,3,3,1,9,5,3]])
     visualiseBeforeClustering2(np.transpose(features))
     kmeans = CKMeans(test,features,4)
