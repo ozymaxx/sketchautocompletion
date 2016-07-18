@@ -197,7 +197,8 @@ def main():
     #features = np.array.reshape(21)
     features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
     centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
-    isFull = [0]*NUMPOINTS
+    #isFull = [0]*NUMPOINTS
+    isFull = [np.random.randint(0, 1) for r in xrange(NUMPOINTS)]
     classId = list()
     index = 0
 
