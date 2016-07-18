@@ -34,7 +34,7 @@ class CKMeans:
         # method to check if the instance violates the constraints (part of CK-Means)
         # data : id of the instance
         # cluster : current cluster in which we're checking the condition
-        print self.consArr
+
         for i in self.consArr[data]:
             if (i == self.MUST_LINK):
                 if i not in cluster:
