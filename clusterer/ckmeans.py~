@@ -208,17 +208,18 @@ def main():
             features[1][index] = datay
             index += 1
 
+<<<<<<< HEAD
     test = getConstraints(NUMPOINTS, isFull, classId);
     kmeans = CKMeans(test,features,NUMCLASS)
     output = kmeans.getCKMeans()
     visualiseAfterClustering(output, np.transpose(features))
     plt.show()
 
-'''
+    '''
     classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
-
+=======
     classId = [1 , 3 , 2 , 1 , 2 , 5 , 2]
-
+>>>>>>> 87ef3ee1f274d1a11015470d11bded142a2ed8d4
     isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
     test = getConstraints(7, isFull, classId);
     print test
