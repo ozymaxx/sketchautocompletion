@@ -148,7 +148,7 @@ def visualiseBeforeClustering(out,features):
     plt.figure()
     plt.grid(True)
 
-def visualiseAfterClustering(out, features, classId, centers, isFull):
+def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     def getMarkerList():
         numClass = len(set(classId))
         marker_list = list(mark.MarkerStyle.filled_markers)
@@ -160,9 +160,11 @@ def visualiseAfterClustering(out, features, classId, centers, isFull):
         return marker_list
 
     fig1 = plt.figure()
+    fig1.canvas.set_window_title(str(title))
     ax1 = fig1.add_subplot(111)
 
     fig2 = plt.figure()
+    fig2.canvas.set_window_title("K="+str(title) + " Full Sketch")
     ax2 = fig2.add_subplot(111)
 
     centers = centers.astype(int)
@@ -192,6 +194,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull):
 
 
     plt.grid(True)
+
 
 
 
@@ -242,12 +245,11 @@ def main():
             features[0][index] = datax
             features[1][index] = datay
             index += 1
-    for k in range(3,4):
+    for k in range(3,5):
         test = getConstraints(NUMPOINTS, isFull, classId);
         kmeans = CKMeans(test,features,k)
         output = kmeans.getCKMeans()
-        visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull)
-        plt.title("K: %i"%k)
+        visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull,k)
         plt.show()
 
     '''
