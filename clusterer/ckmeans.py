@@ -39,12 +39,11 @@ class CKMeans:
         # method to check if the instance violates the constraints (part of CK-Means)
         # data : id of the instance
         # cluster : current cluster in which we're checking the condition
-
-        for i in self.consArr[data]:
-            if (i == self.MUST_LINK):
+        for i in range(0, len(self.consArr[data])):
+            if (self.consArr[data][i] == self.MUST_LINK):
                 if i not in cluster:
                     return True
-            elif (i == self.CANNOT_LINK):
+            elif (self.consArr[data][i] == self.CANNOT_LINK):
                 if i in cluster:
                     return True
 
@@ -84,6 +83,7 @@ class CKMeans:
                     # num : order of the iteration
 
                     constraint = self.violateConstraints(i, j)
+                    #constraint = False
                     if not constraint:
                         availClus.append(num)
 
@@ -201,8 +201,9 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
 
 
 def main():
-    NUMPOINTS = 200;
-    NUMCLASS = 12;
+    ##################################### TEST CASES  #################################
+    NUMPOINTS = 10;
+    NUMCLASS = 4;
     POINTSPERCLASS = NUMPOINTS/NUMCLASS
 
     xmin = 0;
@@ -217,7 +218,6 @@ def main():
     isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
     classId = list()
     index = 0
-
     for i in range(0, NUMCLASS): 
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(numpy.random.random()*xmax - xmin)
@@ -245,6 +245,21 @@ def main():
             features[0][index] = datax
             features[1][index] = datay
             index += 1
+<<<<<<< HEAD
+    ##################################################################################
+    
+    #for k in range(3,4):
+    test = getConstraints(NUMPOINTS, isFull, classId);
+    print test
+    print isFull, "ISFULL"
+    print classId, "CLASSID"
+    kmeans = CKMeans(test,features,4)
+    output = kmeans.getCKMeans()
+    #visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull)
+    #plt.title("K: %i"%k)
+    #plt.show()
+    
+=======
     for k in range(3,5):
         test = getConstraints(NUMPOINTS, isFull, classId);
         kmeans = CKMeans(test,features,k)
@@ -252,6 +267,7 @@ def main():
         visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull,k)
         plt.show()
 
+>>>>>>> a29edea65bac62e926c56d39bf271ae8d15f6c6e
     '''
     classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
     isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
