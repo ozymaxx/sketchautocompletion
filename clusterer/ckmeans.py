@@ -58,9 +58,7 @@ class CKMeans:
 
         #Old centers of clusters
         oldCenters = np.zeros([self.k, len(self.featArr[0]) ])
-        print oldCenters
         while iterCounter < 20 :
-            print iterCounter, "ITER++"
 
             #Check for convergence
             difference = 0
@@ -79,7 +77,6 @@ class CKMeans:
             for i, line in enumerate(self.featArr):
                 # i : id of the instance
                 # line : points of that instance
-                print "i is : ", i, "line is : ", line
 
                 availClus = []
                 for num,j in enumerate(self.clusterList):
@@ -93,8 +90,6 @@ class CKMeans:
                 if not availClus:
                     print "ERROR : No available clusters found"
                     continue
-                else:
-                    print "available clusters :",availClus
 
                 # Find the closest cluster
                 minDist = sys.maxint
@@ -105,11 +100,9 @@ class CKMeans:
                     if dist <= minDist:
                         minDist = dist
                         clusNum = num
-                print "closest cluster is :", clusNum
 
                 # Assign the instance to the cluster
                 self.clusterList[clusNum] = np.append(self.clusterList[clusNum], i)
-                print i, "assigned to", clusNum, self.clusterList[0],self.clusterList[1]
 
             # for i in self.clusterList:
             #     print i
