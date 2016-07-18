@@ -8,7 +8,8 @@ from getConstraints import *
 import sys
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-
+from random import randint
+import copy
 
 class CKMeans:
     def __init__(self, consArr, featArr, k):
@@ -22,14 +23,17 @@ class CKMeans:
 
     def initCluster(self):
         #method to initialize the cluster
-
+        
+        usedPoints = []
         for i in range(0,self.k):
             self.clusterList.append(np.array([]))
-            center = self.featArr[i] ## TODO : RANDOM ASSIGNMENT OF CENTERS
+            point = randint(0, self.featArr.shape[0])
+            while point in usedPoints:
+                point = randint(0, len(self.featArr[0]))
+            usedPoints.append(point)
+            center = copy.copy(self.featArr[point]) ## TODO : RANDOM ASSIGNMENT OF CENTERS
             self.centerList.append(center)
-        print self.clusterList[0], "----", self.clusterList[1]
-        print self.centerList[0], "----", self.centerList[1]
-
+        
     def violateConstraints(self, data, cluster):
         # method to check if the instance violates the constraints (part of CK-Means)
         # data : id of the instance
@@ -54,7 +58,7 @@ class CKMeans:
         #Old centers of clusters
         oldCenters = np.zeros([self.k, len(self.featArr[0]) ])
         print oldCenters
-        while iterCounter < 5 :
+        while iterCounter < 20 :
             print iterCounter, "ITER++"
 
             #Check for convergence
@@ -63,8 +67,8 @@ class CKMeans:
                 difference += np.linalg.norm(oldCenters[i] - self.centerList[i])
 
             if difference == 0:
-                #break
-                pass
+                break
+                #pass
             # Empty out the assigned instances of clusters
             for i in range(0, self.k):
                 self.clusterList[i] = np.array([])
