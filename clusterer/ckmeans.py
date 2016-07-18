@@ -89,7 +89,7 @@ class CKMeans:
                         availClus.append(num)
 
                 if not availClus:
-                    print "ERROR : No available clusters found"
+                    print "ERROR : No available clusters found for",i ,"th instance"
                     continue
 
                 # Find the closest cluster
