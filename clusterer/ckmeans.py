@@ -39,7 +39,8 @@ class CKMeans:
         # method to check if the instance violates the constraints (part of CK-Means)
         # data : id of the instance
         # cluster : current cluster in which we're checking the condition
-        for i in range(0, len(self.consArr[data])):
+
+        for i in range(0, data):
             if (self.consArr[data][i] == self.MUST_LINK):
                 if i not in cluster:
                     return True
@@ -82,8 +83,8 @@ class CKMeans:
                     # j : A cluster
                     # num : order of the iteration
 
-                    constraint = self.violateConstraints(i, j)
-                    #constraint = False
+                    #constraint = self.violateConstraints(i, j)
+                    constraint = False
                     if not constraint:
                         availClus.append(num)
 
@@ -202,8 +203,8 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
 
 def main():
     ##################################### TEST CASES  #################################
-    NUMPOINTS = 10;
-    NUMCLASS = 4;
+    NUMPOINTS = 200;
+    NUMCLASS = 12;
     POINTSPERCLASS = NUMPOINTS/NUMCLASS
 
     xmin = 0;
