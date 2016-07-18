@@ -1,6 +1,6 @@
 """
 CKMeans class
-Amir H - Arda I
+Arda I - Semih G - Ahmet B
 15.07.2016
 """
 import numpy as np
