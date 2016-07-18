@@ -111,14 +111,14 @@ class CKMeans:
                 self.clusterList[clusNum] = np.append(self.clusterList[clusNum], i)
                 print i, "assigned to", clusNum, self.clusterList[0],self.clusterList[1]
 
-            for i in self.clusterList:
-                print i
+            # for i in self.clusterList:
+            #     print i
             ########################################################################
 
             # Save current cluster centers
             for i in range(0, self.k):
                 oldCenters[i] = self.centerList[i]
-                print oldCenters[i], "Saving clusters"
+                # print oldCenters[i], "Saving clusters"
 
             # Find new centers of each cluster
             dim = self.featArr.shape[1] #720
@@ -155,7 +155,7 @@ def visualiseBeforeClustering(out,features):
     plt.figure()
     plt.grid(True)
 
-def visualiseAfterClustering(out, features, classId):
+def visualiseAfterClustering(out, features, classId, centers):
     def getMarkerList():
         numClass = len(set(classId))
         marker_list = list(mark.MarkerStyle.filled_markers)
@@ -166,13 +166,18 @@ def visualiseAfterClustering(out, features, classId):
 
         return marker_list
 
-
+    centers = centers.astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
     marker_list = getMarkerList()
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
+        plt.scatter(centers[0][index-1], centers[1][index-1], c='#000000', s=300, label=color,
+                    alpha=0.5, edgecolors='black')
+        plt.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
+                    alpha=0.5, edgecolors='black' )
+
 
         for i in cluster.astype(int):
               x = features.tolist()[i]
