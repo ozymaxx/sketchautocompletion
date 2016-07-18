@@ -30,7 +30,7 @@ class CKMeans:
             self.clusterList.append(np.array([]))
             point = randint(0, self.featArr.shape[0])
             while point in usedPoints:
-                point = randint(0, len(self.featArr[0])-1)
+                point = randint(0, self.featArr.shape[0]-1)
             usedPoints.append(point)
             center = copy.copy(self.featArr[point]) ## TODO : RANDOM ASSIGNMENT OF CENTERS
             self.centerList.append(center)
