@@ -163,6 +163,7 @@ def visualiseAfterClustering(out, features, classId, centers):
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
     marker_list = getMarkerList()
+    plt
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
@@ -171,17 +172,14 @@ def visualiseAfterClustering(out, features, classId, centers):
         plt.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
                     alpha=0.5, edgecolors='black' )
 
-
         for i in cluster.astype(int):
               x = features.tolist()[i]
               scale = 80
               marker = classId[i]
-              plt
               plt.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
     plt.grid(True)
-
 
 
 def main():
@@ -194,47 +192,47 @@ def main():
     ymin = 0;
     ymax = 100;
 
-    #features = np.array.reshape(21)
-    features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
-    centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
-    #isFull = [0]*NUMPOINTS
-    isFull = [np.random.randint(0, 1) for r in xrange(NUMPOINTS)]
-    classId = list()
-    index = 0
+    # test for different k values
+    for k in range(3, 15):
+        features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
+        centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
+        isFull = [np.random.randint(0, 1) for r in xrange(NUMPOINTS)]
+        classId = list()
+        index = 0
 
-    for i in range(0, NUMCLASS): 
-        classId.extend([i]*POINTSPERCLASS)
-        centerx = int(numpy.random.random()*xmax - xmin)
-        centery = int(numpy.random.random()*ymax - ymin)
-        centers[0][i] = centerx
-        centers[1][i] = centery
+        for i in range(0, NUMCLASS):
+            classId.extend([i]*POINTSPERCLASS)
+            centerx = int(numpy.random.random()*xmax - xmin)
+            centery = int(numpy.random.random()*ymax - ymin)
+            centers[0][i] = centerx
+            centers[1][i] = centery
 
-        for j in range(0, POINTSPERCLASS):
-            datax = int(numpy.random.normal(loc = centerx, scale = 3))
-            datay = int(numpy.random.normal(loc = centery, scale = 3))
+            for j in range(0, POINTSPERCLASS):
+                datax = int(numpy.random.normal(loc = centerx, scale = 3))
+                datay = int(numpy.random.normal(loc = centery, scale = 3))
 
-            features[0][index] = datax
-            features[1][index] = datay
-            index += 1
+                features[0][index] = datax
+                features[1][index] = datay
+                index += 1
 
-    # add the remaning points, from integer division
-    remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
-    if (remainingPoints):
-        # select the center randomly
-        randc = np.random.randint(0, max(classId))
-        classId.extend([randc]*remainingPoints)
-        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
-            datax = int(numpy.random.normal(loc = centers[0][randc], scale = 3))
-            datay = int(numpy.random.normal(loc = centers[1][randc], scale = 3))
-            features[0][index] = datax
-            features[1][index] = datay
-            index += 1
+        # add the remaning points, from integer division
+        remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
+        if remainingPoints:
+            # select the center randomly
+            randc = np.random.randint(0, max(classId))
+            classId.extend([randc]*remainingPoints)
+            for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
+                datax = int(numpy.random.normal(loc = centers[0][randc], scale = 3))
+                datay = int(numpy.random.normal(loc = centers[1][randc], scale = 3))
+                features[0][index] = datax
+                features[1][index] = datay
+                index += 1
 
-    test = getConstraints(NUMPOINTS, isFull, classId);
-    kmeans = CKMeans(test,features,NUMCLASS)
-    output = kmeans.getCKMeans()
-    visualiseAfterClustering(output, np.transpose(features), classId, centers)
-    plt.show()
+        test = getConstraints(NUMPOINTS, isFull, classId);
+        kmeans = CKMeans(test, features, k)
+        output = kmeans.getCKMeans()
+        visualiseAfterClustering(output, np.transpose(features), classId, centers)
+        plt.show()
 
     '''
     classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
