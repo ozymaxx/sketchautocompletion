@@ -165,7 +165,6 @@ def visualiseAfterClustering(out, features, classId, centers):
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
     marker_list = getMarkerList()
-    plt
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
@@ -178,23 +177,11 @@ def visualiseAfterClustering(out, features, classId, centers):
               x = features.tolist()[i]
               scale = 80
               marker = classId[i]
-<<<<<<< HEAD
-              plt.scatter(x[0], x[1], c=color, s=scale, label=color,
-=======
-
               ax1.scatter(x[0], x[1], c=color, s=scale, label=color,
->>>>>>> 9b3dd10c82576f1d83b0545814f1bc1596ba77d9
                     alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
     plt.grid(True)
 
-
-<<<<<<< HEAD
-=======
-
-
-
->>>>>>> 9b3dd10c82576f1d83b0545814f1bc1596ba77d9
 def main():
     NUMPOINTS = 200;
     NUMCLASS = 12;
@@ -245,6 +232,7 @@ def main():
         kmeans = CKMeans(test, features, k)
         output = kmeans.getCKMeans()
         visualiseAfterClustering(output, np.transpose(features), classId, centers)
+        plt.title("K: %i" %k)
         plt.show()
 
     '''
