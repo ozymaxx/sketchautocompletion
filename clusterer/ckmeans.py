@@ -245,21 +245,9 @@ def main():
             features[0][index] = datax
             features[1][index] = datay
             index += 1
-<<<<<<< HEAD
+
     ##################################################################################
-    
-    #for k in range(3,4):
-    test = getConstraints(NUMPOINTS, isFull, classId);
-    print test
-    print isFull, "ISFULL"
-    print classId, "CLASSID"
-    kmeans = CKMeans(test,features,4)
-    output = kmeans.getCKMeans()
-    #visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull)
-    #plt.title("K: %i"%k)
-    #plt.show()
-    
-=======
+
     for k in range(3,5):
         test = getConstraints(NUMPOINTS, isFull, classId);
         kmeans = CKMeans(test,features,k)
@@ -267,7 +255,7 @@ def main():
         visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull,k)
         plt.show()
 
->>>>>>> a29edea65bac62e926c56d39bf271ae8d15f6c6e
+
     '''
     classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
     isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
