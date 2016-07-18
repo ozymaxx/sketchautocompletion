@@ -141,6 +141,8 @@ class CKMeans:
         return (self.clusterList,self.centerList)
 
 
+
+
 def visualiseBeforeClustering(out,features):
     color = 'black'
     for cluster in out[0]:
@@ -153,9 +155,20 @@ def visualiseBeforeClustering(out,features):
     plt.grid(True)
 
 def visualiseAfterClustering(out, features, classId):
+    def getMarkerList():
+        numClass = len(set(classId))
+        marker_list = list(mark.MarkerStyle.filled_markers)
+        markIndex = 4
+        while numClass >= len(marker_list):
+            marker_list.append((markIndex,1))
+            markIndex+=1
+
+        return marker_list
+
+
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
-    numClass = len(set(classId))
+    marker_list = getMarkerList()
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
@@ -166,7 +179,7 @@ def visualiseAfterClustering(out, features, classId):
               marker = classId[i]
               plt
               plt.scatter(x[0], x[1], c=color, s=scale, label=color,
-                    alpha=0.5, edgecolors='black', marker= mark.MarkerStyle.filled_markers[marker])
+                    alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
     plt.grid(True)
     
