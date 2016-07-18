@@ -195,7 +195,7 @@ def main():
     classId = list()
     index = 0
 
-    for i in range(0, NUMCLASS):cd 
+    for i in range(0, NUMCLASS): 
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(numpy.random.random()*xmax - xmin)
         centery = int(numpy.random.random()*ymax - ymin)
