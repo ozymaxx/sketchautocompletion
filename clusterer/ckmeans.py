@@ -28,7 +28,7 @@ class CKMeans:
         usedPoints = []
         for i in range(0,self.k):
             self.clusterList.append(np.array([]))
-            point = randint(0, self.featArr.shape[0])
+            point = randint(0, self.featArr.shape[0]-1)
             while point in usedPoints:
                 point = randint(0, self.featArr.shape[0]-1)
             usedPoints.append(point)
