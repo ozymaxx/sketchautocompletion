@@ -187,7 +187,7 @@ def visualiseAfterClustering(out, features, classId):
 
 
 def main():
-    NUMPOINTS = 20;
+    NUMPOINTS = 200;
     NUMCLASS = 5;
     POINTSPERCLASS = NUMPOINTS/NUMCLASS
 
@@ -198,6 +198,7 @@ def main():
 
     #features = np.array.reshape(21)
     features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
+    centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
     isFull = [0]*NUMPOINTS
     classId = list()
     index = 0
@@ -206,10 +207,12 @@ def main():
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(numpy.random.random()*xmax - xmin)
         centery = int(numpy.random.random()*ymax - ymin)
+        centers[0][i] = centerx
+        centers[1][i] = centery
 
         for j in range(0, POINTSPERCLASS):
-            datax = int(numpy.random.normal(loc = centerx, scale = 1))
-            datay = int(numpy.random.normal(loc = centery, scale = 1))
+            datax = int(numpy.random.normal(loc = centerx, scale = 3))
+            datay = int(numpy.random.normal(loc = centery, scale = 3))
 
             features[0][index] = datax
             features[1][index] = datay
@@ -218,7 +221,7 @@ def main():
     test = getConstraints(NUMPOINTS, isFull, classId);
     kmeans = CKMeans(test,features,NUMCLASS)
     output = kmeans.getCKMeans()
-    visualiseAfterClustering(output, np.transpose(features),classId)
+    visualiseAfterClustering(output, np.transpose(features), classId, centers)
     plt.show()
 
     '''
