@@ -148,7 +148,7 @@ def visualiseBeforeClustering(out,features):
     plt.figure()
     plt.grid(True)
 
-def visualiseAfterClustering(out, features, classId, centers):
+def visualiseAfterClustering(out, features, classId, centers, isFull):
     def getMarkerList():
         numClass = len(set(classId))
         marker_list = list(mark.MarkerStyle.filled_markers)
@@ -161,6 +161,10 @@ def visualiseAfterClustering(out, features, classId, centers):
 
     fig1 = plt.figure()
     ax1 = fig1.add_subplot(111)
+
+    fig2 = plt.figure()
+    ax2 = fig2.add_subplot(111)
+
     centers = centers.astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
@@ -177,10 +181,21 @@ def visualiseAfterClustering(out, features, classId, centers):
               x = features.tolist()[i]
               scale = 80
               marker = classId[i]
+
               ax1.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
+              if(isFull[i] == 1):
+                   ax2.scatter(x[0], x[1], c=color, s=scale, label=color,
+                    alpha=0.5, edgecolors='black', marker= marker_list[marker])
+
+
+
     plt.grid(True)
+
+
+
+
 
 def main():
     NUMPOINTS = 200;
@@ -192,47 +207,47 @@ def main():
     ymin = 0;
     ymax = 100;
 
-    # test for different k values
-    for k in range(3, 15):
-        features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
-        centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
-        isFull = [np.random.randint(0, 1) for r in xrange(NUMPOINTS)]
-        classId = list()
-        index = 0
+    #features = np.array.reshape(21)
+    features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
+    centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
+    #isFull = [0]*NUMPOINTS
+    isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
+    classId = list()
+    index = 0
 
-        for i in range(0, NUMCLASS):
-            classId.extend([i]*POINTSPERCLASS)
-            centerx = int(numpy.random.random()*xmax - xmin)
-            centery = int(numpy.random.random()*ymax - ymin)
-            centers[0][i] = centerx
-            centers[1][i] = centery
+    for i in range(0, NUMCLASS): 
+        classId.extend([i]*POINTSPERCLASS)
+        centerx = int(numpy.random.random()*xmax - xmin)
+        centery = int(numpy.random.random()*ymax - ymin)
+        centers[0][i] = centerx
+        centers[1][i] = centery
 
-            for j in range(0, POINTSPERCLASS):
-                datax = int(numpy.random.normal(loc = centerx, scale = 3))
-                datay = int(numpy.random.normal(loc = centery, scale = 3))
+        for j in range(0, POINTSPERCLASS):
+            datax = int(numpy.random.normal(loc = centerx, scale = 3))
+            datay = int(numpy.random.normal(loc = centery, scale = 3))
 
-                features[0][index] = datax
-                features[1][index] = datay
-                index += 1
+            features[0][index] = datax
+            features[1][index] = datay
+            index += 1
 
-        # add the remaning points, from integer division
-        remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
-        if remainingPoints:
-            # select the center randomly
-            randc = np.random.randint(0, max(classId))
-            classId.extend([randc]*remainingPoints)
-            for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
-                datax = int(numpy.random.normal(loc = centers[0][randc], scale = 3))
-                datay = int(numpy.random.normal(loc = centers[1][randc], scale = 3))
-                features[0][index] = datax
-                features[1][index] = datay
-                index += 1
-
+    # add the remaning points, from integer division
+    remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
+    if (remainingPoints):
+        # select the center randomly
+        randc = np.random.randint(0, max(classId))
+        classId.extend([randc]*remainingPoints)
+        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
+            datax = int(numpy.random.normal(loc = centers[0][randc], scale = 3))
+            datay = int(numpy.random.normal(loc = centers[1][randc], scale = 3))
+            features[0][index] = datax
+            features[1][index] = datay
+            index += 1
+    for k in range(3,4):
         test = getConstraints(NUMPOINTS, isFull, classId);
-        kmeans = CKMeans(test, features, k)
+        kmeans = CKMeans(test,features,k)
         output = kmeans.getCKMeans()
-        visualiseAfterClustering(output, np.transpose(features), classId, centers)
-        plt.title("K: %i" %k)
+        visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull)
+        plt.title("K: %i"%k)
         plt.show()
 
     '''
