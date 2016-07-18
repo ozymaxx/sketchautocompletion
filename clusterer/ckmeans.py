@@ -83,8 +83,8 @@ class CKMeans:
                     # j : A cluster
                     # num : order of the iteration
 
-                    #constraint = self.violateConstraints(i, j)
-                    constraint = False
+                    constraint = self.violateConstraints(i, j)
+                    #constraint = False
                     if not constraint:
                         availClus.append(num)
 
@@ -177,6 +177,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     index = 0
     marker_list = getMarkerList()
 
+    count = 0
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
@@ -192,14 +193,12 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
                     alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
               if(isFull[i] == 1):
-                   ax2.scatter(x[0], x[1], c=color, s=scale, label=color,
+                count += 1
+                ax2.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
-
-
+    print count
     plt.grid(True)
-
-
 
 
 
@@ -215,13 +214,13 @@ def main():
     ymin = 0;
     ymax = 100;
 
-    #features = np.array.reshape(21)
     features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
     centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
-    #isFull = [0]*NUMPOINTS
     isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
+
     classId = list()
     index = 0
+
     for i in range(0, NUMCLASS): 
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(numpy.random.random()*xmax - xmin)
@@ -250,15 +249,13 @@ def main():
             features[1][index] = datay
             index += 1
 
-    ##################################################################################
+    test = getConstraints(NUMPOINTS, isFull, classId)
 
-    for k in range(3,5):
-        test = getConstraints(NUMPOINTS, isFull, classId);
+    for k in range(12,16):
         kmeans = CKMeans(test,features,k)
         output = kmeans.getCKMeans()
         visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull,k)
-        plt.show()
-
+    plt.show()
 
     '''
     classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
