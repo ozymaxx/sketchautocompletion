@@ -190,6 +190,8 @@ def main():
     classId = [1 , 3 , 2 , 3 , 1 , 4 , 2]
     isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
     test = getConstraints(7, isFull, classId);
+    print test
+
     features = np.array([[3,6,5,1,3,2,8],[2,3,3,1,9,5,3]])
     kmeans = CKMeans(test,features,3)
     output = kmeans.getCKMeans()
