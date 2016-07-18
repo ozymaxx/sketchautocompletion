@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from random import randint
 import copy
+import matplotlib.markers as mark
 
 class CKMeans:
     def __init__(self, consArr, featArr, k):
@@ -154,9 +155,21 @@ def visualiseBeforeClustering(out,features):
     plt.figure()
     plt.grid(True)
 
-def visualiseAfterClustering(out,features):
+def visualiseAfterClustering(out, features, classId):
+    def getMarkerList():
+        numClass = len(set(classId))
+        marker_list = list(mark.MarkerStyle.filled_markers)
+        markIndex = 4
+        while numClass >= len(marker_list):
+            marker_list.append((markIndex,1))
+            markIndex+=1
+
+        return marker_list
+
+
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
+    marker_list = getMarkerList()
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
@@ -164,11 +177,13 @@ def visualiseAfterClustering(out,features):
         for i in cluster.astype(int):
               x = features.tolist()[i]
               scale = 80
-
+              marker = classId[i]
+              plt
               plt.scatter(x[0], x[1], c=color, s=scale, label=color,
-                    alpha=0.5, edgecolors='black')
+                    alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
     plt.grid(True)
+
 
 
 def main():
@@ -203,7 +218,7 @@ def main():
     test = getConstraints(NUMPOINTS, isFull, classId);
     kmeans = CKMeans(test,features,NUMCLASS)
     output = kmeans.getCKMeans()
-    visualiseAfterClustering(output, np.transpose(features))
+    visualiseAfterClustering(output, np.transpose(features),classId)
     plt.show()
 
     '''
