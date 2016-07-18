@@ -83,8 +83,8 @@ class CKMeans:
                     # j : A cluster
                     # num : order of the iteration
 
-                    #constraint = self.violateConstraints(i, j)
-                    constraint = False
+                    constraint = self.violateConstraints(i, j)
+                    #constraint = False
                     if not constraint:
                         availClus.append(num)
 
