@@ -186,7 +186,7 @@ def visualiseAfterClustering(out, features, classId, centers):
 
 def main():
     NUMPOINTS = 200;
-    NUMCLASS = 5;
+    NUMCLASS = 12;
     POINTSPERCLASS = NUMPOINTS/NUMCLASS
 
     xmin = 0;
@@ -213,6 +213,19 @@ def main():
             datax = int(numpy.random.normal(loc = centerx, scale = 3))
             datay = int(numpy.random.normal(loc = centery, scale = 3))
 
+            features[0][index] = datax
+            features[1][index] = datay
+            index += 1
+
+    # add the remaning points, from integer division
+    remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
+    if (remainingPoints):
+        # select the center randomly
+        randc = np.random.randint(0, max(classId))
+        classId.extend([randc]*remainingPoints)
+        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
+            datax = int(numpy.random.normal(loc = centers[0][randc], scale = 3))
+            datay = int(numpy.random.normal(loc = centers[1][randc], scale = 3))
             features[0][index] = datax
             features[1][index] = datay
             index += 1
