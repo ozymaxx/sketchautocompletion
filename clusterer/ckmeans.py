@@ -148,7 +148,7 @@ def visualiseBeforeClustering(out,features):
     plt.figure()
     plt.grid(True)
 
-def visualiseAfterClustering(out, features, classId, centers):
+def visualiseAfterClustering(out, features, classId, centers, isFull):
     def getMarkerList():
         numClass = len(set(classId))
         marker_list = list(mark.MarkerStyle.filled_markers)
@@ -161,6 +161,10 @@ def visualiseAfterClustering(out, features, classId, centers):
 
     fig1 = plt.figure()
     ax1 = fig1.add_subplot(111)
+
+    fig2 = plt.figure()
+    ax2 = fig2.add_subplot(111)
+
     centers = centers.astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
@@ -173,7 +177,6 @@ def visualiseAfterClustering(out, features, classId, centers):
         ax1.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
                     alpha=0.5, edgecolors='black' )
 
-
         for i in cluster.astype(int):
               x = features.tolist()[i]
               scale = 80
@@ -181,6 +184,12 @@ def visualiseAfterClustering(out, features, classId, centers):
 
               ax1.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black', marker= marker_list[marker])
+
+              if(isFull[i] == 1):
+                   ax2.scatter(x[0], x[1], c=color, s=scale, label=color,
+                    alpha=0.5, edgecolors='black', marker= marker_list[marker])
+
+
 
     plt.grid(True)
 
@@ -202,7 +211,7 @@ def main():
     features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
     centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
     #isFull = [0]*NUMPOINTS
-    isFull = [np.random.randint(0, 1) for r in xrange(NUMPOINTS)]
+    isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
     classId = list()
     index = 0
 
@@ -233,12 +242,13 @@ def main():
             features[0][index] = datax
             features[1][index] = datay
             index += 1
-
-    test = getConstraints(NUMPOINTS, isFull, classId);
-    kmeans = CKMeans(test,features,NUMCLASS)
-    output = kmeans.getCKMeans()
-    visualiseAfterClustering(output, np.transpose(features), classId, centers)
-    plt.show()
+    for k in range(3,4):
+        test = getConstraints(NUMPOINTS, isFull, classId);
+        kmeans = CKMeans(test,features,k)
+        output = kmeans.getCKMeans()
+        visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull)
+        plt.title("K: %i"%k)
+        plt.show()
 
     '''
     classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
