@@ -34,10 +34,7 @@ class CKMeans:
         # method to check if the instance violates the constraints (part of CK-Means)
         # data : id of the instance
         # cluster : current cluster in which we're checking the condition
-<<<<<<< HEAD
-=======
 
->>>>>>> 66cf7f7a456c4d8b19b4d114c8ab7b5ad82a2a37
         for i in self.consArr[data]:
             if (i == self.MUST_LINK):
                 if i not in cluster:
@@ -186,11 +183,7 @@ def main():
     classId = list()
     index = 0
 
-<<<<<<< HEAD
-    for i in range(0, NUMCLASS):
-=======
     for i in range(0, NUMCLASS): 
->>>>>>> 66cf7f7a456c4d8b19b4d114c8ab7b5ad82a2a37
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(numpy.random.random()*xmax - xmin)
         centery = int(numpy.random.random()*ymax - ymin)
