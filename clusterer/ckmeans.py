@@ -159,6 +159,8 @@ def visualiseAfterClustering(out, features, classId, centers):
 
         return marker_list
 
+    fig1 = plt.figure()
+    ax1 = fig1.add_subplot(111)
     centers = centers.astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     index = 0
@@ -166,9 +168,9 @@ def visualiseAfterClustering(out, features, classId, centers):
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
-        plt.scatter(centers[0][index-1], centers[1][index-1], c='#000000', s=300, label=color,
+        ax1.scatter(centers[0][index-1], centers[1][index-1], c='#000000', s=300, label=color,
                     alpha=0.5, edgecolors='black')
-        plt.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
+        ax1.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
                     alpha=0.5, edgecolors='black' )
 
 
@@ -176,11 +178,13 @@ def visualiseAfterClustering(out, features, classId, centers):
               x = features.tolist()[i]
               scale = 80
               marker = classId[i]
-              plt
-              plt.scatter(x[0], x[1], c=color, s=scale, label=color,
+
+              ax1.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black', marker= marker_list[marker])
 
     plt.grid(True)
+
+
 
 
 
