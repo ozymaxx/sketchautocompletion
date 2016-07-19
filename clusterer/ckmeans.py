@@ -27,12 +27,13 @@ class CKMeans:
         
         usedPoints = []
         for i in range(0,self.k):
-            self.clusterList.append(np.array([]))
+            self.clusterList.append(np.array([], dtype = int))
+
             point = randint(0, self.featArr.shape[0]-1)
             while point in usedPoints:
                 point = randint(0, self.featArr.shape[0]-1)
             usedPoints.append(point)
-            center = copy.copy(self.featArr[point]) ## TODO : RANDOM ASSIGNMENT OF CENTERS
+            center = copy.copy(self.featArr[point])
             self.centerList.append(center)
         
     def violateConstraints(self, data, cluster):
@@ -70,7 +71,7 @@ class CKMeans:
                 #pass
             # Empty out the assigned instances of clusters
             for i in range(0, self.k):
-                self.clusterList[i] = np.array([])
+                self.clusterList[i] = np.array([], dtype = int)
 
             ############ Assign each instance of feature matrix to a cluster #############
 

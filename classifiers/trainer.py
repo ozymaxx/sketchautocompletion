@@ -106,9 +106,9 @@ def main():
     """
 #################################################
     # for all clusters
-    for i in range(len(output[0])):
+    for clusterId in range(len(output[0])):
         # if any data points different
-        if any(x for x in output[0][i] if classId[output[0][i][0]] != classId[output[0][i][x]]):
+        if any(x for x in output[0][clusterId] if classId[output[0][clusterId][0]] != classId[output[0][clusterId][x]]):
             trainSVM(np.transpose(features), output[0], classId)
 
 if __name__ == '__main__':
