@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.markers as mark
 import numpy as np
-
+import random
 
 
 def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, centers, title):
@@ -16,6 +16,7 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
 
         return marker_list
 
+    clisEdge = ['black', 'yellow', 'red', 'blue']
     fig1 = plt.figure()
     fig1.canvas.set_window_title(str(title))
     ax1 = fig1.add_subplot(111)
@@ -48,18 +49,14 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
         ax1.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
                     alpha=0.5, edgecolors='black' )
 
-        if(edgecolor == 'black'):
-            edgecolor = 'red'
-        else:
-            edgecolor = 'black'
-
+        edgecolor = colorList[random.randint(0,len(clisEdge))-1]
         for i in cluster.astype(int):
               x = features.tolist()[i]
               scale = 80
               marker = classId[i]
 
               ax1.scatter(x[0], x[1], c=color, s=scale, label=color,
-                    alpha=0.5, edgecolors='black', marker= marker_list[marker])
+                    alpha=0.5, edgecolors=edgecolor, marker= marker_list[marker])
 
               if(isFull[i] == 1):
                 count += 1
