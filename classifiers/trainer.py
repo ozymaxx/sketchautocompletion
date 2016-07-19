@@ -43,10 +43,15 @@ def trainSVM(featArr, clusArr, labArr) :
 
     return allModels
 
-def computeProb(numIns, clusArr):
+def computeProb(out):
     prob = []
-    for c in clusArr:
-        prob.append(float(len(c))/numIns)
+    total =  0
+
+    for c in out[0]:
+        total += len(c)
+
+    for cluster in out[0]:
+        prob.append(len(cluster)/float(total))
     return prob
 
 def main():
@@ -106,11 +111,7 @@ def main():
     output = kmeans.getCKMeans()
 
 
-    """
-    probabilities = computeProb(len(labels),clusters)
-
-    print probabilities
-    """
+    # print computeProb(output)
 #################################################
     # for all clusters
     clustersToBeTrained = list()
