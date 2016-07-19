@@ -60,7 +60,7 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
               marker = classId[i]
 
               ax1.scatter(x[0], x[1], c=color, s=scale, label=color,
-                    alpha=0.5, edgecolors=edgecolor, marker= marker_list[marker])
+                    alpha=0.5, edgecolors=edgecolor, marker= marker_list[marker], linewidth='3')
 
               if(isFull[i] == 1):
                 count += 1
