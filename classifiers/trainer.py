@@ -106,11 +106,13 @@ def main():
     """
 #################################################
     # for all clusters
+    clustersToBeTrained = list()
     for clusterId in range(len(output[0])):
-        # if any data points different
-        if any(x for x in output[0][clusterId] if classId[output[0][clusterId][0]] != classId[output[0][clusterId][x]]):
-            trainSVM(np.transpose(features), output[0], classId)
+        # if class id of any that in cluster of clusterId is any different than the first one
+        if any(x for x in range(len(output[0][clusterId])) if classId[output[0][clusterId][0]] != classId[output[0][clusterId][x]]):
+            clustersToBeTrained.append(output[0][clusterId])
 
+    trainSVM(np.transpose(features), clustersToBeTrained, classId)
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')
