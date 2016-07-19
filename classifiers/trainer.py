@@ -41,7 +41,7 @@ def trainSVM(featArr, clusArr, labArr) :
         svm_save_model('clus' + `order` + '.model', m)
         order+=1
 
-        return allModels
+    return allModels
 
 def computeProb(numIns, clusArr):
     prob = []
@@ -52,7 +52,7 @@ def computeProb(numIns, clusArr):
 def main():
 ########## Test Case  #######################
 
-
+    
 
     NUMPOINTS = 200;
     NUMCLASS = 12;
@@ -70,7 +70,7 @@ def main():
     classId = list()
     index = 0
 ##################################### PREPARE FEATURES ###################################
-    for i in range(0, NUMCLASS):
+    for i in range(0, NUMCLASS): 
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(np.random.random()*xmax - xmin)
         centery = int(np.random.random()*ymax - ymin)
@@ -100,11 +100,10 @@ def main():
 #######################################################################################
 
     test = getConstraints(NUMPOINTS, isFull, classId)
-
+    
     k = 13
     kmeans = CKMeans(test,features,k)
     output = kmeans.getCKMeans()
-
 
 
     """
