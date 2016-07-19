@@ -1,6 +1,6 @@
 """
 Classifier trainer
-Ahmet BAGLAN - Arda ICMEZ 
+Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 14.07.2016
 """
 
