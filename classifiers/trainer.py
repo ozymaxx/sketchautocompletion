@@ -7,6 +7,7 @@ Ahmet BAGLAN - Arda ICMEZ
 import sys
 sys.path.append("../clusterer/")
 sys.path.append("../../libsvm-3.21/python/")
+
 from svmutil import *
 from numpy.random import rand
 import numpy as np
