@@ -121,7 +121,8 @@ def main():
             clustersToBeTrained.append(output[0][clusterId])
 
     allSV = trainSVM(np.transpose(features), clustersToBeTrained, classId)
-    visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, "lol")
+
+    visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, centers, "lol")
     plt.show()
     print allSV
 if __name__ == '__main__':
