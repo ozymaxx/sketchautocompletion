@@ -40,16 +40,20 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
 
     for m in modelPoints:
         for i in m:
-            ax1.scatter(i[1], i[2], c='black', s=500,
-                        alpha=0.5, edgecolors='black', marker = "+")
-
+            try:
+                ax1.scatter(i[1], i[2], c='black', s=500,
+                            alpha=0.5, edgecolors='black', marker = "+")
+            except:
+                print "an error on visualisation did not put model + "
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
+        edgecolor = colorList[random.randint(0,len(clisEdge))-1]
+
         ax1.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
                     alpha=0.5, edgecolors='black' )
 
-        edgecolor = colorList[random.randint(0,len(clisEdge))-1]
+
         for i in cluster.astype(int):
               x = features.tolist()[i]
               scale = 80
