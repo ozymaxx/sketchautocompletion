@@ -3,6 +3,10 @@ Classifier trainer
 Ahmet BAGLAN - Arda ICMEZ 
 14.07.2016
 """
+
+import sys
+sys.path.append("../clusterer/")
+sys.path.append("../../libsvm-3.21/python/")
 from svmutil import *
 from numpy.random import rand
 import numpy as np
@@ -101,11 +105,12 @@ def main():
     print probabilities
     """
 #################################################
+    # for all clusters
+    for i in range(len(output[0])):
+        # if any data points different
+        if any(x for x in output[0][i] if classId[output[0][i][0]] != classId[output[0][i][x]]):
+            trainSVM(np.transpose(features), output[0], classId)
 
-    trainSVM(np.transpose(features), output[0], classId)
-   
-
-    
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')

@@ -170,7 +170,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
 
     centers = centers.astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
-    print len(centers[0])
+    #print len(centers[0])
     for i in range(len(centers[0])):
          ax1.scatter(centers[0][i], centers[1][i], c='#000000', s=300,
                     alpha=0.5, edgecolors='black')
