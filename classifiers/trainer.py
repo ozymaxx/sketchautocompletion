@@ -121,9 +121,9 @@ def main():
 
     allSV = trainSVM(np.transpose(features), clustersToBeTrained, classId)
 
-    visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, centers, "lol")
+    visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, centers, "cluster number not defined")
     plt.show()
-    print allSV
+
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')
