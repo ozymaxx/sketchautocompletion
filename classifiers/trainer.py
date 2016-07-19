@@ -99,7 +99,7 @@ def main():
     k = 13
     kmeans = CKMeans(test,features,k)
     output = kmeans.getCKMeans()
-
+ 
     visualise.visualiseAfterClustering(output,np.transpose(features), classId, isFull, "lol")
     plt.show()
     """
