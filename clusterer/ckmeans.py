@@ -201,8 +201,6 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     plt.grid(True)
 
 
-
-
 def main():
     ##################################### TEST CASES  #################################
     NUMPOINTS = 200;
@@ -220,7 +218,6 @@ def main():
 
     classId = list()
     index = 0
-
     for i in range(0, NUMCLASS): 
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(numpy.random.random()*xmax - xmin)
@@ -238,37 +235,24 @@ def main():
 
     # add the remaning points, from integer division
     remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
-    if (remainingPoints):
+    if remainingPoints:
         # select the center randomly
         randc = np.random.randint(0, max(classId))
         classId.extend([randc]*remainingPoints)
-        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
+        for i in range (remainingPoints):
             datax = int(numpy.random.normal(loc = centers[0][randc], scale = 3))
             datay = int(numpy.random.normal(loc = centers[1][randc], scale = 3))
             features[0][index] = datax
             features[1][index] = datay
             index += 1
 
-    test = getConstraints(NUMPOINTS, isFull, classId)
-
+    cons = getConstraints(NUMPOINTS, isFull, classId)
     for k in range(12,16):
-        kmeans = CKMeans(test,features,k)
+        kmeans = CKMeans(cons, features,k)
         output = kmeans.getCKMeans()
         visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull,k)
     plt.show()
 
-    '''
-    classId = [1 , 3 , 2 , 3 , 1 , 5 , 2]
-    isFull = [1 , 1 , 0 , 0 , 1 , 0 , 1]
-    test = getConstraints(7, isFull, classId);
-    features = np.array([[3,6,5,1,3,2,8],[2,3,3,1,9,5,3]])
-    kmeans = CKMeans(test,features,3)
-    output = kmeans.getCKMeans()
-    print output[0]
-    print output[1]
-    visualiseAfterClustering(output,np.transpose(features))
-    plt.show()
-    '''
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')
