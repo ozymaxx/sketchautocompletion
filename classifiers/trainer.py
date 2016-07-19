@@ -34,7 +34,7 @@ def trainSVM(featArr, clusArr, labArr) :
 
         print y, x
         prob  = svm_problem(y, x)
-        param = svm_parameter('-t 2 -c 4 -b 1')  # Gamma missing
+        param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
         
         m = svm_train(prob, param)
         allModels.append(m.get_SV())
