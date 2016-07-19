@@ -5,7 +5,7 @@ import numpy as np
 
 
 
-def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, title):
+def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, centers, title):
     def getMarkerList():
         numClass = len(set(classId))
         marker_list = list(mark.MarkerStyle.filled_markers)
@@ -24,12 +24,17 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, title)
     fig2.canvas.set_window_title("K="+str(title) + " Full Sketch")
     ax2 = fig2.add_subplot(111)
 
+
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     #print len(centers[0])
     index = 0
     marker_list = getMarkerList()
 
     count = 0
+
+    for i in range(len(centers[0])):
+             ax1.scatter(centers[0][i], centers[1][i], c='#000000', s=300,
+                        alpha=0.5, edgecolors='black')
 
     for m in modelPoints:
         for i in m:
