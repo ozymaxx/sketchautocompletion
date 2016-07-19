@@ -34,7 +34,7 @@ def trainSVM(featArr, clusArr, labArr) :
 
         print y, x
         prob  = svm_problem(y, x)
-        param = svm_parameter('-t 2 -c 4')  # Gamma missing
+        param = svm_parameter('-t 2 -c 4 -b 1')  # Gamma missing
         
         m = svm_train(prob, param)
         allModels.append(m.get_SV())
@@ -106,8 +106,7 @@ def main():
     output = kmeans.getCKMeans()
 
  
-    visualise.visualiseAfterClustering(output,np.transpose(features), classId, isFull, "lol")
-    plt.show()
+
     """
     probabilities = computeProb(len(labels),clusters)
 
@@ -122,7 +121,9 @@ def main():
             clustersToBeTrained.append(output[0][clusterId])
 
     allSV = trainSVM(np.transpose(features), clustersToBeTrained, classId)
-
+    visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, "lol")
+    plt.show()
+    print allSV
 if __name__ == '__main__':
     main()
     #profile.run('print main(); print')

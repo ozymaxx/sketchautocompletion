@@ -5,7 +5,7 @@ import numpy as np
 
 
 
-def visualiseAfterClustering(out, features, classId,  isFull, title):
+def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, title):
     def getMarkerList():
         numClass = len(set(classId))
         marker_list = list(mark.MarkerStyle.filled_markers)
@@ -30,6 +30,12 @@ def visualiseAfterClustering(out, features, classId,  isFull, title):
     marker_list = getMarkerList()
 
     count = 0
+
+    for m in modelPoints:
+        for i in m:
+            ax1.scatter(i[1], i[2], c='black', s=500,
+                        alpha=0.5, edgecolors='black', marker = "+")
+
     for cluster in out[0]:
         index+=1
         color = colorList[index-1]
