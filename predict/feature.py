@@ -5,12 +5,28 @@ Arda ICMEZ
 """
 
 import sys
+import os
 sys.path.append("../../sketchfe/sketchfe")
 
-from sketchfe import FeatureExtractor
-idm = FeatureExtractor.IDMFeatureExtractor()
-idm.extractimage_test()
+from sketchfe import shapecreator
 
-def featureExtract():
-	pass
-
+def featureExtract(filename):	
+	with open(filename,'rb') as f:
+		extractType = None
+		extension = os.path.splitext(filename)[1]
+		
+		if extension == ".json":
+			extractType = "json"
+			
+		elif extension == ".xml":
+			extractType = "xml"
+			
+		elif extension == ".txt":
+			extractType = "school"
+			
+		else:
+			print "Wrong file type"
+			exit
+			
+		filecontent = f.read()
+		loadedSketch = shapecreator.buildSketch(filecontent,extractType)
