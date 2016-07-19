@@ -41,7 +41,7 @@ def trainSVM(featArr, clusArr, labArr) :
         svm_save_model('clus' + `order` + '.model', m)
         order+=1
 
-        return allModels
+    return allModels
 
 def computeProb(numIns, clusArr):
     prob = []
@@ -105,7 +105,6 @@ def main():
     kmeans = CKMeans(test,features,k)
     output = kmeans.getCKMeans()
 
- 
 
     """
     probabilities = computeProb(len(labels),clusters)
