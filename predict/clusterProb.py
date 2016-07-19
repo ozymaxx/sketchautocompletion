@@ -10,10 +10,8 @@ import test
 
 
 def computeDistance(x,y):
-
     x = np.asarray(x)
     y = np.asarray(y)
-
     return np.sqrt(np.sum((x-y)**2))
 
 def clusterProb(centers,instance,normalProb):
@@ -23,11 +21,7 @@ def clusterProb(centers,instance,normalProb):
         c_y = centers[1][i]
         dist = computeDistance((instance[0],instance[1]),(c_x,c_y))
         probTup = probTup + (math.exp(-1*abs(dist))*normalProb[i],)
-
     return probTup
-
-
-
 
 def main():
 ########## Test Case  #######################
