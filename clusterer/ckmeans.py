@@ -199,7 +199,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
 
     print count
     plt.grid(True)
-
+    ax1.grid(True)
 
 def main():
     ##################################### TEST CASES  #################################
