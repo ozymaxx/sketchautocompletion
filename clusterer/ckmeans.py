@@ -1,6 +1,6 @@
 """
 CKMeans class
-Amir H - Arda I
+Arda I - Semih G - Ahmet B
 15.07.2016
 """
 import numpy as np
@@ -89,7 +89,7 @@ class CKMeans:
                         availClus.append(num)
 
                 if not availClus:
-                    print "ERROR : No available clusters found"
+                    print "ERROR : No available clusters found for",i ,"th instance"
                     continue
 
                 # Find the closest cluster
