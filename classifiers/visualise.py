@@ -26,11 +26,12 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
 
 
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
+
     #print len(centers[0])
     index = 0
     marker_list = getMarkerList()
-
     count = 0
+    edgecolor = 'black'
 
     for i in range(len(centers[0])):
              ax1.scatter(centers[0][i], centers[1][i], c='#000000', s=300,
@@ -46,6 +47,11 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
         color = colorList[index-1]
         ax1.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
                     alpha=0.5, edgecolors='black' )
+
+        if(edgecolor == 'black'):
+            edgecolor = 'red'
+        else:
+            edgecolor = 'black'
 
         for i in cluster.astype(int):
               x = features.tolist()[i]
