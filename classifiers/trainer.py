@@ -36,7 +36,7 @@ def trainSVM(featArr, clusArr, labArr) :
         prob  = svm_problem(y, x)
         param = svm_parameter('-t 2 -c 4')  # Gamma missing
         
-        allSV = svm_train(prob, param)
+        m = svm_train(prob, param)
         allModels.append(m.get_SV())
         svm_save_model('clus' + `order` + '.model', m)
         order+=1
@@ -118,7 +118,7 @@ def main():
     clustersToBeTrained = list()
     for clusterId in range(len(output[0])):
         # if class id of any that in cluster of clusterId is any different than the first one
-        if any(x for x in range(len(output[0][clusterId])) if classId[output[0][clusterId][0]] != classId[output[0][clusterId][x]]):
+        if any(x for x in range(len(output[0][clusterId])) if classId[int(output[0][clusterId][0])] != classId[int(output[0][clusterId][x])]):
             clustersToBeTrained.append(output[0][clusterId])
 
     allSV = trainSVM(np.transpose(features), clustersToBeTrained, classId)
