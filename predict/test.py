@@ -1,0 +1,58 @@
+import numpy as np
+import sys
+sys.path.append("../clusterer/")
+sys.path.append("../classifiers/")
+from ckmeans import *
+from getConstraints import *
+from trainer import *
+
+
+def testIt(NUMPOINTS, NUMCLUS, k):
+
+    POINTSPERCLASS = NUMPOINTS / NUMCLUS
+
+    xmin = 0;
+    xmax = 100;
+    ymin = 0;
+    ymax = 100;
+
+    features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
+    centers = np.array([np.zeros(NUMCLUS), np.zeros(NUMCLUS)])
+    isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
+
+    classId = list()
+    index = 0
+##################################### PREPARE FEATURES ###################################
+    for i in range(0, NUMCLUS):
+        classId.extend([i]*POINTSPERCLASS)
+        centerx = int(np.random.random()*xmax - xmin)
+        centery = int(np.random.random()*ymax - ymin)
+        centers[0][i] = centerx
+        centers[1][i] = centery
+
+        for j in range(0, POINTSPERCLASS):
+            datax = int(np.random.normal(loc = centerx, scale = 3))
+            datay = int(np.random.normal(loc = centery, scale = 3))
+
+            features[0][index] = datax
+            features[1][index] = datay
+            index += 1
+
+    # add the remaning points, from integer division
+    remainingPoints = NUMPOINTS - POINTSPERCLASS * NUMCLUS
+    if (remainingPoints):
+        # select the center randomly
+        randc = np.random.randint(0, max(classId))
+        classId.extend([randc]*remainingPoints)
+        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLUS):
+            datax = int(np.random.normal(loc = centers[0][randc], scale = 3))
+            datay = int(np.random.normal(loc = centers[1][randc], scale = 3))
+            features[0][index] = datax
+            features[1][index] = datay
+            index += 1
+
+    test = getConstraints(NUMPOINTS, isFull, classId)
+    kmeans = CKMeans(test,features,k)
+    output = kmeans.getCKMeans()
+    probabilities = computeProb(output)
+    return (output,probabilities)

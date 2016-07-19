@@ -6,6 +6,7 @@ from ckmeans import *
 from getConstraints import *
 import math
 from trainer import *
+import test
 
 
 def computeDistance(x,y):
@@ -31,58 +32,8 @@ def clusterProb(centers,instance,normalProb):
 def main():
 ########## Test Case  #######################
 
-
-
-    NUMPOINTS = 9;
-    NUMCLASS = 3;
-    POINTSPERCLASS = NUMPOINTS/NUMCLASS
-
-    xmin = 0;
-    xmax = 100;
-    ymin = 0;
-    ymax = 100;
-
-    features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
-    centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
-    isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
-
-    classId = list()
-    index = 0
-##################################### PREPARE FEATURES ###################################
-    for i in range(0, NUMCLASS):
-        classId.extend([i]*POINTSPERCLASS)
-        centerx = int(np.random.random()*xmax - xmin)
-        centery = int(np.random.random()*ymax - ymin)
-        centers[0][i] = centerx
-        centers[1][i] = centery
-
-        for j in range(0, POINTSPERCLASS):
-            datax = int(np.random.normal(loc = centerx, scale = 3))
-            datay = int(np.random.normal(loc = centery, scale = 3))
-
-            features[0][index] = datax
-            features[1][index] = datay
-            index += 1
-
-    # add the remaning points, from integer division
-    remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
-    if (remainingPoints):
-        # select the center randomly
-        randc = np.random.randint(0, max(classId))
-        classId.extend([randc]*remainingPoints)
-        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
-            datax = int(np.random.normal(loc = centers[0][randc], scale = 3))
-            datay = int(np.random.normal(loc = centers[1][randc], scale = 3))
-            features[0][index] = datax
-            features[1][index] = datay
-            index += 1
-
-    test = getConstraints(NUMPOINTS, isFull, classId)
-    k = 3
-    kmeans = CKMeans(test,features,k)
-    output = kmeans.getCKMeans()
-
-    print clusterProb(np.transpose(output[1]),[1,1],computeProb(output))
+    outAll = test.testIt(9,3,3)
+    print clusterProb(np.transpose(outAll[0][1]),[1,1],outAll[1])
 
 if __name__ == '__main__':
     main()
