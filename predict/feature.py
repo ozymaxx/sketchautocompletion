@@ -41,4 +41,4 @@ def featureExtract(filename):
 	featextractor = IDMFeatureExtractor()
 	features = featextractor.extract(loadedSketch)
 	
-	
+	print "lol"
