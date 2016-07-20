@@ -1,4 +1,5 @@
 import sys
+import os
 sys.path.append('../classifiers')
 sys.path.append('../clusterer')
 sys.path.append('../predict')
@@ -53,24 +54,35 @@ def calculateProb(instance, output, probability, classId):#It would increase per
         m = svm_load_model('../classifiers/' + modelName)
         orderedLabels = m.get_labels()
         labels, probs = svmProb(m, [instance.tolist()])
-        for i in range(len(orderedLabels)):
-            probabilityToBeInThatCluster = clusterPrb[heto[i]]
-            probabilityToBeInThatClass = probs[0][i]
-            outDict[int(orderedLabels[i])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
+        probabilityToBeInThatCluster = clusterPrb[heto[i]]
+
+        for c in range(len(orderedLabels)):
+            probabilityToBeInThatClass = probs[0][c]
+            outDict[int(orderedLabels[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
             pass
         pass
+    return outDict
 
 def main():
 ########## Test Case  #######################
-    outAll = testCases.testIt(200, 12, 12)
+    files = os.listdir('../classifiers/')
+    for file in files:
+        extension = os.path.splitext(file)[1]
+        if extension == '.model':
+            os.remove('../classifiers/'+file)
 
 
+    outAll = testCases.testIt(200, 12, 4)
     features = outAll[2]
     output = outAll[0]
     probability = outAll[1]
     classId = outAll[3]
 
+
     # print clusterProb(np.transpose(outAll[0][1]),[1,1],outAll[1])
+
+    HEC, heto = getHeterogenous(output, classId)
+    allSV = trainSVM(np.transpose(features), HEC, classId)
     calculateProb(np.array([0,1]), output, probability,classId)
 
 if __name__ == '__main__':

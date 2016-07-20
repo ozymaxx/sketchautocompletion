@@ -38,7 +38,7 @@ def trainSVM(featArr, clusArr, labArr) :
         
         m = svm_train(prob, param)
         allModels.append(m.get_SV())
-        svm_save_model('clus' + `order` + '.model', m)
+        svm_save_model('../classifiers/clus' + `order` + '.model', m)
         order+=1
 
     return allModels
