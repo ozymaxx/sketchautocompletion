@@ -24,9 +24,9 @@ def computeDistance(x,y):
 def clusterProb(centers,instance,normalProb):
     # Returns P(Ck|x)
     probTup = []
-    for i in range(len(centers[0])):
-        c_x = centers[0][i]
-        c_y = centers[1][i]
+    for i in range(len(centers)):
+        c_x = centers[i][0]
+        c_y = centers[i][1]
         a =(instance[0],instance[1])
         b =(c_x,c_y)
         dist = computeDistance(a,b)
