@@ -11,6 +11,7 @@ from ckmeans import *
 from getConstraints import *
 
 import testCases
+from svmutil import *
 
 print testCases.getFeatures
 from trainer import *
@@ -45,14 +46,15 @@ def calculateProb(instance, output, probability, classId):
 
     for i in range(len(heto)):
         modelName = "clus"+ `i` +".model"
-        labels, probs = svmProb(modelName, instance)
-        p1 = clusterPrb[heto[i]] * probs
+        m = svm_load_model('../classifiers/' + modelName)
+        orderedLabels = m.get_labels()
+        labels, probs = svmProb(m, [instance.tolist()])
 
         pass
 
 def main():
 ########## Test Case  #######################
-    outAll = testCases.testIt(9, 3, 3)
+    outAll = testCases.testIt(200, 12, 12)
 
 
     features = outAll[2]

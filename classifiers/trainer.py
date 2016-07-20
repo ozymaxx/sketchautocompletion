@@ -66,7 +66,7 @@ def getHomogenous(output, classId):
     homoClass = list()
     for clusterId in range(len(output[0])):
         # if class id of any that in cluster of clusterId is any different than the first one
-        if  not any(x for x in range(len(output[0][clusterId])) if classId[int(output[0][clusterId][0])] != classId[int(output[0][clusterId][x])]):
+        if not any(x for x in range(len(output[0][clusterId])) if classId[int(output[0][clusterId][0])] != classId[int(output[0][clusterId][x])]):
             homoClass.append(output[0][clusterId])
     return  homoClass
     
