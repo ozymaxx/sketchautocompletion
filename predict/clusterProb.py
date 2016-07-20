@@ -1,7 +1,7 @@
 import sys
-sys.path.append('/home/semih/PycharmProjects/sketchautocompletion/classifiers')
-sys.path.append('/home/semih/PycharmProjects/sketchautocompletion/clusterer')
-sys.path.append('/home/semih/PycharmProjects/sketchautocompletion/predict')
+sys.path.append('../classifiers')
+sys.path.append('../clusterer')
+sys.path.append('../predict')
 print sys.path
 
 import numpy as np
@@ -27,11 +27,13 @@ def clusterProb(centers,instance,normalProb):
     for i in range(len(centers[0])):
         c_x = centers[0][i]
         c_y = centers[1][i]
-        dist = computeDistance((instance[0],instance[1]),(c_x,c_y))
+        a =(instance[0],instance[1])
+        b =(c_x,c_y)
+        dist = computeDistance(a,b)
         probTup.append(math.exp(-1*abs(dist))*normalProb[i])
     return probTup
 
-def calculateProb(features, output, probability, classId):
+def calculateProb(instance, output, probability, classId):
     #features : feature array
     #output : list [ List of Cluster nparray, List of Cluster Center nparray]
     #probability : P(Ck)
@@ -39,11 +41,11 @@ def calculateProb(features, output, probability, classId):
 
     homo = getHomogenous(output, classId)
     heto = getHeterogenous(output, classId)
-    clusterPrb  = clusterProb(output[1], features, probability)
+    clusterPrb  = clusterProb(output[1], instance, probability)
 
     for i in range(len(heto)):
         modelName = "clus"+ `i` +".model"
-        labels, probs = svmProb(modelName,features)
+        labels, probs = svmProb(modelName, instance)
         p1 = clusterPrb[heto[i]] * probs
 
         pass
@@ -51,13 +53,15 @@ def calculateProb(features, output, probability, classId):
 def main():
 ########## Test Case  #######################
     outAll = testCases.testIt(9, 3, 3)
+
+
     features = outAll[2]
     output = outAll[0]
     probability = outAll[1]
     classId = outAll[3]
 
     # print clusterProb(np.transpose(outAll[0][1]),[1,1],outAll[1])
-    calculateProb(features, output, probability,classId)
+    calculateProb(np.array([0,1]), output, probability,classId)
 
 if __name__ == '__main__':
     main()
