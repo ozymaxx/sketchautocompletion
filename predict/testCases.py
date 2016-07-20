@@ -9,6 +9,17 @@ from trainer import *
 
 def testIt(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
 
+    (features,isFull,classId)  = getFeatures(NUMPOINTS,NUMCLASS,k)
+    test = getConstraints(NUMPOINTS, isFull, classId)
+    kmeans = CKMeans(test,features,k)
+    output = kmeans.getCKMeans()
+    probabilities = computeProb(output)
+
+    return (output,probabilities, features)
+
+
+def getFeatures(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
+
     POINTSPERCLASS = NUMPOINTS / NUMCLASS
 
     xmin = 0;
@@ -51,8 +62,6 @@ def testIt(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
             features[1][index] = datay
             index += 1
 
-    test = getConstraints(NUMPOINTS, isFull, classId)
-    kmeans = CKMeans(test,features,k)
-    output = kmeans.getCKMeans()
-    probabilities = computeProb(output)
-    return (output,probabilities)
+
+    return  (features,isFull,classId,centers)
+

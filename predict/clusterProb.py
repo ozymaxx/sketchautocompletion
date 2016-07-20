@@ -7,7 +7,7 @@ import math
 from ckmeans import *
 from getConstraints import *
 
-import test
+import testCases
 from trainer import *
 from svmPredict import *
 
@@ -44,8 +44,9 @@ def calculateProb(features, output, probability):
 def main():
 ########## Test Case  #######################
 
-    outAll = test.testIt(9,3,3)
+    outAll = testCases.testIt(9, 3, 3)
     print clusterProb(np.transpose(outAll[0][1]),[1,1],outAll[1])
+    calculateProb()
 
 if __name__ == '__main__':
     main()
