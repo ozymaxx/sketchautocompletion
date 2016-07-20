@@ -1,7 +1,9 @@
 import numpy as np
 import sys
+
 sys.path.append("../clusterer/")
 sys.path.append("../classifiers/")
+
 from ckmeans import *
 from getConstraints import *
 from trainer import *
@@ -9,13 +11,14 @@ from trainer import *
 
 def testIt(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
 
-    (features,isFull,classId)  = getFeatures(NUMPOINTS,NUMCLASS,k)
+    (features,isFull,classId,centers)  = getFeatures(NUMPOINTS,NUMCLASS)
     test = getConstraints(NUMPOINTS, isFull, classId)
     kmeans = CKMeans(test,features,k)
+
     output = kmeans.getCKMeans()
     probabilities = computeProb(output)
 
-    return (output,probabilities, features)
+    return (output,probabilities, features, classId)
 
 
 def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters

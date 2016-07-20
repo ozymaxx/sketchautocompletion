@@ -1,4 +1,5 @@
 import sys
+
 sys.path.append("../clusterer/")
 sys.path.append("../classifiers/")
 import numpy as np
@@ -26,27 +27,34 @@ def clusterProb(centers,instance,normalProb):
         probTup.append(math.exp(-1*abs(dist))*normalProb[i])
     return probTup
 
-def calculateProb(features, output, probability):
+def calculateProb(features, output, probability, classId):
     #features : feature array
     #output : list [ List of Cluster nparray, List of Cluster Center nparray]
     #probability : P(Ck)
     # Returns P(Si|x)
 
+    homo = getHomogenous(output, classId)
+    heto = getHeterogenous(output, classId)
     clusterPrb  = clusterProb(features, output[1], probability)
 
-    for i in range(len(output[0])):
-        modelName = "clus"+`i`+".model"
-        model = svm_load_model('../classifiers/'+modelName)
-        p1 = clusterPrb[i] * \
-             svmProb(model, features)
+    for i in range(len(heto)):
+        modelName = "clus"+ `i` +".model"
+        labels, probs = svmProb(modelName,features)
+        p1 = clusterPrb[heto[i]] * probs
+
         pass
 
 def main():
 ########## Test Case  #######################
 
     outAll = testCases.testIt(9, 3, 3)
-    print clusterProb(np.transpose(outAll[0][1]),[1,1],outAll[1])
-    calculateProb()
+    features = outAll[2]
+    output = outAll[0]
+    probability = outAll[1]
+    classId = outAll[3]
+
+    # print clusterProb(np.transpose(outAll[0][1]),[1,1],outAll[1])
+    calculateProb(features, output, probability,classId)
 
 if __name__ == '__main__':
     main()
