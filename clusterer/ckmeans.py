@@ -3,14 +3,17 @@ CKMeans class
 Arda I - Semih G - Ahmet B
 15.07.2016
 """
+
 import numpy as np
 from getConstraints import *
 import sys
+sys.path.append("../predict/")
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 from random import randint
 import copy
 import matplotlib.markers as mark
+from testCases import *
 
 class CKMeans:
     def __init__(self, consArr, featArr, k):
@@ -208,44 +211,7 @@ def main():
     NUMCLASS = 12;
     POINTSPERCLASS = NUMPOINTS/NUMCLASS
 
-    xmin = 0;
-    xmax = 100;
-    ymin = 0;
-    ymax = 100;
-
-    features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
-    centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
-    isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
-
-    classId = list()
-    index = 0
-    for i in range(0, NUMCLASS): 
-        classId.extend([i]*POINTSPERCLASS)
-        centerx = int(numpy.random.random()*xmax - xmin)
-        centery = int(numpy.random.random()*ymax - ymin)
-        centers[0][i] = centerx
-        centers[1][i] = centery
-
-        for j in range(0, POINTSPERCLASS):
-            datax = int(numpy.random.normal(loc = centerx, scale = 3))
-            datay = int(numpy.random.normal(loc = centery, scale = 3))
-
-            features[0][index] = datax
-            features[1][index] = datay
-            index += 1
-
-    # add the remaning points, from integer division
-    remainingPoints = NUMPOINTS - POINTSPERCLASS*NUMCLASS
-    if remainingPoints:
-        # select the center randomly
-        randc = np.random.randint(0, max(classId))
-        classId.extend([randc]*remainingPoints)
-        for i in range (remainingPoints):
-            datax = int(numpy.random.normal(loc = centers[0][randc], scale = 3))
-            datay = int(numpy.random.normal(loc = centers[1][randc], scale = 3))
-            features[0][index] = datax
-            features[1][index] = datay
-            index += 1
+    (features, isFull, classId, centers) = getFeatures(NUMPOINTS,NUMCLASS)
 
     cons = getConstraints(NUMPOINTS, isFull, classId)
     for k in range(12,16):
