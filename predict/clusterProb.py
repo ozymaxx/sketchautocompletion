@@ -18,12 +18,12 @@ def computeDistance(x,y):
 
 def clusterProb(centers,instance,normalProb):
     # Returns P(Ck|x)
-    probTup = tuple()
+    probTup = []
     for i in range(len(centers[0])):
         c_x = centers[0][i]
         c_y = centers[1][i]
         dist = computeDistance((instance[0],instance[1]),(c_x,c_y))
-        probTup = probTup + (math.exp(-1*abs(dist))*normalProb[i],)
+        probTup.append(math.exp(-1*abs(dist))*normalProb[i])
     return probTup
 
 def calculateProb(features, output, probability):
@@ -31,10 +31,14 @@ def calculateProb(features, output, probability):
     #output : list [ List of Cluster nparray, List of Cluster Center nparray]
     #probability : P(Ck)
     # Returns P(Si|x)
-    
+
+    clusterPrb  = clusterProb(features, output[1], probability)
+
     for i in range(len(output[0])):
         modelName = "clus"+`i`+".model"
-        p1 = clusterProb(output[1][i],)
+        model = svm_load_model('../classifiers/'+modelName)
+        p1 = clusterPrb[i] * \
+             svmProb(model, features)
         pass
 
 def main():
