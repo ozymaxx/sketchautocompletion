@@ -1,7 +1,9 @@
 import sys
+sys.path.append('/home/semih/PycharmProjects/sketchautocompletion/classifiers')
+sys.path.append('/home/semih/PycharmProjects/sketchautocompletion/clusterer')
+sys.path.append('/home/semih/PycharmProjects/sketchautocompletion/predict')
+print sys.path
 
-sys.path.append("../clusterer/")
-sys.path.append("../classifiers/")
 import numpy as np
 import math
 
@@ -9,6 +11,8 @@ from ckmeans import *
 from getConstraints import *
 
 import testCases
+
+print testCases.getFeatures
 from trainer import *
 from svmPredict import *
 
@@ -35,7 +39,7 @@ def calculateProb(features, output, probability, classId):
 
     homo = getHomogenous(output, classId)
     heto = getHeterogenous(output, classId)
-    clusterPrb  = clusterProb(features, output[1], probability)
+    clusterPrb  = clusterProb(output[1], features, probability)
 
     for i in range(len(heto)):
         modelName = "clus"+ `i` +".model"
@@ -46,7 +50,6 @@ def calculateProb(features, output, probability, classId):
 
 def main():
 ########## Test Case  #######################
-
     outAll = testCases.testIt(9, 3, 3)
     features = outAll[2]
     output = outAll[0]

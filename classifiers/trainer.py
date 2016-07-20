@@ -5,8 +5,6 @@ Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 """
 
 import sys
-sys.path.append("../clusterer/")
-sys.path.append("../predict/")
 sys.path.append("../../libsvm-3.21/python/")
 
 from svmutil import *
