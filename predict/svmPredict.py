@@ -1,10 +1,5 @@
 from svmutil import *
 
-m = svm_load_model('clus0.model')
-y = [1,2]
-p_label, p_acc, p_val = svm_predict(y,[[3,9],[2,2]], m, '-b 1')
-
-
 def svmProb(model,features):
 
     y =  [0] * len(features[0])
@@ -14,4 +9,13 @@ def svmProb(model,features):
 =======
     p_label, p_acc, p_val = svm_predict(y, features, model, '-b 1')
     return p_val
+<<<<<<< HEAD
 >>>>>>> ce972b533edacca39b69fe5d84c92142c18a1412
+=======
+
+
+m = svm_load_model('../classifiers/clus0.model')
+
+svmProb(m,[[3,9],[2,2]])
+
+>>>>>>> 115f8fa2e749a4132afec1b7fd6a2a96c52b5fdd
