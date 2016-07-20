@@ -56,19 +56,23 @@ def computeProb(out):
 
 def getHeterogenous(output,classId):
     clustersToBeTrained = list()
+    clustersIdsToBeTrained = list()
     for clusterId in range(len(output[0])):
         # if class id of any that in cluster of clusterId is any different than the first one
         if any(x for x in range(len(output[0][clusterId])) if classId[int(output[0][clusterId][0])] != classId[int(output[0][clusterId][x])]):
             clustersToBeTrained.append(output[0][clusterId])
-    return  clustersToBeTrained
+            clustersIdsToBeTrained.append(clusterId)
+    return  clustersToBeTrained,clustersIdsToBeTrained
 
 def getHomogenous(output, classId):
     homoClass = list()
+    homoIdClus = list()
     for clusterId in range(len(output[0])):
         # if class id of any that in cluster of clusterId is any different than the first one
         if not any(x for x in range(len(output[0][clusterId])) if classId[int(output[0][clusterId][0])] != classId[int(output[0][clusterId][x])]):
             homoClass.append(output[0][clusterId])
-    return  homoClass
+            homoIdClus.append(clusterId)
+    return  homoClass, homoIdClus
     
 
 def main():
@@ -93,7 +97,7 @@ def main():
 #################################################
     # for all clusters
 
-    clustersToBeTrained = getHeterogenous(output,classId)
+    clustersToBeTrained, toBeTrainedId = getHeterogenous(output,classId)
     allSV = trainSVM(np.transpose(features), clustersToBeTrained, classId)
 
     visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, centers, "cluster number not defined")

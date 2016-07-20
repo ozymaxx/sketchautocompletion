@@ -34,14 +34,18 @@ def clusterProb(centers,instance,normalProb):
         probTup.append(math.exp(-1*abs(dist))*normalProb[i])
     return probTup
 
-def calculateProb(instance, output, probability, classId):
+def calculateProb(instance, output, probability, classId):#It would increase performance to get list of instance!!!!!!!!!!!!!!!!
     #features : feature array
     #output : list [ List of Cluster nparray, List of Cluster Center nparray]
     #probability : P(Ck)
     # Returns P(Si|x)
 
-    homo = getHomogenous(output, classId)
-    heto = getHeterogenous(output, classId)
+    outDict = {}
+    for i in set(classId):
+        outDict[i] = 0.0
+
+    HOC,homo = getHomogenous(output, classId)
+    HEC,heto = getHeterogenous(output, classId)
     clusterPrb  = clusterProb(output[1], instance, probability)
 
     for i in range(len(heto)):
@@ -49,7 +53,11 @@ def calculateProb(instance, output, probability, classId):
         m = svm_load_model('../classifiers/' + modelName)
         orderedLabels = m.get_labels()
         labels, probs = svmProb(m, [instance.tolist()])
-
+        for i in range(len(orderedLabels)):
+            probabilityToBeInThatCluster = clusterPrb[heto[i]]
+            probabilityToBeInThatClass = probs[0][i]
+            outDict[int(orderedLabels[i])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
+            pass
         pass
 
 def main():
