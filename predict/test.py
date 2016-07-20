@@ -7,9 +7,9 @@ from getConstraints import *
 from trainer import *
 
 
-def testIt(NUMPOINTS, NUMCLUS, k):
+def testIt(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
 
-    POINTSPERCLASS = NUMPOINTS / NUMCLUS
+    POINTSPERCLASS = NUMPOINTS / NUMCLASS
 
     xmin = 0;
     xmax = 100;
@@ -17,13 +17,13 @@ def testIt(NUMPOINTS, NUMCLUS, k):
     ymax = 100;
 
     features = np.array([np.zeros(NUMPOINTS), np.zeros(NUMPOINTS)])
-    centers = np.array([np.zeros(NUMCLUS), np.zeros(NUMCLUS)])
+    centers = np.array([np.zeros(NUMCLASS), np.zeros(NUMCLASS)])
     isFull = [np.random.randint(0, 2) for r in xrange(NUMPOINTS)]
 
     classId = list()
     index = 0
 ##################################### PREPARE FEATURES ###################################
-    for i in range(0, NUMCLUS):
+    for i in range(0, NUMCLASS):
         classId.extend([i]*POINTSPERCLASS)
         centerx = int(np.random.random()*xmax - xmin)
         centery = int(np.random.random()*ymax - ymin)
@@ -39,12 +39,12 @@ def testIt(NUMPOINTS, NUMCLUS, k):
             index += 1
 
     # add the remaning points, from integer division
-    remainingPoints = NUMPOINTS - POINTSPERCLASS * NUMCLUS
+    remainingPoints = NUMPOINTS - POINTSPERCLASS * NUMCLASS
     if (remainingPoints):
         # select the center randomly
         randc = np.random.randint(0, max(classId))
         classId.extend([randc]*remainingPoints)
-        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLUS):
+        for i in range (NUMPOINTS - POINTSPERCLASS*NUMCLASS):
             datax = int(np.random.normal(loc = centers[0][randc], scale = 3))
             datay = int(np.random.normal(loc = centers[1][randc], scale = 3))
             features[0][index] = datax
