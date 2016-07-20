@@ -76,7 +76,7 @@ def main():
     k = 13
 ###################################################################################
 
-    (features, isFull, classId, centers) = getFeatures(NUMPOINTS,NUMCLASS,k)
+    (features, isFull, classId, centers) = getFeatures(NUMPOINTS,NUMCLASS)
 
     test = getConstraints(NUMPOINTS, isFull, classId)
     kmeans = CKMeans(test,features,k)

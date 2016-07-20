@@ -18,7 +18,7 @@ def testIt(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
     return (output,probabilities, features)
 
 
-def getFeatures(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
+def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
 
     POINTSPERCLASS = NUMPOINTS / NUMCLASS
 
