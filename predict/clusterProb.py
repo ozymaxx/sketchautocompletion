@@ -50,32 +50,20 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
     clusterPrb  = clusterProb(kmeansoutput[1], instance, priorClusterProb)
     # normalize cluster probability to add up to 1
     clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
-    print sum(clusterPrb)
 
-    for i in range(len(heteClstrId)):
-        modelName = "clus"+ `i` +".model"
-        m = svm_load_model('../classifiers/' + modelName)
-        classesInCluster = m.get_labels()
-        labels, probs = svmProb(m, [instance.tolist()])
-        probabilityToBeInThatCluster = clusterPrb[heteClstrId[i]]
-
+    for clstrid in range(len(kmeansoutput[0])):
+        probabilityToBeInThatCluster = clusterPrb[clstrid]
+        if clstrid in homoClstrId:
+            classesInCluster = [classId[kmeansoutput[0][clstrid][0]]]
+        elif clstrid in heteClstrId:
+            modelName = "clus"+ ` heteClstrId.index(clstrid) ` +".model"
+            m = svm_load_model('../classifiers/' + modelName)
+            classesInCluster = m.get_labels()
+            labels, probs = svmProb(m, [instance.tolist()])
         for c in range(len(classesInCluster)):
-            probabilityToBeInThatClass = probs[0][c]
+            probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
             outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
 
-    print sum(outDict.values()), 'heto'
-
-    for id in homoClstrId:
-        clusterFeatures = kmeansoutput[0][id]
-        # check if not empty
-        if any(clusterFeatures):
-            # take the class of the first feature
-            clusterClass = classId[clusterFeatures[0]]
-            outDict[clusterClass] += clusterPrb[id]
-            #print clusterPrb[clusterClass], clusterPrb
-
-    print [clusterPrb[x] for x in homoClstrId]
-    print sum(outDict.values())
     return outDict
 
 def main():
@@ -95,9 +83,7 @@ def main():
     trainSVM(np.transpose(features), heteClstrFeatureId, classId)
     # find the probability of given feature to belong any of the classes
     outDict = calculateProb(np.array([0,1]), kmeansoutput, priorClusterProb, classId)
-    print outDict
     print sum(outDict.values())
-
 if __name__ == '__main__':
     main()
     print "fin"
