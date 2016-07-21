@@ -1,11 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="corrected homo">
+    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classifiers/clus0.model" afterPath="$PROJECT_DIR$/classifiers/clus0.model" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classifiers/clus1.model" afterPath="$PROJECT_DIR$/classifiers/clus1.model" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/predict/clusterProb.py" afterPath="$PROJECT_DIR$/predict/clusterProb.py" />
     </list>
     <ignored path="sketchautocompletion.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -735,7 +732,14 @@
       <option name="project" value="LOCAL" />
       <updated>1469085301127</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="=">
+      <created>1469085674747</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1469085674747</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -813,7 +817,8 @@
     <MESSAGE value="probabilities computed for only the hetero clusters" />
     <MESSAGE value="added homogeneous computation for clusters" />
     <MESSAGE value="corrected Homogenous probability calculation" />
-    <option name="LAST_COMMIT_MESSAGE" value="corrected Homogenous probability calculation" />
+    <MESSAGE value="=" />
+    <option name="LAST_COMMIT_MESSAGE" value="=" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
