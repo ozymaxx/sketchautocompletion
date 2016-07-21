@@ -69,7 +69,7 @@ class CKMeans:
 
             if difference == 0:
                 break
-                #pass
+
             # Empty out the assigned instances of clusters
             for i in range(0, self.k):
                 self.clusterList[i] = np.array([], dtype = int)
@@ -106,10 +106,6 @@ class CKMeans:
 
                 # Assign the instance to the cluster
                 self.clusterList[clusNum] = np.append(self.clusterList[clusNum], i)
-
-            # for i in self.clusterList:
-            #     print i
-            ########################################################################
 
             # Save current cluster centers
             for i in range(0, self.k):
