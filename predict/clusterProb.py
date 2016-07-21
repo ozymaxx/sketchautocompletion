@@ -50,6 +50,7 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
     clusterPrb  = clusterProb(kmeansoutput[1], instance, priorClusterProb)
     # normalize cluster probability to add up to 1
     clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
+    print sum(clusterPrb)
 
     for i in range(len(heteClstrId)):
         modelName = "clus"+ `i` +".model"
@@ -61,8 +62,8 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
         for c in range(len(classesInCluster)):
             probabilityToBeInThatClass = probs[0][c]
             outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
-            pass
-        pass
+
+    print sum(outDict.values()), 'heto'
 
     for id in homoClstrId:
         clusterFeatures = kmeansoutput[0][id]
@@ -70,7 +71,11 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
         if any(clusterFeatures):
             # take the class of the first feature
             clusterClass = classId[clusterFeatures[0]]
-            outDict[clusterClass] += clusterPrb[clusterClass]
+            outDict[clusterClass] += clusterPrb[id]
+            #print clusterPrb[clusterClass], clusterPrb
+
+    print [clusterPrb[x] for x in homoClstrId]
+    print sum(outDict.values())
     return outDict
 
 def main():
@@ -83,7 +88,7 @@ def main():
             os.remove('../classifiers/'+file)
 
     # generate data for testing
-    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=11)
+    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=12)
 
     # find heterogenous clusters and train svm
     heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
