@@ -67,12 +67,10 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
     for id in homoClstrId:
         clusterFeatures = kmeansoutput[0][id]
         # check if not empty
-        if not clusterFeatures:
+        if any(clusterFeatures):
             # take the class of the first feature
             clusterClass = classId[clusterFeatures[0]]
             outDict[clusterClass] += clusterPrb[clusterClass]
-    pass
-
     return outDict
 
 def main():
@@ -91,7 +89,9 @@ def main():
     heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
     trainSVM(np.transpose(features), heteClstrFeatureId, classId)
     # find the probability of given feature to belong any of the classes
-    calculateProb(np.array([0,1]), kmeansoutput, priorClusterProb, classId)
+    outDict = calculateProb(np.array([0,1]), kmeansoutput, priorClusterProb, classId)
+    print outDict
+    print sum(outDict.values())
 
 if __name__ == '__main__':
     main()
