@@ -35,19 +35,19 @@ def clusterProb(centers,instance,normalProb):
         probTup.append(math.exp(-1*abs(dist))*normalProb[i])
     return probTup
 
-def calculateProb(instance, output, priorClusterProb, classId):#It would increase performance to get list of instance!!!!!!!!!!!!!!!!
+def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would increase performance to get list of instance!!!!!!!!!!!!!!!!
     #features : feature array
     #output : list [ List of Cluster nparray, List of Cluster Center nparray]
     #probability : P(Ck)
     # Returns P(Si|x)
 
-    # probability of given instance belonging to every possible class
+    # dict of probabilities of given instance belonging to every possible class
     # initially zero
     outDict = dict.fromkeys([i for i in set(classId)], 0.0)
 
-    homoClstrFeatureId, homoClstrId = getHomogenous(output, classId)
-    heteClstrFeatureId, heteClstrId = getHeterogenous(output, classId)
-    clusterPrb  = clusterProb(output[1], instance, priorClusterProb)
+    homoClstrFeatureId, homoClstrId = getHomogenous(kmeansoutput, classId)
+    heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
+    clusterPrb  = clusterProb(kmeansoutput[1], instance, priorClusterProb)
     # normalize cluster probability to add up to 1
     clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
 
@@ -63,6 +63,11 @@ def calculateProb(instance, output, priorClusterProb, classId):#It would increas
             outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
             pass
         pass
+
+    for i in range(len(homoClstrId)):
+        outDict[i] = clusterPrb[homoClstrId[i]]
+    pass
+
     return outDict
 
 def main():
@@ -75,7 +80,7 @@ def main():
             os.remove('../classifiers/'+file)
 
     # generate data for testing
-    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=10)
+    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=11)
 
     # find heterogenous clusters and train svm
     heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
