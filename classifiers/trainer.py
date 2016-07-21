@@ -62,7 +62,7 @@ def getHeterogenous(output,classId):
         if any(x for x in range(len(output[0][clusterId])) if classId[int(output[0][clusterId][0])] != classId[int(output[0][clusterId][x])]):
             clustersToBeTrained.append(output[0][clusterId])
             clustersIdsToBeTrained.append(clusterId)
-    return  clustersToBeTrained,clustersIdsToBeTrained
+    return clustersToBeTrained, clustersIdsToBeTrained
 
 def getHomogenous(output, classId):
     homoClass = list()
@@ -72,14 +72,11 @@ def getHomogenous(output, classId):
         if not any(x for x in range(len(output[0][clusterId])) if classId[int(output[0][clusterId][0])] != classId[int(output[0][clusterId][x])]):
             homoClass.append(output[0][clusterId])
             homoIdClus.append(clusterId)
-    return  homoClass, homoIdClus
+    return homoClass, homoIdClus
     
 
 def main():
 ########## Test Case  #######################
-
-    
-
     NUMPOINTS = 200;
     NUMCLASS = 12;
     POINTSPERCLASS = NUMPOINTS/NUMCLASS

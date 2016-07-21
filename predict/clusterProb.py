@@ -29,65 +29,61 @@ def clusterProb(centers,instance,normalProb):
     for i in range(len(centers)):
         c_x = centers[i][0]
         c_y = centers[i][1]
-        a =(instance[0],instance[1])
-        b =(c_x,c_y)
-        dist = computeDistance(a,b)
+        a = (instance[0], instance[1])
+        b = (c_x, c_y)
+        dist = computeDistance(a, b)
         probTup.append(math.exp(-1*abs(dist))*normalProb[i])
     return probTup
 
-def calculateProb(instance, output, probability, classId):#It would increase performance to get list of instance!!!!!!!!!!!!!!!!
+def calculateProb(instance, output, priorClusterProb, classId):#It would increase performance to get list of instance!!!!!!!!!!!!!!!!
     #features : feature array
     #output : list [ List of Cluster nparray, List of Cluster Center nparray]
     #probability : P(Ck)
     # Returns P(Si|x)
 
-    outDict = {}
-    for i in set(classId):
-        outDict[i] = 0.0
+    # probability of given instance belonging to every possible class
+    # initially zero
+    outDict = dict.fromkeys([i for i in set(classId)], 0.0)
 
-    HOC,homo = getHomogenous(output, classId)
-    HEC,heto = getHeterogenous(output, classId)
-    clusterPrb  = clusterProb(output[1], instance, probability)
+    homoClstrFeatureId, homoClstrId = getHomogenous(output, classId)
+    heteClstrFeatureId, heteClstrId = getHeterogenous(output, classId)
+    clusterPrb  = clusterProb(output[1], instance, priorClusterProb)
+    # normalize cluster probability to add up to 1
+    clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
 
-    for i in range(len(heto)):
+    for i in range(len(heteClstrId)):
         modelName = "clus"+ `i` +".model"
         m = svm_load_model('../classifiers/' + modelName)
-        orderedLabels = m.get_labels()
+        classesInCluster = m.get_labels()
         labels, probs = svmProb(m, [instance.tolist()])
-        probabilityToBeInThatCluster = clusterPrb[heto[i]]
+        probabilityToBeInThatCluster = clusterPrb[heteClstrId[i]]
 
-        for c in range(len(orderedLabels)):
+        for c in range(len(classesInCluster)):
             probabilityToBeInThatClass = probs[0][c]
-            outDict[int(orderedLabels[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
+            outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
             pass
         pass
     return outDict
 
 def main():
 ########## Test Case  #######################
+    # delete all ".model" files before creating them again
     files = os.listdir('../classifiers/')
     for file in files:
         extension = os.path.splitext(file)[1]
         if extension == '.model':
             os.remove('../classifiers/'+file)
 
+    # generate data for testing
+    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=10)
 
-    outAll = testCases.testIt(200, 12, 4)
-    features = outAll[2]
-    output = outAll[0]
-    probability = outAll[1]
-    classId = outAll[3]
-
-
-    # print clusterProb(np.transpose(outAll[0][1]),[1,1],outAll[1])
-
-    HEC, heto = getHeterogenous(output, classId)
-    allSV = trainSVM(np.transpose(features), HEC, classId)
-    calculateProb(np.array([0,1]), output, probability,classId)
+    # find heterogenous clusters and train svm
+    heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
+    trainSVM(np.transpose(features), heteClstrFeatureId, classId)
+    # find the probability of given feature to belong any of the classes
+    calculateProb(np.array([0,1]), kmeansoutput, priorClusterProb, classId)
 
 if __name__ == '__main__':
     main()
     print "fin"
     #profile.run('print main(); print')
-
-
