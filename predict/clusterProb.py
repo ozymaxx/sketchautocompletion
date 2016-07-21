@@ -64,8 +64,13 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
             pass
         pass
 
-    for i in range(len(homoClstrId)):
-        outDict[i] = clusterPrb[homoClstrId[i]]
+    for id in homoClstrId:
+        clusterFeatures = kmeansoutput[0][id]
+        # check if not empty
+        if not clusterFeatures:
+            # take the class of the first feature
+            clusterClass = classId[clusterFeatures[0]]
+            outDict[clusterClass] += clusterPrb[clusterClass]
     pass
 
     return outDict
