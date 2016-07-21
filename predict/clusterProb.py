@@ -83,7 +83,7 @@ def main():
             os.remove('../classifiers/'+file)
 
     # generate data for testing
-    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=11)
+    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=10, NUMCLASS=2, k=2)
 
     # find heterogenous clusters and train svm
     heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
