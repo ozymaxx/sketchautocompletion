@@ -56,6 +56,28 @@ def featureExtract(filename):
 def main():
 	features = list()
 	classId = list()
+
+	path = '../json/'
+	pathdir = os.listdir(path)
+	classIdCount = 0
+	for folder in pathdir:
+		counter = 0
+		classId.extend([classIdCount] *10)
+		classIdCount += 1
+		folderdir = os.listdir(path + folder)
+		for file in folderdir:
+			feature = featureExtract(path +  folder +   '/' + file);
+			features.append(np.array(feature));
+			if (counter == 10):
+				break
+			counter += 1
+
+	test = getConstraints(NUMPOINTS, isFull, classId)
+	kmeans = CKMeans(test, features, k)
+	output = kmeans.getCKMeans()
+
+
+	'''
 	for i in range(1,79):
 		filename = '../json/airplane/airplane_' + str(i) + ".json"
 		print filename
@@ -77,7 +99,7 @@ def main():
 	kmeans = CKMeans(test,np.transpose(features),2)
 	output = kmeans.getCKMeans()
 	a = 5
-
+	'''
     # print computeProb(output)
 #################################################
     # for all clusters
