@@ -54,7 +54,13 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
     for clstrid in range(len(kmeansoutput[0])):
         probabilityToBeInThatCluster = clusterPrb[clstrid]
         if clstrid in homoClstrId:
-            classesInCluster = [classId[kmeansoutput[0][clstrid][0]]]
+            # if homogeneous cluster is empty, then do not
+            # process it and continue
+            if not any(kmeansoutput[0][clstrid]):
+                continue
+            # if homogeneous then only a single class which is the first
+            # feature points class
+            classesInCluster =  [classId[kmeansoutput[0][clstrid][0]]]
         elif clstrid in heteClstrId:
             modelName = "clus"+ ` heteClstrId.index(clstrid) ` +".model"
             m = svm_load_model('../classifiers/' + modelName)
@@ -76,7 +82,7 @@ def main():
             os.remove('../classifiers/'+file)
 
     # generate data for testing
-    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=12)
+    (kmeansoutput, priorClusterProb, features, classId) = testCases.testIt(NUMPOINTS=200, NUMCLASS=12, k=30)
 
     # find heterogenous clusters and train svm
     heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
