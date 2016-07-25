@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/predict/clusterProb.py" afterPath="$PROJECT_DIR$/predict/clusterProb.py" />
     </list>
     <ignored path="sketchautocompletion.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -20,7 +21,7 @@
     <SUITE FILE_PATH="coverage/sketchautocompletion$trainer1.coverage" NAME="trainer1 Coverage Results" MODIFIED="1468916138472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1468938110784" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$ckmeans.coverage" NAME="ckmeans Coverage Results" MODIFIED="1469010359967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/clusterer" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$clusterProb.coverage" NAME="clusterProb Coverage Results" MODIFIED="1469021473958" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
+    <SUITE FILE_PATH="coverage/sketchautocompletion$clusterProb.coverage" NAME="clusterProb Coverage Results" MODIFIED="1469088008640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$svmPredict.coverage" NAME="svmPredict Coverage Results" MODIFIED="1469003956108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$trainerDeneme.coverage" NAME="trainerDeneme Coverage Results" MODIFIED="1468927837971" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$feature.coverage" NAME="feature Coverage Results" MODIFIED="1468938026256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
@@ -35,6 +36,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+<<<<<<< HEAD
       <file leaf-file-name="feature.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/predict/feature.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -53,10 +55,21 @@
             <state relative-caret-position="731">
               <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
               <folding />
+=======
+      <file leaf-file-name="clusterProb.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.26050422">
+              <caret line="74" column="18" selection-start-line="74" selection-start-column="18" selection-end-line="74" selection-end-column="18" />
+              <folding>
+                <element signature="e#0#10#0" expanded="true" />
+              </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="trainer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -79,14 +92,19 @@
       </file>
       <file leaf-file-name="test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classifiers/test.py">
+=======
+      <file leaf-file-name="svmPredict.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="126">
-              <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
+<<<<<<< HEAD
       <file leaf-file-name="visualise.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/classifiers/visualise.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -116,6 +134,13 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="252">
               <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
+=======
+      <file leaf-file-name="ckmeans.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
               <folding />
             </state>
           </provider>
@@ -163,9 +188,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="y" value="24" />
-    <option name="width" value="1920" />
-    <option name="height" value="1056" />
+    <option name="x" value="65" />
+    <option name="y" value="-4" />
+    <option name="width" value="1855" />
+    <option name="height" value="1084" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -192,7 +218,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -239,23 +264,10 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="classifiers" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -397,18 +409,6 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="Tox" factoryName="Tox">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="sketchautocompletion" />
-      <method />
-    </configuration>
     <configuration default="true" type="tests" factoryName="Attests">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -536,9 +536,7 @@
       </list>
     </recent_temporary>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false">
-    <option name="remove_strategy" value="false" />
-  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -547,195 +545,167 @@
       <changelist id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="" />
       <created>1468915905006</created>
       <option name="number" value="Default" />
-      <option name="presentableId" value="Default" />
       <updated>1468915905006</updated>
     </task>
     <task id="LOCAL-00001" summary="LOL">
       <created>1468917855954</created>
       <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
       <option name="project" value="LOCAL" />
       <updated>1468917855954</updated>
     </task>
     <task id="LOCAL-00002" summary="LOL">
       <created>1468917873125</created>
       <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
       <option name="project" value="LOCAL" />
       <updated>1468917873125</updated>
     </task>
     <task id="LOCAL-00003" summary="Trainer1 deleted">
       <created>1468918178558</created>
       <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
       <option name="project" value="LOCAL" />
       <updated>1468918178558</updated>
     </task>
     <task id="LOCAL-00004" summary="Visualise SVM vector points">
       <created>1468919245907</created>
       <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
       <updated>1468919245907</updated>
     </task>
     <task id="LOCAL-00005" summary="Visualise SVM vector points">
       <created>1468920071786</created>
       <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
       <updated>1468920071786</updated>
     </task>
     <task id="LOCAL-00006" summary="Centers">
       <created>1468920107506</created>
       <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
       <updated>1468920107506</updated>
     </task>
     <task id="LOCAL-00007" summary="Centers">
       <created>1468920563772</created>
       <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
       <updated>1468920563772</updated>
     </task>
     <task id="LOCAL-00008" summary="Edge Color">
       <created>1468920935549</created>
       <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
       <updated>1468920935549</updated>
     </task>
     <task id="LOCAL-00009" summary="Edge Thick">
       <created>1468922712857</created>
       <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
       <option name="project" value="LOCAL" />
       <updated>1468922712857</updated>
     </task>
     <task id="LOCAL-00010" summary="Predict Directory and the cluster probability directory added">
       <created>1468931846979</created>
       <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
       <option name="project" value="LOCAL" />
       <updated>1468931846979</updated>
     </task>
     <task id="LOCAL-00011" summary="Cluster Probabilities">
       <created>1468935341760</created>
       <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
       <option name="project" value="LOCAL" />
       <updated>1468935341760</updated>
     </task>
     <task id="LOCAL-00012" summary="Testing Function">
       <created>1468936524226</created>
       <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
       <option name="project" value="LOCAL" />
       <updated>1468936524226</updated>
     </task>
     <task id="LOCAL-00013" summary="Unnecessary Deleted">
       <created>1468937967950</created>
       <option name="number" value="00013" />
-      <option name="presentableId" value="LOCAL-00013" />
       <option name="project" value="LOCAL" />
       <updated>1468937967950</updated>
     </task>
     <task id="LOCAL-00014" summary="svmProb  function goes on">
       <created>1468938559637</created>
       <option name="number" value="00014" />
-      <option name="presentableId" value="LOCAL-00014" />
       <option name="project" value="LOCAL" />
       <updated>1468938559637</updated>
     </task>
     <task id="LOCAL-00015" summary="svmProb  function goes on">
       <created>1468938595348</created>
       <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
       <option name="project" value="LOCAL" />
       <updated>1468938595348</updated>
     </task>
     <task id="LOCAL-00016" summary="svmProb  function goes on">
       <created>1469003656132</created>
       <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
       <option name="project" value="LOCAL" />
       <updated>1469003656132</updated>
     </task>
     <task id="LOCAL-00017" summary="svmProb  function goes on">
       <created>1469008721847</created>
       <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
       <option name="project" value="LOCAL" />
       <updated>1469008721847</updated>
     </task>
     <task id="LOCAL-00018" summary="Testing Functions">
       <created>1469010100365</created>
       <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
       <option name="project" value="LOCAL" />
       <updated>1469010100365</updated>
     </task>
     <task id="LOCAL-00019" summary="ckMeans Test Case Updated">
       <created>1469010444661</created>
       <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
       <option name="project" value="LOCAL" />
       <updated>1469010444661</updated>
     </task>
     <task id="LOCAL-00020" summary="solved circular dependency">
       <created>1469016983374</created>
       <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
       <option name="project" value="LOCAL" />
       <updated>1469016983374</updated>
     </task>
     <task id="LOCAL-00021" summary="probabilities computed for only the hetero clusters">
       <created>1469021538666</created>
       <option name="number" value="00021" />
-      <option name="presentableId" value="LOCAL-00021" />
       <option name="project" value="LOCAL" />
       <updated>1469021538666</updated>
     </task>
     <task id="LOCAL-00022" summary="probabilities computed for only the hetero clusters">
       <created>1469023278796</created>
       <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
       <option name="project" value="LOCAL" />
       <updated>1469023278796</updated>
     </task>
     <task id="LOCAL-00023" summary="probabilities computed for only the hetero clusters">
       <created>1469078933216</created>
       <option name="number" value="00023" />
-      <option name="presentableId" value="LOCAL-00023" />
       <option name="project" value="LOCAL" />
       <updated>1469078933216</updated>
     </task>
     <task id="LOCAL-00024" summary="probabilities computed for only the hetero clusters">
       <created>1469084566507</created>
       <option name="number" value="00024" />
-      <option name="presentableId" value="LOCAL-00024" />
       <option name="project" value="LOCAL" />
       <updated>1469084566507</updated>
     </task>
     <task id="LOCAL-00025" summary="added homogeneous computation for clusters">
       <created>1469084586580</created>
       <option name="number" value="00025" />
-      <option name="presentableId" value="LOCAL-00025" />
       <option name="project" value="LOCAL" />
       <updated>1469084586580</updated>
     </task>
     <task id="LOCAL-00026" summary="corrected Homogenous probability calculation">
       <created>1469085301127</created>
       <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
       <option name="project" value="LOCAL" />
       <updated>1469085301127</updated>
     </task>
     <task id="LOCAL-00027" summary="=">
       <created>1469085674747</created>
       <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
       <option name="project" value="LOCAL" />
       <updated>1469085674747</updated>
     </task>
@@ -841,6 +811,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
+<<<<<<< HEAD
     <frame x="0" y="24" width="1920" height="1056" extended-state="6" />
     <editor active="false" />
     <layout>
@@ -850,10 +821,26 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26042727" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.38555443" sideWeight="0.49791667" order="2" side_tool="false" content_ui="tabs" />
+=======
+    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17628032" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25967413" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26680243" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23645833" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960325" sideWeight="0.49791667" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+<<<<<<< HEAD
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.38555443" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+=======
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3431772" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -861,7 +848,6 @@
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -907,6 +893,16 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+<<<<<<< HEAD
+=======
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/predict/feature.py</url>
+          <line>43</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+      </breakpoints>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
       <breakpoints-dialog>
         <breakpoints-dialog />
       </breakpoints-dialog>
@@ -921,64 +917,226 @@
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
+<<<<<<< HEAD
         <watch expression="data" />
         <watch expression="path + folder + '/' + folder + '_' + str(sketchcounter) + &quot;_&quot; + str(partialsketchcount) + '.json'" language="Python" />
         <watch expression="os.path.isfile(path + folder + '/' + folder + '_' + str(sketchcounter) + &quot;_&quot; + str(partialsketchcount) + '.json')" />
         <watch expression="len(instance)" language="Python" />
         <watch expression="len(centers[i])" language="Python" />
+=======
+        <watch expression="kmeansoutput" language="Python" />
+        <watch expression="outDict" language="Python" />
+        <watch expression="clusterPrb" language="Python" />
+        <watch expression="heteClstrId[i]" language="Python" />
+        <watch expression="sum(outDict.values())" language="Python" />
+        <watch expression="sum(clusterPrb)" language="Python" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
       </configuration>
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
+=======
+    <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="86" column="0" selection-start-line="86" selection-start-column="0" selection-end-line="86" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/testCases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifiers/test.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
           <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/testCases.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
           <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+          <folding>
+            <element signature="e#50#60#0" expanded="false" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
           <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/testCases.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="0">
+          <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="0">
+          <caret line="213" column="73" selection-start-line="213" selection-start-column="73" selection-end-line="213" selection-end-column="73" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="7" selection-start-line="4" selection-start-column="7" selection-end-line="4" selection-end-column="7" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="0">
+          <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="0">
+          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+          <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
@@ -986,100 +1144,99 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/testCases.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+          <folding>
+            <element signature="e#50#60#0" expanded="false" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="213" column="73" selection-start-line="213" selection-start-column="73" selection-end-line="213" selection-end-column="73" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict/testCases.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="213" column="73" selection-start-line="213" selection-start-column="73" selection-end-line="213" selection-end-column="73" />
-          <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="44" selection-start-line="7" selection-start-column="44" selection-end-line="7" selection-end-column="44" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifiers/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state vertical-scroll-proportion="0.0">
           <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/feature.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
           <folding>
             <element signature="e#50#60#0" expanded="true" />
           </folding>
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
           <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydev_monkey_qt.py" />
     <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
+          <folding />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/testCases.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="0">
           <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifiers/test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
@@ -1089,8 +1246,13 @@
     <entry file="file://$PROJECT_DIR$/classifiers/clus4.model" />
     <entry file="file://$USER_HOME$/.PyCharm2016.1/system/python_stubs/-1247972723/__builtin__.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="427">
           <caret line="2568" column="12" selection-start-line="2568" selection-start-column="12" selection-end-line="2568" selection-end-column="12" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
@@ -1100,88 +1262,163 @@
     <entry file="file://$PROJECT_DIR$/predict/main.py" />
     <entry file="file:///usr/lib/python2.7/copy.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="218">
           <caret line="75" column="0" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="213" column="73" selection-start-line="213" selection-start-column="73" selection-end-line="213" selection-end-column="73" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sketchfe/sketchfe/Sketch.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="288">
           <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="12" column="48" selection-start-line="12" selection-start-column="48" selection-end-line="12" selection-end-column="48" />
+          <folding />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sketchfe/sketchfe/Point.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="270">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sketchfe/sketchfe/Stroke.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="342">
           <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/json/decoder.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="290">
           <caret line="369" column="0" selection-start-line="369" selection-start-column="0" selection-end-line="369" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="20" column="35" selection-start-line="20" selection-start-column="35" selection-end-line="20" selection-end-column="35" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file:///usr/lib/python2.7/json/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="456">
           <caret line="337" column="0" selection-start-line="337" selection-start-column="0" selection-end-line="337" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="213" column="73" selection-start-line="213" selection-start-column="73" selection-end-line="213" selection-end-column="73" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/__init__.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/pydevd.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="26910">
           <caret line="1530" column="0" selection-start-line="1530" selection-start-column="0" selection-end-line="1530" selection-end-column="0" />
           <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_bundle/pydev_monkey_qt.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="1260">
           <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="43" column="14" selection-start-line="43" selection-start-column="14" selection-end-line="43" selection-end-column="14" />
+          <folding>
+            <element signature="e#50#60#0" expanded="false" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../sketchfe/sketchfe/shapecreator.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="504">
           <caret line="32" column="21" selection-start-line="32" selection-start-column="21" selection-end-line="32" selection-end-column="21" />
           <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="0" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/predict/svmPredict.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="90">
           <caret line="5" column="65" selection-start-line="5" selection-start-column="65" selection-end-line="5" selection-end-column="65" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/classifiers/test.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
           <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
           <folding />
+=======
+    <entry file="file://$PROJECT_DIR$/predict/testCases.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifiers/clus0.model">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="108">
           <caret line="6" column="8" selection-start-line="6" selection-start-column="8" selection-end-line="6" selection-end-column="8" />
           <folding />
@@ -1189,17 +1426,38 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifiers/visualise.py">
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="1797" column="0" selection-start-line="1797" selection-start-column="0" selection-end-line="1797" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/getConstraints.py">
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
+        <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+<<<<<<< HEAD
           <folding>
             <element signature="e#0#31#0" expanded="true" />
+=======
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/feature.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="8" column="42" selection-start-line="8" selection-start-column="42" selection-end-line="8" selection-end-column="42" />
+          <folding>
+            <element signature="e#50#60#0" expanded="false" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/predict/testCases.py">
+    <entry file="file://$PROJECT_DIR$/classifiers/visualise.py">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="306">
           <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
           <folding>
@@ -1213,25 +1471,54 @@
         <state relative-caret-position="395">
           <caret line="108" column="0" selection-start-line="108" selection-start-column="0" selection-end-line="108" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
-          <folding />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.031563845">
+          <caret line="60" column="40" selection-start-line="60" selection-start-column="40" selection-end-line="60" selection-end-column="40" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/testCases.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
+        <state relative-caret-position="252">
+          <caret line="69" column="39" selection-start-line="69" selection-start-column="39" selection-end-line="69" selection-end-column="39" />
+          <folding />
+=======
+        <state vertical-scroll-proportion="0.09469154">
+          <caret line="3" column="12" selection-start-line="3" selection-start-column="12" selection-end-line="3" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.22094691">
+          <caret line="7" column="23" selection-start-line="7" selection-start-column="23" selection-end-line="7" selection-end-column="23" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+<<<<<<< HEAD
         <state relative-caret-position="450">
           <caret line="73" column="29" selection-start-line="73" selection-start-column="29" selection-end-line="73" selection-end-column="29" />
+=======
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/clusterer/getConstraints.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1244,10 +1531,17 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="249">
           <caret line="38" column="0" selection-start-line="38" selection-start-column="0" selection-end-line="38" selection-end-column="0" />
+=======
+    <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="0" selection-start-line="14" selection-start-column="0" selection-end-line="14" selection-end-column="0" />
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
           <folding />
         </state>
       </provider>
     </entry>
+<<<<<<< HEAD
     <entry file="file://$PROJECT_DIR$/predict/feature.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="339">
@@ -1263,6 +1557,15 @@
         <state relative-caret-position="731">
           <caret line="55" column="17" selection-start-line="55" selection-start-column="17" selection-end-line="55" selection-end-column="17" />
           <folding />
+=======
+    <entry file="file://$PROJECT_DIR$/predict/clusterProb.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.26050422">
+          <caret line="74" column="18" selection-start-line="74" selection-start-column="18" selection-end-line="74" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+>>>>>>> d8707233d7eeb5ae0a280c1092904ea5cc50ee8d
         </state>
       </provider>
     </entry>

@@ -14,4 +14,3 @@ def testIt(NUMPOINTS, NUMCLASS, k):  #k is already the number of clusters
     return kmeansoutput, probabilities, features, classId
 
 
-
