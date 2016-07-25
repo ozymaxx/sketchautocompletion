@@ -113,7 +113,7 @@ def main():
     trainSVM(np.transpose(features), heteClstrFeatureId, classId)
     # find the probability of given feature to belong any of the classes
     priorClusterProb = computeProb(kmeansoutput)
-    outDict = calculateProb(featureExtract('../json/airplane/airplane_1.json'), kmeansoutput, priorClusterProb, classId)
+    outDict = calculateProb1(featureExtract('../json/airplane/airplane_1.json'), kmeansoutput, priorClusterProb, classId)
 
     print outDict
     a=5
