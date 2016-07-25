@@ -53,7 +53,7 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
         if clstrid in homoClstrId:
             # if homogeneous cluster is empty, then do not
             # process it and continue
-            if not any(kmeansoutput[0][clstrid]):
+            if len(kmeansoutput[0][clstrid]) == 0:
                 continue
             # if homogeneous then only a single class which is the first
             # feature points class
