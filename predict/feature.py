@@ -11,17 +11,17 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append("../../libsvm-3.21/python/")
-from feature import *
+
 from trainer import *
+from ckmeans import *
+from getConstraints import *
+from Predictor import *
 from FeatureExtractor import *
 from shapecreator import *
 
 import numpy as np
-from svmutil import *
 import matplotlib.pyplot as plt
-from ckmeans import *
-from getConstraints import *
-from clusterProb import *
+from svmutil import *
 import visualise
 
 def featureExtract(filename):
@@ -101,70 +101,25 @@ def main():
     for file in files:
         extension = os.path.splitext(file)[1]
         if extension == '.model':
-            os.remove('../classifiers/'+file)
+			os.remove('../classifiers/'+file)
 
-    NUMPOINTS = len(features)
-    test = getConstraints(NUMPOINTS, isFull, classId)
-    ckmeans = CKMeans(test, np.transpose(features), NUMCLASS)
-    kmeansoutput = ckmeans.getCKMeans()
+	NUMPOINTS = len(features)
+	test = getConstraints(NUMPOINTS, isFull, classId)
+	ckmeans = CKMeans(test, np.transpose(features), NUMCLASS)
+	kmeansoutput = ckmeans.getCKMeans()
 
-    # find heterogenous clusters and train svm
-    heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
-    trainSVM(np.transpose(features), heteClstrFeatureId, classId)
-    # find the probability of given feature to belong any of the classes
-    priorClusterProb = computeProb(kmeansoutput)
-    outDict = calculateProb1(featureExtract('../json/airplane/airplane_1.json'), kmeansoutput, priorClusterProb, classId)
+	# find heterogenous clusters and train svm
+	trainer = Trainer(kmeansoutput, classId, features) ### FEATURES : TRANSPOSE?
+	heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+	trainer.trainSVM(heteClstrFeatureId)
+	# find the probability of given feature to belong any of the classes
+	priorClusterProb = trainer.computeProb()
+	predictor = Predictor(kmeansoutput,classId)
+	outDict = predictor.calculateProb(featureExtract('../json/airplane/airplane_1.json'), priorClusterProb)
 
     print outDict
     a=5
-    pass
-
-    '''
-	features = list()
-	for i in range(1,79):
-		filename = '../json/cigarette/cigarette_' + str(i) + ".json"
-		print filename
-		feature = featureExtract(filename)
-		features.append(np.array(feature))
-	#classId.extend([0]*len(features))
-
-
-	NUMPOINTS = len(features)
-	isFull = [0]*NUMPOINTS
-
-	test = getConstraints(NUMPOINTS, isFull, classId)
-	kmeans = CKMeans(test,np.transpose(features),2)
-	output = kmeans.getCKMeans()
-	a = 5
-	'''
-    '''
-	for i in range(1,79):
-		filename = '../json/cigarette/cigarette_' + str(i) + ".json"
-		print filename
-		feature = featureExtract(filename)
-		features.append(np.array(feature))
-	classId.extend([0]*len(features))
-
-	for i in range(1,79):
-		filename = '../json/castle/castle_' + str(i) + ".json"
-		print filename
-		feature = featureExtract(filename)
-		features.append(np.array(feature))
-	classId.extend([2]*len(features))
-    # print computeProb(output)
-#################################################
-    # for all clusters
-	'''
-    '''
-    clustersToBeTrained, toBeTrainedId = getHeterogenous(output,classId)
-    allSV = trainSVM(np.transpose(features), clustersToBeTrained, classId)
-
-    visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, centers, "cluster number not defined")
-    plt.show()
-	'''
-    '''
-	feature = featureExtract('../json/alarm-clock_1_1.json')
-	'''
+	
 if __name__ == '__main__':
     main()
     print "fin"

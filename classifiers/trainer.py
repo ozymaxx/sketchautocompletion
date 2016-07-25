@@ -11,20 +11,19 @@ import copy
 import numpy as np
 class Trainer:
     
-    def __init__(self, output, classId, featArr = np.array([]), labArr = np.array([])):
+    def __init__(self, output, classId, featArr = np.array([])):
         # output[0] : list of clusters
         # output[1] : list of cluster centers
         self.featArr = featArr
-        self.labArr = labArr
         self.output = output
         self.classId = classId
         
-    def trainSVM(self):
+    def trainSVM(self, clusterIdArr):
         # Trains the support vector machine
-        label = copy.copy(self.labArr)
+        label = copy.copy(self.classId)
         order = 0
         allModels = list()
-        for i in self.output[0]:
+        for i in clusterIdArr:
             y = []
             x = []
             for j in i:
