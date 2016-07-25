@@ -57,7 +57,7 @@ def calculateProb(instance, kmeansoutput, priorClusterProb, classId):#It would i
                 continue
             # if homogeneous then only a single class which is the first
             # feature points class
-            classesInCluster =  [classId[kmeansoutput[0][clstrid][0]]]
+            classesInCluster = [classId[kmeansoutput[0][clstrid][0]]]
         elif clstrid in heteClstrId:
             modelName = "clus"+ ` heteClstrId.index(clstrid) ` +".model"
             m = svm_load_model('../classifiers/' + modelName)
