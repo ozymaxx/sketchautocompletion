@@ -18,7 +18,6 @@ class FileIO:
 
         result.to_csv(f, mode = 'w', index = False)
 
-
     def load(self, f):
         import pandas as pd
         a = pd.read_csv(f)
@@ -26,10 +25,12 @@ class FileIO:
         newIsFull = a['isFull'].as_matrix()
         newfeature = a[a.columns[2:]].as_matrix()
         return newNames,newIsFull,newfeature
+
 '''
 isFull = np.array([0,1,1])
 names = ['a','b','c']
 feature = [[1,2],[3,4],[5,6]]
+
 
 f = FileIO()
 f.save(isFull,names,feature, "noldu.csv")
