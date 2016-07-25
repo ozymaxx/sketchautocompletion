@@ -97,8 +97,6 @@ def main():
                 partialsketchcount += 1
         classIdCount += 1
 
-
-
     files = os.listdir('../classifiers/')
     for file in files:
         extension = os.path.splitext(file)[1]

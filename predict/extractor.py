@@ -9,6 +9,7 @@ from feature import *
 from trainer import *
 from FeatureExtractor import *
 from shapecreator import *
+from FileIO import *
 
 class Extractor:
     def __init__(self, path):
@@ -23,11 +24,14 @@ class Extractor:
 
         features = list()
         isFull = list()
+        name = list()
         for file in fulldir:
-            feature, isfull = self.loadfile(file, True)
+            feature, isfull = self.loadfile(file)
             features.append(feature)
             isFull.append(isfull)
-        return features, isFull
+            name.append(file)
+
+        return features, isFull, name
 
     def loadfile(self, file):
         if '.json' not in file:
@@ -72,11 +76,41 @@ class Extractor:
         return features, isFull, classId, name
 
 def main():
+    '''
     ext = Extractor('../json/')
     ext.prnt = True
-    features, isFull, classId, name = ext.loadfolders(numclass=5, numfull=10, numpartial=2, folderList=['airplane', 'alarm-clock', 'angel', 'ant', 'apple'])
+    features, isFull, classId, name = ext.loadfolders(numclass=3, numfull=3, numpartial=2, folderList=['airplane', 'alarm-clock', 'angel', 'ant', 'apple'])
 
-    print ext.isFileFull('airplane_1_1')
-    print features
+
+    f = FileIO()
+    f.save(isFull, name, features, "noldu.csv")
+    name2, full2, feature2 = f.load("noldu.csv")
+    a=5
+
+    #print ext.isFileFull('airplane_1_1')
+    #print features
+    '''
+
+    pathread = '../json/'
+    pathwrite = '../arrdata/'
+    extr = Extractor(pathread)
+    extr.prnt = True
+    fio = FileIO()
+
+    if not os.path.exists(pathwrite):
+        os.makedirs(pathwrite)
+
+    pathreaddir = os.listdir(pathread)
+    for folder in pathreaddir:
+        if not os.path.exists(pathwrite + folder):
+            os.makedirs(pathwrite + folder)
+        features, isFull, name = extr.loadfolder(folder)
+        fio.save(isFull, name, features, pathwrite + folder + '/' + folder + '.csv')
+
+    ext = Extractor('../json/')
+    ext.prnt = True
+    feature = ext.loadfolder('airplane')
+    a=5
+
 
 if __name__ == "__main__": main()
