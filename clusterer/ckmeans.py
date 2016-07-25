@@ -24,7 +24,7 @@ class CKMeans:
         self.CANNOT_LINK = -1
 
     def initCluster(self):
-        #method to initialize the cluster
+        #method to initialize the clusters
         
         usedPoints = []
         for i in range(0,self.k):
@@ -34,6 +34,7 @@ class CKMeans:
             while point in usedPoints:
                 point = randint(0, self.featArr.shape[0]-1)
             usedPoints.append(point)
+
             center = copy.copy(self.featArr[point])
             self.centerList.append(center)
         
@@ -41,7 +42,7 @@ class CKMeans:
         # method to check if the instance violates the constraints (part of CK-Means)
         # data : id of the instance
         # cluster : current cluster in which we're checking the condition
-
+        #return any(bool(self.consArr[data][i] == self.MUST_LINK) != bool(i in cluster) for i in range(0,data))
         for i in range(0, data):
             if (self.consArr[data][i] == self.MUST_LINK):
                 if i not in cluster:
@@ -49,30 +50,30 @@ class CKMeans:
             elif (self.consArr[data][i] == self.CANNOT_LINK):
                 if i in cluster:
                     return True
-
         return False
 
-    def getCKMeans(self) :
+    def getCKMeans(self):
         # method to apply CK_Means
         self.initCluster()
         # Counter to limit the number of iterations
         iterCounter = 0
 
         #Old centers of clusters
-        oldCenters = np.zeros([self.k, len(self.featArr[0]) ])
-        while iterCounter < 20 :
+        oldCenters = np.zeros([self.k, len(self.featArr[0])])
+        while iterCounter < 20:
 
             #Check for convergence
             difference = 0
             for i in range(0, self.k):
                 difference += np.linalg.norm(oldCenters[i] - self.centerList[i])
 
+            # checking whether a fp is zero?
             if difference == 0:
                 break
 
             # Empty out the assigned instances of clusters
             for i in range(0, self.k):
-                self.clusterList[i] = np.array([], dtype = int)
+                self.clusterList[i] = np.array([], dtype=int)
 
             ############ Assign each instance of feature matrix to a cluster #############
 
@@ -133,8 +134,7 @@ class CKMeans:
             # Increment the counter
             iterCounter += 1
 
-        return (self.clusterList,self.centerList)
-
+        return (self.clusterList, self.centerList)
 
 def visualiseBeforeClustering(out,features):
     color = 'black'
@@ -216,8 +216,8 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
 ##################################### PREPARE FEATURES ###################################
     for i in range(0, NUMCLASS):
         classId.extend([i]*POINTSPERCLASS)
-        centerx = int(np.random.random()*xmax - xmin)
-        centery = int(np.random.random()*ymax - ymin)
+        centerx = int(np.random.random()*(xmax - xmin) + xmin)
+        centery = int(np.random.random()*(ymax - ymin) + ymin)
         centers[0][i] = centerx
         centers[1][i] = centery
 

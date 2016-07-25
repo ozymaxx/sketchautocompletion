@@ -3,7 +3,6 @@ Classifier trainer
 Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 14.07.2016
 """
-
 import sys
 sys.path.append("../../libsvm-3.21/python/")
 
@@ -16,7 +15,7 @@ from getConstraints import *
 from testCases import *
 import visualise
 
-def trainSVM(featArr, clusArr, labArr) :
+def trainSVM(featArr, clusArr, labArr):
 
     #label = labArr.tolist()
     label = labArr

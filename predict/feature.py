@@ -60,26 +60,52 @@ def main():
 	path = '../json/'
 	pathdir = os.listdir(path)
 	classIdCount = 0
+	NUMSKETCHPERCLASS = 1
+	NUMCLASS = 10
+	sketchcounter = 0
 	for folder in pathdir:
-		counter = 0
-		classId.extend([classIdCount] *10)
+		if (classIdCount == NUMCLASS):
+			break
+		classId.extend([folder] * NUMSKETCHPERCLASS)
 		classIdCount += 1
 		folderdir = os.listdir(path + folder)
+		sketchcounter = 0
 		for file in folderdir:
-			feature = featureExtract(path +  folder +   '/' + file);
-			features.append(np.array(feature));
-			if (counter == 10):
+			if sketchcounter == NUMSKETCHPERCLASS:
 				break
-			counter += 1
+			sketchcounter += 1
+			print file
+			feature = featureExtract(path +  folder +   '/' + file)
+			features.append(np.array(feature))
 
+	NUMPOINTS = len(features)
+	isFull = [1] * (NUMPOINTS)
 	test = getConstraints(NUMPOINTS, isFull, classId)
-	kmeans = CKMeans(test, features, k)
+	kmeans = CKMeans(test, np.transpose(features), NUMCLASS)
 	output = kmeans.getCKMeans()
-
+	pass
 
 	'''
+	features = list()
 	for i in range(1,79):
-		filename = '../json/airplane/airplane_' + str(i) + ".json"
+		filename = '../json/cigarette/cigarette_' + str(i) + ".json"
+		print filename
+		feature = featureExtract(filename)
+		features.append(np.array(feature))
+	#classId.extend([0]*len(features))
+
+
+	NUMPOINTS = len(features)
+	isFull = [0]*NUMPOINTS
+
+	test = getConstraints(NUMPOINTS, isFull, classId)
+	kmeans = CKMeans(test,np.transpose(features),2)
+	output = kmeans.getCKMeans()
+	a = 5
+	'''
+	'''
+	for i in range(1,79):
+		filename = '../json/cigarette/cigarette_' + str(i) + ".json"
 		print filename
 		feature = featureExtract(filename)
 		features.append(np.array(feature))
@@ -91,24 +117,19 @@ def main():
 		feature = featureExtract(filename)
 		features.append(np.array(feature))
 	classId.extend([2]*len(features))
-
-	NUMPOINTS = len(features)
-	isFull = [0]*NUMPOINTS
-
-	test = getConstraints(NUMPOINTS, isFull, classId)
-	kmeans = CKMeans(test,np.transpose(features),2)
-	output = kmeans.getCKMeans()
-	a = 5
-	'''
     # print computeProb(output)
 #################################################
     # for all clusters
+	'''
 	'''
     clustersToBeTrained, toBeTrainedId = getHeterogenous(output,classId)
     allSV = trainSVM(np.transpose(features), clustersToBeTrained, classId)
 
     visualise.visualiseAfterClustering(allSV,output,np.transpose(features), classId, isFull, centers, "cluster number not defined")
     plt.show()
+	'''
+	'''
+	feature = featureExtract('../json/alarm-clock_1_1.json')
 	'''
 if __name__ == '__main__':
     main()
