@@ -1,15 +1,9 @@
 import sys
-import os
 sys.path.append('../classifiers')
-sys.path.append('../clusterer')
-sys.path.append('../predict')
-print sys.path
+sys.path.append("../../libsvm-3.21/python/")
 
 import numpy as np
 import math
-
-from ckmeans import *
-from getConstraints import *
 
 from svmutil import *
 from trainer import *
