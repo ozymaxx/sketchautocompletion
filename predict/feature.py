@@ -57,13 +57,13 @@ def main():
     features = list()
     classId = list()
     isFull = list()
-
-    path = '../json/'
     #pathdir = os.listdir(path)
     pathdir = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple']
     classIdCount = 0
+
+    path = '../json/'
     NUMFULLSKETCHPERCLASS = 20
-    NUMPARTIALSKETCHPERFULL = 2
+    NUMPARTIALSKETCHPERFULL = 120
     NUMCLASS = 3
     classIdCount= 0
     for folder in pathdir:
@@ -96,6 +96,8 @@ def main():
                 isFull.append(0)
                 partialsketchcount += 1
         classIdCount += 1
+
+
 
     files = os.listdir('../classifiers/')
     for file in files:
