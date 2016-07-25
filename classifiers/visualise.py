@@ -24,10 +24,8 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
     fig2.canvas.set_window_title("K="+str(title) + " Full Sketch")
     ax2 = fig2.add_subplot(111)
 
-
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
 
-    #print len(centers[0])
     index = 0
     marker_list = getMarkerList()
     count = 0
@@ -51,7 +49,6 @@ def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, center
 
         ax1.scatter(out[1][index-1][0], out[1][index-1][1], c='red', s=300, label=color,
                     alpha=0.5, edgecolors='black' )
-
 
         for i in cluster.astype(int):
               x = features.tolist()[i]
