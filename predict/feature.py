@@ -62,8 +62,8 @@ def main():
     #pathdir = os.listdir(path)
     pathdir = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple']
     classIdCount = 0
-    NUMFULLSKETCHPERCLASS = 2
-    NUMPARTIALSKETCHPERFULL = 1
+    NUMFULLSKETCHPERCLASS = 20
+    NUMPARTIALSKETCHPERFULL = 2
     NUMCLASS = 3
     classIdCount= 0
     for folder in pathdir:

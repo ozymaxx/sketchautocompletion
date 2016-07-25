@@ -30,8 +30,7 @@ class Trainer:
                 j = int(j)
                 y.append(label[j])
                 x.append(self.featArr[j].tolist())
-    
-            print y, x
+
             prob  = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
             

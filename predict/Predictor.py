@@ -15,7 +15,7 @@ class Predictor:
         self.output = output
         self.classId = classId
         
-    def computeDistance(x,y):
+    def computeDistance(self, x,y):
         # Computes euclidian distance between x instance and y instance
         x = np.asarray(x)
         y = np.asarray(y)
