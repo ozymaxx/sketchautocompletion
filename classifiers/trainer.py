@@ -8,10 +8,10 @@ sys.path.append("../../libsvm-3.21/python/")
 
 from svmutil import *
 import copy
-
+import numpy as np
 class Trainer:
     
-    def __init__(self, featArr, labArr, output, classId):
+    def __init__(self, output, classId, featArr = np.array([]), labArr = np.array([])):
         # output[0] : list of clusters
         # output[1] : list of cluster centers
         self.featArr = featArr
