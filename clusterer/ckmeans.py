@@ -25,7 +25,6 @@ class CKMeans:
 
     def initCluster(self):
         #method to initialize the clusters
-        
         usedPoints = []
         for i in range(0,self.k):
             self.clusterList.append(np.array([], dtype = int))
@@ -61,14 +60,14 @@ class CKMeans:
         #Old centers of clusters
         oldCenters = np.zeros([self.k, len(self.featArr[0])])
         while iterCounter < 20:
-
+            print iterCounter
             #Check for convergence
             difference = 0
             for i in range(0, self.k):
                 difference += np.linalg.norm(oldCenters[i] - self.centerList[i])
 
             # checking whether a fp is zero?
-            if difference == 0:
+            if difference < pow(10, -10):
                 break
 
             # Empty out the assigned instances of clusters
