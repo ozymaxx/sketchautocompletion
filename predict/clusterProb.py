@@ -82,6 +82,7 @@ def calculateProb2(instance, kmeansoutput, priorClusterProb, classId):#It would 
     # initially zero
     outDict = dict.fromkeys([i for i in set(classId)], 0.0)
 
+
     homoClstrFeatureId, homoClstrId = getHomogenous(kmeansoutput, classId)
     heteClstrFeatureId, heteClstrId = getHeterogenous(kmeansoutput, classId)
     clusterPrb  = clusterProb(kmeansoutput[1], instance, priorClusterProb)
