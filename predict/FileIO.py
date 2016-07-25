@@ -26,7 +26,7 @@ class FileIO:
         newfeature = a[a.columns[2:]].as_matrix()
         return newNames,newIsFull,newfeature
 
-
+'''
 isFull = np.array([0,1,1])
 names = ['a','b','c']
 feature = [[1,2],[3,4],[5,6]]
@@ -37,3 +37,4 @@ f.save(isFull,names,feature, "noldu.csv")
 k = f.load("noldu.csv")
 print k
 a = 5
+'''
