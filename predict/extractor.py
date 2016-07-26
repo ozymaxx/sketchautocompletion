@@ -39,14 +39,16 @@ class Extractor:
 
         folder = file.split('_')[0]
         fullpath = self.path + '/' + folder + '/' + file
-        if self.prnt:
-            print fullpath
+
         if not os.path.isfile(fullpath):
             raise TypeError
+        if self.prnt:
+            print fullpath
+
         return featureExtract(fullpath), self.isFileFull(file)
 
     def isFileFull(self, filename):
-        return filename.count('_') > 1
+        return filename.count('_') == 1
 
     def loadfolders(self, numclass, numfull, numpartial, folderList = []):
         features = list()
@@ -111,6 +113,5 @@ def main():
     ext.prnt = True
     feature = ext.loadfolder('airplane')
     a=5
-
 
 if __name__ == "__main__": main()
