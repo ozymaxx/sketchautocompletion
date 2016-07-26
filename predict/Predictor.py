@@ -44,8 +44,22 @@ class Predictor:
 
     def svmProb(self,model,instance):
         """Predicts the probability of the given model"""
+        ###Shittty code ---------------->
+        ####Prevent Writing
+        import sys
+        class NullWriter(object):
+            def write(self, arg):
+                pass
+        nullwrite = NullWriter()
+        oldstdout = sys.stdout
+        sys.stdout = nullwrite # disable output
+
         y = [0]
         p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
+
+        sys.stdout = oldstdout # enable output
+        ### Prevent printing ended
+
         return (p_label, p_val)
 
     def calculateProb(self, instance, priorClusterProb):
