@@ -23,7 +23,6 @@ class Trainer:
         Inputs : clusterIdArr ---> clusters list
         Outputs : Models
         """
-        print self.trainSVM.__doc__
         label = copy.copy(self.classId)
         order = 0
         allModels = list()

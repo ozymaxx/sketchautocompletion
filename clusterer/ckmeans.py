@@ -24,7 +24,8 @@ class CKMeans:
         self.CANNOT_LINK = -1
 
     def initCluster(self):
-        # method to initialize the clusters
+        """method to initialize the clusters"""
+
         usedPoints = []
         for i in range(0,self.k):
             self.clusterList.append(np.array([], dtype = int))
@@ -39,10 +40,10 @@ class CKMeans:
             self.centerList.append(center)
         
     def violateConstraints(self, data, cluster):
-        # method to check if the instance violates the constraints (part of CK-Means)
-        # data : id of the instance
-        # cluster : current cluster in which we're checking the condition
-        #return any(bool(self.consArr[data][i] == self.MUST_LINK) != bool(i in cluster) for i in range(0,data))
+        """method to check if the instance violates the constraints (part of CK-Means)
+        data : id of the instance
+        cluster : current cluster in which we're checking the condition
+        return any(bool(self.consArr[data][i] == self.MUST_LINK) != bool(i in cluster) for i in range(0,data))"""
         for i in range(0, data):
             if (self.consArr[data][i] == self.MUST_LINK):
                 if i not in cluster:
@@ -53,7 +54,7 @@ class CKMeans:
         return False
 
     def getCKMeans(self):
-        # method to apply CK_Means
+        """method to apply CK_Means"""
         self.initCluster()
         # Counter to limit the number of iterations
         iterCounter = 0
@@ -244,22 +245,4 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
 
     return  (features,isFull,classId,centers)
 
-def main():
-    ##################################### TEST CASES  #################################
-    NUMPOINTS = 200;
-    NUMCLASS = 12;
-    POINTSPERCLASS = NUMPOINTS/NUMCLASS
-
-    (features, isFull, classId, centers) = getFeatures(NUMPOINTS,NUMCLASS)
-
-    cons = getConstraints(NUMPOINTS, isFull, classId)
-    for k in range(12,16):
-        kmeans = CKMeans(cons, features,k)
-        output = kmeans.getCKMeans()
-        visualiseAfterClustering(output, np.transpose(features), classId, centers,isFull,k)
-    plt.show()
-
-if __name__ == '__main__':
-    main()
-    #profile.run('print main(); print')
 
