@@ -38,17 +38,17 @@ class Predictor:
 
     def svmProb(self,model,instance):
         """Predicts the probability of the given model"""
-        #TOBEDONE !!!!!!!!!!!!!!!!!!!!!!!!! Check the parameters
         y = [0]
-        p_label, p_acc, p_val = svm_predict(y, instance, model, '-q -b 1')
+        p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
         return (p_label, p_val)
 
-    def calculateProb(self, instance, priorClusterProb):#It would increase performance to get list of instance!!!!!!!!!!!!!!!!
+    def calculateProb(self, instance, priorClusterProb):
+        """
         #features : feature array
         #output : list [ List of Cluster nparray, List of Cluster Center nparray]
-        #probability : P(Ck)
+        #p  robability : P(Ck)
         # Returns P(Si|x)
-    
+        """
         # dict of probabilities of given instance belonging to every possible class
         # initially zero
         outDict = dict.fromkeys([i for i in set(self.classId)], 0.0)
@@ -56,9 +56,9 @@ class Predictor:
         predictTrainer = Trainer(self.output,self.classId)
         homoClstrFeatureId, homoClstrId = predictTrainer.getHomogenous()
         heteClstrFeatureId, heteClstrId = predictTrainer.getHeterogenous()
-        
-        clusterPrb  = self.clusterProb( instance, priorClusterProb)
-        
+
+        clusterPrb  = self.clusterProb( instance, priorClusterProb)#Probability list to be in a cluster
+
         # normalize cluster probability to add up to 1
         clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
     

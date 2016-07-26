@@ -1,8 +1,16 @@
 import numpy as np
 class FileIO:
+    """File class used for saving an loading """
     def __init__(self):
         pass
     def save(self,isFull, names, feature, f):
+        """"Save features to csv file
+        isFull: array of 1 or 0
+        names: name array of the instances
+        feature: featureList
+        f: name of the file to be saved
+        """
+
         import numpy as np
         import pandas as pd
 
@@ -19,22 +27,18 @@ class FileIO:
         result.to_csv(f, mode = 'w', index = False)
 
     def load(self, f):
+        """"Load features from csv file
+        INPUT
+        f: name of the file to be saved
+        OUTPUT
+        isFull: array of 1 or 0
+        names: name array of the instances
+        feature: featureList
+
+        """
         import pandas as pd
         a = pd.read_csv(f)
-        newNames = a['names'].tolist()
-        newIsFull = a['isFull'].as_matrix()
-        newfeature = a[a.columns[2:]].as_matrix()
-        return newNames,newIsFull,newfeature
-
-'''
-isFull = np.array([0,1,1])
-names = ['a','b','c']
-feature = [[1,2],[3,4],[5,6]]
-
-
-f = FileIO()
-f.save(isFull,names,feature, "noldu.csv")
-k = f.load("noldu.csv")
-print k
-a = 5
-'''
+        names = a['names'].tolist()
+        isFull = a['isFull'].as_matrix()
+        features = a[a.columns[2:]].as_matrix()
+        return names,isFull,features
