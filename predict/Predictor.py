@@ -1,3 +1,9 @@
+"""
+Predictor
+Ahmet BAGLAN
+14.07.2016
+"""
+
 import sys
 sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python/")

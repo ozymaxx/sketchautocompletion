@@ -1,3 +1,9 @@
+"""
+FileIO
+Ahmet BAGLAN
+14.07.2016
+"""
+
 import numpy as np
 class FileIO:
     """File class used for saving an loading """
