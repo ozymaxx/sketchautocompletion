@@ -5,11 +5,11 @@ Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 """
 import sys
 sys.path.append("../../libsvm-3.21/python/")
-
 from svmutil import *
 import copy
 import numpy as np
 class Trainer:
+    """Trainer Class used for the training"""
     
     def __init__(self, output, classId, featArr = np.array([])):
         # output[0] : list of clusters
@@ -19,14 +19,18 @@ class Trainer:
         self.classId = classId
         
     def trainSVM(self, clusterIdArr):
-        # Trains the support vector machine
+        """Trains the support vector machine and saves models
+        Inputs : clusterIdArr ---> clusters list
+        Outputs : Models
+        """
+        print self.trainSVM.__doc__
         label = copy.copy(self.classId)
         order = 0
         allModels = list()
-        for i in clusterIdArr:
+        for i in clusterIdArr:#Foreach cluster
             y = []
             x = []
-            for j in i:
+            for j in i:#Foreach instance in the cluster
                 j = int(j)
                 y.append(label[j])
                 x.append(self.featArr[j].tolist())
@@ -36,13 +40,16 @@ class Trainer:
             
             m = svm_train(prob, param,)
             allModels.append(m.get_SV())
-            svm_save_model('../classifiers/clus' + `order` + '.model', m)
+            svm_save_model('../classifiers/clus' + `order` + '.model', m)#Save the model for the cluster
             order+=1
     
         return allModels
     
     def computeProb(self):
-        # Returns probability list of being in a cluster
+        """
+        Returns probabilities list of being in a cluster
+        p = len(cluster)/len(total)
+        """
         prob = []
         total =  0
     
@@ -54,26 +61,31 @@ class Trainer:
         return prob
     
     def getHeterogenous(self):
-        # Gets clusters which are heterogenous
-        clustersToBeTrained = list()
-        clustersIdsToBeTrained = list()
+        """
+        Gets clusters which are heterogenous
+        output :(heterogenousClusters,heterogenousClusterId) -> heterogenous clusters, id's of heterougenous clusters
+        """
+        heterogenousClusters = list()
+        heterogenousClusterId = list()
         for clusterId in range(len(self.output[0])):
             # if class id of any that in cluster of clusterId is any different than the first one
             if any(x for x in range(len(self.output[0][clusterId])) if self.classId[int(self.output[0][clusterId][0])] != self.classId[int(self.output[0][clusterId][x])]):
-                clustersToBeTrained.append(self.output[0][clusterId])
-                clustersIdsToBeTrained.append(clusterId)
-        return clustersToBeTrained, clustersIdsToBeTrained
+                heterogenousClusters.append(self.output[0][clusterId])
+                heterogenousClusterId.append(clusterId)
+        return heterogenousClusters,heterogenousClusterId
     
     def getHomogenous(self):
-        # Gets clusters which are homogenous
-        homoClass = list()
+        """
+        Gets clusters which are homogenous
+        Output: (homoCluster,homoIdClus) -> homogenous clusters, id's of homogenous clusters
+        """
+        homoCluster = list()
         homoIdClus = list()
         for clusterId in range(len(self.output[0])):
             # if class id of any that in cluster of clusterId is any different than the first one
             if not any(x for x in range(len(self.output[0][clusterId])) if self.classId[int(self.output[0][clusterId][0])] != self.classId[int(self.output[0][clusterId][x])]):
-                homoClass.append(self.output[0][clusterId])
+                homoCluster.append(self.output[0][clusterId])
                 homoIdClus.append(clusterId)
-        return homoClass, homoIdClus
-
+        return homoCluster, homoIdClus
 
 

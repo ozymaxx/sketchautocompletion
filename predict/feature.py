@@ -62,9 +62,9 @@ def main():
     classIdCount = 0
 
     path = '../json/'
-    NUMFULLSKETCHPERCLASS = 20
-    NUMPARTIALSKETCHPERFULL = 120
-    NUMCLASS = 3
+    NUMFULLSKETCHPERCLASS = 2
+    NUMPARTIALSKETCHPERFULL = 12
+    NUMCLASS = 2
     classIdCount= 0
     for folder in pathdir:
         # iterate over folders in pathdir

@@ -31,7 +31,7 @@ class Predictor:
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
     
-    def svmProb(model,instance):
+    def svmProb(self,model,instance):
         # Predicts the probability of the given model
         y = [0]
         p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
