@@ -10,31 +10,37 @@ from trainer import *
 
 
 class Predictor:
+    """The predictor class implementing functions to return probabilities"""
     
     def __init__(self, output, classId):
         self.output = output
         self.classId = classId
         
-    def computeDistance(self, x,y):
-        # Computes euclidian distance between x instance and y instance
+    def getDistance(self, x, y):
+        """Computes euclidian distance between x instance and y instance
+        inputs: x,y instances
+        output: distance"""
         x = np.asarray(x)
         y = np.asarray(y)
         return np.sqrt(np.sum((x-y)**2))
     
     def clusterProb(self,instance,normalProb):
-        # Returns P(Ck|x)
-        # normalProb : probability that was calculated in trainer
+        """
+        Returns P(Ck|x)
+        normalProb : probability that was calculated in trainer
+        instance: feature list of the instance to be queried"""
         probTup = []
         for i in range(len(self.output[1])):
     
-            dist = self.computeDistance(instance, self.output[1][i])
+            dist = self.getDistance(instance, self.output[1][i])
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
-    
+
     def svmProb(self,model,instance):
-        # Predicts the probability of the given model
+        """Predicts the probability of the given model"""
+        #TOBEDONE !!!!!!!!!!!!!!!!!!!!!!!!! Check the parameters
         y = [0]
-        p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
+        p_label, p_acc, p_val = svm_predict(y, instance, model, '-q -b 1')
         return (p_label, p_val)
 
     def calculateProb(self, instance, priorClusterProb):#It would increase performance to get list of instance!!!!!!!!!!!!!!!!
