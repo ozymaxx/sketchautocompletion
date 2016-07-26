@@ -24,11 +24,12 @@ class CKMeans:
         self.CANNOT_LINK = -1
 
     def initCluster(self):
-        #method to initialize the clusters
+        # method to initialize the clusters
         usedPoints = []
         for i in range(0,self.k):
             self.clusterList.append(np.array([], dtype = int))
-
+            
+            # Select unique cluster centers randomly 
             point = randint(0, self.featArr.shape[0]-1)
             while point in usedPoints:
                 point = randint(0, self.featArr.shape[0]-1)
