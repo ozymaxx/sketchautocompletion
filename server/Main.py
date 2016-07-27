@@ -1,4 +1,3 @@
-
 import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
@@ -28,8 +27,6 @@ class M:
                  'baseball-bat', 'basket']
         self.extr = Extractor('../data/')
         self.extr.prnt = True
-
-
 
     def trainIt(self, numClass, numFull, numPartial, k):
         print "TRAININDINFAIND"
@@ -62,15 +59,15 @@ class M:
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
-        return classProb,max(classProb, key=classProb.get)
-
+        #return classProb, max(classProb, key=classProb.get)
+        return classProb, max(classProb, key=classProb.get)
     def predictByString(self, jstring):
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(jstring)
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
-
+'''
 def main():
     # load files
     numclass = 2
@@ -78,10 +75,8 @@ def main():
     numpartial = 5
     k = 2
 
-
     m = M()
-    m.trainIt(numclass,numclass,numfull,k)
-    
+    m.trainIt(numclass, numclass, numfull, k)
     # print m.predictByPath()
     # numtestdata = 5
     #
@@ -112,9 +107,8 @@ def main():
     # ncount = [(x * 1.0 / (numtestdata * numclass)) * 100 for x in ncount]
     # for accindex in range(min(5, len(ncount))):
     #     print 'N=' + str(accindex+1) + ' C=0 accuracy: ' + str(ncount[accindex])
-
 if __name__ == "__main__": main()#print "main is not called"
-
+'''
 from flask import Flask, request, render_template, flash, jsonify
 #import run
 #from run import run
@@ -126,9 +120,9 @@ from flask import Flask, request, render_template, flash, jsonify
 #print(sys.path)
 
 app = Flask(__name__)
-
 @app.route("/", methods=['POST','GET'])
 def handle_data():
+    print 'HANDLE DATA'
     try:
         if (request.method == 'POST'):
             #jsonify(data)
@@ -141,18 +135,26 @@ def handle_data():
             m.trainIt(numclass,numclass,numfull,k)
             print(str.values)
             return m.predictByString(str.values)
-
         else:
                         #jsonify(data)
             m = M()
             numclass = 2
-            numfull = 40
+            numfull = 60
             numpartial = 5
             k = 2
 
             m.trainIt(numclass,numclass,numfull,k)
-            print(str.values)
-            return m.predictByString(str.values)
+
+            queryjson = request.args.get("json")
+            text_file = open('./query.json', "w")
+            text_file.write(queryjson)
+            text_file.close()
+
+            classProb, answer = m.predictByPath("./query.json")
+            if answer == 0:
+                return 'airplane&alarm-clock&alarm-clock&alarm-clock&alarm-clock'
+            else:
+                return 'alarm-clock&airplane&airplane&airplane&airplane'
                 #"Hello World - you sent me a GET " + str(request.values)
     except Exception as e:
         flash(e)
@@ -161,6 +163,7 @@ def handle_data():
 
 @app.route("/send", methods=['POST','GET'])
 def return_probables():
+    print 'RETURN PROBABILITIES'
     try:
         if (request.method == 'POST'):
             #os.system("python run.py");
@@ -173,16 +176,16 @@ def return_probables():
         flash(e)
         return "Error" + str(e)
 
-
-
 @app.route("/home", methods=['GET'])
 def homepage():
+    print 'SEE HOMEPAGES'
     return render_template("index.html")
 
-
-
-
 if __name__ == '__main__':
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
+
+    #sess.init_app(app)
+
+    app.debug = True
     app.run(host= '0.0.0.0')
-
-

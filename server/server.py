@@ -11,6 +11,7 @@ from run import run
 app = Flask(__name__)
 @app.route("/", methods=['POST','GET'])
 def handle_data():
+    print 'lol'
     try:
         if (request.method == 'POST'):
             #jsonify(data)
@@ -24,6 +25,7 @@ def handle_data():
 
 @app.route("/send", methods=['POST','GET'])
 def return_probables():
+    print 'lol'
     try:
         if (request.method == 'POST'):
             #os.system("python run.py");
@@ -37,6 +39,7 @@ def return_probables():
 
 @app.route("/home", methods=['GET'])
 def homepage():
+    print 'lol'
     return render_template("index.html")
 
 if __name__ == '__main__':
