@@ -77,36 +77,33 @@ class Extractor:
         if folderList is []:
             folderList = os.listdir(self.csvpath)[0:numclass]
 
-        keepFull = range(1, numfull + 1)
-        keepPartial = range(1, numpartial + 1)
+        if len(folderList) > numclass:
+            folderList = folderList[0:numclass]
 
         features, isFull, classId,  names = list(), list(), list(), list()
         classCount = 0
         for folder in folderList:
             featuresT, isFullT, namesT = self.loadfoldercsv(folder)
+            keepFull = range(1, numfull+1)
+            for sketchid in keepFull:
 
-            # too only load highest order partial sketches
-            maxPartialId = max([(int(namesT[index].split('_')[2]) if not isFullT[index] else 0) for index in range(len(namesT))])
-            keepPartial = range(maxPartialId-numpartial, maxPartialId+1)
-            # remove possible negative index
-            keepPartial = [p for p in keepPartial if p>0]
-            # will throw
-            # cannot get class sketch id and partial id
-            mask = [int(namesT[index].split('_')[1]) in keepFull and (isFullT[index] or int(namesT[index].split('_')[2]) in keepPartial)
-                    for index in range(len(featuresT))]
+                # too only load highest order partial sketches
+                maxPartialId = max([(int(namesT[index].split('_')[2]) if not isFullT[index] else 0) for index in range(len(namesT)) if int(namesT[index].split('_')[1]) == sketchid])
+                keepPartial = range(maxPartialId-numpartial+1, maxPartialId+1)
+                # remove possible negative index
+                keepPartial = [p for p in keepPartial if p>0]
 
-            # apply the constraints
-            featuresT = [featuresT[index] for index in range(len(featuresT)) if mask[index]]
-            isFullT = [isFullT[index] for index in range(len(isFullT)) if mask[index]]
-            namesT = [namesT[index] for index in range(len(namesT)) if mask[index]]
+                # cannot get class sketch id and partial id
+                mask = [int(namesT[index].split('_')[1]) == sketchid and (isFullT[index] or int(namesT[index].split('_')[2]) in keepPartial)
+                        for index in range(len(featuresT))]
 
-            features.extend(featuresT)
-            isFull.extend(isFullT)
-            names.extend(namesT)
-            classId.extend([classCount]*len(featuresT))
+                # apply the constraints
+                features.extend([featuresT[index] for index in range(len(featuresT)) if mask[index]])
+                isFull.extend([isFullT[index] for index in range(len(featuresT)) if mask[index]])
+                names.extend([namesT[index] for index in range(len(featuresT)) if mask[index]])
 
+                classId.extend([classCount] * mask.count(True))
             classCount += 1
-
         return features, isFull, classId, names
 
     def loadfoldersjson(self, numclass, numfull, numpartial, folderList = []):
