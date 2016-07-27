@@ -1,20 +1,16 @@
 
 import sys
-
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
+sys.path.append('../test/')
 sys.path.append("../../libsvm-3.21/python/")
+from extractor import *
+import numpy as np
+from featureutil import *
 
-from trainer import *
-from ckmeans import *
-from getConstraints import *
-from FeatureExtractor import *
-from shapecreator import *
-from feature import *
-
-class Main:
+class M:
     """The main class to be called"""
     def __init__(self):
         self.features = list()
@@ -25,91 +21,89 @@ class Main:
         self.kmeansoutput = None
         self.priorClusterProb = None
         self.d = {}
-    def trainIt(self, NUMFULLSKETCHPERCLASS, NUMPARTIALSKETCHPERFULL, NUMCLASS, k):
-        """P"""
-        classIdCount= 0
-        pathdir = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple']
+        self.names = None
 
-        for folder in pathdir:
-            # iterate over folders in pathdir
-            if classIdCount == NUMCLASS:
-                break
-            folderdir = os.listdir(self.path + folder)
-            sketchcounter = 0
+        self.files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana', 'barn',
+                 'baseball-bat', 'basket']
+        self.extr = Extractor('../data/')
+        self.extr.prnt = True
 
-            for sketchcounter in range(1, NUMFULLSKETCHPERCLASS):
-                # iterate over sketches
 
-                fullsketchpath = self.path + folder + '/' + folder + '_' + str(sketchcounter) + '.json'
-                if not os.path.isfile(fullsketchpath):
-                    break
 
-                print fullsketchpath
-                feature = featureExtract(fullsketchpath)
-                self.features.append(np.array(feature))
-                self.classId.append(classIdCount)
-                self.d[classIdCount] = folder
-                self.isFull.append(1)
-                partialsketchcount = 1
-                while os.path.isfile(self.path + folder + '/' + folder + '_' + str(sketchcounter) + "_" + str(partialsketchcount) + '.json'):
-                    if partialsketchcount == NUMPARTIALSKETCHPERFULL:
-                        break
-                    print self.path + folder + '/' + folder + '_' + str(sketchcounter) + "_" + str(partialsketchcount) + '.json'
-                    feature = featureExtract(self.path + folder + '/' + folder + '_' + str(sketchcounter) + "_" + str(partialsketchcount) + '.json')
-                    self.features.append(np.array(feature))
-                    self.classId.append(classIdCount)
-                    self.isFull.append(0)
-                    partialsketchcount += 1
-            classIdCount += 1
+    def trainIt(self, numClass, numFull, numPartial, k):
+        print "TRAININDINFAIND"
+        self.features, self.isFull, self.classId, self.names = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
+                                                                                     folderList=self.files)
+        numtestdata = 5
+        print 'Loaded ' + str(len(self.features)) + ' sketches'
+        #partition data into test and training
 
-        files = os.listdir('../classifiers/')
-        for file in files:
-            extension = os.path.splitext(file)[1]
-            if extension == '.model':
-                os.remove('../classifiers/'+file)
-
+        # train constrained k-means
         NUMPOINTS = len(self.features)
-        test = getConstraints(NUMPOINTS, self.isFull, self.classId)
-        ckmeans = CKMeans(test, np.transpose(self.features), k)
+        constarr = getConstraints(NUMPOINTS, self.isFull, self.classId)
+        ckmeans = CKMeans(constarr, np.transpose(self.features), k=k)
         self.kmeansoutput = ckmeans.getCKMeans()
 
         # find heterogenous clusters and train svm
-        self.trainer = Trainer(self.kmeansoutput, self.classId, self.features) ### FEATURES : TRANSPOSE?
+        self.trainer = Trainer(self.kmeansoutput, self.classId, self.features)  ### FEATURES : TRANSPOSE?
         heteClstrFeatureId, heteClstrId = self.trainer.getHeterogenous()
         self.trainer.trainSVM(heteClstrFeatureId)
-        self.priorClusterProb = self.trainer.computeProb()
 
+    def predictIt(self, instance):
+            # find the probability of given feature to belong any of athe classes
+        priorClusterProb = self.trainer.computeProb()
+        predictor = Predictor(self.kmeansoutput, self.classId)
+        classProb = predictor.calculateProb(instance, priorClusterProb)
+        return classProb,max(classProb, key=classProb.get)
 
-    def predictItInTheSet(self, instance):
-        # find the probability of given feature to belong any of the classes
-        loc = '../json/'+instance+'.json'
-        predictor = Predictor(self.kmeansoutput,self.classId)
-        outDict = predictor.calculateProb(featureExtract(loc), self.priorClusterProb)
-        d1= {}
-        for i in outDict:
-            d1[self.d[i]] = outDict[i]
-        return d1
-
-    def predictItUsingFeatures(self,feature):
-
-        predictor = Predictor(self.kmeansoutput,self.classId)
-        outDict = predictor.calculateProb(feature, self.priorClusterProb)
-        return outDict
-
-
+    def predictByPath(self,fullsketchpath):
+        instance = featureExtract(fullsketchpath)
+        priorClusterProb = self.trainer.computeProb()
+        predictor = Predictor(self.kmeansoutput, self.classId)
+        classProb = predictor.calculateProb(instance, priorClusterProb)
+        return classProb,max(classProb, key=classProb.get)
 
 def main():
-
-    m = Main()
-    m.trainIt(5, 12, 4,8)
-
-    toBeChecked =[ 'airplane/airplane_80','airplane/airplane_78','airplane/airplane_77','ant/ant_15']
-
-    for i in toBeChecked:
-        print m.predictItInTheSet(i)
-if __name__ == '__main__':
-    main()
-    #profile.run('print main(); print')
+    # load files
+    numclass = 2
+    numfull = 40
+    numpartial = 5
+    k = 2
 
 
+    m = M()
+    m.trainIt(numclass,numclass,numfull,k)
+    
+    # print m.predictByPath()
+    # numtestdata = 5
+    #
+    # features=m.features
+    # classId = m.classId
+    # isFull = m.isFull
+    # names = m.names
+    #
+    # features, isFull, classId, names, testfeatures, testnames, testclassid = \
+    #     partitionfeatures(features, isFull, classId,names, numtestdata, randomPartioning = True)
+    #
+    # ncount = [0]*numclass
+    # for index in range(len(testfeatures)):
+    #     feature = testfeatures[index]
+    #     name = testnames[index]
+    #     classProb,maxClass = m.predictIt(feature)
+    #     argsort = np.argsort(classProb.values())
+    #     # calculate the accuracy
+    #     ncounter = None
+    #     for ncounter in range(numclass-1, -1, -1):
+    #         if argsort[ncounter] == testclassid[index]:
+    #             break
+    #     while ncounter >= 0:
+    #         ncount[len(ncount) - ncounter - 1] += 1
+    #         ncounter += -1
+    # # change it to percentage
+    # print '# Class: %i \t# Full: %i \t# Partial: %i \t# Test case: %i' % (numclass, numfull, numpartial, numclass*numtestdata)
+    # ncount = [(x * 1.0 / (numtestdata * numclass)) * 100 for x in ncount]
+    # for accindex in range(min(5, len(ncount))):
+    #     print 'N=' + str(accindex+1) + ' C=0 accuracy: ' + str(ncount[accindex])
+
+if __name__ == "__main__": main()#print "main is not called"
 
