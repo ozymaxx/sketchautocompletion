@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CANVAS</title>
+    <script type = "text/javascript" src="jquery-3.1.0.min.js"></script>
+    <script>
+
+        if (window.jQuery) {
+            console.log("JQUERY VAR");
+            // jQuery is loaded
+        } else {
+            console.log("JQUERY YOK");
+            // jQuery is not loaded
+        }
+
+
+
+    </script>
+
+
+</head>
+<body>
+<canvas id="canvas" width=400 height=400 style="border:1px solid #000000;"></canvas>
+<br>
+<button id="render">Clear</button>
+<button id="post">Send</button>
+<div id="coords"></div>
+<div id="result"></div>
+</body>
+
+
+<script type = "text/javascript" src="sketcher.js"></script>
+<script type = "text/javascript" src="canvas.js"></script>
+</html>
