@@ -1,4 +1,7 @@
 
+import sys
+sys.path.append("./predict/")
+from Main import *
 
 def run(jason):
     print("calisiyorum")
