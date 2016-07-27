@@ -57,51 +57,53 @@ class M:
         return classProb,max(classProb, key=classProb.get)
 
     def predictByPath(self,fullsketchpath):
-
         instance = featureExtract(fullsketchpath)
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
         return classProb,max(classProb, key=classProb.get)
 
-
 def main():
     # load files
     numclass = 2
     numfull = 40
     numpartial = 5
-    numtestdata = 5
+    k = 2
+
 
     m = M()
-    m.trainIt(2,10,10,2)
-
-    features=m.features
-    classId = m.classId
-    isFull = m.isFull
-    names = m.names
-
-    features, isFull, classId, names, testfeatures, testnames, testclassid = \
-        partitionfeatures(features, isFull, classId,names, numtestdata, randomPartioning = True)
-
-    ncount = [0]*numclass
-    for index in range(len(testfeatures)):
-        feature = testfeatures[index]
-        name = testnames[index]
-        classProb,maxClass = m.predictIt(feature)
-        argsort = np.argsort(classProb.values())
-        # calculate the accuracy
-        ncounter = None
-        for ncounter in range(numclass-1, -1, -1):
-            if argsort[ncounter] == testclassid[index]:
-                break
-        while ncounter >= 0:
-            ncount[len(ncount) - ncounter - 1] += 1
-            ncounter += -1
-    # change it to percentage
-    print '# Class: %i \t# Full: %i \t# Partial: %i \t# Test case: %i' % (numclass, numfull, numpartial, numclass*numtestdata)
-    ncount = [(x * 1.0 / (numtestdata * numclass)) * 100 for x in ncount]
-    for accindex in range(min(5, len(ncount))):
-        print 'N=' + str(accindex+1) + ' C=0 accuracy: ' + str(ncount[accindex])
+    m.trainIt(numclass,numclass,numfull,k)
+    
+    # print m.predictByPath()
+    # numtestdata = 5
+    #
+    # features=m.features
+    # classId = m.classId
+    # isFull = m.isFull
+    # names = m.names
+    #
+    # features, isFull, classId, names, testfeatures, testnames, testclassid = \
+    #     partitionfeatures(features, isFull, classId,names, numtestdata, randomPartioning = True)
+    #
+    # ncount = [0]*numclass
+    # for index in range(len(testfeatures)):
+    #     feature = testfeatures[index]
+    #     name = testnames[index]
+    #     classProb,maxClass = m.predictIt(feature)
+    #     argsort = np.argsort(classProb.values())
+    #     # calculate the accuracy
+    #     ncounter = None
+    #     for ncounter in range(numclass-1, -1, -1):
+    #         if argsort[ncounter] == testclassid[index]:
+    #             break
+    #     while ncounter >= 0:
+    #         ncount[len(ncount) - ncounter - 1] += 1
+    #         ncounter += -1
+    # # change it to percentage
+    # print '# Class: %i \t# Full: %i \t# Partial: %i \t# Test case: %i' % (numclass, numfull, numpartial, numclass*numtestdata)
+    # ncount = [(x * 1.0 / (numtestdata * numclass)) * 100 for x in ncount]
+    # for accindex in range(min(5, len(ncount))):
+    #     print 'N=' + str(accindex+1) + ' C=0 accuracy: ' + str(ncount[accindex])
 
 if __name__ == "__main__": main()#print "main is not called"
 
