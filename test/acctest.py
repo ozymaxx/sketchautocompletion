@@ -17,9 +17,9 @@ def main():
     extr.prnt = True
 
     # load files
-    numclass = len(files)
-    numfull = 10
-    numpartial = 2
+    numclass = 10
+    numfull = 40
+    numpartial = 3
     numtestdata = 2 # per class
     # load files from disk
     features, isFull, classId, names = extr.loadfolders(numclass=numclass, numfull=numfull, numpartial=numpartial,
