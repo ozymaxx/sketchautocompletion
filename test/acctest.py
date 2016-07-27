@@ -15,7 +15,9 @@ def main():
 
     # load files
     numclass = len(files)
-    features, isFull, classId, names = extr.loadfolders(numclass = numclass, numfull = 30, numpartial = 5,
+    numfull = 6
+    numpartial = 5
+    features, isFull, classId, names = extr.loadfolders(numclass = numclass, numfull=numfull, numpartial=numpartial,
                                                   folderList=files)
 
     print 'Loaded ' + str(len(features)) + ' sketches'
@@ -28,9 +30,11 @@ def main():
         for i in range(numtestdata):
             # take first partial sketch to be removed
 
+            # select test data randomly
+            # at most numtestdata for each class
             index = 0
             while testclassid.count(classId[index]) >= numtestdata:
-                index += 1
+                index = np.random.randint(0, len(features))
 
             fullindex = names[index].split('_')[0] + '_' + names[index].split('_')[1]
             namesplit1 = names[index].split('_')[0]
@@ -64,7 +68,7 @@ def main():
     priorClusterProb = trainer.computeProb()
     predictor = Predictor(kmeansoutput, classId)
 
-    ncount = [0]*len(numclass)
+    ncount = [0]*numclass
     for index in range(len(testfeatures)):
         feature = testfeatures[index]
         name = testnames[index]
@@ -82,7 +86,10 @@ def main():
             if argsort[ncounter] == testclassid[index]:
                 break
 
-    ncount = [(x*1.0/numtestdata)*100 for x in ncount]
-    print ncount
+    # change it to percentage
+    print '# Full: %i \t# Partial: %i \t# Test case: %i' % (numfull, numpartial, numclass*numtestdata)
+    ncount = [(x * 1.0 / (numtestdata * numclass)) * 100 for x in ncount]
+    for accindex in range(5):
+        print 'N=' + str(accindex+1) + ' C=0 accuracy: ' + str(ncount[accindex])
 
 if __name__ == "__main__": main()
