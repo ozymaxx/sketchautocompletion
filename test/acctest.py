@@ -15,19 +15,19 @@ def main():
     extr.prnt = True
 
     # load files
-    numclass = 4
-    numfull = 40
-    numpartial = 5
-    numtestdata = 5
+    numclass = len(files)
+    numfull = 10
+    numpartial = 2
+    numtestdata = 3
     # load files from disk
     features, isFull, classId, names = extr.loadfolders(numclass = numclass, numfull=numfull, numpartial=numpartial,
                                                         folderList=files)
     print 'Loaded ' + str(len(features)) + ' sketches'
-    # partition data into test and training
+    # partition data into test and training Picture (the last name tagged)
     features, isFull, classId, names, testfeatures, testnames, testclassid = \
         partitionfeatures(features, isFull, classId,names, numtestdata, randomPartioning = True)
 
-
+    # check if any overlapping data in test and train
     for x in features:
         for y in testfeatures:
             if np.linalg.norm(x-y) < 10**-3:
@@ -36,7 +36,7 @@ def main():
     # train constrained k-means
     NUMPOINTS = len(features)
     constarr = getConstraints(NUMPOINTS, isFull, classId)
-    ckmeans = CKMeans(constarr, np.transpose(features), k=numclass)
+    ckmeans = CKMeans(constarr, np.transpose(features), k=numclass*2)
     kmeansoutput = ckmeans.getCKMeans()
 
     # find heterogenous clusters and train svm
@@ -69,7 +69,7 @@ def main():
     # change it to percentage
     print '# Class: %i \t# Full: %i \t# Partial: %i \t# Test case: %i' % (numclass, numfull, numpartial, numclass*numtestdata)
     ncount = [(x * 1.0 / (numtestdata * numclass)) * 100 for x in ncount]
-    for accindex in range(min(5, len(ncount))):
+    for accindex in range(min(10, len(ncount))):
         print 'N=' + str(accindex+1) + ' C=0 accuracy: ' + str(ncount[accindex])
 
 if __name__ == "__main__": main()
