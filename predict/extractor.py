@@ -85,6 +85,11 @@ class Extractor:
         for folder in folderList:
             featuresT, isFullT, namesT = self.loadfoldercsv(folder)
 
+            # too only load highest order partial sketches
+            maxPartialId = max([(int(namesT[index].split('_')[2]) if not isFullT[index] else 0) for index in range(len(namesT))])
+            keepPartial = range(maxPartialId-numpartial, maxPartialId+1)
+            # remove possible negative index
+            keepPartial = [p for p in keepPartial if p>0]
             # will throw
             # cannot get class sketch id and partial id
             mask = [int(namesT[index].split('_')[1]) in keepFull and (isFullT[index] or int(namesT[index].split('_')[2]) in keepPartial)
