@@ -15,8 +15,10 @@ def main():
 
     # load files
     numclass = len(files)
-    features, isFull, classId, names = extr.loadfolders(numclass = numclass, numfull = 60, numpartial = 5,
+    features, isFull, classId, names = extr.loadfolders(numclass = numclass, numfull = 30, numpartial = 5,
                                                   folderList=files)
+
+    print 'Loaded ' + str(len(features)) + ' sketches'
 
     numtestdata = 5
     testfeatures = list()
@@ -62,8 +64,7 @@ def main():
     priorClusterProb = trainer.computeProb()
     predictor = Predictor(kmeansoutput, classId)
 
-    n1count = 0
-    n2count = 0
+    ncount = [0]*len(numclass)
     for index in range(len(testfeatures)):
         feature = testfeatures[index]
         name = testnames[index]
@@ -75,13 +76,13 @@ def main():
         highProbClass = classProb.keys()[argsort[len(argsort) - 1]]
         sechighProbClass = classProb.keys()[argsort[len(argsort) - 2]]
 
-        if sechighProbClass == testclassid[index]:
-            n2count += 1
+        # calculate the accuracy
+        for ncounter in range(numclass-1, -1, -1):
+            ncount[ncounter] += 1
+            if argsort[ncounter] == testclassid[index]:
+                break
 
-        if highProbClass == testclassid[index]:
-            n1count += 1
-            n2count += 1
+    ncount = [(x*1.0/numtestdata)*100 for x in ncount]
+    print ncount
 
-    print 'N=1 accuracy: ' + str((n1count*1.0 / (numtestdata*numclass))*100)
-    print 'N=2 accuracy: ' + str((n2count*1.0 / (numtestdata*numclass))*100)
 if __name__ == "__main__": main()
