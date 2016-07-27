@@ -62,7 +62,7 @@ class CKMeans:
         #Old centers of clusters
         oldCenters = np.zeros([self.k, len(self.featArr[0])])
         while iterCounter < 20:
-            print iterCounter
+            print 'Constrained k-means iteation: ' + str(iterCounter+1) + ' (max 20)'
             #Check for convergence
             difference = 0
             for i in range(0, self.k):
