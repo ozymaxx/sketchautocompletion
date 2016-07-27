@@ -16,39 +16,95 @@ class Extractor:
         if (path[len(path)-1]) is '/':
             path = path[0:len(path)-1]
         self.path = path
+        self.jsonpath = path + '/json'
+        self.csvpath = path + '/csv'
+        self.fio = FileIO()
         self.prnt = False
 
-    def loadfolder(self, folder):
+    def loadfoldercsv(self, folder):
+        # if .csv file exists, then load it directly
+        fullpath = self.csvpath + '/' + folder + '/' + folder + '.csv'
+        if os.path.isfile(fullpath):
+            print 'loading ' + str(folder) + '.csv'
+            names, isFull, features = self.fio.load(fullpath)
+            # because i am an idiot
+
+            # remove .json prefix
+            names = [name[0:len(name)-5] for name in names]
+            isFull = [self.isFileFull(name) for name in names]
+            return features, isFull, names
+
+    def loadfolderjson(self, folder):
         fullpath = self.path + '/' + folder
         fulldir = os.listdir(fullpath)
 
         features = list()
         isFull = list()
-        name = list()
+        names = list()
         for file in fulldir:
             feature, isfull = self.loadfile(file)
             features.append(feature)
             isFull.append(isfull)
-            name.append(file)
+            names.append(file)
 
-        return features, isFull, name
+        return features, isFull, names
+
+    def loadfolder(self, folder):
+        fullpath = self.csvpath + '/' + folder + '/' + folder + '.csv'
+        if os.path.isfile(fullpath):
+            return self.loadfoldercsv(fullpath)
+        else:
+            return self.loadfolderjson(fullpath)
 
     def loadfile(self, file):
         if '.json' not in file:
             file += '.json'
 
         folder = file.split('_')[0]
-        fullpath = self.path + '/' + folder + '/' + file
-        if self.prnt:
-            print fullpath
+        fullpath = self.jsonpath + '/' + folder + '/' + file
+
         if not os.path.isfile(fullpath):
             raise TypeError
+        if self.prnt:
+            print fullpath
+
         return featureExtract(fullpath), self.isFileFull(file)
 
     def isFileFull(self, filename):
-        return filename.count('_') > 1
+        return filename.count('_') == 1
 
-    def loadfolders(self, numclass, numfull, numpartial, folderList = []):
+    def loadfolderscsv(self, numclass, numfull, numpartial, folderList = []):
+        if folderList is []:
+            folderList = os.listdir(self.csvpath)[0:numclass]
+
+        keepFull = range(1, numfull + 1)
+        keepPartial = range(1, numpartial + 1)
+
+        features, isFull, classId,  names = list(), list(), list(), list()
+        classCount = 0
+        for folder in folderList:
+            featuresT, isFullT, namesT = self.loadfoldercsv(folder)
+
+            # will throw
+            # cannot get class sketch id and partial id
+            mask = [int(namesT[index].split('_')[1]) in keepFull and (isFullT[index] or int(namesT[index].split('_')[2]) in keepPartial)
+                    for index in range(len(featuresT))]
+
+            # apply the constraints
+            featuresT = [featuresT[index] for index in range(len(featuresT)) if mask[index]]
+            isFullT = [isFullT[index] for index in range(len(isFullT)) if mask[index]]
+            namesT = [namesT[index] for index in range(len(namesT)) if mask[index]]
+
+            features.extend(featuresT)
+            isFull.extend(isFullT)
+            names.extend(namesT)
+            classId.extend([classCount]*len(featuresT))
+
+            classCount += 1
+
+        return features, isFull, classId, names
+
+    def loadfoldersjson(self, numclass, numfull, numpartial, folderList = []):
         features = list()
         isFull = list()
         classId = list()
@@ -61,7 +117,7 @@ class Extractor:
             for sketchcounter in range(1, numfull+1):
                 for partialsketchcount in range(0, numpartial+1):
                     sketchname = folder + '_' + str(sketchcounter) + ('_' + str(partialsketchcount) if partialsketchcount else '')
-                    fullpath = self.path + '/' + folder + '/' + sketchname + '.json'
+                    fullpath = self.jsonpath + '/' + folder + '/' + sketchname + '.json'
 
                     try:
                         feature = self.loadfile(sketchname)
@@ -74,6 +130,14 @@ class Extractor:
                     name.append(sketchname)
 
         return features, isFull, classId, name
+
+    def loadfolders(self, numclass, numfull, numpartial, folderList = []):
+        return self.loadfolderscsv(numclass, numfull, numpartial, folderList)
+
+    def processName(self, name):
+        namesplt = name.split('_')
+        if len(namesplt) == 2:
+            return
 
 def main():
     '''
@@ -111,6 +175,5 @@ def main():
     ext.prnt = True
     feature = ext.loadfolder('airplane')
     a=5
-
 
 if __name__ == "__main__": main()
