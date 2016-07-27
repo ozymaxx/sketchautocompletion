@@ -7,6 +7,8 @@ sys.path.append("../../libsvm-3.21/python/")
 from extractor import *
 import numpy as np
 from featureutil import *
+
+
 def main():
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana', 'barn',
