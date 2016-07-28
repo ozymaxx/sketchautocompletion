@@ -104,7 +104,7 @@ class Extractor:
 
                 classId.extend([classCount] * mask.count(True))
             classCount += 1
-        return features, isFull, classId, names
+        return features, isFull, classId, names, folderList
 
     def loadfoldersjson(self, numclass, numfull, numpartial, folderList = []):
         features = list()

@@ -135,7 +135,7 @@ class CKMeans:
             # Increment the counter
             iterCounter += 1
 
-        return (self.clusterList, self.centerList)
+        return self.clusterList, self.centerList
 
 def visualiseBeforeClustering(out,features):
     color = 'black'
@@ -242,7 +242,4 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
             features[0][index] = datax
             features[1][index] = datay
             index += 1
-
-    return  (features,isFull,classId,centers)
-
-
+    return features, isFull, classId, centers
