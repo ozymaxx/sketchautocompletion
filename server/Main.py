@@ -28,7 +28,7 @@ class M:
         self.extr.prnt = True
         self.n = 5
     def getBestPredictions(self, c):
-        a = sorted(A, key=A.get, reverse=True)[:5]
+        a = sorted(A, key=A.get, reverse=True)[:self.n]
         l = ''
         for i in a:
             l += self.files[i]
