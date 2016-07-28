@@ -31,9 +31,9 @@ class M:
         a = sorted(A, key=A.get, reverse=True)[:5]
         l = ''
         for i in a:
-            l += '&'
             l += self.files[i]
-        print l
+            l += '&'
+        l = l[:-1]
         return l
 
 
