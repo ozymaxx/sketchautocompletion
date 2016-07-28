@@ -62,7 +62,6 @@ class M:
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
         return self.getBestPredictions(classProb)
-
     def predictByPath(self,fullsketchpath):
         instance = featureExtract(fullsketchpath)
         priorClusterProb = self.trainer.computeProb()
@@ -86,22 +85,13 @@ def handle_data():
     print 'HANDLE DATA'
     global m
     try:
-        if (request.method == 'POST'):
-            #jsonify(data)
-            print(str.values)
-            return m.predictByString(str.values)
-        else:
-            #jsonify(data)
+        queryjson = request.args.get("json")
+        text_file = open('./query.json', "w")
+        text_file.write(queryjson)
+        text_file.close()
 
-            queryjson = request.args.get("json")
-            text_file = open('./query.json', "w")
-            text_file.write(queryjson)
-            text_file.close()
-
-            answer = m.predictByPath("./query.json")
-            return answer
-
-            #"Hello World - you sent me a GET " + str(request.values)
+        answer = m.predictByPath("./query.json")
+        return answer
     except Exception as e:
         flash(e)
         return "Error" + str(e)
@@ -126,7 +116,6 @@ def return_probables():
 def homepage():
     print 'SEE HOMEPAGES'
     return render_template("index.html")
-
 
 def main():
     numclass = 5
