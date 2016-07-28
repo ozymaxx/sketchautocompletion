@@ -132,13 +132,13 @@ def main():
     numclass = 5
     numfull = 3
     numpartial = 3
-    k = 3
+    k = 5
     print 'MAIN'
     m.trainIt(numclass, numfull, numpartial, k)
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     #sess.init_app(app)
     app.debug = True
-    app.run(host= '0.0.0.0')
+    app.run(host='0.0.0.0')
 
 if __name__ == '__main__':main()
