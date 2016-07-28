@@ -23,12 +23,12 @@ class M:
         self.d = {}
         self.names = None
         self.files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana', 'barn',
-                 'baseball-bat', 'basket']
+                      'baseball-bat', 'basket']
         self.extr = Extractor('../data/')
         self.extr.prnt = True
         self.n = 5
     def getBestPredictions(self, c):
-        a = sorted(A, key=A.get, reverse=True)[:self.n]
+        a = sorted(c, key=c.get, reverse=True)[:self.n]
         l = ''
         for i in a:
             l += self.files[i]
@@ -39,8 +39,8 @@ class M:
 
     def trainIt(self, numClass, numFull, numPartial, k):
         print "TRAININDINFAIND"
-        self.features, self.isFull, self.classId, self.names = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
-                                                                                     folderList=self.files)
+        self.features, self.isFull, self.classId, self.names, self.folderList = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
+                                                                                                      folderList=self.files)
         numtestdata = 5
         print 'Loaded ' + str(len(self.features)) + ' sketches'
         #partition data into test and training
@@ -57,7 +57,7 @@ class M:
         self.trainer.trainSVM(heteClstrFeatureId)
 
     def predictIt(self, instance):
-            # find the probability of given feature to belong any of athe classes
+        # find the probability of given feature to belong any of athe classes
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
@@ -68,8 +68,6 @@ class M:
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
-        #return classProb, max(classProb, key=classProb.get)
-
         return self.getBestPredictions(classProb)
     def predictByString(self, jstring):
         featextractor = IDMFeatureExtractor()
@@ -77,34 +75,23 @@ class M:
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
+
         return self.getBestPredictions(classProb)
 
 from flask import Flask, request, render_template, flash, jsonify
 app = Flask(__name__)
+m = M()
 @app.route("/", methods=['POST','GET'])
 def handle_data():
     print 'HANDLE DATA'
+    global m
     try:
         if (request.method == 'POST'):
             #jsonify(data)
-            m = M()
-            numclass = 2
-            numfull = 40
-            numpartial = 5
-            k = 2
-
-            m.trainIt(numclass,numclass,numfull,k)
             print(str.values)
             return m.predictByString(str.values)
         else:
-                        #jsonify(data)
-            m = M()
-            numclass = 2
-            numfull = 60
-            numpartial = 5
-            k = 2
-
-            m.trainIt(numclass,numclass,numfull,k)
+            #jsonify(data)
 
             queryjson = request.args.get("json")
             text_file = open('./query.json', "w")
@@ -114,7 +101,7 @@ def handle_data():
             answer = m.predictByPath("./query.json")
             return answer
 
-                #"Hello World - you sent me a GET " + str(request.values)
+            #"Hello World - you sent me a GET " + str(request.values)
     except Exception as e:
         flash(e)
         return "Error" + str(e)
@@ -130,7 +117,7 @@ def return_probables():
 
         else:
             return "airplane&angel&arm&banana&bell"
-                #"Hello World - you sent me a GET " + str(request.values)
+            #"Hello World - you sent me a GET " + str(request.values)
     except Exception as e:
         flash(e)
         return "Error" + str(e)
@@ -141,9 +128,17 @@ def homepage():
     return render_template("index.html")
 
 
-if __name__ == '__main__':
+def main():
+    numclass = 5
+    numfull = 3
+    numpartial = 3
+    k = 3
+    print 'MAIN'
+    m.trainIt(numclass, numfull, numpartial, k)
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     #sess.init_app(app)
     app.debug = True
     app.run(host= '0.0.0.0')
+
+if __name__ == '__main__':main()
