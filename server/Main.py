@@ -10,7 +10,8 @@ import numpy as np
 from featureutil import *
 from FeatureExtractor import *
 from FileIO import *
-
+from shapecreator import *
+import time
 
 class M:
     """The main class to be called"""
@@ -35,16 +36,12 @@ class M:
         l = ''
         l1 = ''
         for i in a:
-            l1 += c[i]
+            l1 += str(c[i])
             l += self.files[i]
             l += '&'
             l1+='&'
         l1 = l1[:-1]
-
-
         return l+l1
-
-
 
     def trainIt(self, numClass, numFull, numPartial, k):
         self.features, self.isFull, self.classId, self.names, self.folderList = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
@@ -77,8 +74,9 @@ class M:
         classProb = predictor.calculateProb(instance, priorClusterProb)
         return self.getBestPredictions(classProb)
     def predictByString(self, jstring):
+        loadedSketch = shapecreator.buildSketch('json', jstring)
         featextractor = IDMFeatureExtractor()
-        instance = featextractor.extract(jstring)
+        instance = featextractor.extract(loadedSketch)
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
@@ -127,11 +125,12 @@ def handle_data():
         try:
             queryjson = request.args.get("json")
             #queryjson = request.json
+            '''
             text_file = open('./query.json', "w")
             text_file.write(queryjson)
             text_file.close()
-
-            answer = m.predictByPath("./query.json")
+            '''
+            answer = m.predictByString(str(queryjson))
             return answer
         except Exception as e:
             flash(e)
@@ -162,15 +161,15 @@ def homepage():
 def main():
     doTrain = True
     numclass = 10
-    numfull = 5
-    numpartial = 3
+    numfull = 30
+    numpartial = 10
     k = numclass
     print 'MAIN'
     if(doTrain):
         m.trainIt(numclass, numfull, numpartial, k)
-        m.saveTraining("./savedTrainings/lol")
+        m.saveTraining("lol")
     else:
-        m.loadTraining("./savedTrainings/lol")
+        m.loadTraining("lol")
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     #sess.init_app(app)
