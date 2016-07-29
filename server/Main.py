@@ -27,6 +27,7 @@ class M:
         self.extr = Extractor('../data/')
         self.extr.prnt = True
         self.n = 10
+
     def getBestPredictions(self, c):
         a = sorted(c, key=c.get, reverse=True)[:self.n]
         l = ''
