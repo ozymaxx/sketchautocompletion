@@ -30,10 +30,6 @@ class M:
         self.extr = Extractor('../data/')
         self.extr.prnt = True
         self.n = 10
-        self.numclass = None
-        self.numfull = None
-        self.numpartial = None
-        self.k = None
 
     def getBestPredictions(self, c):
         a = sorted(c, key=c.get, reverse=True)[:self.n]
@@ -64,10 +60,6 @@ class M:
         self.trainer = Trainer(self.kmeansoutput, self.classId, self.features)  ### FEATURES : TRANSPOSE?
         heteClstrFeatureId, heteClstrId = self.trainer.getHeterogenous()
         self.trainer.trainSVM(heteClstrFeatureId)
-        self.k=k
-        self.numclass = numClass
-        self.numfull = numFull
-        self.numpartial = numPartial
 
     def predictIt(self, instance):
         # find the probability of given feature to belong any of athe classes
@@ -92,9 +84,7 @@ class M:
 
     def saveTraining(self, f):
         fio = FileIO()
-        fio.saveTraining(self.names,self.classId, self.isFull, self.features, self.kmeansoutput,
-                         f+"__"
-                           "CFPK:"+str(self.numclass)+"_"+str(self.numfull)+"_"+str(self.numpartial)+"_"+str(self.k))
+        fio.saveTraining(self.names,self.classId, self.isFull, self.features, self.kmeansoutput, f)
 
     def loadTraining(self, f):
         fio = FileIO()
@@ -170,16 +160,16 @@ def homepage():
 
 def main():
     doTrain = True
-    numclass = 3
-    numfull = 3
-    numpartial = 3
+    numclass = 10
+    numfull = 30
+    numpartial = 10
     k = numclass
     print 'MAIN'
     if(doTrain):
         m.trainIt(numclass, numfull, numpartial, k)
-        m.saveTraining("./savedTrainings/lol")
+        m.saveTraining("lol")
     else:
-        m.loadTraining("./savedTrainings/lol")
+        m.loadTraining("lol")
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     #sess.init_app(app)
