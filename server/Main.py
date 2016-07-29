@@ -9,6 +9,8 @@ from extractor import *
 import numpy as np
 from featureutil import *
 from FeatureExtractor import *
+from FileIO import *
+
 
 class M:
     """The main class to be called"""
@@ -80,8 +82,21 @@ class M:
         priorClusterProb = self.trainer.computeProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
         classProb = predictor.calculateProb(instance, priorClusterProb)
-
         return self.getBestPredictions(classProb)
+
+    def saveTraining(self, f):
+        fio = FileIO()
+        fio.saveTraining(self.names,self.classId, self.isFull, self.features, self.kmeansoutput, f)
+
+    def loadTraining(self, f):
+        fio = FileIO()
+        self.names, self.classId, self.isFull, self.features, self.kmeansoutput = fio.loadTraining(f)
+
+        # find heterogenous clusters and train svm
+        self.trainer = Trainer(self.kmeansoutput, self.classId, self.features)  ### FEATURES : TRANSPOSE?
+        heteClstrFeatureId, heteClstrId = self.trainer.getHeterogenous()
+        self.trainer.trainSVM(heteClstrFeatureId)
+
 
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
@@ -145,12 +160,17 @@ def homepage():
     return render_template("index.html")
 
 def main():
+    doTrain = True
     numclass = 10
     numfull = 5
     numpartial = 3
     k = numclass
     print 'MAIN'
-    m.trainIt(numclass, numfull, numpartial, k)
+    if(doTrain):
+        m.trainIt(numclass, numfull, numpartial, k)
+        m.saveTraining("./savedTrainings/lol")
+    else:
+        m.loadTraining("./savedTrainings/lol")
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     #sess.init_app(app)
