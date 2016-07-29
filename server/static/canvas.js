@@ -18,13 +18,19 @@ var ctx = canvas.getContext('2d'),
 
 width = 4.0;
 
+var id = 0;
+var pid = 0;
+
 var sketch = new Sketch();
 
 canvas.onmousedown = function(e) {
 
     console.log("BASTIN BANA");
 
-    sketch.newStroke(width);
+    id++;
+    pid++;
+    console.log("Yeni point pidi " + pid);
+    sketch.newStroke(width, id);
 
     /// adjust mouse position (see below)
     var pos = getXY(e);
@@ -34,12 +40,13 @@ canvas.onmousedown = function(e) {
     prevY = pos.y;
 
     /// add new stroke
-    points.push([]);
+    //points.push([]);
 
     /// record point in this stroke
     //points[points.length - 1].push([pos.x, pos.y]);
     points.push([pos.x, pos.y]);
-    sketch.addPoint(pos.x, pos.y, width);
+
+    sketch.addPoint(pos.x, pos.y, Date.now(), pid);
 
     /// we are in draw mode
     isDown = true;
@@ -67,14 +74,19 @@ canvas.onmousemove = function(e) {
     /// record to current stroke
     //points[points.length - 1].push([pos.x, pos.y]);
     points.push([pos.x, pos.y]);
-    sketch.addPoint(pos.x, pos.y, width);
+    pid++;
+    console.log("Yeni point pidi " + pid);
+    sketch.addPoint(pos.x, pos.y, Date.now(), pid);
 };
 
 canvas.onmouseup = function() {
     isDown = false;
-    coords.innerHTML = JSON.stringify(points);
+    //coords.innerHTML = JSON.stringify(points);
+    coords.innerHTML = JSON.stringify(sketch.getFinalResult());
+    pid = 0;
 
 };
+
 function getXY(e) {
     var r = canvas.getBoundingClientRect();
     return {x: e.clientX - r.left, y: e.clientY - r.top}
@@ -116,12 +128,16 @@ function clear() {
     points = [];
     coords.innerHTML = "";
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    id = 0;
+    pid = 0;
+    console.log("Yeni pointlerin de pidi " + pid);
 };
 
 
 function send(URL) {
     console.log("sending to " + URL);
     $.post(URL,JSON.stringify(points));
+    clear();
 };
 
 $(document).ready(function(){
