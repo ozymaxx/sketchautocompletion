@@ -103,7 +103,8 @@ m = M()
 @app.route("/", methods=['POST','GET'])
 def handle_data():
     global m
-    if (request.method == 'POST'):
+    timeStart = time.time()
+    if request.method == 'POST':
         try:
             print(type(json.dumps(request.json)))
             queryjson = request.json
@@ -131,6 +132,7 @@ def handle_data():
             text_file.close()
             '''
             answer = m.predictByString(str(queryjson))
+            print 'Server responded in %.3f seconds' % float(time.time()-timeStart)
             return answer
         except Exception as e:
             flash(e)
@@ -161,7 +163,7 @@ def homepage():
 def main():
     doTrain = True
     numclass = 10
-    numfull = 30
+    numfull = 5
     numpartial = 10
     k = numclass
     print 'MAIN'
