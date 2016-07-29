@@ -28,9 +28,7 @@ var Point = function (x, y, timestamp, pid) {
 
 };
 
-Point.prototype.jsonString = function() {
-    console.log(this.toJSON());
-};
+
 
 /*var Point1 = new Point(10.5, 9.4223, 1023);
 console.log(Point1.toJSON());
@@ -92,24 +90,6 @@ Point.prototype.getJSON = function() {
     return {"pid":this.pid, "time":this.timestamp, "x":this.x,"y":this.y};
 };
 
-function arrayJsonify(jsonArr) {
-    result = "[";
-    for (i = 0; i < this.points.length; i++) {
-        console.log("next to be inserted" + jsonArr[i]);
-        result += jsonArr[i] + ",";
-    }
-    result += "]";
-    return result;
-};
-
-Stroke.prototype.getJSONArray = function () {
-    this.jsonArr=[];
-    for (i = 0; i < this.points.length; i++) {
-        this.jsonArr.push(JSON.stringify(this.points[i].getJSON()));
-    }
-    return this.jsonArr;
-
-};
 
 Stroke.prototype.getJSON = function() {
 
@@ -138,12 +118,7 @@ Stroke.prototype.getJSON = function() {
 
 
 
-Stroke.prototype.getPointJSON = function() {
-    console.log(this.points[0]);
-    var po =  this.points[0];
-    return po;
-    //return JSON.stringify(po.getJSON());
-};
+
 
 
 
@@ -158,12 +133,7 @@ Sketch.prototype.getJSON = function() {
     //return {"id":"candidate", "strokes":JSON.stringify(this.jsonArr)};
 };
 
-Sketch.prototype.getJSONString = function() {
-    return JSON.stringify(this.strokes[0].getJSON());
-    return JSON.stringify();
 
-    //return JSON.stringify(this.getJSON());
-};
 
 Sketch.prototype.getFinalResult = function() {
     return this.getJSON();
@@ -171,4 +141,44 @@ Sketch.prototype.getFinalResult = function() {
     // return this.getJSON();
 };
 
+/* DUMP
+Sketch.prototype.getJSONString = function() {
+    return JSON.stringify(this.strokes[0].getJSON());
+    return JSON.stringify();
 
+    //return JSON.stringify(this.getJSON());
+};
+
+Stroke.prototype.getPointJSON = function() {
+    console.log(this.points[0]);
+    var po =  this.points[0];
+    return po;
+    //return JSON.stringify(po.getJSON());
+};
+
+
+Stroke.prototype.getJSONArray = function () {
+    this.jsonArr=[];
+    for (i = 0; i < this.points.length; i++) {
+        this.jsonArr.push(JSON.stringify(this.points[i].getJSON()));
+    }
+    return this.jsonArr;
+
+};
+
+function arrayJsonify(jsonArr) {
+    result = "[";
+    for (i = 0; i < this.points.length; i++) {
+        console.log("next to be inserted" + jsonArr[i]);
+        result += jsonArr[i] + ",";
+    }
+    result += "]";
+    return result;
+};
+
+Point.prototype.jsonString = function() {
+    //console.log(this.getJSON());
+};
+
+
+ */

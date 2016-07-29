@@ -88,17 +88,29 @@ m = M()
 @app.route("/", methods=['POST','GET'])
 def handle_data():
     global m
-    try:
-        queryjson = request.args.get("json")
+    if (request.method == 'POST'):
+        queryjson = request.json
+        print(queryjson)
         text_file = open('./query.json', "w")
         text_file.write(queryjson)
         text_file.close()
 
         answer = m.predictByPath("./query.json")
         return answer
-    except Exception as e:
-        flash(e)
-        return "Error" + str(e)
+    else:
+        try:
+            queryjson = request.args.get("json")
+            #queryjson = request.json
+            text_file = open('./query.json', "w")
+            text_file.write(queryjson)
+            text_file.close()
+
+            answer = m.predictByPath("./query.json")
+            return answer
+        except Exception as e:
+            flash(e)
+            print(request.values)
+            return "Error" + str(e)
 
 
 @app.route("/send", methods=['POST','GET'])
