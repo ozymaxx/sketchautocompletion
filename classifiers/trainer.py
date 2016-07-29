@@ -18,11 +18,12 @@ class Trainer:
         self.output = output
         self.classId = classId
         
-    def trainSVM(self, clusterIdArr):
+    def trainSVM(self, clusterIdArr, dir):
         """Trains the support vector machine and saves models
         Inputs : clusterIdArr ---> clusters list
         Outputs : Models
         """
+
         label = copy.copy(self.classId)
         order = 0
         allModels = list()
@@ -39,7 +40,7 @@ class Trainer:
             
             m = svm_train(prob, param,)
             allModels.append(m.get_SV())
-            svm_save_model('../classifiers/clus' + `order` + '.model', m)#Save the model for the cluster
+            svm_save_model(dir+"/" +"clus" + `order` + '.model', m)#Save the model for the cluster
             order+=1
     
         return allModels

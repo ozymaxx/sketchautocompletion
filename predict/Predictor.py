@@ -62,7 +62,7 @@ class Predictor:
 
         return (p_label, p_val)
 
-    def calculateProb(self, instance, priorClusterProb):
+    def calculateProb(self, instance, priorClusterProb, dir):
         """
         #features : feature array
         #output : list [ List of Cluster nparray, List of Cluster Center nparray]
@@ -96,7 +96,7 @@ class Predictor:
                 classesInCluster = [self.classId[self.output[0][clstrid][0]]]
                 
             elif clstrid in heteClstrId:
-                modelName = "clus"+ ` heteClstrId.index(clstrid) ` +".model"
+                modelName = dir +"/clus"+ ` heteClstrId.index(clstrid) ` +".model"
                 m = svm_load_model('../classifiers/' + modelName)
                 classesInCluster = m.get_labels()
                 labels, probs = self.svmProb(m, [instance.tolist()])
