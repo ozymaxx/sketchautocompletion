@@ -75,16 +75,16 @@ class FileIO:
 
 
 def main():
-    fil = 'lol.csv'
-    kmean = ([np.array([1,3]),np.array([2,5])],[np.array([1,2,3]),np.array([4,5,7]),np.array([6,9,19])])
-
-    f = FileIO()
-    f.saveTraining(None, None, None, kmean, fil)
-    a = f.loadTraining(fil)
-    # a = f.loadAll('lol.csv')
-
-    # print a
-    a = 5
+    # fil = 'lol.csv'
+    # kmean = ([np.array([1,3]),np.array([2,5])],[np.array([1,2,3]),np.array([4,5,7]),np.array([6,9,19])])
+    #
+    # f = FileIO()
+    # f.saveTraining(None, None, None, kmean, fil)
+    # a = f.loadTraining(fil)
+    # # a = f.loadAll('lol.csv')
+    #
+    # # print a
+    # a = 5
 
 
 if __name__ == "__main__": main()
