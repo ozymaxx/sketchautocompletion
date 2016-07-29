@@ -79,7 +79,7 @@ class M:
 from flask import Flask, request, render_template, flash, jsonify
 app = Flask(__name__)
 m = M()
-k = 0
+
 @app.route("/", methods=['POST','GET'])
 def handle_data():
     global m
@@ -117,18 +117,15 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    global k
-    if k == 0:
-        numclass = 10
-        numfull = 5
-        numpartial = 3
-        k = numclass
-        print 'MAIN'
-        m.trainIt(numclass, numfull, numpartial, k)
-        app.secret_key = 'super secret key'
-        app.config['SESSION_TYPE'] = 'filesystem'
-        #sess.init_app(app)
-        app.debug = True
-        app.run(host='0.0.0.0', debug= False)
-        k+=1
+    numclass = 10
+    numfull = 5
+    numpartial = 3
+    k = numclass
+    print 'MAIN'
+    m.trainIt(numclass, numfull, numpartial, k)
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
+    #sess.init_app(app)
+    app.debug = True
+    app.run(host='0.0.0.0', debug= False)
 if __name__ == '__main__':main()
