@@ -75,6 +75,7 @@ class FileIO:
 
 
 def main():
+    pass
     # fil = 'lol.csv'
     # kmean = ([np.array([1,3]),np.array([2,5])],[np.array([1,2,3]),np.array([4,5,7]),np.array([6,9,19])])
     #
