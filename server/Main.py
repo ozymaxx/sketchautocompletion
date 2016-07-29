@@ -43,6 +43,7 @@ class M:
         return l+l1
 
 
+
     def trainIt(self, numClass, numFull, numPartial, k):
         self.features, self.isFull, self.classId, self.names, self.folderList = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
                                                                                                       folderList=self.files)
