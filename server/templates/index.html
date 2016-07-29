@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>CANVAS</title>
-    <script type = "text/javascript" src="jquery-3.1.0.min.js"></script>
+    <script type = "text/javascript" src="{{ url_for('static', filename='jquery-3.1.0.min.js') }}"></script>
     <script>
 
         if (window.jQuery) {
@@ -30,6 +30,6 @@
 </body>
 
 
-<script type = "text/javascript" src="sketcher.js"></script>
-<script type = "text/javascript" src="canvas.js"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='sketcher.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename='canvas.js') }}"></script>
 </html>
