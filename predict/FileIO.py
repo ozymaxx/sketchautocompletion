@@ -88,8 +88,6 @@ class FileIO:
             a = filter(lambda a: a != "a", a)
             k1[i] = np.array(a)
 
-
-
         k2 = pd.read_csv( f+self.startCent)
         k2 = list(k2.as_matrix())
         return names,classId, isFull,features,(k1,k2)
