@@ -9,6 +9,7 @@ sys.path.append("../../libsvm-3.21/python/")
 from extractor import *
 import numpy as np
 from featureutil import *
+from FileIO import *
 
 class M:
     """The main class to be called"""
@@ -40,8 +41,9 @@ class M:
 
 
     def trainIt(self, numClass, numFull, numPartial, k):
-        self.features, self.isFull, self.classId, self.names = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
-                                                                                     folderList=self.files)
+        print "TRAININDINFAIND"
+        self.features, self.isFull, self.classId, self.names, self.folderList = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
+                                                                                                      folderList=self.files)
         numtestdata = 5
         print 'Loaded ' + str(len(self.features)) + ' sketches'
         #partition data into test and training
@@ -51,6 +53,13 @@ class M:
         constarr = getConstraints(NUMPOINTS, self.isFull, self.classId)
         ckmeans = CKMeans(constarr, np.transpose(self.features), k=k)
         self.kmeansoutput = ckmeans.getCKMeans()
+        # a = self.kmeansoutput
+        # fio = FileIO()
+        #
+        # fio.saveAll(self.isFull,self.names,self.features,self.kmeansoutput,"lololo")
+        #
+        # self.names, self.isFull, self.features, self.kmeansoutput = fio.loadAll("lololo")
+
 
         # find heterogenous clusters and train svm
         self.trainer = Trainer(self.kmeansoutput, self.classId, self.features)  ### FEATURES : TRANSPOSE?
@@ -77,12 +86,12 @@ class M:
 def main():
     # load files
     numclass = 2
-    numfull = 40
-    numpartial = 5
+    numfull = 2
+    numpartial = 2
     numtestdata = 5
 
     m = M()
-    m.trainIt(2,10,10,2)
+    m.trainIt(1,2,1,1)
 
     features=m.features
     classId = m.classId
