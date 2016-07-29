@@ -26,7 +26,7 @@ class M:
                       'baseball-bat', 'basket']
         self.extr = Extractor('../data/')
         self.extr.prnt = True
-        self.n = 5
+        self.n = 10
     def getBestPredictions(self, c):
         a = sorted(c, key=c.get, reverse=True)[:self.n]
         l = ''
@@ -38,7 +38,6 @@ class M:
 
 
     def trainIt(self, numClass, numFull, numPartial, k):
-        print "TRAININDINFAIND"
         self.features, self.isFull, self.classId, self.names, self.folderList = self.extr.loadfolders(numclass = numClass, numfull=numFull, numpartial=numPartial,
                                                                                                       folderList=self.files)
         numtestdata = 5
@@ -80,9 +79,9 @@ class M:
 from flask import Flask, request, render_template, flash, jsonify
 app = Flask(__name__)
 m = M()
+k = 0
 @app.route("/", methods=['POST','GET'])
 def handle_data():
-    print 'HANDLE DATA'
     global m
     try:
         queryjson = request.args.get("json")
@@ -118,16 +117,18 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    numclass = 5
-    numfull = 3
-    numpartial = 3
-    k = 5
-    print 'MAIN'
-    m.trainIt(numclass, numfull, numpartial, k)
-    app.secret_key = 'super secret key'
-    app.config['SESSION_TYPE'] = 'filesystem'
-    #sess.init_app(app)
-    app.debug = True
-    app.run(host='0.0.0.0')
-
+    global k
+    if k == 0:
+        numclass = 10
+        numfull = 5
+        numpartial = 3
+        k = numclass
+        print 'MAIN'
+        m.trainIt(numclass, numfull, numpartial, k)
+        app.secret_key = 'super secret key'
+        app.config['SESSION_TYPE'] = 'filesystem'
+        #sess.init_app(app)
+        app.debug = True
+        app.run(host='0.0.0.0')
+        k+=1
 if __name__ == '__main__':main()
