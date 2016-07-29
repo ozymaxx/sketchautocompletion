@@ -76,7 +76,7 @@ class M:
 
         return self.getBestPredictions(classProb)
 
-from flask import Flask, request, render_template, flash, jsonify
+from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 m = M()
 
@@ -84,14 +84,23 @@ m = M()
 def handle_data():
     global m
     if (request.method == 'POST'):
-        queryjson = request.json
-        print(queryjson)
-        text_file = open('./query.json', "w")
-        text_file.write(queryjson)
-        text_file.close()
+        try:
+            print(type(json.dumps(request.json)))
+            queryjson = request.json
+            print(json.dumps(request.json))
+            text_file = open('./query.json', "w")
+            text_file.write(json.dumps(request.json))
+            text_file.close()
 
-        answer = m.predictByPath("./query.json")
-        return answer
+            answer = m.predictByPath("./query.json")
+            return answer
+        except Exception as e:
+            flash(e)
+            text_file = open('./errorquery.json', "w")
+            text_file.write(json.dumps(request.json))
+            text_file.close()
+            print(e)
+            return "Error" + str(e)
     else:
         try:
             queryjson = request.args.get("json")

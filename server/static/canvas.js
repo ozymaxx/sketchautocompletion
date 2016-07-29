@@ -5,6 +5,7 @@
  */
 
 
+url = "http://localhost:5000";
 
 // ISSUE: DO WE NEED TOUCH TOLERANCE?
 console.log("BEN YAŞIYORUM ÖLMEDİM YANİ");
@@ -84,6 +85,7 @@ canvas.onmouseup = function() {
     //coords.innerHTML = JSON.stringify(points);
     coords.innerHTML = JSON.stringify(sketch.getFinalResult());
     pid = 0;
+    sendByStroke(url);
 
 };
 
@@ -96,7 +98,6 @@ function getXY(e) {
 render.onclick = function() {clear();};
 
 
-url = "http://localhost:5000";
 
 post.onclick = function() {
     console.log("im onclick");
@@ -143,20 +144,36 @@ function send(URL) {
     $.ajax({
     type: 'POST',
     url: URL,
-    data: JSON.stringify(result),
+    data: JSON.stringify(sketch.getFinalResult()),
     dataType: 'json',
     contentType: 'application/json; charset=utf-8'
-}).done(function(msg) {
-    alert("Data Saved: ");
+}).always(function(msg) {
+    //alert("Data Saved: ");
+        console.log("denemeeeeeeeeeeeeeee");
+        result.innerHTML = "Result::::: " + str(msg);
 });
 
-    result.innerHTML = "Result::::: " + JSON.stringify(sketch.getFinalResult());
-    console.log()
+
+
+
+    //console.log("geldim abab "  + res );
     clear();
 };
 
-$(document).ready(function(){
-    $("button").click(function(){
-        $("#div1").load("demo_test.txt");
+function sendByStroke(URL) {
+    console.log("sending to " + URL);
+    //$.post(URL, result);
+
+    $.ajax({
+        type: 'POST',
+        url: URL,
+        data: JSON.stringify(sketch.getFinalResult()),
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8'
+    }).always(function (msg) {
+        //alert("Data Saved: ");
+        console.log("denemeeeeeeeeeeeeeee");
+        result.innerHTML = "Result::::: " + str(msg);
     });
-});
+}
+

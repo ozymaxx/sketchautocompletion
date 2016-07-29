@@ -21,7 +21,7 @@ var Point = function (x, y, timestamp, pid) {
     // String
     this.pid = "" + pid;
     // Long
-    this.timestamp = timestamp;
+    this.time = timestamp;
     // Doubles
     this.x = x;
     this.y = y;
