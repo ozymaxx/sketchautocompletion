@@ -3,7 +3,6 @@ FileIO
 Ahmet BAGLAN
 14.07.2016
 """
-
 import numpy as np
 import pandas as pd
 class FileIO:
@@ -46,7 +45,7 @@ class FileIO:
         names = a['names'].tolist()
         isFull = a['isFull'].as_matrix()
         features = a[a.columns[2:]].as_matrix()
-        return names,isFull,features
+        return names, isFull, features
 
 
     def saveTraining(self, names,classId, isFull, feature, kmeansoutput,f):
@@ -90,7 +89,7 @@ class FileIO:
 
         k2 = pd.read_csv( f+self.startCent)
         k2 = list(k2.as_matrix())
-        return names,classId, isFull,features,(k1,k2)
+        return names, classId, isFull, features, (k1, k2)
 
         # return (k1,k2)
 def main():
@@ -104,6 +103,5 @@ def main():
 
     # # print a
     a = 5
-
 
 if __name__ == "__main__": main()

@@ -99,7 +99,7 @@ def main():
     names = m.names
 
     features, isFull, classId, names, testfeatures, testnames, testclassid = \
-        partitionfeatures(features, isFull, classId,names, numtestdata, randomPartioning = True)
+        partitionfeatures(features, isFull, classId,names, numtestdata, randomPartioning=True)
 
     ncount = [0]*numclass
     for index in range(len(testfeatures)):
