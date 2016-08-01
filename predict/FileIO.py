@@ -48,10 +48,14 @@ class FileIO:
         return names, isFull, features
 
 
-    def saveTraining(self, names,classId, isFull, feature, kmeansoutput,f):
+    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename):
         """"
         Saves Training
         """
+        import os
+        if not os.path.exists(path):
+            os.mkdir(path)
+
         dfCl = pd.DataFrame(data= classId)
         dfCl.columns = ['ClassId']
         df = pd.DataFrame(data = isFull)
@@ -62,12 +66,12 @@ class FileIO:
         df = pd.DataFrame(names)
         df.columns =['names']
         result = pd.concat([df, result], axis=1, join_axes=[result.index])
-        result.to_csv(f, mode = 'w', index = False)
+        result.to_csv(path + '/' + filename, mode = 'w', index = False)
 
         df = pd.DataFrame(data = kmeansoutput[0])
-        df.to_csv(f+self.startClu, mode = 'w', index = False)
+        df.to_csv(path + '/' + filename + self.startClu, mode = 'w', index = False)
         df1 = pd.DataFrame(data = kmeansoutput[1])
-        df1.to_csv( f+self.startCent, mode = 'w', index = False)
+        df1.to_csv(path + '/' + filename +self.startCent, mode = 'w', index = False)
 
     def loadTraining(self, f):
         """"

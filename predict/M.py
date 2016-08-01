@@ -68,18 +68,18 @@ class M:
 
     def predictIt(self, instance):
             # find the probability of given feature to belong any of athe classes
-        priorClusterProb = self.trainer.computeProb()
+        priorClusterProb = self.trainer.computePriorProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
-        classProb = predictor.calculateProb(instance, priorClusterProb)
+        classProb = predictor.calculatePosteriorProb(instance, priorClusterProb)
         self.getBestPredictions(classProb)
         return classProb,max(classProb, key=classProb.get)
 
     def predictByPath(self,fullsketchpath):
 
         instance = featureExtract(fullsketchpath)
-        priorClusterProb = self.trainer.computeProb()
+        priorClusterProb = self.trainer.computePriorProb()
         predictor = Predictor(self.kmeansoutput, self.classId)
-        classProb = predictor.calculateProb(instance, priorClusterProb)
+        classProb = predictor.calculatePosteriorProb(instance, priorClusterProb)
         return classProb,max(classProb, key=classProb.get)
 
 

@@ -77,14 +77,14 @@ class Main:
         self.trainer = Trainer(self.kmeansoutput, self.classId, self.features) ### FEATURES : TRANSPOSE?
         heteClstrFeatureId, heteClstrId = self.trainer.getHeterogenous()
         self.trainer.trainSVM(heteClstrFeatureId)
-        self.priorClusterProb = self.trainer.computeProb()
+        self.priorClusterProb = self.trainer.computePriorProb()
 
 
     def predictItInTheSet(self, instance):
         # find the probability of given feature to belong any of the classes
         loc = '../json/'+instance+'.json'
         predictor = Predictor(self.kmeansoutput,self.classId)
-        outDict = predictor.calculateProb(featureExtract(loc), self.priorClusterProb)
+        outDict = predictor.calculatePosteriorProb(featureExtract(loc), self.priorClusterProb)
         d1= {}
         for i in outDict:
             d1[self.d[i]] = outDict[i]
@@ -93,7 +93,7 @@ class Main:
     def predictItUsingFeatures(self,feature):
 
         predictor = Predictor(self.kmeansoutput,self.classId)
-        outDict = predictor.calculateProb(feature, self.priorClusterProb)
+        outDict = predictor.calculatePosteriorProb(feature, self.priorClusterProb)
         return outDict
 
 

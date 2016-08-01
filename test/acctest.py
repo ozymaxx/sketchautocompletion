@@ -47,7 +47,7 @@ def main():
     heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
     trainer.trainSVM(heteClstrFeatureId)
     # find the probability of given feature to belong any of athe classes
-    priorClusterProb = trainer.computeProb()
+    priorClusterProb = trainer.computePriorProb()
     predictor = Predictor(kmeansoutput, classId)
 
     ncount = [0]*numclass
@@ -55,7 +55,7 @@ def main():
         feature = testfeatures[index]
         name = testnames[index]
 
-        classProb = predictor.calculateProb(feature, priorClusterProb)
+        classProb = predictor.calculatePosteriorProb(feature, priorClusterProb)
         maxClass = max(classProb, key=classProb.get)
         argsort = np.argsort(classProb.values())
 
