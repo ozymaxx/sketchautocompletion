@@ -124,6 +124,8 @@ class M:
         self.trainer.trainSVM(heteClstrFeatureId,self.subDirectory)
 
 
+
+
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 m = M('deneme')
