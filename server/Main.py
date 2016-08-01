@@ -13,7 +13,7 @@ from FileIO import *
 from shapecreator import *
 import time
 
-class M:
+class MainHelper:
     """The main class to be called"""
     def __init__(self, trainingName):
         self.features = list()
@@ -126,7 +126,7 @@ class M:
 
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
-m = M('fan')
+m = MainHelper('fan')
 
 @app.route("/", methods=['POST','GET'])
 def handle_data():
