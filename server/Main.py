@@ -120,8 +120,6 @@ class MainHelper:
 
         # find heterogenous clusters and train svm
         self.trainer = Trainer(self.kmeansoutput, self.classId, self.features)  ### FEATURES : TRANSPOSE?
-        heteClstrFeatureId, heteClstrId = self.trainer.getHeterogenous()
-        self.trainer.trainSVM(heteClstrFeatureId,self.subDirectory)
 
 
 from flask import Flask, request, render_template, flash, json
