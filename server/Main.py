@@ -4,7 +4,7 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../test/')
-sys.path.append("../../libsvm-3.21/python/")
+sys.path.append("C:\\Users\\1003\\PycharmProjects\\libsvm-3.21\\python")
 from extractor import *
 import numpy as np
 from featureutil import *
