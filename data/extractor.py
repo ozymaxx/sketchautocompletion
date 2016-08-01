@@ -5,11 +5,11 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append("../../libsvm-3.21/python/")
-from predict.feature import *
+from feature import *
 from trainer import *
 from FeatureExtractor import *
 from shapecreator import *
-from predict.FileIO import *
+from FileIO import *
 
 class Extractor:
     def __init__(self, path):

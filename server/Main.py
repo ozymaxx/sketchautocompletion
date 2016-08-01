@@ -4,6 +4,7 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../test/')
+sys.path.append('../data/')
 sys.path.append("../../libsvm-3.21/python")
 from extractor import *
 from FileIO import *
@@ -55,8 +56,8 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    doTrain = True
-    numclass, numfull, numpartial = 5, 80, 20
+    doTrain = False
+    numclass, numfull, numpartial = 3,5,3
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
