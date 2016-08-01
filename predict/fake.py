@@ -45,7 +45,7 @@ class Main:
                     break
 
                 print fullsketchpath
-                feature = featureExtract(fullsketchpath)
+
                 self.features.append(np.array(feature))
                 self.classId.append(classIdCount)
                 self.d[classIdCount] = folder

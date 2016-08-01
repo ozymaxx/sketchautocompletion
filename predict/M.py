@@ -6,8 +6,7 @@ sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../test/')
 sys.path.append("../../libsvm-3.21/python/")
-from extractor import *
-import numpy as np
+from data.extractor import *
 from featureutil import *
 from FileIO import *
 

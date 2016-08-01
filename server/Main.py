@@ -55,8 +55,8 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    doTrain = False
-    numclass, numfull, numpartial = 3, 5, 4
+    doTrain = True
+    numclass, numfull, numpartial = 5, 80, 20
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
