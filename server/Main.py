@@ -58,7 +58,7 @@ class MainHelper:
         self.numpartial = numPartial
 
         import os
-        self.subDirectory = self.mainDirectory + self.trainingName + "__" + "CFPK:" + str(self.numclass) + "_" + str(self.numfull) + "_" + str(self.numpartial) + "_" + str(self.k)
+        self.subDirectory = self.mainDirectory + self.trainingName + "__" + "CFPK_" + str(self.numclass) + "_" + str(self.numfull) + "_" + str(self.numpartial) + "_" + str(self.k)
 
         if not os.path.exists(self.subDirectory):
             os.makedirs(self.subDirectory)
@@ -189,7 +189,7 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    doTrain = True
+    doTrain = False
     numclass = 3
     numfull = 5
     numpartial = 5
@@ -199,7 +199,7 @@ def main():
         m.trainIt(numclass, numfull, numpartial, k)
         m.saveTraining()
     else:
-        m.loadTraining("deneme__CFPK:3_5_5_3")
+        m.loadTraining("fan__CFPK_3_5_5_3")
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
     #sess.init_app(app)
