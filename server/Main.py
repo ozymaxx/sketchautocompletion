@@ -15,8 +15,27 @@ import time
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 predictor = None
-files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
-             'banana', 'barn', 'baseball-bat', 'basket']
+
+files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana',
+         'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
+         'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf', 'boomerang', 'bottle-opener', 'bowl', 'brain', 'bread',
+         'bridge', 'bulldozer', 'bus', 'bush', 'butterfly', 'cabinet', 'cactus', 'cake', 'calculator', 'camel', 'camera',
+         'candle', 'cannon', 'canoe', 'car-(sedan)', 'carrot', 'castle', 'cat', 'cell-phone', 'chair', 'chandelier',
+         'church', 'cigarette', 'cloud', 'comb', 'computer-monitor', 'computer-mouse', 'couch', 'cow', 'crab',
+         'crane-(machine)', 'crocodile', 'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut', 'door', 'door-handle',
+         'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye', 'eyeglasses', 'face', 'fan', 'feather', 'fire-hydrant',
+         'fish', 'flashlight', 'floor-lamp', 'flower-with-stem', 'flying-bird', 'flying-saucer', 'foot', 'fork', 'frog',
+         'frying-pan', 'giraffe', 'grapes', 'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp', 'hat', 'head',
+         'head-phones', 'hedgehog', 'helicopter', 'helmet', 'horse', 'hot-air-balloon', 'hot-dog', 'hourglass', 'house',
+         'human-skeleton', 'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife', 'ladder', 'laptop', 'leaf',
+         'lightbulb', 'lighter', 'lion', 'lobster', 'loudspeaker', 'mailbox', 'megaphone', 'mermaid', 'microphone',
+         'microscope', 'monkey', 'moon', 'mosquito', 'motorbike', 'mouse-(animal)', 'mouth', 'mug', 'mushroom', 'nose',
+         'octopus', 'owl', 'palm-tree', 'panda', 'paper-clip', 'parachute', 'parking-meter', 'parrot', 'pear', 'pen',
+         'penguin', 'person-sitting', 'person-walking', 'piano', 'pickup-truck', 'pig', 'pigeon', 'pineapple',
+         'pipe-(for-smoking)', 'pizza', 'potted-plant', 'power-outlet', 'present', 'pretzel', 'pumpkin', 'purse',
+         'rabbit', 'race-car', 'radio', 'rainbow', 'revolver', 'rifle', 'rollerblades', 'rooster', 'sailboat',
+         'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea-turtle',
+         'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
 def getBestPredictions(classProb, n):
     global files
@@ -56,15 +75,15 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    doTrain = False
-    numclass, numfull, numpartial = 3,5,3
+    ForceTrain = False
+    numclass, numfull, numpartial = 10, 6, 3
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
     fio = FileIO()
 
     # if training data is already computed, import
-    if os.path.exists(trainingpath) and not doTrain:
+    if os.path.exists(trainingpath) and not ForceTrain:
         names, classId, isFull, features, kmeansoutput = fio.loadTraining(trainingpath + "/" + trainingName)
     else:
         extr = Extractor('../data/')
@@ -79,10 +98,9 @@ def main():
         # find heterogenous clusters and train svm
         trainer = Trainer(kmeansoutput, classId, features)
         heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
-        trainer.trainSVM(heteClstrFeatureId, trainingpath)
-
         fio.saveTraining(names, classId, isFull, features, kmeansoutput,
-                         trainingpath,  trainingName)
+                         trainingpath, trainingName)
+        trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
     global predictor
     predictor = Predictor(kmeansoutput, classId, trainingpath)
@@ -91,5 +109,5 @@ def main():
     app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
     app.run(host='0.0.0.0', debug=False)
-    print 'Server started'
+    print 'Server ended'
 if __name__ == '__main__':main()
