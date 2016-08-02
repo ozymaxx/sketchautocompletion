@@ -33,6 +33,7 @@ files = ['airplane','cat','hamburger','paper-clip','alarm-clock','cell-phone','h
          'camel','foot','mouth','shark','camera','fork','mug','sheep','candle','frog','mushroom','ship','cannon','frying-pan','nose',
          'shoe','canoe','giraffe','octopus','shovel','carrot','grapes','owl','skateboard','car-(sedan)','grenade','palm-tree','castle',
          'guitar','panda']
+files.sort()
 
 def getBestPredictions(classProb, n):
     global files
@@ -73,7 +74,7 @@ def homepage():
 
 def main():
     doTrain = True
-    numclass, numfull, numpartial = 3, 5, 3
+    numclass, numfull, numpartial = 10, 6, 3
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
@@ -95,10 +96,9 @@ def main():
         # find heterogenous clusters and train svm
         trainer = Trainer(kmeansoutput, classId, features)
         heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
-        trainer.trainSVM(heteClstrFeatureId, trainingpath)
-
         fio.saveTraining(names, classId, isFull, features, kmeansoutput,
-                         trainingpath,  trainingName)
+                         trainingpath, trainingName)
+        trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
     global predictor
     predictor = Predictor(kmeansoutput, classId, trainingpath)

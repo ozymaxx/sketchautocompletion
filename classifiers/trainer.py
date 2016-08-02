@@ -39,6 +39,11 @@ class Trainer:
             
             m = svm_train(prob, param,)
             allModels.append(m.get_SV())
+
+            import os
+            if not os.path.exists(dir):
+                os.mkdir(dir)
+
             svm_save_model(dir+"/" +"clus" + `order` + '.model', m)#Save the model for the cluster
             order+=1
         return allModels
