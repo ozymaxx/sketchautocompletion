@@ -6,7 +6,7 @@ Ahmet BAGLAN
 import sys
 sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python/")
-sys.path.append('../data/')
+
 import numpy as np
 import math
 
@@ -14,17 +14,14 @@ from svmutil import *
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
-import classesFile
 
-
-class Predictor:
+class newMethodPredictor:
     """The predictor class implementing functions to return probabilities"""
     def __init__(self, kmeansoutput, classId, subDirectory):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
-        self.files = classesFile.files
-        
+
     def getDistance(self, x, y):
         """Computes euclidian distance between x instance and y instance
         inputs: x,y instances
@@ -32,7 +29,7 @@ class Predictor:
         x = np.asarray(x)
         y = np.asarray(y)
         return np.sqrt(np.sum((x-y)**2))
-    
+
     def clusterProb(self, instance, normalProb):
         """
         Returns P(Ck|x)
@@ -40,7 +37,7 @@ class Predictor:
         instance: feature list of the instance to be queried"""
         probTup = []
         for i in range(len(self.kmeansoutput[1])):
-    
+
             dist = self.getDistance(instance, self.kmeansoutput[1][i])
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
@@ -95,7 +92,7 @@ class Predictor:
         # dict of probabilities of given instance belonging to every possible class
         # initially zero
         outDict = dict.fromkeys([i for i in set(self.classId)], 0.0)
-        
+
         homoClstrFeatureId, homoClstrId = self.getHomogenous()
         heteClstrFeatureId, heteClstrId = self.getHeterogenous()
 
@@ -103,26 +100,26 @@ class Predictor:
 
         # normalize cluster probability to add up to 1
         clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
-    
+
         for clstrid in range(len(self.kmeansoutput[0])):
             probabilityToBeInThatCluster = clusterPrb[clstrid]
             if clstrid in homoClstrId:
-                
+
                 # if homogeneous cluster is empty, then do not
                 # process it and continue
                 if len(self.kmeansoutput[0][clstrid]) == 0:
                     continue
-                
+
                 # if homogeneous then only a single class which is the first
                 # feature points class
                 classesInCluster = [self.classId[self.kmeansoutput[0][clstrid][0]]]
-                
+
             elif clstrid in heteClstrId:
                 modelName = self.subDirectory +"/clus" + ` heteClstrId.index(clstrid) ` +".model"
                 m = svm_load_model(modelName)
                 classesInCluster = m.get_labels()
                 labels, probs = self.svmProb(m, [instance.tolist()])
-                
+
             for c in range(len(classesInCluster)):
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
@@ -173,21 +170,3 @@ class Predictor:
                 homoCluster.append(self.kmeansoutput[0][clusterId])
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
-
-    def getBestPredictions(self,classProb, n):
-        a = sorted(classProb, key=classProb.get, reverse=True)[:n]
-        l = ''
-        l1 = ''
-        for i in a:
-            l1 += str(classProb[i])
-            l += self.files[i]
-            l += '&'
-            l1 += '&'
-        l1 = l1[:-1]
-        return l + l1
-
-    def giveOutput(self,queryjson, n):
-        classPr = self.predictByString(str(queryjson))
-        return self.getBestPredictions(classPr, n)
-
-

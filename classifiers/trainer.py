@@ -18,7 +18,7 @@ class Trainer:
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         
-    def trainSVM(self, clusterIdArr, dir):
+    def trainSVM(self, clusterIdArr, directory):
         """Trains the support vector machine and saves models
         Inputs : clusterIdArr ---> clusters list
         Outputs : Models
@@ -41,10 +41,10 @@ class Trainer:
             allModels.append(m.get_SV())
 
             import os
-            if not os.path.exists(dir):
-                os.mkdir(dir)
+            if not os.path.exists(directory):
+                os.mkdir(directory)
 
-            svm_save_model(dir+"/" +"clus" + `order` + '.model', m)#Save the model for the cluster
+            svm_save_model(directory + "/" + "clus" + `order` + '.model', m)#Save the model for the cluster
             order+=1
         return allModels
 
