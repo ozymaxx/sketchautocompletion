@@ -150,8 +150,6 @@ class CuCKMeans():
 
 if __name__ == "__main__":
 
-    print "Starting demo modus: Benchmarking and error checking"
-
     dimensions = 720
     nclusters = 20
 
@@ -172,5 +170,3 @@ if __name__ == "__main__":
     
     print type(clusters),type(clusters[0]),type(centers),type(centers[0])
     print len(clusters),len(centers),len(centers[0])
-
-    #errorsCPU_GPU = nclusters * dimensions - sum(1 for a, b in zip(gpu_book.ravel(), cpu_book.ravel()) if (abs(a - b) <= (rtol * abs(b))))
