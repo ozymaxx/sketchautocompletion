@@ -16,7 +16,7 @@ class Extractor:
         if (path[len(path)-1]) is '/':
             path = path[0:len(path)-1]
         self.path = path
-        self.jsonpath = path + '/json'
+        self.jsonpath = path + '/json   '
         self.csvpath = path + '/csv'
         self.fio = FileIO()
         self.prnt = False
@@ -74,8 +74,10 @@ class Extractor:
         return filename.count('_') == 1
 
     def loadfolderscsv(self, numclass, numfull, numpartial, folderList = []):
-        if folderList is []:
-            folderList = os.listdir(self.csvpath)[0:numclass]
+        if not folderList:
+            folderList = os.listdir(self.csvpath)
+            folderList.sort(key=str.lower)
+            folderList = folderList[:numclass]
 
         if len(folderList) > numclass:
             folderList = folderList[0:numclass]
@@ -104,6 +106,7 @@ class Extractor:
 
                 classId.extend([classCount] * mask.count(True))
             classCount += 1
+        print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
 
     def loadfoldersjson(self, numclass, numfull, numpartial, folderList = []):

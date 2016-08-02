@@ -67,13 +67,13 @@ class Predictor:
 
     def predictIt(self, instance):
         # find the probability of given feature to belong any of athe classes
-        priorClusterProb = self.computePriorProb()
+        priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
     def predictByPath(self, fullsketchpath):
         instance = featureExtract(fullsketchpath)
-        priorClusterProb = self.computePriorProb()
+        priorClusterProb = self.calculatePriorProb()
         classProb = predictor.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
@@ -81,7 +81,7 @@ class Predictor:
         loadedSketch = shapecreator.buildSketch('json', jstring)
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(loadedSketch)
-        priorClusterProb = self.computePriorProb()
+        priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
@@ -128,7 +128,7 @@ class Predictor:
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
         return outDict
 
-    def computePriorProb(self):
+    def calculatePriorProb(self):
         """
         Returns prior probabilities list of being in a cluster
         p = len(cluster)/len(total)

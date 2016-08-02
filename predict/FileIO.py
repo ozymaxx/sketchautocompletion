@@ -11,6 +11,7 @@ class FileIO:
         self.endAll = "__all__.csv"
         self.startCent = "__Centers__"
         self.startClu = "__Cluster__"
+
     def save(self,isFull, names, feature, f):
         """"Save features to csv file
         isFull: array of 1 or 0
@@ -93,7 +94,15 @@ class FileIO:
 
         k2 = pd.read_csv( f+self.startCent)
         k2 = list(k2.as_matrix())
-        return names, classId, isFull, features, (k1, k2)
+
+        folderList = []
+        for name in names:
+            className = name.split('_')[0]
+            if className not in folderList:
+                folderList.append(className)
+
+        folderList.sort()
+        return names, classId, isFull, features, (k1, k2), folderList
 
         # return (k1,k2)
 def main():
