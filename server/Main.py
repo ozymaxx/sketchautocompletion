@@ -16,24 +16,26 @@ from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 predictor = None
 
-files = ['airplane','cat','hamburger','paper-clip','alarm-clock','cell-phone','hammer','parachute','angel','chair','hand',
-         'parking-meter','ant','chandelier','harp','parrot','apple','church','hat','pear','arm','cigarette','head','pen',
-         'armchair','cloud','head-phones','penguin','ashtray','comb','hedgehog','person-sitting','axe','computer-monitor',
-         'helicopter','person-walking','backpack','computer-mouse','helmet','piano','banana','couch','horse','pickup-truck',
-         'barn','cow','hot-air-balloon','pig','baseball-bat','crab','hot-dog','pigeon','basket','crane-(machine)','hourglass',
-         'pineapple','bathtub','crocodile','house','pipe-(for-smoking)','bear-(animal)','crown','human-skeleton','pizza','bed',
-         'cup','ice-cream-cone','potted-plant','bee','diamond','ipod','power-outlet','beer-mug','dog','kangaroo','present','bell',
-         'dolphin','key','pretzel','bench','donut','keyboard','pumpkin','bicycle','door','knife','purse','binoculars','door-handle',
-         'ladder','rabbit','blimp','dragon','laptop','race-car','book','duck','leaf','radio','bookshelf','ear','lightbulb','rainbow',
-         'boomerang','elephant','lighter','revolver','bottle-opener','envelope','lion','rifle','bowl','eye','lobster','rollerblades',
-         'brain','eyeglasses','loudspeaker','rooster','bread','face','mailbox','sailboat','bridge','fan','megaphone','santa-claus',
-         'bulldozer','feather','mermaid','satellite','bus','fire-hydrant','microphone','satellite-dish','bush','fish','microscope',
-         'saxophone','butterfly','flashlight','monkey','scissors','cabinet','floor-lamp','moon','scorpion','cactus','flower-with-stem',
-         'mosquito','screwdriver','cake','flying-bird','motorbike','seagull','calculator','flying-saucer','mouse-(animal)','sea-turtle',
-         'camel','foot','mouth','shark','camera','fork','mug','sheep','candle','frog','mushroom','ship','cannon','frying-pan','nose',
-         'shoe','canoe','giraffe','octopus','shovel','carrot','grapes','owl','skateboard','car-(sedan)','grenade','palm-tree','castle',
-         'guitar','panda']
-files.sort()
+files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana',
+         'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
+         'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf', 'boomerang', 'bottle-opener', 'bowl', 'brain', 'bread',
+         'bridge', 'bulldozer', 'bus', 'bush', 'butterfly', 'cabinet', 'cactus', 'cake', 'calculator', 'camel', 'camera',
+         'candle', 'cannon', 'canoe', 'car-(sedan)', 'carrot', 'castle', 'cat', 'cell-phone', 'chair', 'chandelier',
+         'church', 'cigarette', 'cloud', 'comb', 'computer-monitor', 'computer-mouse', 'couch', 'cow', 'crab',
+         'crane-(machine)', 'crocodile', 'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut', 'door', 'door-handle',
+         'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye', 'eyeglasses', 'face', 'fan', 'feather', 'fire-hydrant',
+         'fish', 'flashlight', 'floor-lamp', 'flower-with-stem', 'flying-bird', 'flying-saucer', 'foot', 'fork', 'frog',
+         'frying-pan', 'giraffe', 'grapes', 'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp', 'hat', 'head',
+         'head-phones', 'hedgehog', 'helicopter', 'helmet', 'horse', 'hot-air-balloon', 'hot-dog', 'hourglass', 'house',
+         'human-skeleton', 'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife', 'ladder', 'laptop', 'leaf',
+         'lightbulb', 'lighter', 'lion', 'lobster', 'loudspeaker', 'mailbox', 'megaphone', 'mermaid', 'microphone',
+         'microscope', 'monkey', 'moon', 'mosquito', 'motorbike', 'mouse-(animal)', 'mouth', 'mug', 'mushroom', 'nose',
+         'octopus', 'owl', 'palm-tree', 'panda', 'paper-clip', 'parachute', 'parking-meter', 'parrot', 'pear', 'pen',
+         'penguin', 'person-sitting', 'person-walking', 'piano', 'pickup-truck', 'pig', 'pigeon', 'pineapple',
+         'pipe-(for-smoking)', 'pizza', 'potted-plant', 'power-outlet', 'present', 'pretzel', 'pumpkin', 'purse',
+         'rabbit', 'race-car', 'radio', 'rainbow', 'revolver', 'rifle', 'rollerblades', 'rooster', 'sailboat',
+         'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea-turtle',
+         'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
 def getBestPredictions(classProb, n):
     global files
@@ -73,7 +75,7 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    doTrain = True
+    ForceTrain = False
     numclass, numfull, numpartial = 10, 6, 3
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
@@ -81,7 +83,7 @@ def main():
     fio = FileIO()
 
     # if training data is already computed, import
-    if os.path.exists(trainingpath) and not doTrain:
+    if os.path.exists(trainingpath) and not ForceTrain:
         names, classId, isFull, features, kmeansoutput = fio.loadTraining(trainingpath + "/" + trainingName)
     else:
         extr = Extractor('../data/')
@@ -107,5 +109,5 @@ def main():
     app.config['SESSION_TYPE'] = 'filesystem'
     app.debug = True
     app.run(host='0.0.0.0', debug=False)
-    print 'Server started'
+    print 'Server ended'
 if __name__ == '__main__':main()
