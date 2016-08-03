@@ -8,12 +8,13 @@ from pycuda import driver, compiler, gpuarray
 import pycuda.autoinit
 
 class CuCKMeans():
-    def __init__(self, consArr,features,k):
-        self.consArr = consArr
+    def __init__(self,features, k, classId, isFull):
         self.features = features
         self.k = k
+        self.classId = np.asarray(classId)
+        self.isFull = np.asarray(isFull)
         
-    def cu_vq(self,obs, clusters):
+    def cu_vq(self, obs, clusters):
         kernel_code_template = """
          #include "float.h" // for FLT_MAX
            // the kernel definition
@@ -22,7 +23,8 @@ class CuCKMeans():
               for( int i = 0; i < dimensions; i++ ) target[i] = source[i];
           }
           __global__ void cu_vq(float *g_idata, float *g_centroids,
-            int * cluster, float *min_dist, int numClusters, int numDim, int numPoints) {
+            int *classId, int *isFull, int *votes,
+            int *cluster, float *min_dist, int numClusters, int numDim, int numPoints) {
             int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
             __shared__ float mean[%(DIMENSIONS)s];
             float minDistance = FLT_MAX;
@@ -43,10 +45,12 @@ class CuCKMeans():
               }
               cluster[valindex]=myCentroid;
               min_dist[valindex]=sqrt(minDistance);
+              if(isFull[valindex] == 1) {votes[(classId[valindex])*numClusters + myCentroid]++;}
             }
           }
         """
         nclusters = clusters.shape[0]
+        nclasses = len(np.unique(self.classId))
         points = obs.shape[0]
         dimensions = obs.shape[1]
         block_size = 512
@@ -58,13 +62,21 @@ class CuCKMeans():
     
         dataT = obs.T.astype(np.float32).copy()
         clusters = clusters.astype(np.float32)
-    
+        
+        classIds = self.classId.astype(np.int32).copy()
+        isFulls = self.isFull.astype(np.int32).copy()
+        
         cluster = gpuarray.zeros(points, dtype=np.int32)
         min_dist = gpuarray.zeros(points, dtype=np.float32)
-    
+        
+        instanceVotes = gpuarray.zeros(nclasses*nclusters, dtype=np.int32)
+        
         kmeans_kernel = mod.get_function('cu_vq')
         kmeans_kernel(driver.In(dataT),
                       driver.In(clusters),
+                      driver.In(classIds),
+                      driver.In(isFulls),
+                      instanceVotes,
                       cluster,
                       min_dist,
                       np.int32(nclusters),
@@ -74,9 +86,52 @@ class CuCKMeans():
             block=(block_size, 1, 1),
         )
     
-        return cluster.get(), min_dist.get()
+        return cluster.get(), min_dist.get(), instanceVotes.get()
     
     
+    def cu_av(self, obs, clusters, obs_code, classCluster):
+        kernel_code_template = """
+           // the kernel definition
+          __global__ void cu_av(int *obs_code, int *classCluster,int *classId, int *isFull,
+            int numPoints) {
+            int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
+            if(valindex < numPoints){
+              if(isFull[valindex] == 1) {
+                obs_code[valindex] = classCluster[classId[valindex]];
+                }
+            }
+          }
+        """
+        nclusters = clusters.shape[0]
+        points = obs.shape[0]
+        dimensions = obs.shape[1]
+        block_size = 512
+        blocks = int(math.ceil(float(points) / block_size))
+        kernel_code = kernel_code_template % {
+                          'DIMENSIONS': dimensions}
+        mod = compiler.SourceModule(kernel_code)
+
+        
+        classIds = self.classId.astype(np.int32).copy()
+        isFulls = self.isFull.astype(np.int32).copy()
+        obs_Code = obs_code.astype(np.int32).copy()
+        obs_Code = gpuarray.to_gpu(obs_Code)
+        classClusters = np.asarray(classCluster).astype(np.int32).copy()
+        
+        cluster = gpuarray.zeros(points, dtype=np.int32)
+        
+        kmeans_kernel = mod.get_function('cu_av')
+        kmeans_kernel(obs_Code,
+                      driver.In(classClusters),
+                      driver.In(classIds),
+                      driver.In(isFulls),
+                      np.int32(points),
+            grid=(blocks, 1),
+            block=(block_size, 1, 1),
+        )
+    
+        return obs_Code.get()
+
     def _cukmeans(self,features, clusters, thresh=1e-5):
 
         code_book = np.array(clusters, copy=True)  # My clusters centers
@@ -85,10 +140,40 @@ class CuCKMeans():
         iterNum = 0
         nc = None
         while diff > thresh and iterNum < 20:
+            print "iteration number : ", iterNum
             nc = code_book.shape[0]  # nc : number of clusters
-            #compute membership and distances between features and code_book
             
-            obs_code, distort = self.cu_vq(features, code_book)
+            #compute membership and distances between features and code_book
+            print "Apply K Means!"
+            obs_code, distort, instanceVotes = self.cu_vq(features, code_book)
+            
+            # Assign full sketches to their own clusters
+            nclusters = clusters.shape[0]
+            nclasses = len(np.unique(self.classId))
+            voteList = np.split(instanceVotes, nclasses) # VOTE list
+            
+            print "Get Voting!"
+            # Find the most voted cluster for every class
+            classClusters = []
+            i = 0
+            failsafe = 20
+            for myClass in voteList:
+                
+                highestIdx = myClass.argmax()
+                while (highestIdx in classClusters and failsafe > 0):
+                    myClass[highestIdx] = -1
+                    highestIdx = myClass.argmax()
+                    failsafe -=1
+                classClusters.append(highestIdx)
+                i+=1
+                
+            # assign every full sketch to that cluster
+            
+            print "Reassign full sketches!"
+            obs_code2 =  self.cu_av(features, code_book, obs_code, classClusters)
+            #print nclasses, nclusters, len(voteList), len(instanceVotes)
+            #print len(voteList[0]), len(voteList[1]), sum(voteList[0])
+            
             # obs_code is the membership of points
             avg_dist.append(np.mean(distort, axis=-1))
             #recalc code_book as centroids of associated features          
@@ -100,7 +185,7 @@ class CuCKMeans():
                         code_book[i] = np.mean(cell_members, 0)
                         has_members.append(i)
                 #remove code_books that didn't have any members
-                code_book = np.take(code_book, has_members, 0)
+                #code_book = np.take(code_book, has_members, 0)
             if len(avg_dist) > 1:
                 diff = avg_dist[-2] - avg_dist[-1]
             iterNum += 1
@@ -114,7 +199,7 @@ class CuCKMeans():
         for point in range(len(obs_code)):
             clusterList[obs_code[point]] = np.append(clusterList[obs_code[point]], point)
 
-        print "iteration number : ", iterNum
+        
         #return  clusterList, code_book, avg_dist[-1]
         return  clusterList, centerList, avg_dist[-1]
 
@@ -151,22 +236,25 @@ class CuCKMeans():
 if __name__ == "__main__":
 
     dimensions = 720
-    nclusters = 20
+    nclusters = 100
 
     rounds = 1  # for timeit
     rtol = 0.001  # for the relative error calculation
 
-    i = 10
+    i = 300
     
     points = 512 * i
-    features = np.random.randn(points, dimensions).astype(np.float32)
+    features = np.random.randn(points, dimensions).astype(np.float32) ## WILL GET THIS FROM MAIN
+    classId = np.random.randn(points).astype(np.float32) ## WILL GET THIS FROM MAIN
+    isFull = np.random.randn(points).astype(np.float32)  ## WILL GET THIS FROM MAIN
+    
     print "points", points, "  dimensions", dimensions, "  nclusters", nclusters, "  rounds", rounds
     
     #clusters = data[:nclusters]
     
-    clusterer = CuCKMeans(None,features,nclusters)  # FEATURES : N x 720
+    clusterer = CuCKMeans(features,nclusters, classId, isFull)  # FEATURES : N x 720
     #print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
     clusters, centers = clusterer.cukmeans()
-    
+
     print type(clusters),type(clusters[0]),type(centers),type(centers[0])
     print len(clusters),len(centers),len(centers[0])
