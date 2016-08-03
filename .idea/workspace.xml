@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="saves">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/anotherMethod/newMain.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/data/classesFile.py" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/predict/newMethodPredictor.py" />
+    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="predictor class changes">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classifiers/trainer.py" afterPath="$PROJECT_DIR$/classifiers/trainer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/anotherMethod/newMain.py" afterPath="$PROJECT_DIR$/anotherMethod/newMain.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/extractor.py" afterPath="$PROJECT_DIR$/data/extractor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/predict/FileIO.py" afterPath="$PROJECT_DIR$/predict/FileIO.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/predict/Predictor.py" afterPath="$PROJECT_DIR$/predict/Predictor.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/predict/newMethodPredictor.py" afterPath="$PROJECT_DIR$/predict/newMethodPredictor.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/server/Main.py" afterPath="$PROJECT_DIR$/server/Main.py" />
     </list>
     <ignored path="sketchautocompletion.iws" />
@@ -26,7 +26,7 @@
     <SUITE FILE_PATH="coverage/sketchautocompletion$loll.coverage" NAME="loll Coverage Results" MODIFIED="1469780917617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$FileIO.coverage" NAME="FileIO Coverage Results" MODIFIED="1469797431999" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$main.coverage" NAME="main Coverage Results" MODIFIED="1469536345181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$Main.coverage" NAME="Main Coverage Results" MODIFIED="1470139361298" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
+    <SUITE FILE_PATH="coverage/sketchautocompletion$Main.coverage" NAME="Main Coverage Results" MODIFIED="1470231714920" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$test__1_.coverage" NAME="test (1) Coverage Results" MODIFIED="1468938110784" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$ckmeans.coverage" NAME="ckmeans Coverage Results" MODIFIED="1469010359967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/clusterer" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$clusterProb.coverage" NAME="clusterProb Coverage Results" MODIFIED="1469438444201" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
@@ -37,7 +37,7 @@
     <SUITE FILE_PATH="coverage/sketchautocompletion$trainer.coverage" NAME="trainer Coverage Results" MODIFIED="1469020878813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$aa.coverage" NAME="aa Coverage Results" MODIFIED="1469516617385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$trainer1.coverage" NAME="trainer1 Coverage Results" MODIFIED="1468916138472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$newMain.coverage" NAME="newMain Coverage Results" MODIFIED="1470136467842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/anotherMethod" />
+    <SUITE FILE_PATH="coverage/sketchautocompletion$newMain.coverage" NAME="newMain Coverage Results" MODIFIED="1470231704634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/anotherMethod" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$deneme.coverage" NAME="deneme Coverage Results" MODIFIED="1469799225580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$svmPredict.coverage" NAME="svmPredict Coverage Results" MODIFIED="1469003956108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1469709976206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
@@ -56,18 +56,18 @@
       <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.4248366">
-              <caret line="77" column="31" selection-start-line="77" selection-start-column="31" selection-end-line="77" selection-end-column="31" />
+            <state vertical-scroll-proportion="1.0392523">
+              <caret line="75" column="123" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="123" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FileIO.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/predict/FileIO.py">
+      <file leaf-file-name="newMain.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/anotherMethod/newMain.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+              <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -76,8 +76,28 @@
       <file leaf-file-name="Predictor.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/predict/Predictor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.225806">
-              <caret line="43" column="57" selection-start-line="43" selection-start-column="51" selection-end-line="43" selection-end-column="57" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="187" column="18" selection-start-line="187" selection-start-column="18" selection-end-line="187" selection-end-column="18" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="newMethodPredictor.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/predict/newMethodPredictor.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0">
+              <caret line="173" column="4" selection-start-line="173" selection-start-column="4" selection-end-line="173" selection-end-column="4" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="FileIO.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/predict/FileIO.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-13.32258">
+              <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -124,13 +144,14 @@
         <option value="$PROJECT_DIR$/server/loll.py" />
         <option value="$PROJECT_DIR$/predict/M.py" />
         <option value="$PROJECT_DIR$/server/deneme.py" />
-        <option value="$PROJECT_DIR$/predict/FileIO.py" />
         <option value="$PROJECT_DIR$/classifiers/trainer.py" />
-        <option value="$PROJECT_DIR$/predict/newMethodPredictor.py" />
-        <option value="$PROJECT_DIR$/anotherMethod/newMain.py" />
         <option value="$PROJECT_DIR$/data/file.py" />
-        <option value="$PROJECT_DIR$/predict/Predictor.py" />
+        <option value="$PROJECT_DIR$/data/newMethodTraining/training_0__CFPK_10_6_3_10/0__Training_Center_" />
+        <option value="$PROJECT_DIR$/predict/FileIO.py" />
+        <option value="$PROJECT_DIR$/predict/newMethodPredictor.py" />
         <option value="$PROJECT_DIR$/server/Main.py" />
+        <option value="$PROJECT_DIR$/anotherMethod/newMain.py" />
+        <option value="$PROJECT_DIR$/predict/Predictor.py" />
       </list>
     </option>
   </component>
@@ -141,9 +162,9 @@
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="65" />
-    <option name="y" value="-4" />
+    <option name="y" value="24" />
     <option name="width" value="1855" />
-    <option name="height" value="1084" />
+    <option name="height" value="1056" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -170,7 +191,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -228,26 +248,13 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="anotherMethod" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -292,9 +299,8 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/classifiers/trainer.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/predict/Predictor.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/Main.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/acctest.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/featureutil.py</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -302,7 +308,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/clusterer/cudackmeans.py</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -703,12 +708,6 @@
       <option name="number" value="Default" />
       <updated>1468915905006</updated>
     </task>
-    <task id="LOCAL-00013" summary="Unnecessary Deleted">
-      <created>1468937967950</created>
-      <option name="number" value="00013" />
-      <option name="project" value="LOCAL" />
-      <updated>1468937967950</updated>
-    </task>
     <task id="LOCAL-00014" summary="svmProb  function goes on">
       <created>1468938559637</created>
       <option name="number" value="00014" />
@@ -997,31 +996,37 @@
       <option name="project" value="LOCAL" />
       <updated>1470120824158</updated>
     </task>
-    <option name="localTasksCounter" value="62" />
+    <task id="LOCAL-00062" summary="main simplified&#10;new method begins&#10;classesFIle introduced">
+      <created>1470139454862</created>
+      <option name="number" value="00062" />
+      <option name="project" value="LOCAL" />
+      <updated>1470139454863</updated>
+    </task>
+    <option name="localTasksCounter" value="63" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="false" />
+    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17628032" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.07493261" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3574338" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15478615" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42464358" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.42464358" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23645833" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.34623218" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.34623218" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.013238289" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
@@ -1058,7 +1063,6 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Some commenting" />
     <MESSAGE value="ckmeans commented" />
     <MESSAGE value="commment" />
     <MESSAGE value="subpress print" />
@@ -1083,7 +1087,8 @@
     <MESSAGE value="saves now compatible at windows" />
     <MESSAGE value="Do not retrain SWM when loaded" />
     <MESSAGE value="Deleted unnecessary" />
-    <option name="LAST_COMMIT_MESSAGE" value="Deleted unnecessary" />
+    <MESSAGE value="main simplified&#10;new method begins&#10;classesFIle introduced" />
+    <option name="LAST_COMMIT_MESSAGE" value="main simplified&#10;new method begins&#10;classesFIle introduced" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1100,8 +1105,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/predict/FileIO.py</url>
-          <line>108</line>
+          <line>127</line>
           <option name="timeStamp" value="227" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/anotherMethod/newMain.py</url>
+          <line>84</line>
+          <option name="timeStamp" value="271" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -1114,7 +1124,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="255" />
+      <option name="time" value="274" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -1125,21 +1135,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="33" column="33" selection-start-line="33" selection-start-column="33" selection-end-line="33" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="42" column="33" selection-start-line="42" selection-start-column="33" selection-end-line="42" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/predict/FileIO.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1408,7 +1403,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1416,31 +1410,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.6535947">
-          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict/newMethodPredictor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-0.2875817">
-          <caret line="64" column="14" selection-start-line="64" selection-start-column="14" selection-end-line="64" selection-end-column="14" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/anotherMethod/newMain.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39414802">
-          <caret line="115" column="29" selection-start-line="115" selection-start-column="24" selection-end-line="115" selection-end-column="29" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1448,6 +1417,31 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.035947714">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="67" column="0" selection-start-line="20" selection-start-column="8" selection-end-line="20" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/extractor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="28" column="59" selection-start-line="28" selection-start-column="59" selection-end-line="28" selection-end-column="59" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/training_0__CFPK_10_6_3_10/0__Training_Center_">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.529412">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1460,26 +1454,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/predict/Predictor.py">
+    <entry file="file://$PROJECT_DIR$/predict/FileIO.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.225806">
-          <caret line="43" column="57" selection-start-line="43" selection-start-column="51" selection-end-line="43" selection-end-column="57" />
+        <state vertical-scroll-proportion="-13.32258">
+          <caret line="114" column="0" selection-start-line="114" selection-start-column="0" selection-end-line="114" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/predict/FileIO.py">
+    <entry file="file://$PROJECT_DIR$/predict/newMethodPredictor.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <caret line="173" column="4" selection-start-line="173" selection-start-column="4" selection-end-line="173" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/anotherMethod/newMain.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="84" column="0" selection-start-line="84" selection-start-column="0" selection-end-line="84" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/Predictor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="187" column="18" selection-start-line="187" selection-start-column="18" selection-end-line="187" selection-end-column="18" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/Main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.4248366">
-          <caret line="77" column="31" selection-start-line="77" selection-start-column="31" selection-end-line="77" selection-end-column="31" />
+        <state vertical-scroll-proportion="1.0392523">
+          <caret line="75" column="123" selection-start-line="75" selection-start-column="8" selection-end-line="75" selection-end-column="123" />
           <folding />
         </state>
       </provider>

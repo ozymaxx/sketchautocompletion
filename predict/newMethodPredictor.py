@@ -170,3 +170,19 @@ class newMethodPredictor:
                 homoCluster.append(self.kmeansoutput[0][clusterId])
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
+
+    def getBestPredictions(self,classProb, n):
+        a = sorted(classProb, key=classProb.get, reverse=True)[:n]
+        l = ''
+        l1 = ''
+        for i in a:
+            l1 += str(classProb[i])
+            l += self.files[i]
+            l += '&'
+            l1 += '&'
+        l1 = l1[:-1]
+        return l + l1
+
+    def giveOutput(self,queryjson, n):
+        classPr = self.predictByString(str(queryjson))
+        return self.getBestPredictions(classPr, n)

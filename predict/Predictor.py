@@ -126,7 +126,12 @@ class Predictor:
             for c in range(len(classesInCluster)):
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
-        return outDict
+
+        output = {}
+        for i in outDict.keys():
+            output[self.files[i]] = outDict[i]
+
+        return output
 
     def calculatePriorProb(self):
         """
@@ -180,7 +185,7 @@ class Predictor:
         l1 = ''
         for i in a:
             l1 += str(classProb[i])
-            l += self.files[i]
+            l += i
             l += '&'
             l1 += '&'
         l1 = l1[:-1]

@@ -64,7 +64,7 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    ForceTrain = True
+    ForceTrain = False
     numclass, numfull, numpartial = 10, 6, 3
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
@@ -73,7 +73,7 @@ def main():
 
     # if training data is already computed, import
     if os.path.exists(trainingpath) and not ForceTrain:
-        names, classId, isFull, features, kmeansoutput = fio.loadTraining(trainingpath + "/" + trainingName)
+        names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
     else:
         kmeansoutput,classId = trainIt(trainingName,trainingpath,numclass,numfull,numpartial,k,files)
     global predictor

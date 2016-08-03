@@ -175,7 +175,7 @@ def main():
         if not os.path.exists(pathwrite + folder):
             os.makedirs(pathwrite + folder)
         features, isFull, name = extr.loadfolder(folder)
-        fio.save(isFull, name, features, pathwrite + folder + '/' + folder + '.csv')
+        fio.saveOneFeature(isFull, name, features, pathwrite + folder + '/' + folder + '.csv')
 
     ext = Extractor('../json/')
     ext.prnt = True

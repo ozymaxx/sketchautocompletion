@@ -8,35 +8,17 @@ sys.path.append('../data/')
 sys.path.append("../../libsvm-3.21/python")
 from extractor import *
 from FileIO import *
-from Predictor import *
+from newMethodPredictor import *
 import os
 import time
 import numpy as np
+import classesFile
 
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 predictor = None
 
-files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana',
-         'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
-         'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf', 'boomerang', 'bottle-opener', 'bowl', 'brain', 'bread',
-         'bridge', 'bulldozer', 'bus', 'bush', 'butterfly', 'cabinet', 'cactus', 'cake', 'calculator', 'camel', 'camera',
-         'candle', 'cannon', 'canoe', 'car-(sedan)', 'carrot', 'castle', 'cat', 'cell-phone', 'chair', 'chandelier',
-         'church', 'cigarette', 'cloud', 'comb', 'computer-monitor', 'computer-mouse', 'couch', 'cow', 'crab',
-         'crane-(machine)', 'crocodile', 'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut', 'door', 'door-handle',
-         'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye', 'eyeglasses', 'face', 'fan', 'feather', 'fire-hydrant',
-         'fish', 'flashlight', 'floor-lamp', 'flower-with-stem', 'flying-bird', 'flying-saucer', 'foot', 'fork', 'frog',
-         'frying-pan', 'giraffe', 'grapes', 'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp', 'hat', 'head',
-         'head-phones', 'hedgehog', 'helicopter', 'helmet', 'horse', 'hot-air-balloon', 'hot-dog', 'hourglass', 'house',
-         'human-skeleton', 'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife', 'ladder', 'laptop', 'leaf',
-         'lightbulb', 'lighter', 'lion', 'lobster', 'loudspeaker', 'mailbox', 'megaphone', 'mermaid', 'microphone',
-         'microscope', 'monkey', 'moon', 'mosquito', 'motorbike', 'mouse-(animal)', 'mouth', 'mug', 'mushroom', 'nose',
-         'octopus', 'owl', 'palm-tree', 'panda', 'paper-clip', 'parachute', 'parking-meter', 'parrot', 'pear', 'pen',
-         'penguin', 'person-sitting', 'person-walking', 'piano', 'pickup-truck', 'pig', 'pigeon', 'pineapple',
-         'pipe-(for-smoking)', 'pizza', 'potted-plant', 'power-outlet', 'present', 'pretzel', 'pumpkin', 'purse',
-         'rabbit', 'race-car', 'radio', 'rainbow', 'revolver', 'rifle', 'rollerblades', 'rooster', 'sailboat',
-         'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea-turtle',
-         'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
+files = classesFile.files
 
 def getBestPredictions(classProb, n):
     global files
@@ -77,6 +59,36 @@ def newTraining(n,files, numclass, numfull,numpartial,k):
                          trainingpath, trainingName)
         trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
+        nowCenter = np.zeros(len(features[0]))
+        totalNumOfInstances = len(features)
+        for cluster in kmeansoutput[0]:
+            for instance in cluster:
+                nowCenter += features[instance]
+        nowCenter = nowCenter/totalNumOfInstances
+        fio.saveOneFeature(trainingpath +'/' + str(i) + "__Training_Center_",nowCenter)
+
+
+
+
+
+def PredictIt(n, q):
+    extr = Extractor('../data/')
+    fio = FileIO()
+    numclass, numfull, numpartial = 10, 6, 3
+    k = numclass
+
+
+    for i in range(n/5):
+        trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
+        trainingpath = '../data/newMethodTraining/' + trainingName
+        names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
+        predictor = newMethodPredictor(kmeansoutput, classId, trainingpath)
+
+        a = predictor.predictByString(q)
+        b = fio.loadOneFeature(trainingpath +'/' + str(i) + "__Training_Center_")
+
+
+
 
 @app.route("/", methods=['POST','GET'])
 def handle_data():
@@ -84,7 +96,7 @@ def handle_data():
     timeStart = time.time()
     try:
         queryjson = request.args.get('json')
-        classProb = predictor.predictByString(str(queryjson))
+        classProb = PredictIt(10,queryjson)
         print 'Server responded in %.3f seconds' % float(time.time()-timeStart)
         return getBestPredictions(classProb, 5)
     except Exception as e:
@@ -106,6 +118,7 @@ def main():
     ForceTrain = True
     numclass, numfull, numpartial = 10, 6, 3
     k = numclass
+
     n = 10
 
     # if training data is already computed, import
@@ -114,12 +127,11 @@ def main():
         # names, classId, isFull, features, kmeansoutput = fio.loadTraining(trainingpath + "/" + trainingName)
     else:
         newTraining(n , files, numclass, numfull, numpartial, k)
-    # global predictor
-    # predictor = Predictor(kmeansoutput, classId, trainingpath)
-    #
-    # app.secret_key = 'super secret key'
-    # app.config['SESSION_TYPE'] = 'filesystem'
-    # app.debug = True
-    # app.run(host='0.0.0.0', debug=False)
+
+
+    app.secret_key = 'super secret key'
+    app.config['SESSION_TYPE'] = 'filesystem'
+    app.debug = True
+    app.run(host='0.0.0.0', debug=False)
     print 'Server ended'
 if __name__ == '__main__':main()

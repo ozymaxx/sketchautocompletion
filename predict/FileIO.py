@@ -11,6 +11,16 @@ class FileIO:
         self.endAll = "__all__.csv"
         self.startCent = "__Centers__"
         self.startClu = "__Cluster__"
+    def saveOneFeature(self, f, data):
+        df = pd.DataFrame(data = data)
+        df.columns = ['feat']
+        df.to_csv(f, mode = 'w', index = False)
+
+    def loadOneFeature(self,f):
+        a = pd.read_csv(f)
+        feature = a['feat'].as_matrix()
+        return  feature
+
 
     def save(self,isFull, names, feature, f):
         """"Save features to csv file
