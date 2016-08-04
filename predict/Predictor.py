@@ -92,6 +92,7 @@ class Predictor:
         #p  robability : P(Ck)
         # Returns P(Si|x)
         """
+
         # dict of probabilities of given instance belonging to every possible class
         # initially zero
         outDict = dict.fromkeys([i for i in set(self.classId)], 0.0)
@@ -115,7 +116,7 @@ class Predictor:
                 
                 # if homogeneous then only a single class which is the first
                 # feature points class
-                classesInCluster = [self.classId[self.kmeansoutput[0][clstrid][0]]]
+                classesInCluster = [self.classId[int(self.kmeansoutput[0][clstrid][0])]]
                 
             elif clstrid in heteClstrId:
                 modelName = self.subDirectory +"/clus" + ` heteClstrId.index(clstrid) ` +".model"

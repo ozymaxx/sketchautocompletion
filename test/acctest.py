@@ -14,114 +14,10 @@ import matplotlib.pyplot as plt
 import os
 import numpy as np
 import operator
-
-def trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, files):
-
-    constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-    ckmeans = CKMeans(constarr, np.transpose(features), k)
-    kmeansoutput = ckmeans.getCKMeans()
-
-    # find heterogenous clusters and train svm
-    trainer = Trainer(kmeansoutput, classId, features)
-    heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
-    fio.saveTraining(names, classId, isFull, features, kmeansoutput,
-                     trainingpath, trainingName)
-    trainer.trainSVM(heteClstrFeatureId, trainingpath)
-    return kmeansoutput, classId
+from draw import *
 
 def main():
-    '''
-    ForceTrain = False
-    numclass, numfull, numpartial = 10, 10, 3
-    k = numclass
-
-    trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
-    trainingpath = '../data/training/' + trainingName
-
-    fio = FileIO()
-    extr = Extractor('../data/')
-
-    # if training data is already computed, import
-    if os.path.exists(trainingpath) and not ForceTrain:
-
-        train_names, \
-        train_classId, \
-        train_isFull, \
-        train_features, \
-        kmeansoutput, \
-        folderList = fio.loadTraining(trainingpath + "/" + trainingName)
-
-        whole_features, \
-        whole_isFull, \
-        whole_classId, \
-        whole_names, \
-        folderList = extr.loadfolders(
-                              numclass,
-                              numfull    = 80,
-                              numpartial = 80,
-                              folderList = folderList)
-        train_features,\
-        train_isFull,\
-        train_classId,\
-        train_names,\
-        test_features,\
-        test_isFull,\
-        test_names,\
-        test_classid = partitionfeatures_notin(
-                                    whole_features,
-                                    whole_isFull,
-                                    whole_classId,
-                                    whole_names,
-                                    numtestfull,
-                                    numtestpartial,
-                                    train_names,
-                                    selectTestRandom=True)
-    else: # else train
-
-
-        whole_features,\
-        whole_isFull,\
-        whole_classId,\
-        whole_names,\
-        whole_folderList = extr.loadfolders(
-                                    numclass   = numclass,
-                                    numfull    = numfull,
-                                    numpartial = numpartial,
-                                    folderList = [])
-
-        train_features,\
-        train_isFull,\
-        train_classId,\
-        train_names,\
-        test_features,\
-        test_isFull,\
-        test_names,\
-        test_classid = partitionfeatures(
-                                    whole_features,
-                                    whole_isFull,
-                                    whole_classId,
-                                    whole_names,
-                                    numtestfull,
-                                    numtestpartial,
-                                    selectTestRandom=True)
-
-        constarr = getConstraints(size=len(train_features), isFull=train_isFull, classId=train_classId)
-        ckmeans = CKMeans(constarr, np.transpose(train_features), k)
-        kmeansoutput = ckmeans.getCKMeans()
-
-        # find heterogenous clusters and train svm
-        trainer = Trainer(kmeansoutput, train_classId, train_features)
-        heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
-        fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
-                         trainingpath, trainingName)
-        trainer.trainSVM(heteClstrFeatureId, trainingpath)
-
-    predictor = Predictor(kmeansoutput, train_classId, trainingpath)
-    priorClusterProb = predictor.calculatePriorProb()
-
-
-    '''
-    numclass, numfull, numpartial, xfold = 5, 10, 3, 2
+    numclass, numfull, numpartial, xfold = 10, 10, 3, 2
     folderList = []
 
     extr = Extractor('../data/')
@@ -146,9 +42,10 @@ def main():
                         whole_names,
                         folderList)
 
-    K = [numclass] # :O
+    K = range(numclass,numclass+6) # :O
     N = range(1, numclass)
-    C = range(0, 100)
+    import numpy as np
+    C = np.linspace(0, 100, 200, endpoint=False)
     accuracy = dict()
     delay_rate = dict()
 
@@ -183,7 +80,7 @@ def main():
             Training start
             '''
 
-            ForceTrain = True
+            ForceTrain = False
             folderName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_', numclass, numfull, numpartial, k, xfold)
             trainingName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_' + str(it), numclass, numfull, numpartial, k, xfold)
             print trainingName
@@ -215,7 +112,7 @@ def main():
                 testcount += 1
                 Tfeature = test_features[test_index]
                 TtrueClass = test_classId[test_index]
-                classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+                classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
 
                 SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
@@ -233,83 +130,29 @@ def main():
 
             print trainingName + ' end'
 
-        '''
-        Start visualization
-        '''
-        for key in delay_rate:
-            delay_rate[key] = (delay_rate[key]*1.0/whole_isFull.count(key[3]))*100
+    '''
+    Calculate %
+    '''
 
-        for key in accuracy:
-            total_un_answered = int(whole_isFull.count(key[3])*(delay_rate[key]/100))
-            total_answered = whole_isFull.count(key[3]) - total_un_answered
-            accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 0
+    for key in delay_rate:
+        delay_rate[key] = (delay_rate[key]*1.0/whole_isFull.count(key[3]))*100
 
-        '''
-        Save results and load back
-        '''
-
-        fig = plt.figure()
-        ax = fig.add_subplot(111, projection='3d')
-
-        nmesh, cmesh = np.meshgrid(N, C)
-        accmesh = [[None for j in range(len(nmesh[0]))] for i in range(len(nmesh))]
-
-        for i in range(len(nmesh)):
-            for j in range(len(nmesh[0])):
-                # accuracy[(k, n, c, isFull)]
-                accmesh[i][j] = accuracy[(k, nmesh[i][j], cmesh[i][j], True)]
-
-        colortuple = ('y', 'b')
-        ax.plot_surface(nmesh, cmesh, accmesh, rstride=5, cstride=5, cmap=cm.Accent,
-                        linewidth=0, antialiased=True)
-
-        ax.set_zlim(0, 100)
-        ax.set_xlabel('N')
-        ax.set_ylabel('C')
-        ax.set_zlabel('Accuracy %')
-
-        plt.show()
+    for key in accuracy:
+        total_un_answered = int(whole_isFull.count(key[3])*(delay_rate[key]/100))
+        total_answered = whole_isFull.count(key[3]) - total_un_answered
+        accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 100
 
     '''
-                
-    ncount = [0]*numclass
-    for index in range(len(test_features)):
-        feature = test_features[index]
-        name = test_names[index]
-
-        maxClass = max(classProb, key=classProb.get)
-        argsort = np.argsort(classProb.values())
-
-        # calculate the accuracy
-        ncounter = None
-        for ncounter in range(numclass-1, -1, -1):
-            if argsort[ncounter] == test_classid[index]:
-                break
-
-        while ncounter >= 0:
-            ncount[len(ncount) - ncounter - 1] += 1
-            ncounter += -1
-
-    # change it to percentage
-    print '# Class: %i \t# Full: %i \t# Partial: %i \t# Test case: %i' % (numclass, numfull, numpartial, numclass*numtestfull)
-    ncount = [(x * 1.0 / (numtestfull * numclass)) * 100 for x in ncount]
-    for accindex in range(min(10, len(ncount))):
-        print 'N=' + str(accindex+1) + ' C=0 accuracy: ' + str(ncount[accindex])
-
-    plt.plot(range(1,len(ncount)+1), ncount, 'bo')
-
-    for x, y in itertools.izip(range(1, len(ncount)+1), ncount):
-        plt.annotate('%i,%i%%'%(x, y), (x+0.1, y+0.1))
-
-    plt.plot([1, len(ncount)+1], [60, 60], 'r--')
-    plt.plot([1, len(ncount) + 1], [80, 80], 'g--')
-    plt.ylabel('Accuracy %')
-    plt.xlabel('N=')
-    plt.title('Sketch: %i # Class: %i   # Full: %i   # Partial: %i # Test case: %i' % (len(train_features), numclass, numtestfull, numpartial, numclass*numtestfull))
-    plt.ylim([0, 105])
-    plt.xlim([1, len(ncount)+1])
-    plt.grid(True)
-    plt.show()
-
+    Save results and load back
     '''
+
+    #draw_N_C_Acc(accuracy, N, C, k=numclass, isfull=True)
+    #draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
+    #draw_N_C_Acc_Contour(accuracy, N, C, k=numclass, isfull=True) # Surface over n and c
+    #draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
+    #draw_n_Acc(accuracy, c=30, k=numclass, isfull=False, delay_rate=delay_rate) # for fixed n and c
+    #draw_K_Delay_Acc(accuracy, delay_rate, K=K, C=C, n=1, isfull=True)
+    draw_Reject_Acc(accuracy, delay_rate, N=[1,2], k=k, isfull=True)
+
+        #_draw_K-C-Text_Acc(accuracy, delay_rate, 'Constrained Voting')
 if __name__ == "__main__": main()
