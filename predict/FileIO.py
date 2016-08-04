@@ -5,12 +5,18 @@ Ahmet BAGLAN
 """
 import numpy as np
 import pandas as pd
+import sys
+sys.path.append('../data/')
+import classesFile
+
 class FileIO:
     """File class used for saving an loading """
     def __init__(self):
         self.endAll = "__all__.csv"
         self.startCent = "__Centers__"
         self.startClu = "__Cluster__"
+        self.startFolder = "__folders__"
+
     def saveOneFeature(self, f, data):
         df = pd.DataFrame(data = data)
         df.columns = ['feat']
@@ -59,7 +65,7 @@ class FileIO:
         return names, isFull, features
 
 
-    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename):
+    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename, folders = classesFile.files):
         """"
         Saves Training
         """

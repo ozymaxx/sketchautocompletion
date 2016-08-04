@@ -16,7 +16,8 @@ import classesFile
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 predictor = None
-files = classesFile.files
+global myfiles
+myfiles = classesFile.files
 
 def trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, files):
         fio = FileIO()
@@ -61,6 +62,7 @@ def homepage():
     return render_template("index.html")
 
 def main():
+    global myfiles
     ForceTrain = False
     numclass, numfull, numpartial = 10, 6, 3
     k = numclass
@@ -70,11 +72,11 @@ def main():
 
     # if training data is already computed, import
     if os.path.exists(trainingpath) and not ForceTrain:
-        names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
+        names, classId, isFull, features, kmeansoutput, myfiles = fio.loadTraining(trainingpath + "/" + trainingName)
     else:
-        kmeansoutput,classId = trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, files)
+        kmeansoutput,classId = trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, myfiles)
     global predictor
-    predictor = Predictor(kmeansoutput, classId, trainingpath)
+    predictor = Predictor(kmeansoutput, classId, trainingpath, myfiles)
 
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
