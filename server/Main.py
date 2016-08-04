@@ -66,7 +66,7 @@ def main():
     ForceTrain = False
     numclass, numfull, numpartial = 10, 6, 3
     k = numclass
-    trainingName = '%s__CFPK_%i_%i_%i_%i' % ('cuda', numclass, numfull, numpartial, k)
+    trainingName = '%s__CFPK_%i_%i_%i_%i' % ('zz', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
     fio = FileIO()
 
