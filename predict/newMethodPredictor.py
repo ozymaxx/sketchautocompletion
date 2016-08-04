@@ -6,7 +6,7 @@ Ahmet BAGLAN
 import sys
 sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python/")
-
+sys.path.append('../data/')
 import numpy as np
 import math
 
@@ -14,6 +14,7 @@ from svmutil import *
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
+import classesFile
 
 class newMethodPredictor:
     """The predictor class implementing functions to return probabilities"""
@@ -21,6 +22,10 @@ class newMethodPredictor:
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
+        self.files = classesFile.files
+
+    def setFiles(self,f):
+        self.files = f
 
     def getDistance(self, x, y):
         """Computes euclidian distance between x instance and y instance
@@ -64,21 +69,15 @@ class newMethodPredictor:
 
     def predictIt(self, instance):
         # find the probability of given feature to belong any of athe classes
-        priorClusterProb = self.computePriorProb()
+        priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
-        return classProb
-
-    def predictByPath(self, fullsketchpath):
-        instance = featureExtract(fullsketchpath)
-        priorClusterProb = self.computePriorProb()
-        classProb = predictor.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
     def predictByString(self, jstring):
         loadedSketch = shapecreator.buildSketch('json', jstring)
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(loadedSketch)
-        priorClusterProb = self.computePriorProb()
+        priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
@@ -123,9 +122,14 @@ class newMethodPredictor:
             for c in range(len(classesInCluster)):
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
-        return outDict
 
-    def computePriorProb(self):
+        output = {}
+        for i in outDict.keys():
+            output[self.files[i]] = outDict[i]
+
+        return output
+
+    def calculatePriorProb(self):
         """
         Returns prior probabilities list of being in a cluster
         p = len(cluster)/len(total)
@@ -177,7 +181,7 @@ class newMethodPredictor:
         l1 = ''
         for i in a:
             l1 += str(classProb[i])
-            l += self.files[i]
+            l += i
             l += '&'
             l1 += '&'
         l1 = l1[:-1]

@@ -20,22 +20,6 @@ predictor = None
 
 files = classesFile.files
 
-def getBestPredictions(classProb, n):
-    global files
-    a = sorted(classProb, key=classProb.get, reverse=True)[:n]
-    l = ''
-    l1 = ''
-    for i in a:
-        l1 += str(classProb[i])
-        l += files[i]
-        l += '&'
-        l1 += '&'
-    l1 = l1[:-1]
-    return l + l1
-
-
-
-
 def newTraining(n,files, numclass, numfull,numpartial,k):
     extr = Extractor('../data/')
     fio = FileIO()
@@ -76,6 +60,10 @@ def PredictIt(n, q):
     fio = FileIO()
     numclass, numfull, numpartial = 10, 6, 3
     k = numclass
+    l = []
+
+    for i in range(n/5):
+        pass
 
 
     for i in range(n/5):
@@ -83,6 +71,7 @@ def PredictIt(n, q):
         trainingpath = '../data/newMethodTraining/' + trainingName
         names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
         predictor = newMethodPredictor(kmeansoutput, classId, trainingpath)
+        predictor.setFiles(files[i*5:(i+1)*5])
 
         a = predictor.predictByString(q)
         b = fio.loadOneFeature(trainingpath +'/' + str(i) + "__Training_Center_")

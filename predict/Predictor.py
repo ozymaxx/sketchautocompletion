@@ -19,12 +19,13 @@ import classesFile
 
 class Predictor:
     """The predictor class implementing functions to return probabilities"""
-    def __init__(self, kmeansoutput, classId, subDirectory):
+    def __init__(self, kmeansoutput, classId, subDirectory, file = classesFile.files):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
-        self.files = classesFile.files
-        
+        self.files = file
+
+
     def getDistance(self, x, y):
         """Computes euclidian distance between x instance and y instance
         inputs: x,y instances
@@ -40,15 +41,14 @@ class Predictor:
         instance: feature list of the instance to be queried"""
         probTup = []
         for i in range(len(self.kmeansoutput[1])):
-    
             dist = self.getDistance(instance, self.kmeansoutput[1][i])
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
 
     def svmProb(self,model,instance):
         """Predicts the probability of the given model"""
-        ###Shittty code ---------------->
-        ####Prevent Writing
+
+        ####Prevent Writing----------------------------------------
         import sys
         class NullWriter(object):
             def write(self, arg):
@@ -61,7 +61,7 @@ class Predictor:
         p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
 
         sys.stdout = oldstdout # enable kmeansoutput
-        ### Prevent printing ended
+        ### Prevent printing ended-----------------------------------
 
         return (p_label, p_val)
 
@@ -74,7 +74,7 @@ class Predictor:
     def predictByPath(self, fullsketchpath):
         instance = featureExtract(fullsketchpath)
         priorClusterProb = self.calculatePriorProb()
-        classProb = predictor.calculatePosteriorProb(instance, priorClusterProb)
+        classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
     def predictByString(self, jstring):
@@ -99,7 +99,7 @@ class Predictor:
         homoClstrFeatureId, homoClstrId = self.getHomogenous()
         heteClstrFeatureId, heteClstrId = self.getHeterogenous()
 
-        clusterPrb  = self.clusterProb( instance, priorClusterProb)#Probability list to be in a cluster
+        clusterPrb  = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
 
         # normalize cluster probability to add up to 1
         clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
