@@ -19,11 +19,7 @@ from getConstraints import *
 from Predictor import *
 from FeatureExtractor import *
 from shapecreator import *
-
-import numpy as np
-import matplotlib.pyplot as plt
 from svmutil import *
-import visualise
 
 def featureExtract(filename):
     loadedSketch = None

@@ -16,16 +16,25 @@ from shapecreator import *
 from FeatureExtractor import *
 import classesFile
 
+
 class newMethodPredictor:
     """The predictor class implementing functions to return probabilities"""
-    def __init__(self, kmeansoutput, classId, subDirectory):
+    def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = classesFile.files):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
-        self.files = classesFile.files
+        self.files = file
 
-    def setFiles(self,f):
-        self.files = f
+
+    def probToSavings(self, jstring,  centers, normalProb):
+        loadedSketch = shapecreator.buildSketch('json', jstring)
+        featextractor = IDMFeatureExtractor()
+        instance = featextractor.extract(loadedSketch)
+        probTup = []
+        for i in range(len(centers)):
+            dist = self.getDistance(instance, centers[i])
+            probTup.append(math.exp(-1*abs(dist))*normalProb[i])
+        return probTup
 
     def getDistance(self, x, y):
         """Computes euclidian distance between x instance and y instance
@@ -42,15 +51,14 @@ class newMethodPredictor:
         instance: feature list of the instance to be queried"""
         probTup = []
         for i in range(len(self.kmeansoutput[1])):
-
             dist = self.getDistance(instance, self.kmeansoutput[1][i])
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
 
     def svmProb(self,model,instance):
         """Predicts the probability of the given model"""
-        ###Shittty code ---------------->
-        ####Prevent Writing
+
+        ####Prevent Writing----------------------------------------
         import sys
         class NullWriter(object):
             def write(self, arg):
@@ -63,12 +71,18 @@ class newMethodPredictor:
         p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
 
         sys.stdout = oldstdout # enable kmeansoutput
-        ### Prevent printing ended
+        ### Prevent printing ended-----------------------------------
 
         return (p_label, p_val)
 
     def predictIt(self, instance):
         # find the probability of given feature to belong any of athe classes
+        priorClusterProb = self.calculatePriorProb()
+        classProb = self.calculatePosteriorProb(instance, priorClusterProb)
+        return classProb
+
+    def predictByPath(self, fullsketchpath):
+        instance = featureExtract(fullsketchpath)
         priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
@@ -81,7 +95,7 @@ class newMethodPredictor:
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
-    def calculatePosteriorProb(self, instance, priorClusterProb):
+    def calculatePosteriorProb(self, instance, priorClusterProb, numericKeys = False):
         """
         #features : feature array
         #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
@@ -95,7 +109,7 @@ class newMethodPredictor:
         homoClstrFeatureId, homoClstrId = self.getHomogenous()
         heteClstrFeatureId, heteClstrId = self.getHeterogenous()
 
-        clusterPrb  = self.clusterProb( instance, priorClusterProb)#Probability list to be in a cluster
+        clusterPrb  = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
 
         # normalize cluster probability to add up to 1
         clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
@@ -123,11 +137,13 @@ class newMethodPredictor:
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
 
-        output = {}
-        for i in outDict.keys():
-            output[self.files[i]] = outDict[i]
+        if not numericKeys:
+            output = {}
+            for i in outDict.keys():
+                output[self.files[i]] = outDict[i]
+            return output
 
-        return output
+        return outDict
 
     def calculatePriorProb(self):
         """
@@ -190,3 +206,5 @@ class newMethodPredictor:
     def giveOutput(self,queryjson, n):
         classPr = self.predictByString(str(queryjson))
         return self.getBestPredictions(classPr, n)
+
+
