@@ -183,7 +183,7 @@ def main():
             Training start
             '''
 
-            ForceTrain = False
+            ForceTrain = True
             folderName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_', numclass, numfull, numpartial, k, xfold)
             trainingName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_' + str(it), numclass, numfull, numpartial, k, xfold)
             print trainingName
@@ -242,7 +242,7 @@ def main():
         for key in accuracy:
             total_un_answered = int(whole_isFull.count(key[3])*(delay_rate[key]/100))
             total_answered = whole_isFull.count(key[3]) - total_un_answered
-            accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered!= 0 else 0
+            accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 0
 
         '''
         Save results and load back

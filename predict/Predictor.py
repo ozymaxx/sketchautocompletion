@@ -85,7 +85,7 @@ class Predictor:
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
-    def calculatePosteriorProb(self, instance, priorClusterProb):
+    def calculatePosteriorProb(self, instance, priorClusterProb, numericKeys = False):
         """
         #features : feature array
         #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
@@ -127,11 +127,13 @@ class Predictor:
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
 
-        output = {}
-        for i in outDict.keys():
-            output[self.files[i]] = outDict[i]
+        if not numericKeys:
+            output = {}
+            for i in outDict.keys():
+                output[self.files[i]] = outDict[i]
+            return output
 
-        return output
+        return outDict
 
     def calculatePriorProb(self):
         """
