@@ -9,7 +9,10 @@ import matplotlib.pyplot as plt
 from extractor import *
 from featureutil import *
 import itertools
+from mpl_toolkits.mplot3d import Axes3D
+import matplotlib.pyplot as plt
 import os
+import numpy as np
 import operator
 
 def trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, files):
@@ -118,7 +121,8 @@ def main():
 
 
     '''
-    numclass, numfull, numpartial, xfold = 5, 5, 5, 5
+    numclass, numfull, numpartial, xfold = 5, 10, 3, 2
+    folderList = []
 
     extr = Extractor('../data/')
     whole_features, \
@@ -142,18 +146,20 @@ def main():
                         whole_names,
                         folderList)
 
-
-    K = [xfold] # :O
-    N = range(2, 3)
-    C = range(30, 31)
+    K = [numclass] # :O
+    N = range(1, numclass)
+    C = range(0, 100)
     accuracy = dict()
     delay_rate = dict()
 
-    for k, n, c in itertools.izip(K, N, C):
-        accuracy[(k, n, c, True)] = 0
-        accuracy[(k, n, c, False)] = 0
-        delay_rate[(k, n, c, True)] = 0
-        delay_rate[(k, n, c, False)] = 0
+    testcount = 0
+    for k in K:
+        for n in N:
+            for c in C:
+                accuracy[(k, n, c, True)] = 0
+                accuracy[(k, n, c, False)] = 0
+                delay_rate[(k, n, c, True)] = 0
+                delay_rate[(k, n, c, False)] = 0
 
     for k in K:
         for it in range(xfold):
@@ -178,9 +184,11 @@ def main():
             '''
 
             ForceTrain = False
+            folderName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_', numclass, numfull, numpartial, k, xfold)
             trainingName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_' + str(it), numclass, numfull, numpartial, k, xfold)
             print trainingName
-            trainingpath = '../data/training/' + trainingName
+
+            trainingpath = '../data/training/' + folderName + '/' + trainingName
 
             # if training data is already computed, import
             fio = FileIO()
@@ -204,34 +212,63 @@ def main():
             priorClusterProb = predictor.calculatePriorProb()
 
             for test_index in range(len(test_features)):
+                testcount += 1
                 Tfeature = test_features[test_index]
                 TtrueClass = test_classId[test_index]
                 classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
 
                 SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
-                SclassProb = SclassProb[-n:]
 
-                summedprob = sum(tup[1] for tup in SclassProb)*100
-                summedclassId = [tup[0] for tup in SclassProb]
+                for n in N:
+                    for c in C:
+                        SPartialclassProb = SclassProb[-n:]
+                        summedprob = sum(tup[1] for tup in SPartialclassProb) * 100
+                        summedclassId = [tup[0] for tup in SPartialclassProb]
 
-                for n, c in itertools.izip(N, C):
-                    if summedprob < c:
-                        delay_rate[(k, n, c, test_isFull[test_index])] += 1
-                    else:
-                        if TtrueClass in summedclassId:
-                            accuracy[(k, n, c, test_isFull[test_index])] += 1
+                        if summedprob < c:
+                            delay_rate[(k, n, c, test_isFull[test_index])] += 1
+                        else:
+                            if TtrueClass in summedclassId:
+                                accuracy[(k, n, c, test_isFull[test_index])] += 1
 
             print trainingName + ' end'
 
-        for key in accuracy:
-            accuracy[key] = accuracy[key]*1.0/len(whole_features)*100
-
+        '''
+        Start visualization
+        '''
         for key in delay_rate:
-            delay_rate[key] = delay_rate[key]*1.0/len(whole_features)*100
+            delay_rate[key] = (delay_rate[key]*1.0/whole_isFull.count(key[3]))*100
 
+        for key in accuracy:
+            total_un_answered = int(whole_isFull.count(key[3])*(delay_rate[key]/100))
+            total_answered = whole_isFull.count(key[3]) - total_un_answered
+            accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered!= 0 else 0
 
+        '''
+        Save results and load back
+        '''
 
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
 
+        nmesh, cmesh = np.meshgrid(N, C)
+        accmesh = [[None for j in range(len(nmesh[0]))] for i in range(len(nmesh))]
+
+        for i in range(len(nmesh)):
+            for j in range(len(nmesh[0])):
+                # accuracy[(k, n, c, isFull)]
+                accmesh[i][j] = accuracy[(k, nmesh[i][j], cmesh[i][j], True)]
+
+        colortuple = ('y', 'b')
+        ax.plot_surface(nmesh, cmesh, accmesh, rstride=5, cstride=5, cmap=cm.Accent,
+                        linewidth=0, antialiased=True)
+
+        ax.set_zlim(0, 100)
+        ax.set_xlabel('N')
+        ax.set_ylabel('C')
+        ax.set_zlabel('Accuracy %')
+
+        plt.show()
 
     '''
                 

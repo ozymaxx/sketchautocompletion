@@ -64,6 +64,9 @@ class FileIO:
         Saves Training
         """
         import os
+        if not os.path.exists(path[:path.rfind('/')]):
+            os.mkdir(path[:path.rfind('/')])
+
         if not os.path.exists(path):
             os.mkdir(path)
 

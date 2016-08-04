@@ -18,7 +18,6 @@ app = Flask(__name__)
 predictor = None
 files = classesFile.files
 
-
 def trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, files):
         fio = FileIO()
         extr = Extractor('../data/')
@@ -36,9 +35,7 @@ def trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, files)
         fio.saveTraining(names, classId, isFull, features, kmeansoutput,
                          trainingpath, trainingName)
         trainer.trainSVM(heteClstrFeatureId, trainingpath)
-        return  kmeansoutput,classId
-
-
+        return kmeansoutput, classId
 
 @app.route("/", methods=['POST','GET'])
 def handle_data():
@@ -67,7 +64,7 @@ def main():
     ForceTrain = False
     numclass, numfull, numpartial = 10, 6, 3
     k = numclass
-    trainingName = '%s__CFPK_%i_%i_%i_%i' % ('training', numclass, numfull, numpartial, k)
+    trainingName = '%s__CFPK_%i_%i_%i_%i' % ('cuda', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
     fio = FileIO()
 
@@ -75,7 +72,7 @@ def main():
     if os.path.exists(trainingpath) and not ForceTrain:
         names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
     else:
-        kmeansoutput,classId = trainIt(trainingName,trainingpath,numclass,numfull,numpartial,k,files)
+        kmeansoutput,classId = trainIt(trainingName, trainingpath, numclass, numfull, numpartial, k, files)
     global predictor
     predictor = Predictor(kmeansoutput, classId, trainingpath)
 

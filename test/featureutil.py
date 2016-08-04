@@ -5,7 +5,7 @@ def processName(name):
     sketchid = name_split[1]
     partialid = -1 if bool(len(name_split)==2) else name_split[2]
 
-    return classname, sketchid, partialid
+    return classname, int(sketchid), int(partialid)
 
 '''
  Always select training data deterministically,
@@ -157,7 +157,6 @@ def partitionfeatures_notin(features, isFull, classId, names, numtestfull, numte
 
     return train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId
 
-
 def xfoldpartition(
     xfold,
     whole_features,
@@ -166,13 +165,32 @@ def xfoldpartition(
     whole_names,
     folderList):
 
+    '''
+       Assumes sketchids start from zero
+       and increment one by one, as extractor does
+    '''
+
     xfold_features, xfold_names, xfold_classId, xfold_isFull = [], [], [], []
 
+    maxSketchId = 0
+    for name in whole_names:
+        _, SketchId, _ = processName(name)
+        if int(SketchId) > maxSketchId:
+            maxSketchId = int(SketchId)
+
     for iter in range(xfold):
-        cond = [bool(int(processName(whole_names[index])[1]) < (iter+1)*80/xfold) for index in range(len(whole_features))]
+        cond = [None]*len(whole_features)
+        for index in range(len(cond)):
+            _, sketchid, _ = processName(whole_names[index])
+            cond[index] = bool((iter*1.0/xfold)*maxSketchId < sketchid) and \
+                          bool(sketchid <= ((iter+1)*1.0/xfold)*maxSketchId)
+
         xfold_features.append([whole_features[index] for index in range(len(whole_features)) if cond[index]])
         xfold_isFull.append([whole_isFull[index] for index in range(len(whole_isFull)) if cond[index]])
         xfold_classId.append([whole_classId[index] for index in range(len(whole_classId)) if cond[index]])
         xfold_names.append([whole_names[index] for index in range(len(whole_names)) if cond[index]])
+
+    if sum([len(f) for f in xfold_features]) != len(whole_features):
+        raise Exception
 
     return xfold_features, xfold_isFull, xfold_classId, xfold_names
