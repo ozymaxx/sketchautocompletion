@@ -7,24 +7,19 @@ import sys
 sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python/")
 sys.path.append('../data/')
-import numpy as np
 import math
 
-from svmutil import *
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
-import classesFile
-
 
 class Predictor:
     """The predictor class implementing functions to return probabilities"""
-    def __init__(self, kmeansoutput, classId, subDirectory, file = classesFile.files):
+    def __init__(self, kmeansoutput, classId, subDirectory, svm = None):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
-        self.files = file
-
+        self.svm = svm
 
     def getDistance(self, x, y):
         """Computes euclidian distance between x instance and y instance
@@ -45,10 +40,10 @@ class Predictor:
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
 
-    def svmProb(self,model,instance):
+    def svmProb(self, model, instance):
         """Predicts the probability of the given model"""
 
-        ####Prevent Writing----------------------------------------
+        ####Prevent Printing----------------------------------------
         import sys
         class NullWriter(object):
             def write(self, arg):
@@ -60,12 +55,13 @@ class Predictor:
         y = [0]
         p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
 
-        sys.stdout = oldstdout # enable kmeansoutput
+        sys.stdout = oldstdout
         ### Prevent printing ended-----------------------------------
 
         return (p_label, p_val)
 
-    def predictIt(self, instance):
+
+    def predictByInstance(self, instance):
         # find the probability of given feature to belong any of athe classes
         priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
@@ -85,7 +81,7 @@ class Predictor:
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
-    def calculatePosteriorProb(self, instance, priorClusterProb, numericKeys = False):
+    def calculatePosteriorProb(self, instance, priorClusterProb, numericKeys = True):
         """
         #features : feature array
         #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
@@ -119,10 +115,14 @@ class Predictor:
                 classesInCluster = [self.classId[int(self.kmeansoutput[0][clstrid][0])]]
                 
             elif clstrid in heteClstrId:
-                modelName = self.subDirectory +"/clus" + ` heteClstrId.index(clstrid) ` +".model"
-                m = svm_load_model(modelName)
-                classesInCluster = m.get_labels()
-                labels, probs = self.svmProb(m, [instance.tolist()])
+                if not self.svm:
+                    modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) + ".model"
+                    m = svm_load_model(modelName)
+                    classesInCluster = m.get_labels()
+                    labels, probs = self.svmProb(m, [instance.tolist()])
+                else:
+                    labels, _, probs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
+                    classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
                 
             for c in range(len(classesInCluster)):
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
@@ -150,7 +150,6 @@ class Predictor:
         for cluster in self.kmeansoutput[0]:
             prob.append(len(cluster) / float(total))
         return prob
-
 
     def getHeterogenous(self):
         """
@@ -188,13 +187,13 @@ class Predictor:
         l1 = ''
         for i in a:
             l1 += str(classProb[i])
-            l += i
+            l += str(i)
             l += '&'
             l1 += '&'
         l1 = l1[:-1]
         return l + l1
 
-    def giveOutput(self,queryjson, n):
+    def ServerOutput(self, queryjson, n):
         classPr = self.predictByString(str(queryjson))
         return self.getBestPredictions(classPr, n)
 

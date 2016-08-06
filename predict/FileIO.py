@@ -7,7 +7,6 @@ import numpy as np
 import pandas as pd
 import sys
 sys.path.append('../data/')
-import classesFile
 
 class FileIO:
     """File class used for saving an loading """
@@ -65,7 +64,7 @@ class FileIO:
         return names, isFull, features
 
 
-    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename, folders = classesFile.files):
+    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename):
         """"
         Saves Training
         """

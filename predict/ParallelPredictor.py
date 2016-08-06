@@ -16,7 +16,6 @@ from shapecreator import *
 from FeatureExtractor import *
 import classesFile
 
-
 class newMethodPredictor:
     """The predictor class implementing functions to return probabilities"""
     def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = classesFile.files):
@@ -55,7 +54,7 @@ class newMethodPredictor:
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
 
-    def svmProb(self,model,instance):
+    def svmProb(self, model, instance):
         """Predicts the probability of the given model"""
 
         ####Prevent Writing----------------------------------------
@@ -128,7 +127,7 @@ class newMethodPredictor:
                 classesInCluster = [self.classId[self.kmeansoutput[0][clstrid][0]]]
 
             elif clstrid in heteClstrId:
-                modelName = self.subDirectory +"/clus" + ` heteClstrId.index(clstrid) ` +".model"
+                modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) +".model"
                 m = svm_load_model(modelName)
                 classesInCluster = m.get_labels()
                 labels, probs = self.svmProb(m, [instance.tolist()])

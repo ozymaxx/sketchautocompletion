@@ -5,9 +5,12 @@ Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 """
 import sys
 sys.path.append("../../libsvm-3.21/python/")
+sys.path.append("../SVM/")
 from svmutil import *
 import copy
 import numpy as np
+from SVM import *
+
 class Trainer:
     """Trainer Class used for the training"""
     
@@ -17,37 +20,15 @@ class Trainer:
         self.featArr = featArr
         self.kmeansoutput = kmeansoutput
         self.classId = classId
-        
+
     def trainSVM(self, clusterIdArr, directory):
         """Trains the support vector machine and saves models
         Inputs : clusterIdArr ---> clusters list
-        Outputs : Models
+        Outputs : Support Vectors
         """
-        label = copy.copy(self.classId)
-        order = 0
-        allModels = list()
-        for i in clusterIdArr:#Foreach cluster
-            y = []
-            x = []
-            for j in i:#Foreach instance in the cluster
-                j = int(j)
-                y.append(label[j])
-                x.append(self.featArr[j].tolist())
-
-            prob  = svm_problem(y, x)
-            param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
-            
-            m = svm_train(prob, param,)
-            allModels.append(m.get_SV())
-
-            import os
-            if not os.path.exists(directory):
-                os.mkdir(directory)
-
-            svm_save_model(directory + "/" + "clus" + `order` + '.model', m)#Save the model for the cluster
-            order+=1
-        return allModels
-
+        self.svm = SVM(self.kmeansoutput, self.classId, directory, self.featArr)
+        self.svm.trainSVM(clusterIdArr, directory)
+        return self.svm
 
     def getHeterogenous(self):
         """
@@ -65,7 +46,6 @@ class Trainer:
                 heterogenousClusterId.append(clusterId)
         return heterogenousClusters, heterogenousClusterId
 
-
     def getHomogenous(self):
         """
         Gets clusters which are homogenous
@@ -81,3 +61,9 @@ class Trainer:
                 homoCluster.append(self.kmeansoutput[0][clusterId])
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
+
+
+    @staticmethod
+    def loadSvm(kmeansoutput, classId, subDirectory, featArr):
+        svm = SVM(kmeansoutput, classId, subDirectory, featArr)
+        return svm

@@ -13,7 +13,6 @@ sys.path.append('../classifiers/')
 sys.path.append("../../libsvm-3.21/python/")
 
 print sys.path
-from trainer import *
 from ckmeans import *
 from getConstraints import *
 from Predictor import *

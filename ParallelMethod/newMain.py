@@ -25,7 +25,6 @@ my_numfull = 10
 my_numpartial= 5
 my_k = my_numclass
 
-
 def getBestPredictions(classProb, n):
         a = sorted(classProb, key=classProb.get, reverse=True)[:n]
         l = ''
@@ -76,10 +75,6 @@ def newTraining(n,files, numclass, numfull,numpartial,k, name):
         fio.saveOneFeature(trainingpath +'/' + str(i) + "__Training_Center_",nowCenter)
         normalProb.append(totalNumOfInstances)
 
-
-
-
-
 def PredictIt(n, q, name, numclass, numfull, numpartial,k):
     global normalProb
     kj = 0
@@ -87,8 +82,6 @@ def PredictIt(n, q, name, numclass, numfull, numpartial,k):
         kj += i
     for i in range(len(normalProb)):
         normalProb[i] = float(normalProb[i])/kj
-
-
 
     extr = Extractor('../data/')
     fio = FileIO()
@@ -116,10 +109,7 @@ def PredictIt(n, q, name, numclass, numfull, numpartial,k):
         a = predictor.predictByString(q)
         for m in a.keys():
             out[m] = a[m]*savingProbs[i]
-
-
     return out
-
 
 
 @app.route("/", methods=['POST','GET'])
@@ -148,16 +138,15 @@ def homepage():
 
 def main():
     ForceTrain = True
-    global my_numclass,my_numfull,my_numpartial,my_k
+    global my_numclass, my_numfull, my_numpartial, my_k
     n = my_numclass
 
     # if training data is already computed, import
-    if  not ForceTrain:
+    if not ForceTrain:
         pass
         # names, classId, isFull, features, kmeansoutput = fio.loadTraining(trainingpath + "/" + trainingName)
     else:
         newTraining(n , files, my_numclass, my_numfull, my_numpartial, my_k, 'hello')
-
 
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'

@@ -15,6 +15,7 @@ import os
 import numpy as np
 import operator
 from draw import *
+from SVM import *
 
 def main():
     numclass, numfull, numpartial, xfold = 10, 10, 3, 2
@@ -42,13 +43,15 @@ def main():
                         whole_names,
                         folderList)
 
-    K = range(numclass,numclass+6) # :O
+    K = [numclass] # :O
     N = range(1, numclass)
     import numpy as np
     C = np.linspace(0, 100, 200, endpoint=False)
     accuracy = dict()
     delay_rate = dict()
 
+    accuracySVM = dict()
+    delay_rateSVM = dict()
     testcount = 0
     for k in K:
         for n in N:
@@ -58,12 +61,18 @@ def main():
                 delay_rate[(k, n, c, True)] = 0
                 delay_rate[(k, n, c, False)] = 0
 
+                accuracySVM[(k, n, c, True)] = 0
+                accuracySVM[(k, n, c, False)] = 0
+                delay_rateSVM[(k, n, c, True)] = 0
+                delay_rateSVM[(k, n, c, False)] = 0
+
+
     for k in K:
         for it in range(xfold):
             test_features, test_isFull, test_classId, test_names = \
                 xfold_features[it], xfold_isFull[it], xfold_classId[it], xfold_names[it]
 
-            train_features, train_isFull, train_classId, train_names = [],[],[],[]
+            train_features, train_isFull, train_classId, train_names = [], [], [], []
             for trainIter in range(xfold):
                 if trainIter != it:
                     train_features.extend(xfold_features[trainIter])
@@ -80,7 +89,7 @@ def main():
             Training start
             '''
 
-            ForceTrain = False
+            ForceTrain = True
             folderName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_', numclass, numfull, numpartial, k, xfold)
             trainingName = '%s__CFPK_%i_%i_%i_%i_%i' % ('xfold_cv_' + str(it), numclass, numfull, numpartial, k, xfold)
             print trainingName
@@ -93,6 +102,8 @@ def main():
                 # can I assume consistency with classId and others ?
                 _, _, _, _, kmeansoutput, _ = fio.loadTraining(
                     trainingpath + "/" + trainingName)
+                svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + trainingName, train_features)
+
             else:
                 constarr = getConstraints(size=len(train_features), isFull=train_isFull, classId=train_classId)
                 ckmeans = CKMeans(constarr, np.transpose(train_features), k)
@@ -103,18 +114,24 @@ def main():
                 heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
                 fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
                                  trainingpath, trainingName)
-                trainer.trainSVM(heteClstrFeatureId, trainingpath)
+                svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
-            predictor = Predictor(kmeansoutput, train_classId, trainingpath)
+            predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=None)
+            predictorSVM = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
+
             priorClusterProb = predictor.calculatePriorProb()
+            priorClusterProbSVM = predictorSVM.calculatePriorProb()
 
             for test_index in range(len(test_features)):
                 testcount += 1
                 Tfeature = test_features[test_index]
                 TtrueClass = test_classId[test_index]
+
                 classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
+                classProbSVM = priorClusterProbSVM.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
 
                 SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
+                SclassProbSVM = sorted(classProbSVM.items(), key=operator.itemgetter(1))
 
                 for n in N:
                     for c in C:
@@ -122,11 +139,21 @@ def main():
                         summedprob = sum(tup[1] for tup in SPartialclassProb) * 100
                         summedclassId = [tup[0] for tup in SPartialclassProb]
 
+                        SPartialclassProbSVM = SclassProbSVM[-n:]
+                        summedprobSVM = sum(tup[1] for tup in SPartialclassProbSVM) * 100
+                        summedclassIdSVM = [tup[0] for tup in SPartialclassProbSVM]
+
                         if summedprob < c:
                             delay_rate[(k, n, c, test_isFull[test_index])] += 1
                         else:
                             if TtrueClass in summedclassId:
                                 accuracy[(k, n, c, test_isFull[test_index])] += 1
+
+                        if summedprobSVM < c:
+                            delay_rateSVM[(k, n, c, test_isFull[test_index])] += 1
+                        else:
+                            if TtrueClass in summedclassIdSVM:
+                                accuracySVM[(k, n, c, test_isFull[test_index])] += 1
 
             print trainingName + ' end'
 
@@ -142,6 +169,15 @@ def main():
         total_answered = whole_isFull.count(key[3]) - total_un_answered
         accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 100
 
+    for key in delay_rateSVM:
+        delay_rateSVM[key] = (delay_rateSVM[key]*1.0/whole_isFull.count(key[3]))*100
+
+    for key in accuracy:
+        total_un_answered = int(whole_isFull.count(key[3])*(delay_rateSVM[key]/100))
+        total_answered = whole_isFull.count(key[3]) - total_un_answered
+        accuracySVM[key] = (accuracySVM[key]*1.0/total_answered)*100 if total_answered != 0 else 100
+
+
     '''
     Save results and load back
     '''
@@ -152,7 +188,6 @@ def main():
     #draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
     #draw_n_Acc(accuracy, c=30, k=numclass, isfull=False, delay_rate=delay_rate) # for fixed n and c
     #draw_K_Delay_Acc(accuracy, delay_rate, K=K, C=C, n=1, isfull=True)
-    draw_Reject_Acc(accuracy, delay_rate, N=[1,2], k=k, isfull=True)
-
-        #_draw_K-C-Text_Acc(accuracy, delay_rate, 'Constrained Voting')
+    draw_Reject_Acc([accuracy, accuracySVM], [delay_rate, delay_rateSVM], N=[1, 2], k=k, isfull=True, labels=['that', 'and that'])
+    #draw_K-C-Text_Acc(accuracy, delay_rate, 'Constrained Voting')
 if __name__ == "__main__": main()

@@ -126,23 +126,25 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull):
     plt.show()
     plt.show(block=True)
 
-def draw_Reject_Acc(accuracy, delay_rate, N, k, isfull):
+def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels):
     import pylab
     # the only free variable is C, so we will vary C to see reject vs accuracy rate
     fig = plt.figure()
-    c_list = [key[2] for key in accuracy.keys()]
+    c_list = [[key[2] for key in accuracy.keys()] for accuracy in Accuracy]
     miny= 0
     color = ['r', 'g', 'b', 'y']
-    for n in N:
-        x_reject, y_acc = [], []
-        for c in c_list:
-            x_reject.append(delay_rate[(k, n, c, isfull)])
-            y_acc.append(accuracy[(k, n, c, isfull)])
+    markers = ['x','.','x','.']
+    for i in range(len(Accuracy)):
+        for n in N:
+            x_reject, y_acc = [], []
+            for c in c_list[i]:
+                x_reject.append(Delay_rate[i][(k, n, c, isfull)])
+                y_acc.append(Accuracy[i][(k, n, c, isfull)])
 
-        pylab.scatter(x_reject, y_acc, alpha=1, s=100, color=color[n], label='N='+str(n))
-        miny= min (min(y_acc),miny)
-    # labels
-    pylab.legend(loc='upper left')
+            pylab.scatter(x_reject, y_acc, alpha=1, s=100, color=color[i], marker=markers[n+i], label=labels[i] + ' N='+str(n))
+            miny= min (min(y_acc),miny)
+        # labels
+    pylab.legend(loc='upper right')
     pylab.xlabel('Reject Rate')
     pylab.ylabel('Accuracy')
     pylab.xlim([0,90])
@@ -180,10 +182,9 @@ def draw_n_Acc(accuracy, c, k, isfull, delay_rate=None):
 
     plt.show(block=True)
 
-'''
-    Not finished
-'''
-
+    '''
+        Not finished
+    '''
 
 def draw_K_Delay_Acc(accuracy, delay_rate, K, C, n, isfull):
     fig = plt.figure()
@@ -201,6 +202,7 @@ def draw_K_Delay_Acc(accuracy, delay_rate, K, C, n, isfull):
 
     plt.xlabel('Count of Clusters')
     plt.ylabel('Delay Decision Rate')
+    plt.title('Mean Accuracies in %s Shapes with topN = %i' %(('Full' if isfull else 'Partial'), n))
     ax.set_zlabel('Accuracy')
 
     plt.show(block=True)
