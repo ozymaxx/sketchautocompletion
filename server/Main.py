@@ -59,9 +59,24 @@ def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
                                                                           numfull    = numfull,
                                                                           numpartial = numpartial,
                                                                           folderList = files[:numclass])
-        constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-        ckmeans = CKMeans(constarr, np.transpose(features), k)
-        kmeansoutput = ckmeans.getCKMeans()
+        # check if pycuda is installed
+        import imp
+        try:
+            imp.find_module('pycuda')
+            found = True
+        except ImportError:
+            found = False
+
+        if not found:
+            constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
+            ckmeans = CKMeans(constarr, np.transpose(features), k)
+            kmeansoutput = ckmeans.getCKMeans()
+        else:
+            from cudackmeans import *
+            clusterer = CuCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
+            # print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
+            clusters, centers = clusterer.cukmeans()
+            kmeansoutput = [clusters, centers]
 
         # find heterogenous clusters and train svm
         trainer = Trainer(kmeansoutput, classId, features)
