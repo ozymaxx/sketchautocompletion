@@ -88,7 +88,7 @@ def homepage():
 def main():
 
     global predictor
-    ForceTrain = False
+    ForceTrain = True
     my_numclass = 15
     my_numfull = 10
     my_numpartial= 5
@@ -98,10 +98,10 @@ def main():
 
     # if training data is already computed, import
     if not ForceTrain:
-        predictor = ParallelPredictorMaster('kola')
+        predictor = ParallelPredictorMaster(nameOfTheTraining)
     else:
         newTraining(n, files, my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
-        predictor = ParallelPredictorMaster('kola')
+        predictor = ParallelPredictorMaster(nameOfTheTraining)
 
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'

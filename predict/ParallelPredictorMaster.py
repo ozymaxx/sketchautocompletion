@@ -18,15 +18,11 @@ from ParallelPredictorSlave import *
 
 class ParallelPredictorMaster:
     """The predictor class implementing functions to return probabilities"""
-    def __init__(self, name, kmeansoutput = None, classId = None, subDirectory = None, file = None):
+    def __init__(self, name):
 
 
         path = trainingpath = '../data/newMethodTraining/' + name
         trainInfo = np.load(path + '/trainingInfo.npy').item()
-        self.kmeansoutput = kmeansoutput
-        self.classId = classId
-        self.subDirectory = subDirectory
-        self.files = file
         self.l = []
         self.name = name
         self.normalProb = trainInfo['normalProb']
