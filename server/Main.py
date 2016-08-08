@@ -170,7 +170,7 @@ def main():
         kmeansoutput, classId, svm = train(trainingName, trainingpath, numclass, numfull, numpartial, k)
 
     global predictor
-    predictor = Predictor(kmeansoutput, classId, trainingpath, svm=svm)
+    predictor = ParalllelPredictor1('sonono')
 
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'

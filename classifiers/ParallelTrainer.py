@@ -8,28 +8,24 @@ sys.path.append('../data/')
 sys.path.append("../../libsvm-3.21/python")
 from extractor import *
 from FileIO import *
-from newMethodPredictor import *
 import numpy as np
-import classesFile
 
-class newTrainer:
+class ParallelTrainer:
     """Trainer Class used for the training"""
 
-    def __init__(self, n):
+    def __init__(self, n, files):
         self.n = n
         self.trainingAdress = '../data/newMethodTraining/'
-        self.files = classesFile.files
+        self.files = files
 
     def trainSWM(self, numclass, numfull, numpartial, k, name):
-
-        files = self.files
         n = self.n
         extr = Extractor('../data/')
         fio = FileIO()
-        global normalProb
-
+        normalProb = []
         import os
         path = self.trainingAdress + name
+
         if not os.path.exists(path):
             os.mkdir(path)
 
@@ -39,7 +35,7 @@ class newTrainer:
             features, isFull, classId, names, folderList = extr.loadfolders(  numclass   = numclass,
                                                                               numfull    = numfull,
                                                                               numpartial = numpartial,
-                                                                              folderList = files[i*5:(i+1)*5])
+                                                                              folderList = self.files[i*5:(i+1)*5])
             constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
             ckmeans = CKMeans(constarr, np.transpose(features), k)
             kmeansoutput = ckmeans.getCKMeans()
@@ -59,6 +55,17 @@ class newTrainer:
                     nowCenter += features[instance]
             nowCenter = nowCenter/totalNumOfInstances
             fio.saveOneFeature(trainingpath +'/' + str(i) + "__Training_Center_",nowCenter)
-            # normalProb.append(totalNumOfInstances)
+            normalProb.append(totalNumOfInstances)
+        kj = 0
+        for i in normalProb:
+            kj += i
+        for i in range(len(normalProb)):
+            normalProb[i] = float(normalProb[i])/kj
+
+
+        trainingInfo = {'normalProb':normalProb, 'k':k, 'numclass':numclass, 'numfull':numfull, 'numpartial':numpartial, 'numTrain':numclass/n}
+        np.save(path+'/trainingInfo.npy', trainingInfo)
+
+
 
 

@@ -14,11 +14,10 @@ from svmutil import *
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
-import classesFile
 
-class newMethodPredictor:
+class ParallelPredictorSlave:
     """The predictor class implementing functions to return probabilities"""
-    def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = classesFile.files):
+    def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = None):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
@@ -205,5 +204,8 @@ class newMethodPredictor:
     def giveOutput(self,queryjson, n):
         classPr = self.predictByString(str(queryjson))
         return self.getBestPredictions(classPr, n)
+
+
+
 
 
