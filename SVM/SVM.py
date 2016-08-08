@@ -6,12 +6,12 @@ from svmutil import *
 import copy
 
 class SVM:
-    def __init__(self, kmeansoutput, classId, subDirectory, featArr):
+    def __init__(self, kmeansoutput, classId, subDirectory, features):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
         self.models = {}
-        self.featArr = featArr
+        self.features = features
 
     def trainSVM(self, clusterIdArr, directory):
         """Trains the support vector machine and saves models
@@ -27,7 +27,7 @@ class SVM:
             for j in i:  # Foreach instance in the cluster
                 j = int(j)
                 y.append(label[j])
-                x.append(self.featArr[j].tolist())
+                x.append(self.features[j].tolist())
 
             prob = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
