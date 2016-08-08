@@ -41,14 +41,6 @@ files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 
          'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea-turtle',
          'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
-predictor = None
-
-normalProb = []
-my_numclass = 15
-my_numfull = 10
-my_numpartial= 5
-my_k = my_numclass
-
 def getBestPredictions(classProb, n):
         a = sorted(classProb, key=classProb.get, reverse=True)[:n]
         l = ''
@@ -94,21 +86,22 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    ForceTrain = True
 
-    global my_numclass, my_numfull, my_numpartial, my_k
+    global predictor
+    ForceTrain = False
+    my_numclass = 15
+    my_numfull = 10
+    my_numpartial= 5
+    my_k = my_numclass
     n = 5
+    nameOfTheTraining = 'kola'
 
     # if training data is already computed, import
     if not ForceTrain:
-        pass
-        # names, classId, isFull, features, kmeansoutput = fio.loadTraining(trainingpath + "/" + trainingName)
+        predictor = ParallelPredictorMaster('kola')
     else:
-        newTraining(n , files, my_numclass, my_numfull, my_numpartial, my_k, 'kola')
-
-
-    global predictor
-    predictor = ParallelPredictorMaster('kola')
+        newTraining(n, files, my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
+        predictor = ParallelPredictorMaster('kola')
 
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
