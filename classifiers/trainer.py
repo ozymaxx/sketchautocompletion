@@ -4,9 +4,7 @@ Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 14.07.2016
 """
 import sys
-sys.path.append("../../libsvm-3.21/python/")
 sys.path.append("../SVM/")
-from svmutil import *
 import copy
 import numpy as np
 from SVM import *

@@ -5,7 +5,6 @@ sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../test/')
 sys.path.append('../data/')
-sys.path.append("../../libsvm-3.21/python")
 from extractor import *
 from FileIO import *
 from Predictor import *
@@ -157,9 +156,9 @@ def homepage():
 
 def main():
     ForceTrain = False
-    numclass, numfull, numpartial = 5, 6, 3
+    numclass, numfull, numpartial = 250, 80, 80
     k = numclass
-    trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main', numclass, numfull, numpartial, k)
+    trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
     fio = FileIO()
 
@@ -169,6 +168,7 @@ def main():
         svm = Trainer.loadSvm(kmeansoutput, classId, trainingpath, features)
     else:
         kmeansoutput, classId, svm = train(trainingName, trainingpath, numclass, numfull, numpartial, k)
+
     global predictor
     predictor = Predictor(kmeansoutput, classId, trainingpath, svm=svm)
 
