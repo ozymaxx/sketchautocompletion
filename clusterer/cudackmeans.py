@@ -9,6 +9,8 @@ import pycuda.autoinit
 
 class CuCKMeans():
     def __init__(self,features, k, classId, isFull):
+        features = np.asarray(features)
+
         self.features = features
         self.k = k
         self.classId = np.asarray(classId)
@@ -58,7 +60,11 @@ class CuCKMeans():
     
         kernel_code = kernel_code_template % {
                           'DIMENSIONS': dimensions}
-        mod = compiler.SourceModule(kernel_code)
+        import platform
+        if '1003' in platform.node():
+            mod = compiler.SourceModule(kernel_code, options=["-ccbin", "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64"])
+        else:
+            mod = compiler.SourceModule(kernel_code)
     
         dataT = obs.T.astype(np.float32).copy()
         clusters = clusters.astype(np.float32)
@@ -109,8 +115,12 @@ class CuCKMeans():
         blocks = int(math.ceil(float(points) / block_size))
         kernel_code = kernel_code_template % {
                           'DIMENSIONS': dimensions}
-        mod = compiler.SourceModule(kernel_code)
 
+        import platform
+        if '1003' in platform.node():
+            mod = compiler.SourceModule(kernel_code, options=["-ccbin", "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64"])
+        else:
+            mod = compiler.SourceModule(kernel_code)
         
         classIds = self.classId.astype(np.int32).copy()
         isFulls = self.isFull.astype(np.int32).copy()
@@ -241,7 +251,7 @@ if __name__ == "__main__":
     rounds = 1  # for timeit
     rtol = 0.001  # for the relative error calculation
 
-    i = 300
+    i = 10
     
     points = 512 * i
     features = np.random.randn(points, dimensions).astype(np.float32) ## WILL GET THIS FROM MAIN

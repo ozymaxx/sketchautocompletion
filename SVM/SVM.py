@@ -1,6 +1,6 @@
 import sys
 sys.path.append('../classifiers')
-sys.path.append("../../libsvm-3.21/python/")
+sys.path.append("../../libsvm-3.21/python")
 sys.path.append('../data/')
 from svmutil import *
 import copy
@@ -18,6 +18,7 @@ class SVM:
         Inputs : clusterIdArr: list of cluster id's to be trained (heto)
         Outputs : Support VectorS
         """
+        print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterIdArr)
         label = copy.copy(self.classId)
         order = 0
         allSV = []
@@ -32,7 +33,7 @@ class SVM:
             prob = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
 
-            m = svm_train(prob, param, )
+            m = svm_train(prob, param)
             allSV.append(m.get_SV())
 
             import os
@@ -40,9 +41,10 @@ class SVM:
                 os.mkdir(directory)
 
             svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
+            print 'Saved Model %i' % order
             self.models[int(order)] = m
             order += 1
-
+        print 'Training SVM is done'
     def getlabels(self, modIndex):
         return self.models[int(modIndex)].get_labels()
 
@@ -53,7 +55,6 @@ class SVM:
             while os.path.exists(self.subDirectory + "/" + "clus" + str(order) + '.model'):
                 self.models[order] = svm_load_model(self.subDirectory + "/" + "clus" + str(order) + '.model')
                 order += 1
-
 
         import sys
         class NullWriter(object):

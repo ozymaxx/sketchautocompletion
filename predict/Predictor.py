@@ -99,7 +99,8 @@ class Predictor:
         clusterPrb  = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
 
         # normalize cluster probability to add up to 1
-        clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
+        sumCluster = sum(clusterPrb)
+        clusterPrb = [x/sumCluster for x in clusterPrb]
     
         for clstrid in range(len(self.kmeansoutput[0])):
             probabilityToBeInThatCluster = clusterPrb[clstrid]
