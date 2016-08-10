@@ -64,7 +64,7 @@ class FileIO:
         return names, isFull, features
 
 
-    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename):
+    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename, saveFeatures = True):
         """"
         Saves Training
         """
@@ -80,9 +80,11 @@ class FileIO:
         dfCl.columns = ['ClassId']
         df = pd.DataFrame(data = isFull)
         df.columns = ['isFull']
-        df = pd.concat([df, dfCl], axis=1, join_axes=[df.index])
-        df1 = pd.DataFrame(data=feature)
-        result = pd.concat([df, df1], axis=1, join_axes=[df1.index])
+        result = pd.concat([df, dfCl], axis=1, join_axes=[df.index])
+        if(saveFeatures):
+            df1 = pd.DataFrame(data=feature)
+            result = pd.concat([result, df1], axis=1, join_axes=[df1.index])
+
         df = pd.DataFrame(names)
         df.columns =['names']
         result = pd.concat([df, result], axis=1, join_axes=[result.index])
@@ -93,15 +95,19 @@ class FileIO:
         df1 = pd.DataFrame(data = kmeansoutput[1])
         df1.to_csv(path + '/' + filename +self.startCent, mode = 'w', index = False)
 
-    def loadTraining(self, f):
+    def loadTraining(self, f, loadFeatures = True):
         """"
         Loads Training
         """
+
+        print 'Loading Training data ' + f
         a = pd.read_csv(f)
         names = a['names'].tolist()
         isFull = a['isFull'].as_matrix()
         classId = a['ClassId'].as_matrix()
-        features = a[a.columns[3:]].as_matrix()
+        features = []
+        if(loadFeatures):
+            features = a[a.columns[3:]].as_matrix()
 
         k1 = pd.read_csv( f + self.startClu)
         k1 = k1.fillna("a")

@@ -60,7 +60,6 @@ class Trainer:
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
 
-
     @staticmethod
     def loadSvm(kmeansoutput, classId, subDirectory, featArr):
         svm = SVM(kmeansoutput, classId, subDirectory, featArr)

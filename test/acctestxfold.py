@@ -31,7 +31,6 @@ def main():
                             numfull=numfull,
                             numpartial=numpartial)
 
-
     xfold_features, \
     xfold_isFull, \
     xfold_classId, \
@@ -117,10 +116,8 @@ def main():
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
             predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=None)
-            predictorSVM = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
 
             priorClusterProb = predictor.calculatePriorProb()
-            priorClusterProbSVM = predictorSVM.calculatePriorProb()
 
             for test_index in range(len(test_features)):
                 testcount += 1
@@ -128,10 +125,7 @@ def main():
                 TtrueClass = test_classId[test_index]
 
                 classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
-                classProbSVM = priorClusterProbSVM.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
-
                 SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
-                SclassProbSVM = sorted(classProbSVM.items(), key=operator.itemgetter(1))
 
                 for n in N:
                     for c in C:
@@ -139,21 +133,12 @@ def main():
                         summedprob = sum(tup[1] for tup in SPartialclassProb) * 100
                         summedclassId = [tup[0] for tup in SPartialclassProb]
 
-                        SPartialclassProbSVM = SclassProbSVM[-n:]
-                        summedprobSVM = sum(tup[1] for tup in SPartialclassProbSVM) * 100
-                        summedclassIdSVM = [tup[0] for tup in SPartialclassProbSVM]
-
                         if summedprob < c:
                             delay_rate[(k, n, c, test_isFull[test_index])] += 1
                         else:
                             if TtrueClass in summedclassId:
                                 accuracy[(k, n, c, test_isFull[test_index])] += 1
 
-                        if summedprobSVM < c:
-                            delay_rateSVM[(k, n, c, test_isFull[test_index])] += 1
-                        else:
-                            if TtrueClass in summedclassIdSVM:
-                                accuracySVM[(k, n, c, test_isFull[test_index])] += 1
 
             print trainingName + ' end'
 
@@ -169,25 +154,16 @@ def main():
         total_answered = whole_isFull.count(key[3]) - total_un_answered
         accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 100
 
-    for key in delay_rateSVM:
-        delay_rateSVM[key] = (delay_rateSVM[key]*1.0/whole_isFull.count(key[3]))*100
-
-    for key in accuracy:
-        total_un_answered = int(whole_isFull.count(key[3])*(delay_rateSVM[key]/100))
-        total_answered = whole_isFull.count(key[3]) - total_un_answered
-        accuracySVM[key] = (accuracySVM[key]*1.0/total_answered)*100 if total_answered != 0 else 100
-
-
     '''
     Save results and load back
     '''
 
-    #draw_N_C_Acc(accuracy, N, C, k=numclass, isfull=True)
-    #draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
-    #draw_N_C_Acc_Contour(accuracy, N, C, k=numclass, isfull=True) # Surface over n and c
-    #draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
-    #draw_n_Acc(accuracy, c=30, k=numclass, isfull=False, delay_rate=delay_rate) # for fixed n and c
-    #draw_K_Delay_Acc(accuracy, delay_rate, K=K, C=C, n=1, isfull=True)
-    draw_Reject_Acc([accuracy, accuracySVM], [delay_rate, delay_rateSVM], N=[1, 2], k=k, isfull=True, labels=['that', 'and that'])
-    #draw_K-C-Text_Acc(accuracy, delay_rate, 'Constrained Voting')
+    draw_N_C_Acc(accuracy, N, C, k=numclass, isfull=True)
+    draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
+    draw_N_C_Acc_Contour(accuracy, N, C, k=numclass, isfull=True) # Surface over n and c
+    draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
+    draw_n_Acc(accuracy, c=30, k=numclass, isfull=False, delay_rate=delay_rate) # for fixed n and c
+    draw_K_Delay_Acc(accuracy, delay_rate, K=K, C=C, n=1, isfull=True)
+    draw_Reject_Acc([accuracy], [delay_rate], N=[1, 2], k=k, isfull=True, labels=['Ck-means'])
+    draw_K-C-Text_Acc(accuracy, delay_rate, 'Constrained Voting')
 if __name__ == "__main__": main()

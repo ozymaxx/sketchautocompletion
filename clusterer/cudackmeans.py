@@ -95,6 +95,141 @@ class CuCKMeans():
         return cluster.get(), min_dist.get(), instanceVotes.get()
     
     
+    
+    def cu_v2q(self, obs, clusters, obs_code, distort, votes, limits):
+        kernel_code_template = """
+         #include "float.h" // for FLT_MAX
+           // the kernel definition
+          __device__ void loadVector(float *target, float* source, int dimensions )
+          {
+              for( int i = 0; i < dimensions; i++ ) target[i] = source[i];
+          }
+          __global__ void cu_v2q(float *g_idata, float *g_centroids,
+            int *classId, int *isFull, int *votes,
+            int * cluster, float *min_dist, int numClusters, int numDim, int numPoints, int numIter) {
+            int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
+            __shared__ float mean[%(DIMENSIONS)s];
+            float minDistance = FLT_MAX;
+            int myCentroid = 0;
+            if(valindex < numPoints){
+              for(int k=numIter;k<numIter+95;k++){
+                if(threadIdx.x == 0) loadVector( mean, &g_centroids[k*(numDim)], numDim );
+                __syncthreads();
+                float distance = 0.0;
+                for(int i=0;i<numDim;i++){
+                  float increased_distance = (g_idata[valindex+i*(numPoints)] -mean[i]);
+                  distance = distance +(increased_distance * increased_distance);
+                }
+                if(distance<minDistance) {
+                  minDistance = distance ;
+                  myCentroid = k;
+                }
+              }
+              if(minDistance < (min_dist[valindex]*min_dist[valindex])){
+                if(isFull[valindex] == 1) {
+                  votes[(classId[valindex])*numClusters + cluster[valindex]]--;
+                  votes[(classId[valindex])*numClusters + myCentroid]++;
+                  }
+                cluster[valindex]=myCentroid;
+                min_dist[valindex]=sqrt(minDistance);
+              }
+            }
+          }
+          __global__ void cu_v2qinit(float *g_idata, float *g_centroids,
+            int *classId, int *isFull, int *votes,
+            int * cluster, float *min_dist, int numClusters, int numDim, int numPoints, int numIter) {
+            int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
+            __shared__ float mean[%(DIMENSIONS)s];
+            float minDistance = FLT_MAX;
+            int myCentroid = 0;
+            if(valindex < numPoints){
+              for(int k=numIter;k<numIter+95;k++){
+                if(threadIdx.x == 0) loadVector( mean, &g_centroids[k*(numDim)], numDim );
+                __syncthreads();
+                float distance = 0.0;
+                for(int i=0;i<numDim;i++){
+                  float increased_distance = (g_idata[valindex+i*(numPoints)] -mean[i]);
+                  distance = distance +(increased_distance * increased_distance);
+                }
+                if(distance<minDistance) {
+                  minDistance = distance ;
+                  myCentroid = k;
+                }
+              }
+              cluster[valindex]=myCentroid;
+              min_dist[valindex]=sqrt(minDistance);
+              if(isFull[valindex] == 1) {votes[(classId[valindex])*numClusters + myCentroid]++;}
+            }
+          }
+        """
+        nclusters = clusters.shape[0]
+        nclasses = len(np.unique(self.classId))
+
+        points = obs.shape[0]
+        dimensions = obs.shape[1]
+        block_size = 512
+        blocks = int(math.ceil(float(points) / block_size))
+        cluster = None
+        min_dist = None
+        instanceVotes = None
+        
+        kernel_code = kernel_code_template % {
+            'DIMENSIONS': dimensions}
+        mod = compiler.SourceModule(kernel_code)
+        
+        import platform
+        if '1003' in platform.node():
+            mod = compiler.SourceModule(kernel_code, options=["-ccbin", "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64"])
+        else:
+            mod = compiler.SourceModule(kernel_code)
+    
+        dataT = obs.T.astype(np.float32).copy()
+        clusters = clusters.astype(np.float32)
+        numIter = limits
+        
+        classIds = self.classId.astype(np.int32).copy()
+        isFulls = self.isFull.astype(np.int32).copy()
+
+        if(obs_code is None):
+            cluster = gpuarray.zeros(points, dtype=np.int32)
+            min_dist = gpuarray.zeros(points, dtype=np.float32)
+            instanceVotes = gpuarray.zeros(nclasses*nclusters, dtype=np.int32)
+            kmeans_kernel = mod.get_function('cu_v2qinit')
+            kmeans_kernel(driver.In(dataT),
+                          driver.In(clusters),
+                          driver.In(classIds),
+                          driver.In(isFulls),
+                          instanceVotes,
+                          cluster,
+                          min_dist,
+                          np.int32(nclusters),
+                          np.int32(dimensions),
+                          np.int32(points),
+                          np.int32(numIter),
+                          grid=(blocks, 1),
+                          block=(block_size, 1, 1),
+                          )
+        else:
+            cluster = gpuarray.to_gpu(obs_code)
+            min_dist = gpuarray.to_gpu(distort)
+            instanceVotes = gpuarray.to_gpu(votes)
+            kmeans_kernel = mod.get_function('cu_v2q')
+            kmeans_kernel(driver.In(dataT),
+                          driver.In(clusters),
+                          driver.In(classIds),
+                          driver.In(isFulls),
+                          instanceVotes,
+                          cluster,
+                          min_dist,
+                          np.int32(nclusters),
+                          np.int32(dimensions),
+                          np.int32(points),
+                          np.int32(numIter),
+                          grid=(blocks, 1),
+                          block=(block_size, 1, 1),
+                          )
+        return cluster.get(), min_dist.get(), instanceVotes.get()
+
     def cu_av(self, obs, clusters, obs_code, classCluster):
         kernel_code_template = """
            // the kernel definition
@@ -153,10 +288,23 @@ class CuCKMeans():
             print "iteration number : ", iterNum
             nc = code_book.shape[0]  # nc : number of clusters
             
-            #compute membership and distances between features and code_book
-            print "Apply K Means!"
-            obs_code, distort, instanceVotes = self.cu_vq(features, code_book)
-            
+            #if max 150 clusters, do the fast method
+            if nc <=150:
+                #compute membership and distances between features and code_book
+                print "Apply K Means!"
+                obs_code, distort, instanceVotes = self.cu_vq(features, code_book)
+            else:
+                #Compute membership with little tasks
+                print "Apply K Means!"
+                limits = 0
+                obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, None, None, None, limits)
+                print limits, "-", limits + 95, "finished"
+                limits += 95
+                while limits <190:
+                    obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, obs_code, distort, instanceVotes, limits)
+                    print limits, "-", limits + 95, "finished"
+                    limits+=95
+
             # Assign full sketches to their own clusters
             nclusters = clusters.shape[0]
             nclasses = len(np.unique(self.classId))
@@ -176,7 +324,8 @@ class CuCKMeans():
                     failsafe -=1
                 classClusters.append(highestIdx)
                 i+=1
-                
+                if failsafe==0:
+                    print "Failsafe actvated"
             # assign every full sketch to that cluster
             
             print "Reassign full sketches!"
@@ -246,12 +395,12 @@ class CuCKMeans():
 if __name__ == "__main__":
 
     dimensions = 720
-    nclusters = 100
+    nclusters = 250
 
     rounds = 1  # for timeit
     rtol = 0.001  # for the relative error calculation
 
-    i = 10
+    i = 600
     
     points = 512 * i
     features = np.random.randn(points, dimensions).astype(np.float32) ## WILL GET THIS FROM MAIN
