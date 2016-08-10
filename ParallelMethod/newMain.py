@@ -89,9 +89,9 @@ def main():
 
     global predictor
     ForceTrain = True
-    my_numclass = 15
-    my_numfull = 10
-    my_numpartial= 5
+    my_numclass = 50
+    my_numfull = 20
+    my_numpartial= 10
     my_k = my_numclass
     n = 5
     nameOfTheTraining = 'kola'
