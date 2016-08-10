@@ -119,7 +119,7 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull):
 
     plt.imshow(zi,  origin='lower')
 
-    plt.title('Accuract Contour Plot for different N and C for Full%s' %str(isfull))
+    plt.title('Accuracy Contour Plot for different N and C for Full%s' %str(isfull))
     plt.xlabel('N')
     plt.ylabel('C')
     plt.colorbar()

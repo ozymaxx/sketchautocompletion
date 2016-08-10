@@ -138,7 +138,29 @@ class Extractor:
         return features, isFull, classId, name
 
     def loadfolders(self, numclass, numfull, numpartial, folderList = []):
-        return self.loadfolderscsv(numclass, numfull, numpartial, folderList)
+        if not folderList:
+            folderList = os.listdir(self.csvpath)
+            folderList.sort(key=str.lower)
+            folderList = folderList[:numclass]
+
+        if len(folderList) > numclass:
+            folderList = folderList[:numclass]
+
+        if numfull >= 80 and numpartial >= 80:
+            whole_features, whole_isFull, whole_names, whole_classId = [], [], [], []
+            count = 0
+            for folder in folderList:
+                features, isFull, names = self.loadfoldercsv(folder)
+                whole_features.extend(features)
+                whole_isFull.extend(isFull)
+                whole_names.extend(names)
+                whole_classId.extend([count]*len(features))
+                count += 1
+            return whole_features, whole_isFull, whole_classId, whole_names, folderList
+
+        features, isFull, classId, names, folderList = self.loadfolderscsv(numclass, numfull, numpartial, folderList)
+        print 'Loaded ' + str(len(features)) + ' features'
+        return features, isFull, classId, names, folderList
 
     def processName(self, name):
         namesplt = name.split('_')

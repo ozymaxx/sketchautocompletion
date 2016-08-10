@@ -12,6 +12,9 @@ import math
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
+from scipy.spatial import distance
+import pylab
+import matplotlib.pyplot as plt
 
 class Predictor:
     """The predictor class implementing functions to return probabilities"""
@@ -21,13 +24,17 @@ class Predictor:
         self.subDirectory = subDirectory
         self.svm = svm
 
-    def getDistance(self, x, y):
-        """Computes euclidian distance between x instance and y instance
-        inputs: x,y instances
-        kmeansoutput: distance"""
+    def getDistance(self, a, b):
+        """Computes euclidian distance between a instance and b instance
+        inputs: a,b instances
+        output: distance"""
+        '''
         x = np.asarray(x)
         y = np.asarray(y)
         return np.sqrt(np.sum((x-y)**2))
+        '''
+
+        return distance.euclidean(a, b)
     
     def clusterProb(self, instance, normalProb):
         """
@@ -78,7 +85,8 @@ class Predictor:
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(loadedSketch)
         priorClusterProb = self.calculatePriorProb()
-        classProb = self.calculatePosteriorProb(instance, priorClusterProb)
+
+        classProb = self.calculatePosteriorProb(instance, priorClusterProb, True)
         return classProb
 
     def calculatePosteriorProb(self, instance, priorClusterProb, numericKeys = True):
@@ -101,7 +109,14 @@ class Predictor:
         # normalize cluster probability to add up to 1
         sumCluster = sum(clusterPrb)
         clusterPrb = [x/sumCluster for x in clusterPrb]
-    
+
+        '''
+        DEBUG
+        '''
+        ContributionList = [[] for i in range(max(self.classId) + 1)]
+        '''
+        DEBUG
+        '''
         for clstrid in range(len(self.kmeansoutput[0])):
             probabilityToBeInThatCluster = clusterPrb[clstrid]
             if clstrid in homoClstrId:
@@ -124,9 +139,20 @@ class Predictor:
                 else:
                     labels, _, probs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
                     classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
-                
+
             for c in range(len(classesInCluster)):
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
+                '''
+                DEBUG
+                '''
+                try:
+                    ContributionList[classesInCluster[c]].append(probs[0][c]*probabilityToBeInThatCluster)
+                except:
+                    pass
+                '''
+                DEBUG
+                '''
+
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
 
         if not numericKeys:

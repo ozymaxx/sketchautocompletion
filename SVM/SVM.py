@@ -48,6 +48,14 @@ class SVM:
     def getlabels(self, modIndex):
         return self.models[int(modIndex)].get_labels()
 
+    def loadModels(self):
+        import os
+        order = 0
+        while os.path.exists(self.subDirectory + "/" + "clus" + str(order) + '.model'):
+            print 'Loading SVM Model %s ' % str(self.subDirectory + "/" + "clus" + str(order) + '.model')
+            self.models[order] = svm_load_model(self.subDirectory + "/" + "clus" + str(order) + '.model')
+            order += 1
+
     def predict(self, modIndex, instance):
         if not self.models:
             order = 0

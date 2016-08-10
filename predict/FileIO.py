@@ -96,6 +96,8 @@ class FileIO:
         """"
         Loads Training
         """
+
+        print 'Loading Training data ' + f
         a = pd.read_csv(f)
         names = a['names'].tolist()
         isFull = a['isFull'].as_matrix()
