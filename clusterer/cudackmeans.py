@@ -112,7 +112,7 @@ class CuCKMeans():
             float minDistance = FLT_MAX;
             int myCentroid = 0;
             if(valindex < numPoints){
-              for(int k=numIter;k<numIter+50;k++){
+              for(int k=numIter;k<numIter+95;k++){
                 if(threadIdx.x == 0) loadVector( mean, &g_centroids[k*(numDim)], numDim );
                 __syncthreads();
                 float distance = 0.0;
@@ -126,10 +126,12 @@ class CuCKMeans():
                 }
               }
               if(minDistance < (min_dist[valindex]*min_dist[valindex])){
-                if(isFull[valindex] == 1) {votes[(classId[valindex])*numClusters + cluster[valindex]]--;}
+                if(isFull[valindex] == 1) {
+                  votes[(classId[valindex])*numClusters + cluster[valindex]]--;
+                  votes[(classId[valindex])*numClusters + myCentroid]++;
+                  }
                 cluster[valindex]=myCentroid;
                 min_dist[valindex]=sqrt(minDistance);
-                if(isFull[valindex] == 1) {votes[(classId[valindex])*numClusters + myCentroid]++;}
               }
             }
           }
@@ -141,7 +143,7 @@ class CuCKMeans():
             float minDistance = FLT_MAX;
             int myCentroid = 0;
             if(valindex < numPoints){
-              for(int k=numIter;k<numIter+50;k++){
+              for(int k=numIter;k<numIter+95;k++){
                 if(threadIdx.x == 0) loadVector( mean, &g_centroids[k*(numDim)], numDim );
                 __syncthreads();
                 float distance = 0.0;
@@ -162,9 +164,7 @@ class CuCKMeans():
         """
         nclusters = clusters.shape[0]
         nclasses = len(np.unique(self.classId))
-        
-        print nclasses, "classes"
-        print nclusters, "clusters"
+
         points = obs.shape[0]
         dimensions = obs.shape[1]
         block_size = 512
@@ -288,6 +288,7 @@ class CuCKMeans():
             print "iteration number : ", iterNum
             nc = code_book.shape[0]  # nc : number of clusters
             
+            #if max 150 clusters, do the fast method
             if nc <=150:
                 #compute membership and distances between features and code_book
                 print "Apply K Means!"
@@ -297,12 +298,12 @@ class CuCKMeans():
                 print "Apply K Means!"
                 limits = 0
                 obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, None, None, None, limits)
-                print limits, "-", limits + 50, "finished"
-                limits += 50
-                while limits <200:
+                print limits, "-", limits + 95, "finished"
+                limits += 95
+                while limits <190:
                     obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, obs_code, distort, instanceVotes, limits)
-                    print limits, "-", limits + 50, "finished"
-                    limits+=50
+                    print limits, "-", limits + 95, "finished"
+                    limits+=95
 
             # Assign full sketches to their own clusters
             nclusters = clusters.shape[0]
@@ -323,7 +324,8 @@ class CuCKMeans():
                     failsafe -=1
                 classClusters.append(highestIdx)
                 i+=1
-                
+                if failsafe==0:
+                    print "Failsafe actvated"
             # assign every full sketch to that cluster
             
             print "Reassign full sketches!"
