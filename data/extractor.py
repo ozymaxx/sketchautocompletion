@@ -134,7 +134,6 @@ class Extractor:
                     classId.append(folderList.index(folder))
                     name.append(sketchname)
 
-        print 'Loaded ' + str(len(self.features)) + ' sketches'
         return features, isFull, classId, name
 
     def loadfolders(self, numclass, numfull, numpartial, folderList = []):

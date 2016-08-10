@@ -64,16 +64,18 @@ def main():
                             numpartial=numpartial,
                             folderList=files)
 
+
+    numtest = 10
     train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
         partitionfeatures(whole_features,
                           whole_isFull,
                           whole_classId,
                           whole_names,
-                          numtrainfull = 70,
+                          numtrainfull = numfull-numtest,
                           selectTestRandom=True)
 
-    #K = range(numclass, numclass*2) # :O
-    K = [numclass]
+    K = range(2*numclass, 2*numclass+2) # :O
+    #K = [numclass]
     N = range(1, numclass)
     import numpy as np
     C = np.linspace(0, 100, 200, endpoint=False)
@@ -115,7 +117,7 @@ def main():
         if os.path.exists(trainingpath) and not ForceTrain:
             # can I assume consistency with classId and others ?
             _, _, _, _, kmeansoutput, _ = fio.loadTraining(
-                trainingpath + "/" + trainingName)
+                trainingpath, loadFeatures=False)
             svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + trainingName, train_features)
 
         else:
@@ -166,7 +168,7 @@ def main():
     for key in accuracy:
         total_un_answered = int(test_isFull.count(key[3])*(reject_rate[key]/100))
         total_answered = test_isFull.count(key[3]) - total_un_answered
-        accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else -100
+        accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 0
 
     '''
     Save results
@@ -175,12 +177,21 @@ def main():
     pickle.dump(accuracy, open(trainingpath + '/' "accuracy.p", "wb"))
     pickle.dump(reject_rate, open(trainingpath + '/' "reject.p", "wb"))
 
-    draw_N_C_Acc(accuracy, N, C, k=numclass, isfull=True)
-    draw_N_C_Reject_Contour(reject_rate, N, C, k=numclass, isfull=True)
-    draw_N_C_Acc_Contour(accuracy, N, C, k=numclass, isfull=True) # Surface over n and c
-    draw_N_C_Reject_Contour(reject_rate, N, C, k=numclass, isfull=True)
-    draw_n_Acc(accuracy, c=30, k=numclass, isfull=False, delay_rate=reject_rate) # for fixed n and c
-    draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True)
-    draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=k, isfull=True, labels=['Ck-means'])
+    draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
+    draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)# Surface over n and c
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
+    draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=True, labels=['Ck-means'], path=trainingpath)
+
+    draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
+    draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)# Surface over n and c
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
+    draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
+
     #draw_K-C-Text_Acc(accuracy, reject_rate, 'Constrained Voting')
 if __name__ == "__main__": main()

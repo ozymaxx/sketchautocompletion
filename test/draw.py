@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import itertools
 from mpl_toolkits.mplot3d import Axes3D
 import scipy.interpolate
-def draw_N_C_Acc(accuracy, N, C, k, isfull):
+def draw_N_C_Acc(accuracy, N, C, k, isfull, path):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -30,10 +30,11 @@ def draw_N_C_Acc(accuracy, N, C, k, isfull):
     '''
     plt.xlabel('N')
     plt.ylabel('C')
-    ax.set_zlabel('Accurcy')
-    plt.show(block=True)
+    ax.set_zlabel('Accuracy')
+    plt.title('Accuracy Contour Plot for different N and C for Full%s' % str(isfull))
+    fig.savefig(path + '/' + 'draw_N_C_Acc_%s.png' % ('Full' if isfull else 'Partial'))
 
-def draw_N_C_Reject(delay_rate, N, C, k, isfull):
+def draw_N_C_Reject(delay_rate, N, C, k, isfull, path):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -61,9 +62,9 @@ def draw_N_C_Reject(delay_rate, N, C, k, isfull):
     plt.xlabel('N')
     plt.ylabel('C')
     ax.set_zlabel('Reject Rate(%)')
-    plt.show(block=True)
+    fig.savefig(path + '/' + 'draw_N_C_Reject_%s.png' % ('Full' if isfull else 'Partial'))
 
-def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull):
+def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull, path):
     fig = plt.figure()
 
     nmesh, cmesh = np.meshgrid(N, C)
@@ -83,18 +84,20 @@ def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull):
     zi = rbf(xi, yi)
 
     plt.imshow(zi, vmin=min(rejlist), vmax=max(rejlist), origin='lower',
-               extent=[min(nlist), max(nlist), min(clist), max(clist)])
+               extent=[0, len(nlist), 0, len(clist)])
 
-    plt.imshow(zi,  origin='lower')
+    plt.xticks(np.linspace(0, len(nlist), max(N)), np.linspace(1, max(N), max(N)))
+    plt.yticks(np.linspace(0, len(clist), 9), np.linspace(0, max(C), 9))
+
 
     plt.title('Reject Rate Contour Plot for different N and C for Full:%s' %str(isfull))
     plt.xlabel('N')
     plt.ylabel('C')
     plt.colorbar()
-    plt.show()
-    plt.show(block=True)
 
-def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull):
+    fig.savefig(path + '/' + 'draw_N_C_Reject_Contour_%s.png' % ('Full' if isfull else 'Partial'))
+
+def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
     fig = plt.figure()
 
     nmesh, cmesh = np.meshgrid(N, C)
@@ -115,18 +118,18 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull):
     zi = rbf(xi, yi)
 
     plt.imshow(zi, vmin=min(acclist), vmax=max(acclist), origin='lower',
-               extent=[min(nlist), max(nlist), min(clist), max(clist)])
+               extent=[0, len(nlist), 0, len(acclist)])
+    plt.xticks(np.linspace(0, len(nlist), max(N)), np.linspace(1, max(N), max(N)))
+    plt.yticks(np.linspace(0, len(acclist), 9), np.linspace(0, max(C), 9))
 
-    plt.imshow(zi,  origin='lower')
-
-    plt.title('Accuracy Contour Plot for different N and C for Full%s' %str(isfull))
+    plt.title('Accuracy Contour Plot for different N and C for Full:%s' %str(isfull))
     plt.xlabel('N')
     plt.ylabel('C')
     plt.colorbar()
-    plt.show()
-    plt.show(block=True)
 
-def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels):
+    fig.savefig(path + '/' + 'draw_N_C_Acc_Contour_%s.png' % ('Full' if isfull else 'Partial'))
+
+def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels, path):
     import pylab
     # the only free variable is C, so we will vary C to see reject vs accuracy rate
     fig = plt.figure()
@@ -144,16 +147,16 @@ def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels):
             pylab.scatter(x_reject, y_acc, alpha=1, s=100, color=color[i], marker=markers[n+i], label=labels[i] + ' N='+str(n))
             miny= min (min(y_acc),miny)
         # labels
-    pylab.legend(loc='upper right')
+    pylab.legend(loc='lower right')
     pylab.xlabel('Reject Rate')
     pylab.ylabel('Accuracy')
     pylab.xlim([0,90])
     pylab.ylim([miny-3,100+5])
     pylab.title('Performance Comparison on Full Symbols Using %i Clusters' % k)
 
-    pylab.show(block=True)
+    plt.savefig(path + '/' + 'draw_Reject_Acc_%s.png' % ('Full' if isfull else 'Partial'))
 
-def draw_n_Acc(accuracy, c, k, isfull, delay_rate=None):
+def draw_n_Acc(accuracy, c, k, isfull, delay_rate, path):
     fig = plt.figure()
     maxN = max(key[1] for key in accuracy.keys())
 
@@ -180,13 +183,9 @@ def draw_n_Acc(accuracy, c, k, isfull, delay_rate=None):
     plt.scatter(x, y, alpha=1, s=100)
     plt.grid(True)
 
-    plt.show(block=True)
+    plt.savefig(path + '/' + ('draw_n_Acc_%s.png' % ('Full' if isfull else 'Partial')))
 
-    '''
-        Not finished
-    '''
-
-def draw_K_Delay_Acc(accuracy, delay_rate, K, C, n, isfull):
+def draw_K_Delay_Acc(accuracy, delay_rate, K, C, n, isfull, path):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -202,7 +201,13 @@ def draw_K_Delay_Acc(accuracy, delay_rate, K, C, n, isfull):
 
     plt.xlabel('Count of Clusters')
     plt.ylabel('Delay Decision Rate')
+
+    plt.ylim([0,90])
+
+    plt.xlim([min(K), max(K)])
+    plt.xlim([min(K), max(K)])
+
     plt.title('Mean Accuracies in %s Shapes with topN = %i' %(('Full' if isfull else 'Partial'), n))
     ax.set_zlabel('Accuracy')
 
-    plt.show(block=True)
+    plt.savefig(path + '/' + 'draw_K_Delay_Acc_%s.png' % ('Full' if isfull else 'Partial'))
