@@ -8,6 +8,7 @@ sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python/")
 sys.path.append('../data/')
 import math
+import numpy as np
 
 from trainer import *
 from shapecreator import *
@@ -99,8 +100,7 @@ class Predictor:
         clusterPrb  = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
 
         # normalize cluster probability to add up to 1
-        sumCluster = sum(clusterPrb)
-        clusterPrb = [x/sumCluster for x in clusterPrb]
+        clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
     
         for clstrid in range(len(self.kmeansoutput[0])):
             probabilityToBeInThatCluster = clusterPrb[clstrid]
