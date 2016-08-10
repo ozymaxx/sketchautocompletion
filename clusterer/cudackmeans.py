@@ -61,7 +61,7 @@ class CuCKMeans():
         kernel_code = kernel_code_template % {
                           'DIMENSIONS': dimensions}
         import platform
-        if '1003' in platform.node():
+        if '1003' in platform.node() and 'Linux' not in platform.system():
             mod = compiler.SourceModule(kernel_code, options=["-ccbin", "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64"])
         else:
             mod = compiler.SourceModule(kernel_code)
@@ -117,7 +117,7 @@ class CuCKMeans():
                           'DIMENSIONS': dimensions}
 
         import platform
-        if '1003' in platform.node():
+        if '1003' in platform.node() and 'Linux' not in platform.system():
             mod = compiler.SourceModule(kernel_code, options=["-ccbin", "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64"])
         else:
             mod = compiler.SourceModule(kernel_code)

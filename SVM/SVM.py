@@ -41,7 +41,7 @@ class SVM:
                 os.mkdir(directory)
 
             svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
-            print 'Saved Model %i' % order
+            print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[int(order)] = m
             order += 1
         print 'Training SVM is done'
