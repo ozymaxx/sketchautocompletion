@@ -156,7 +156,7 @@ def homepage():
 
 def main():
     ForceTrain = False
-    numclass, numfull, numpartial = 150, 80, 80
+    numclass, numfull, numpartial = 5, 10, 10
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
@@ -166,7 +166,6 @@ def main():
     if os.path.exists(trainingpath) and not ForceTrain:
         names, classId, isFull, features, kmeansoutput, myfiles = fio.loadTraining(trainingpath + "/" + trainingName)
         svm = Trainer.loadSvm(kmeansoutput, classId, trainingpath, features)
-        svm.loadModels()
     else:
         kmeansoutput, classId, svm = train(trainingName, trainingpath, numclass, numfull, numpartial, k)
 
