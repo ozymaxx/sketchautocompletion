@@ -112,7 +112,7 @@ class CuCKMeans():
             float minDistance = FLT_MAX;
             int myCentroid = 0;
             if(valindex < numPoints){
-              for(int k=numIter;k<numIter+95;k++){
+              for(int k=numIter;k<numIter+50;k++){
                 if(threadIdx.x == 0) loadVector( mean, &g_centroids[k*(numDim)], numDim );
                 __syncthreads();
                 float distance = 0.0;
@@ -143,7 +143,7 @@ class CuCKMeans():
             float minDistance = FLT_MAX;
             int myCentroid = 0;
             if(valindex < numPoints){
-              for(int k=numIter;k<numIter+95;k++){
+              for(int k=numIter;k<numIter+50;k++){
                 if(threadIdx.x == 0) loadVector( mean, &g_centroids[k*(numDim)], numDim );
                 __syncthreads();
                 float distance = 0.0;
@@ -298,12 +298,12 @@ class CuCKMeans():
                 print "Apply K Means!"
                 limits = 0
                 obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, None, None, None, limits)
-                print limits, "-", limits + 95, "finished"
-                limits += 95
-                while limits <190:
+                print limits, "-", limits + 50, "finished"
+                limits += 50
+                while limits <nc:
                     obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, obs_code, distort, instanceVotes, limits)
-                    print limits, "-", limits + 95, "finished"
-                    limits+=95
+                    print limits, "-", limits + 50, "finished"
+                    limits+=50
 
             # Assign full sketches to their own clusters
             nclusters = clusters.shape[0]
@@ -314,7 +314,7 @@ class CuCKMeans():
             # Find the most voted cluster for every class
             classClusters = []
             i = 0
-            failsafe = 20
+            failsafe = nc
             for myClass in voteList:
                 
                 highestIdx = myClass.argmax()
