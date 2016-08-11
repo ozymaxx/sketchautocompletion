@@ -13,25 +13,25 @@ def processName(name):
  for easier reproduction of the results
 '''
 
-def partitionfeatures(features, isFull, classId, names, numtrainfull, numtrainpartial, numtestfull, numtestpartial, selectTestRandom = True):
+def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True):
 
     numclass = len(set(classId))
-    test_features, test_names, test_classId, test_isFull = [], [], [], []
+    #test_features, test_names, test_classId, test_isFull = [], [], [], []
 
     # Find the
+    '''
     sketchPartialMax = dict()
     for name in names:
         classname, sketchid, partialid = processName(name)
         sketchPartialMax[classname + '_' + sketchid] = max(sketchPartialMax[classname + '_' + sketchid], partialid)
-
+    '''
     # condition for being training data
-    cond = [bool(processName(names[index])[1] < numtestfull and \
-            processName(names[index])[2] < numtestpartial) for index in range(len(features))]
+    cond = [bool(processName(names[index])[1] < numtrainfull) for index in range(len(features))]
 
-    test_features.extend([features[index] for index in range(len(features)) if not cond[index]])
-    test_isFull.extend([isFull[index] for index in range(len(isFull)) if not cond[index]])
-    test_names.extend([names[index] for index in range(len(names)) if not cond[index]])
-    test_classId.extend([classId[index] for index in range(len(classId)) if not cond[index]])
+    test_features = [features[index] for index in range(len(features)) if not cond[index]]
+    test_isFull = [isFull[index] for index in range(len(isFull)) if not cond[index]]
+    test_names = [names[index] for index in range(len(names)) if not cond[index]]
+    test_classId = [classId[index] for index in range(len(classId)) if not cond[index]]
 
     # remove any partial sketch from the traning data
     train_features = [features[index] for index in range(len(features)) if cond[index]]

@@ -8,22 +8,38 @@ sys.path.append('../data/')
 sys.path.append("../../libsvm-3.21/python")
 from extractor import *
 from FileIO import *
-from newMethodPredictor import *
+from ParallelPredictorSlave import *
+from ParallelPredictorMaster import *
+from ParallelTrainer import *
+
 import time
 import numpy as np
-import classesFile
-import math
+
 
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 predictor = None
-files = classesFile.files
-normalProb = []
-
-my_numclass = 15
-my_numfull = 10
-my_numpartial= 5
-my_k = my_numclass
+global files
+files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana',
+         'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
+         'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf', 'boomerang', 'bottle-opener', 'bowl', 'brain', 'bread',
+         'bridge', 'bulldozer', 'bus', 'bush', 'butterfly', 'cabinet', 'cactus', 'cake', 'calculator', 'camel',
+         'camera', 'candle', 'cannon', 'canoe', 'car-(sedan)', 'carrot', 'castle', 'cat', 'cell-phone', 'chair', 'chandelier',
+         'church', 'cigarette', 'cloud', 'comb', 'computer-monitor', 'computer-mouse', 'couch', 'cow', 'crab',
+         'crane-(machine)', 'crocodile', 'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut', 'door', 'door-handle',
+         'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye', 'eyeglasses', 'face', 'fan', 'feather', 'fire-hydrant',
+         'fish', 'flashlight', 'floor-lamp', 'flower-with-stem', 'flying-bird', 'flying-saucer', 'foot', 'fork', 'frog',
+         'frying-pan', 'giraffe', 'grapes', 'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp', 'hat', 'head',
+         'head-phones', 'hedgehog', 'helicopter', 'helmet', 'horse', 'hot-air-balloon', 'hot-dog', 'hourglass', 'house',
+         'human-skeleton', 'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife', 'ladder', 'laptop', 'leaf',
+         'lightbulb', 'lighter', 'lion', 'lobster', 'loudspeaker', 'mailbox', 'megaphone', 'mermaid', 'microphone',
+         'microscope', 'monkey', 'moon', 'mosquito', 'motorbike', 'mouse-(animal)', 'mouth', 'mug', 'mushroom', 'nose',
+         'octopus', 'owl', 'palm-tree', 'panda', 'paper-clip', 'parachute', 'parking-meter', 'parrot', 'pear', 'pen',
+         'penguin', 'person-sitting', 'person-walking', 'piano', 'pickup-truck', 'pig', 'pigeon', 'pineapple',
+         'pipe-(for-smoking)', 'pizza', 'potted-plant', 'power-outlet', 'present', 'pretzel', 'pumpkin', 'purse',
+         'rabbit', 'race-car', 'radio', 'rainbow', 'revolver', 'rifle', 'rollerblades', 'rooster', 'sailboat',
+         'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea-turtle',
+         'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
 def getBestPredictions(classProb, n):
         a = sorted(classProb, key=classProb.get, reverse=True)[:n]
@@ -38,78 +54,9 @@ def getBestPredictions(classProb, n):
         return l + l1
 
 def newTraining(n,files, numclass, numfull,numpartial,k, name):
-    extr = Extractor('../data/')
-    fio = FileIO()
+    myParallelTrainer = ParallelTrainer (n,files)
     global normalProb
-
-    import os
-    path = '../data/newMethodTraining/' + name
-    if not os.path.exists(path):
-        os.mkdir(path)
-
-    for i in range(n/5):
-        trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
-        trainingpath = path +'/'+ trainingName
-        features, isFull, classId, names, folderList = extr.loadfolders(  numclass   = numclass,
-                                                                          numfull    = numfull,
-                                                                          numpartial = numpartial,
-                                                                          folderList = files[i*5:(i+1)*5])
-        constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-        ckmeans = CKMeans(constarr, np.transpose(features), k)
-        kmeansoutput = ckmeans.getCKMeans()
-
-        # find heterogenous clusters and train svm
-        trainer = Trainer(kmeansoutput, classId, features)
-        heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
-        trainer.trainSVM(heteClstrFeatureId, trainingpath)
-        fio.saveTraining(names, classId, isFull, features, kmeansoutput,
-                         trainingpath, trainingName)
-        trainer.trainSVM(heteClstrFeatureId, trainingpath)
-
-        nowCenter = np.zeros(len(features[0]))
-        totalNumOfInstances = len(features)
-        for cluster in kmeansoutput[0]:
-            for instance in cluster:
-                nowCenter += features[instance]
-        nowCenter = nowCenter/totalNumOfInstances
-        fio.saveOneFeature(trainingpath +'/' + str(i) + "__Training_Center_",nowCenter)
-        normalProb.append(totalNumOfInstances)
-
-def PredictIt(n, q, name, numclass, numfull, numpartial,k):
-    global normalProb
-    kj = 0
-    for i in normalProb:
-        kj += i
-    for i in range(len(normalProb)):
-        normalProb[i] = float(normalProb[i])/kj
-
-    extr = Extractor('../data/')
-    fio = FileIO()
-
-    l = []
-    a = newMethodPredictor()
-
-    for i in range(n/5):
-        trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
-        trainingpath = '../data/newMethodTraining/' + name+ '/' + trainingName
-        b = fio.loadOneFeature(trainingpath +'/' + str(i) + "__Training_Center_")
-        l.append(b)
-
-    savingProbs = a.probToSavings(q, l, normalProb)
-    savingProbs = [x/sum(savingProbs) for x in savingProbs]
-
-    out = dict()
-    for i in range(n/5):
-        trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
-        trainingpath = '../data/newMethodTraining/' + name+ '/' + trainingName
-        names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
-
-        predictor = newMethodPredictor(kmeansoutput, classId, trainingpath,loadedFolders)
-
-        a = predictor.predictByString(q)
-        for m in a.keys():
-            out[m] = a[m]*savingProbs[i]
-    return out
+    normalProb = myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, name)
 
 
 @app.route("/", methods=['POST','GET'])
@@ -118,7 +65,9 @@ def handle_data():
     timeStart = time.time()
     try:
         queryjson = request.args.get('json')
-        classProb = PredictIt(my_numclass,queryjson, 'hello',my_numclass,my_numfull,my_numpartial,my_k)
+        # queryjson = '{"id":"airplane_1_1","strokes":[{"id":"1", "points":[{"pid":"1", "time":1, "x":167.0000,"y":120.4472},{"pid":"2", "time":1, "x":167.0355,"y":120.5136},{"pid":"3", "time":1, "x":167.1388,"y":120.7018},{"pid":"4", "time":1, "x":167.3053,"y":120.9953},{"pid":"5", "time":1, "x":167.5306,"y":121.3775},{"pid":"6", "time":1, "x":167.8099,"y":121.8320},{"pid":"7", "time":1, "x":168.1387,"y":122.3423},{"pid":"8", "time":1, "x":168.5124,"y":122.8917},{"pid":"9", "time":1, "x":168.9265,"y":123.4638},{"pid":"10", "time":1, "x":169.3762,"y":124.0420},{"pid":"11", "time":1, "x":169.8571,"y":124.6099},{"pid":"12", "time":1, "x":170.3645,"y":125.1508},{"pid":"13", "time":1, "x":170.8938,"y":125.6484},{"pid":"14", "time":1, "x":171.4405,"y":126.0860},{"pid":"15", "time":1, "x":172.0000,"y":126.4472},{"pid":"16", "time":1, "x":172.0000,"y":126.4472},{"pid":"17", "time":1, "x":172.8213,"y":126.9022},{"pid":"18", "time":1, "x":173.5842,"y":127.3075},{"pid":"19", "time":1, "x":174.3019,"y":127.6664},{"pid":"20", "time":1, "x":174.9876,"y":127.9819},{"pid":"21", "time":1, "x":175.6547,"y":128.2573},{"pid":"22", "time":1, "x":176.3163,"y":128.4956},{"pid":"23", "time":1, "x":176.9856,"y":128.7000},{"pid":"24", "time":1, "x":177.6759,"y":128.8737},{"pid":"25", "time":1, "x":178.4005,"y":129.0198},{"pid":"26", "time":1, "x":179.1725,"y":129.1415},{"pid":"27", "time":1, "x":180.0053,"y":129.2420},{"pid":"28", "time":1, "x":180.9119,"y":129.3243},{"pid":"29", "time":1, "x":181.9058,"y":129.3916},{"pid":"30", "time":1, "x":183.0000,"y":129.4472},{"pid":"31", "time":1, "x":183.0000,"y":129.4472},{"pid":"32", "time":1, "x":188.5722,"y":129.7135},{"pid":"33", "time":1, "x":193.5796,"y":129.9855},{"pid":"34", "time":1, "x":198.1058,"y":130.2517},{"pid":"35", "time":1, "x":202.2341,"y":130.5002},{"pid":"36", "time":1, "x":206.0481,"y":130.7195},{"pid":"37", "time":1, "x":209.6312,"y":130.8978},{"pid":"38", "time":1, "x":213.0668,"y":131.0234},{"pid":"39", "time":1, "x":216.4385,"y":131.0847},{"pid":"40", "time":1, "x":219.8298,"y":131.0700},{"pid":"41", "time":1, "x":223.3240,"y":130.9676},{"pid":"42", "time":1, "x":227.0046,"y":130.7657},{"pid":"43", "time":1, "x":230.9552,"y":130.4529},{"pid":"44", "time":1, "x":235.2592,"y":130.0172},{"pid":"45", "time":1, "x":240.0000,"y":129.4472},{"pid":"46", "time":1, "x":240.0000,"y":129.4472},{"pid":"47", "time":1, "x":241.1808,"y":129.2523},{"pid":"48", "time":1, "x":242.2569,"y":128.9865},{"pid":"49", "time":1, "x":243.2448,"y":128.6503},{"pid":"50", "time":1, "x":244.1610,"y":128.2443},{"pid":"51", "time":1, "x":245.0218,"y":127.7688},{"pid":"52", "time":1, "x":245.8439,"y":127.2243},{"pid":"53", "time":1, "x":246.6436,"y":126.6115},{"pid":"54", "time":1, "x":247.4375,"y":125.9307},{"pid":"55", "time":1, "x":248.2420,"y":125.1825},{"pid":"56", "time":1, "x":249.0735,"y":124.3673},{"pid":"57", "time":1, "x":249.9486,"y":123.4857},{"pid":"58", "time":1, "x":250.8838,"y":122.5382},{"pid":"59", "time":1, "x":251.8954,"y":121.5251},{"pid":"60", "time":1, "x":253.0000,"y":120.4472},{"pid":"61", "time":1, "x":253.0000,"y":120.4472},{"pid":"62", "time":1, "x":254.3915,"y":119.0606},{"pid":"63", "time":1, "x":255.7380,"y":117.6259},{"pid":"64", "time":1, "x":257.0301,"y":116.1674},{"pid":"65", "time":1, "x":258.2585,"y":114.7091},{"pid":"66", "time":1, "x":259.4141,"y":113.2751},{"pid":"67", "time":1, "x":260.4874,"y":111.8896},{"pid":"68", "time":1, "x":261.4692,"y":110.5767},{"pid":"69", "time":1, "x":262.3502,"y":109.3606},{"pid":"70", "time":1, "x":263.1212,"y":108.2654},{"pid":"71", "time":1, "x":263.7728,"y":107.3152},{"pid":"72", "time":1, "x":264.2958,"y":106.5341},{"pid":"73", "time":1, "x":264.6808,"y":105.9463},{"pid":"74", "time":1, "x":264.9187,"y":105.5760},{"pid":"75", "time":1, "x":265.0000,"y":105.4472},{"pid":"76", "time":1, "x":265.0000,"y":105.4472},{"pid":"77", "time":1, "x":265.0000,"y":105.4472},{"pid":"78", "time":1, "x":265.0000,"y":105.4472},{"pid":"79", "time":1, "x":265.0000,"y":105.4472},{"pid":"80", "time":1, "x":265.0000,"y":105.4472},{"pid":"81", "time":1, "x":265.0000,"y":105.4472},{"pid":"82", "time":1, "x":265.0000,"y":105.4472},{"pid":"83", "time":1, "x":265.0000,"y":105.4472},{"pid":"84", "time":1, "x":265.0000,"y":105.4472},{"pid":"85", "time":1, "x":265.0000,"y":105.4472},{"pid":"86", "time":1, "x":265.0000,"y":105.4472},{"pid":"87", "time":1, "x":265.0000,"y":105.4472},{"pid":"88", "time":1, "x":265.0000,"y":105.4472},{"pid":"89", "time":1, "x":265.0000,"y":105.4472},{"pid":"90", "time":1, "x":265.0000,"y":105.4472}]}]}'
+        classProb = predictor.predictByString(queryjson)
+
         print 'Server responded in %.3f seconds' % float(time.time()-timeStart)
         return getBestPredictions(classProb, 5)
     except Exception as e:
@@ -137,16 +86,22 @@ def homepage():
     return render_template("index.html")
 
 def main():
+
+    global predictor
     ForceTrain = True
-    global my_numclass, my_numfull, my_numpartial, my_k
-    n = my_numclass
+    my_numclass = 50
+    my_numfull = 20
+    my_numpartial= 10
+    my_k = my_numclass
+    n = 5
+    nameOfTheTraining = 'kola'
 
     # if training data is already computed, import
     if not ForceTrain:
-        pass
-        # names, classId, isFull, features, kmeansoutput = fio.loadTraining(trainingpath + "/" + trainingName)
+        predictor = ParallelPredictorMaster(nameOfTheTraining)
     else:
-        newTraining(n , files, my_numclass, my_numfull, my_numpartial, my_k, 'hello')
+        newTraining(n, files, my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
+        predictor = ParallelPredictorMaster(nameOfTheTraining)
 
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
