@@ -201,7 +201,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     print count
     plt.grid(True)
     ax1.grid(True)
-    plt.show()
+    plt.show(block=False)
 def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
     POINTSPERCLASS = NUMPOINTS / NUMCLASS
 
@@ -262,4 +262,11 @@ def main():
 
     visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
 
+    for cluster in kmeansoutput[0]:
+        currCLass = classId[cluster[0]]
+        for point in cluster:
+            if currCLass != classId[point]:
+                print 'Nope'
+
+    raw_input()
 if __name__ == "__main__": main()
