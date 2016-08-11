@@ -12,6 +12,7 @@ import matplotlib.cm as cm
 from random import randint
 import copy
 import matplotlib.markers as mark
+from cudackmeans import *
 
 class CKMeans:
     def __init__(self, consArr, featArr, k):
@@ -159,6 +160,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
 
         return marker_list
 
+    features = np.transpose(features)
     fig1 = plt.figure()
     fig1.canvas.set_window_title(str(title))
     ax1 = fig1.add_subplot(111)
@@ -199,7 +201,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     print count
     plt.grid(True)
     ax1.grid(True)
-
+    plt.show()
 def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
     POINTSPERCLASS = NUMPOINTS / NUMCLASS
 
@@ -245,12 +247,19 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
     return features, isFull, classId, centers
 
 def main():
-    numpoint = 100
+    numpoint = 200
     numclass = 10
-    features,isFull,classId,centers = getFeatures(numpoint,numclass)
+    features,isFull,classId,centers = getFeatures(numpoint, numclass)
     constArray = getConstraints(numpoint, isFull, classId)
     l = CKMeans(constArray,features,10)
     kmeansoutput = l.getCKMeans()
 
-    visualiseAfterClustering(centers, kmeansoutput, features, classId,  isFull, centers, 'lol')
+    visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
+
+    clusterer = CuCKMeans(features, numclass, classId, isFull)
+    clusters, centers = clusterer.cukmeans()
+    kmeansoutput = [clusters, centers]
+
+    visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
+
 if __name__ == "__main__": main()
