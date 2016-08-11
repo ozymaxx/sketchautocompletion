@@ -243,3 +243,14 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
             features[1][index] = datay
             index += 1
     return features, isFull, classId, centers
+
+def main():
+    numpoint = 2000
+    numclass = 10
+    numthread = 2
+    features,isFull,classId,centers = getFeatures(numpoint,numclass)
+    constArray = getConstraints(numpoint, isFull, classId)
+    l = CKMeans(constArray,features,10)
+    l.getCKMeans()
+    print "kaka"
+if __name__ == "__main__": main()
