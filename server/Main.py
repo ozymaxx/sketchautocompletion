@@ -155,7 +155,7 @@ def homepage():
     return render_template("index.html")
 
 def main():
-    ForceTrain = False
+    ForceTrain = True
     numclass, numfull, numpartial = 50, 75, 75
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)

@@ -169,7 +169,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     fig2.canvas.set_window_title("K="+str(title) + " Full Sketch")
     ax2 = fig2.add_subplot(111)
 
-    centers = centers.astype(int)
+    centers = np.asarray(centers).astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     #print len(centers[0])
     for i in range(len(centers[0])):
@@ -256,9 +256,9 @@ def main():
 
     visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
 
-    clusterer = CuCKMeans(features, numclass, classId, isFull)
-    clusters, centers = clusterer.cukmeans()
-    kmeansoutput = [clusters, centers]
+    clusterer = CuCKMeans(np.transpose(features), numclass, classId, isFull)
+    clusters, centersx = clusterer.cukmeans()
+    kmeansoutput = [clusters, centersx]
 
     visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
 
