@@ -317,19 +317,20 @@ class CuCKMeans():
             
             for myClass in voteList:
                 highestIdx = myClass.argmax()
-                failsafe = nc-1
+                failsafe = nc
                 while (highestIdx in classClusters and failsafe > 0):
                     myClass[highestIdx] = -1
                     highestIdx = myClass.argmax()
                     failsafe -=1
                 classClusters.append(highestIdx)
                 i+=1
+
                 if failsafe==0:
                     print "Failsafe actvated"
                     
             # assign every full sketch to that cluster
             print "Reassign full sketches!"
-            obs_code2 =  self.cu_av(features, code_book, obs_code, classClusters)
+            obs_code =  self.cu_av(features, code_book, obs_code, classClusters)
             #print nclasses, nclusters, len(voteList), len(instanceVotes)
             #print len(voteList[0]), len(voteList[1]), sum(voteList[0])
             
