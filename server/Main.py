@@ -67,10 +67,6 @@ def drawJson(jsonString):
         yMatrix.append([])
         xMatrix[0].append(0)
         yMatrix[0].append(0)
-        xMatrix[0].append(1)
-        yMatrix[0].append(1)
-        xMatrix[0].append(0)
-        yMatrix[0].append(2)
 
     plt.close()
     if len(decoded['strokes']):
@@ -160,9 +156,8 @@ def homepage():
 
 def main():
     ForceTrain = False
-
-    numclass, numfull, numpartial = 100, 75, 75
-    k = numclass*2
+    numclass, numfull, numpartial = 50, 75, 75
+    k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
     fio = FileIO()
@@ -171,6 +166,7 @@ def main():
     if os.path.exists(trainingpath) and not ForceTrain:
         names, classId, isFull, features, kmeansoutput, myfiles = fio.loadTraining(trainingpath + "/" + trainingName)
         svm = Trainer.loadSvm(kmeansoutput, classId, trainingpath, features)
+        svm.loadModels()
     else:
         kmeansoutput, classId, svm = train(trainingName, trainingpath, numclass, numfull, numpartial, k)
 

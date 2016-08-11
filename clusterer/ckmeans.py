@@ -245,12 +245,12 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
     return features, isFull, classId, centers
 
 def main():
-    numpoint = 2000
+    numpoint = 100
     numclass = 10
-    numthread = 2
     features,isFull,classId,centers = getFeatures(numpoint,numclass)
     constArray = getConstraints(numpoint, isFull, classId)
     l = CKMeans(constArray,features,10)
-    l.getCKMeans()
-    print "kaka"
+    kmeansoutput = l.getCKMeans()
+
+    visualiseAfterClustering(centers, kmeansoutput, features, classId,  isFull, centers, 'lol')
 if __name__ == "__main__": main()

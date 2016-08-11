@@ -79,18 +79,19 @@ def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTest
     return train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId
     '''
 
-def partitionfeatures_notin(features, isFull, classId, names, numtestfull, numtestpartial, trainnames, selectTestRandom = True):
+def partitionfeatures_notin(features, isFull, classId, names, trainnames, numtestpartial, selectTestRandom = True):
     numclass = len(set(classId))
+    print 'Starting partioning features'
+    cond = [bool(names[index] in trainnames) for index in range(len(features))]
+    test_features = [features[index] for index in range(len(features)) if not cond[index]]
+    test_isFull = [isFull[index] for index in range(len(isFull)) if not cond[index]]
+    test_classId = [classId[index] for index in range(len(classId)) if not cond[index]]
+    test_names = [names[index] for index in range(len(names)) if not cond[index]]
 
-    test_features = [features[index] for index in range(len(features)) if names[index] not in trainnames]
-    test_isFull = [isFull[index] for index in range(len(isFull)) if names[index] not in trainnames]
-    test_classId = [classId[index] for index in range(len(classId)) if names[index] not in trainnames]
-    test_names = [names[index] for index in range(len(names)) if names[index] not in trainnames]
-
-    train_features = [features[index] for index in range(len(features)) if names[index] in trainnames]
-    train_isFull = [isFull[index] for index in range(len(isFull)) if names[index] in trainnames]
-    train_classId = [classId[index] for index in range(len(classId)) if names[index] in trainnames]
-    train_names = [names[index] for index in range(len(names)) if names[index] in trainnames]
+    train_features = [features[index] for index in range(len(features)) if cond[index]]
+    train_isFull = [isFull[index] for index in range(len(isFull)) if cond[index]]
+    train_classId = [classId[index] for index in range(len(classId)) if cond[index]]
+    train_names = [names[index] for index in range(len(names)) if cond[index]]
 
     '''
     Divided data into train and test
@@ -108,6 +109,15 @@ def partitionfeatures_notin(features, isFull, classId, names, numtestfull, numte
     test_partial_names = [test_names[index] for index in range(len(test_names))  if not test_isFull[index]]
     test_partial_isFull = [test_isFull[index] for index in range(len(test_isFull)) if not test_isFull[index]]
 
+    from random import randint
+    while len(test_partial_features) > numtestpartial*numclass:
+        index = randint(0, len(test_partial_features)-1)
+        test_partial_features.pop(index)
+        test_partial_classId.pop(index)
+        test_partial_names.pop(index)
+        test_partial_isFull.pop(index)
+
+    '''
     numtestfull = min(numtestfull, len(test_full_features))
     numtestpartial = min(numtestpartial, len(test_partial_features))
 
@@ -133,7 +143,6 @@ def partitionfeatures_notin(features, isFull, classId, names, numtestfull, numte
         test_partial_classId = test_partial_classId[:numtestpartial]
         test_partial_names = test_partial_names[:numtestpartial]
 
-    '''
     if len(test_features) < numtestdata:
         raise Warning('not enough test data')
 
@@ -150,11 +159,13 @@ def partitionfeatures_notin(features, isFull, classId, names, numtestfull, numte
         test_names = test_names[:numtestdata]
     '''
 
+
     test_features = test_full_features + test_partial_features
     test_isFull = test_full_isFull + test_partial_isFull
     test_classId = test_full_classId + test_partial_classId
     test_names = test_full_names + test_partial_names
 
+    print 'Partitioning End'
     return train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId
 
 def xfoldpartition(
