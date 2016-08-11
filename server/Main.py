@@ -156,8 +156,8 @@ def homepage():
 
 def main():
     ForceTrain = False
-    numclass, numfull, numpartial = 150, 80, 80
-    k = numclass
+    numclass, numfull, numpartial = 100, 75, 75
+    k = numclass*2
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
     fio = FileIO()

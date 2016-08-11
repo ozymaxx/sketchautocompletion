@@ -284,7 +284,7 @@ class CuCKMeans():
         diff = thresh + 1.
         iterNum = 0
         nc = None
-        while diff > thresh and iterNum < 20:
+        while diff > thresh and iterNum < 100:
             print "iteration number : ", iterNum
             nc = code_book.shape[0]  # nc : number of clusters
             
@@ -314,10 +314,10 @@ class CuCKMeans():
             # Find the most voted cluster for every class
             classClusters = []
             i = 0
-            failsafe = nc
+            
             for myClass in voteList:
-                
                 highestIdx = myClass.argmax()
+                failsafe = nc-1
                 while (highestIdx in classClusters and failsafe > 0):
                     myClass[highestIdx] = -1
                     highestIdx = myClass.argmax()
@@ -326,8 +326,8 @@ class CuCKMeans():
                 i+=1
                 if failsafe==0:
                     print "Failsafe actvated"
+                    
             # assign every full sketch to that cluster
-            
             print "Reassign full sketches!"
             obs_code2 =  self.cu_av(features, code_book, obs_code, classClusters)
             #print nclasses, nclusters, len(voteList), len(instanceVotes)
@@ -395,12 +395,12 @@ class CuCKMeans():
 if __name__ == "__main__":
 
     dimensions = 720
-    nclusters = 250
+    nclusters = 150
 
     rounds = 1  # for timeit
     rtol = 0.001  # for the relative error calculation
 
-    i = 600
+    i = 400
     
     points = 512 * i
     features = np.random.randn(points, dimensions).astype(np.float32) ## WILL GET THIS FROM MAIN
