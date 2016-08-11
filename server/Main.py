@@ -67,6 +67,10 @@ def drawJson(jsonString):
         yMatrix.append([])
         xMatrix[0].append(0)
         yMatrix[0].append(0)
+        xMatrix[0].append(1)
+        yMatrix[0].append(1)
+        xMatrix[0].append(0)
+        yMatrix[0].append(2)
 
     plt.close()
     if len(decoded['strokes']):
