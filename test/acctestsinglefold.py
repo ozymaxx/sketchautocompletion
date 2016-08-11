@@ -64,7 +64,6 @@ def main():
                             numpartial=numpartial,
                             folderList=files)
 
-
     numtest = 10
     train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
         partitionfeatures(whole_features,

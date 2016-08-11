@@ -10,7 +10,7 @@ import matplotlib.markers as mark
 import numpy as np
 import random
 
-def visualiseAfterClustering(modelPoints,out, features, classId,  isFull, centers, title):
+def visualiseAfterClustering(modelPoints, out, features, classId, isFull, centers, title):
     def getMarkerList():
         numClass = len(set(classId))
         marker_list = list(mark.MarkerStyle.filled_markers)

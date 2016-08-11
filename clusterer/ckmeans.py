@@ -12,6 +12,7 @@ import matplotlib.cm as cm
 from random import randint
 import copy
 import matplotlib.markers as mark
+from cudackmeans import *
 
 class CKMeans:
     def __init__(self, consArr, featArr, k):
@@ -159,6 +160,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
 
         return marker_list
 
+    features = np.transpose(features)
     fig1 = plt.figure()
     fig1.canvas.set_window_title(str(title))
     ax1 = fig1.add_subplot(111)
@@ -167,7 +169,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     fig2.canvas.set_window_title("K="+str(title) + " Full Sketch")
     ax2 = fig2.add_subplot(111)
 
-    centers = centers.astype(int)
+    centers = np.asarray(centers).astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     #print len(centers[0])
     for i in range(len(centers[0])):
@@ -199,7 +201,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     print count
     plt.grid(True)
     ax1.grid(True)
-
+    plt.show(block=False)
 def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
     POINTSPERCLASS = NUMPOINTS / NUMCLASS
 
@@ -243,3 +245,28 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
             features[1][index] = datay
             index += 1
     return features, isFull, classId, centers
+
+def main():
+    numpoint = 200
+    numclass = 10
+    features,isFull,classId,centers = getFeatures(numpoint, numclass)
+    constArray = getConstraints(numpoint, isFull, classId)
+    l = CKMeans(constArray,features,10)
+    kmeansoutput = l.getCKMeans()
+
+    visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
+
+    clusterer = CuCKMeans(np.transpose(features), numclass, classId, isFull)
+    clusters, centersx = clusterer.cukmeans()
+    kmeansoutput = [clusters, centersx]
+
+    visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
+
+    for cluster in kmeansoutput[0]:
+        currCLass = classId[cluster[0]]
+        for point in cluster:
+            if currCLass != classId[point]:
+                print 'Nope'
+
+    raw_input()
+if __name__ == "__main__": main()

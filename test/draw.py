@@ -86,7 +86,9 @@ def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull, path):
     plt.imshow(zi, vmin=min(rejlist), vmax=max(rejlist), origin='lower',
                extent=[0, len(nlist), 0, len(clist)])
 
-    plt.xticks(np.linspace(0, len(nlist), max(N)), np.linspace(1, max(N), max(N)))
+    numxTicks = min(5, max(N))
+
+    plt.xticks(np.linspace(0, len(nlist), numxTicks), np.linspace(1, max(N), numxTicks))
     plt.yticks(np.linspace(0, len(clist), 9), np.linspace(0, max(C), 9))
 
 
@@ -119,7 +121,9 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
 
     plt.imshow(zi, vmin=min(acclist), vmax=max(acclist), origin='lower',
                extent=[0, len(nlist), 0, len(acclist)])
-    plt.xticks(np.linspace(0, len(nlist), max(N)), np.linspace(1, max(N), max(N)))
+    numxTicks = min(5, max(N))
+
+    plt.xticks(np.linspace(0, len(nlist), numxTicks), np.linspace(1, max(N), numxTicks))
     plt.yticks(np.linspace(0, len(acclist), 9), np.linspace(0, max(C), 9))
 
     plt.title('Accuracy Contour Plot for different N and C for Full:%s' %str(isfull))
