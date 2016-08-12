@@ -246,27 +246,3 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
             index += 1
     return features, isFull, classId, centers
 
-def main():
-    numpoint = 200
-    numclass = 10
-    features,isFull,classId,centers = getFeatures(numpoint, numclass)
-    constArray = getConstraints(numpoint, isFull, classId)
-    l = CKMeans(constArray,features,10)
-    kmeansoutput = l.getCKMeans()
-
-    visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
-
-    clusterer = CuCKMeans(np.transpose(features), numclass, classId, isFull)
-    clusters, centersx = clusterer.cukmeans()
-    kmeansoutput = [clusters, centersx]
-
-    visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'a')
-
-    for cluster in kmeansoutput[0]:
-        currCLass = classId[cluster[0]]
-        for point in cluster:
-            if currCLass != classId[point]:
-                print 'Nope'
-
-    raw_input()
-if __name__ == "__main__": main()

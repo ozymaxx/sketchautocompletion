@@ -51,6 +51,7 @@ class CuCKMeans():
             }
           }
         """
+
         nclusters = clusters.shape[0]
         nclasses = len(np.unique(self.classId))
         points = obs.shape[0]
@@ -177,8 +178,9 @@ class CuCKMeans():
             'DIMENSIONS': dimensions}
         mod = compiler.SourceModule(kernel_code)
         
+        import sys
         import platform
-        if '1003' in platform.node():
+        if '1003' in platform.node() and 'linux' not in sys.platform:
             mod = compiler.SourceModule(kernel_code, options=["-ccbin", "C:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64"])
         else:
             mod = compiler.SourceModule(kernel_code)

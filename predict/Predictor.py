@@ -198,4 +198,7 @@ class Predictor:
         classPr = self.predictByString(str(queryjson))
         return self.getBestPredictions(classPr, n)
 
+    def getSV(self):
+        return self.svm.getSV()
+
 

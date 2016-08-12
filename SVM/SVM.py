@@ -12,6 +12,7 @@ class SVM:
         self.subDirectory = subDirectory
         self.models = {}
         self.features = features
+        self.allSV = []
 
     def trainSVM(self, clusterIdArr, directory):
         """Trains the support vector machine and saves models
@@ -21,7 +22,6 @@ class SVM:
         print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterIdArr)
         label = copy.copy(self.classId)
         order = 0
-        allSV = []
         for i in clusterIdArr:  # Foreach cluster
             y = []
             x = []
@@ -34,14 +34,15 @@ class SVM:
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
 
             m = svm_train(prob, param)
-            allSV.append(m.get_SV())
+            self.allSV.extend(m.get_SV())
 
             import os
-            if not os.path.exists(directory):
+            if directory and not os.path.exists(directory):
                 os.mkdir(directory)
 
-            svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
-            print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
+            if directory:
+                svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
+                print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[int(order)] = m
             order += 1
         print 'Training SVM is done'
@@ -108,3 +109,7 @@ class SVM:
                 homoCluster.append(self.kmeansoutput[0][clusterId])
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
+
+    def getSV(self):
+        return self.allSV
+

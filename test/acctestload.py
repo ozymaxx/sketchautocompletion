@@ -1,15 +1,15 @@
 import pickle
 from draw import *
 
-numclass, numfull, numpartial = 50, 75, 75
-K = [100]  # :O
+numclass, numfull, numpartial = 15, 80, 80
+K = [15]  # :O
 # K = [numclass]
 N = range(1, numclass)
 import numpy as np
 
 C = np.linspace(0, 100, 50, endpoint=False)
 
-folderName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, K[0])
+folderName = '%s___%i_%i_%i_%i' % ('singlefoldacctest-newCUDA', numclass, numfull, numpartial, K[0])
 trainingpath = '../data/training/' + folderName
 
 accuracy = pickle.load(open(trainingpath + '/' "accuracy.p", "r"))
