@@ -19,7 +19,7 @@ from SVM import *
 import pickle
 
 def main():
-    numclass, numfull, numpartial = 100, 80, 80
+    numclass, numfull, numpartial = 5, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -124,8 +124,8 @@ def main():
                 found = False
 
             if not found:
-                constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-                ckmeans = CKMeans(constarr, np.transpose(features), k)
+                constarr = getConstraints(size=len(train_features), isFull=train_isFull, classId=train_classId)
+                ckmeans = CKMeans(constarr, np.transpose(train_features), k)
                 kmeansoutput = ckmeans.getCKMeans()
             else:
                 from cudackmeans import *

@@ -12,7 +12,6 @@ import matplotlib.cm as cm
 from random import randint
 import copy
 import matplotlib.markers as mark
-from cudackmeans import *
 
 class CKMeans:
     def __init__(self, consArr, featArr, k):
@@ -169,7 +168,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title):
     fig2.canvas.set_window_title("K="+str(title) + " Full Sketch")
     ax2 = fig2.add_subplot(111)
 
-    centers = np.asarray(centers).astype(int)
+    centers = centers.astype(int)
     colorList = cm.rainbow(np.linspace(0, 1, len(out[0])))
     #print len(centers[0])
     for i in range(len(centers[0])):
@@ -245,4 +244,3 @@ def getFeatures(NUMPOINTS, NUMCLASS):  #k is already the number of clusters
             features[1][index] = datay
             index += 1
     return features, isFull, classId, centers
-

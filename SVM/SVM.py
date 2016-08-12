@@ -30,10 +30,10 @@ class SVM:
                 y.append(label[j])
                 x.append(self.features[j].tolist())
 
-            prob = svm_problem(y, x)
+            problem = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
 
-            m = svm_train(prob, param)
+            m = svm_train(problem, param)
             self.allSV.extend(m.get_SV())
 
             import os
@@ -43,7 +43,7 @@ class SVM:
             if directory:
                 svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
-            self.models[int(order)] = m
+            self.models[order] = m
             order += 1
         print 'Training SVM is done'
     def getlabels(self, modIndex):
