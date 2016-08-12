@@ -19,7 +19,7 @@ from SVM import *
 import pickle
 
 def main():
-    numclass, numfull, numpartial = 100, 80, 80
+    numclass, numfull, numpartial = 5, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',

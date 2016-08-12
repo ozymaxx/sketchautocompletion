@@ -13,6 +13,7 @@ import numpy as np
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
+from scipy.spatial import distance
 
 class Predictor:
     """The predictor class implementing functions to return probabilities"""
@@ -26,20 +27,27 @@ class Predictor:
         """Computes euclidian distance between x instance and y instance
         inputs: x,y instances
         kmeansoutput: distance"""
-        x = np.asarray(x)
-        y = np.asarray(y)
-        return np.sqrt(np.sum((x-y)**2))
+        return distance.euclidean(x, y)
     
-    def clusterProb(self, instance, normalProb):
+    def clusterProb(self, instance, priorProb):
         """
         Returns P(Ck|x)
         normalProb : probability that was calculated in trainer
         instance: feature list of the instance to be queried"""
-        probTup = []
-        for i in range(len(self.kmeansoutput[1])):
-            dist = self.getDistance(instance, self.kmeansoutput[1][i])
-            probTup.append(math.exp(-1*abs(dist))*normalProb[i])
-        return probTup
+
+        centers = self.kmeansoutput[1]
+        dist = [self.getDistance(instance, centers[idx]) for idx in range(len(centers))]
+        diste_ = [math.exp(-1*abs(d)) for d in dist]
+        clustProb = [diste_[idx]*priorProb[idx] for idx in range(len(centers))]
+
+        #import numpy as np
+        #import matplotlib.pyplot as plt
+
+        #fig = plt.figure()
+        #plt.scatter(range(len(diste_)), diste_, alpha=0.5)
+        #plt.show()
+
+        return clustProb
 
     def svmProb(self, model, instance):
         """Predicts the probability of the given model"""
@@ -82,7 +90,7 @@ class Predictor:
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
 
-    def calculatePosteriorProb(self, instance, priorClusterProb, numericKeys = True):
+    def calculatePosteriorProb(self, instance, priorClusterProb):
         """
         #features : feature array
         #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
@@ -97,43 +105,40 @@ class Predictor:
         homoClstrFeatureId, homoClstrId = self.getHomogenous()
         heteClstrFeatureId, heteClstrId = self.getHeterogenous()
 
-        clusterPrb  = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
+        clusterProb = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
 
         # normalize cluster probability to add up to 1
-        clusterPrb = [x/sum(clusterPrb) for x in clusterPrb]
-    
-        for clstrid in range(len(self.kmeansoutput[0])):
-            probabilityToBeInThatCluster = clusterPrb[clstrid]
+        clustersum = sum(clusterProb)
+        clusterProb = [x/clustersum for x in clusterProb]
+
+        clusterFeatureId = self.kmeansoutput[0]
+
+        for clstrid in range(len(clusterFeatureId)):
+            probabilityToBeInThatCluster = clusterProb[clstrid]
             if clstrid in homoClstrId:
                 
                 # if homogeneous cluster is empty, then do not
                 # process it and continue
-                if len(self.kmeansoutput[0][clstrid]) == 0:
+                if len(clusterFeatureId[clstrid]) == 0:
                     continue
                 
                 # if homogeneous then only a single class which is the first
                 # feature points class
-                classesInCluster = [self.classId[int(self.kmeansoutput[0][clstrid][0])]]
+                classesInCluster = [self.classId[int(clusterFeatureId[clstrid][0])]]
                 
             elif clstrid in heteClstrId:
                 if not self.svm:
                     modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) + ".model"
                     m = svm_load_model(modelName)
                     classesInCluster = m.get_labels()
-                    labels, probs = self.svmProb(m, [instance.tolist()])
+                    labels, svmprobs = self.svmProb(m, [instance.tolist()])
                 else:
-                    labels, _, probs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
+                    labels, _, svmprobs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
                     classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
                 
             for c in range(len(classesInCluster)):
-                probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
+                probabilityToBeInThatClass = 1 if clstrid in homoClstrId else svmprobs[0][c]
                 outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
-
-        if not numericKeys:
-            output = {}
-            for i in outDict.keys():
-                output[self.files[i]] = outDict[i]
-            return output
 
         return outDict
 
@@ -142,14 +147,11 @@ class Predictor:
         Returns prior probabilities list of being in a cluster
         p = len(cluster)/len(total)
         """
-        prob = []
-        total = 0
+        clusterFeatureId = self.kmeansoutput[0]
+        numFeatures = sum([len(cluster) for cluster in clusterFeatureId])
 
-        for c in self.kmeansoutput[0]:
-            total += len(c)
+        prob = [len(clusterFeatureId[index]) / float(numFeatures) for index in range(len(clusterFeatureId))]
 
-        for cluster in self.kmeansoutput[0]:
-            prob.append(len(cluster) / float(total))
         return prob
 
     def getHeterogenous(self):

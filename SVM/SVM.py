@@ -20,15 +20,16 @@ class SVM:
         Outputs : Support VectorS
         """
         print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterIdArr)
-        label = copy.copy(self.classId)
+        #label = copy.copy(self.classId) WHY
+        label = self.classId
         order = 0
-        for i in clusterIdArr:  # Foreach cluster
+        for clusterFeatureId in clusterIdArr:  # Foreach cluster
             y = []
             x = []
-            for j in i:  # Foreach instance in the cluster
-                j = int(j)
-                y.append(label[j])
-                x.append(self.features[j].tolist())
+            for featureid in clusterFeatureId:  # Foreach instance in the cluster
+                featureid = int(featureid)
+                y.append(label[featureid])
+                x.append(self.features[featureid].tolist())
 
             prob = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
