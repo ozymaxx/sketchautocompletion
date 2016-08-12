@@ -124,8 +124,8 @@ def main():
                 found = False
 
             if not found:
-                constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-                ckmeans = CKMeans(constarr, np.transpose(features), k)
+                constarr = getConstraints(size=len(train_features), isFull=train_isFull, classId=train_classId)
+                ckmeans = CKMeans(constarr, np.transpose(train_features), k)
                 kmeansoutput = ckmeans.getCKMeans()
             else:
                 from cudackmeans import *
