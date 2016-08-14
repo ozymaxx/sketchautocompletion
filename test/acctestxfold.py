@@ -45,7 +45,8 @@ def main():
     K = [numclass] # :O
     N = range(1, numclass)
     import numpy as np
-    C = np.linspace(0, 100, 200, endpoint=False)
+    C = np.linspace(0, 100, 51, endpoint=True)
+    C = [int(c) for c in C]
     accuracy = dict()
     delay_rate = dict()
 

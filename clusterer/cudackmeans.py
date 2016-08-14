@@ -75,7 +75,7 @@ class CuCKMeans():
         
         cluster = gpuarray.zeros(points, dtype=np.int32)
         min_dist = gpuarray.zeros(points, dtype=np.float32)
-        
+
         instanceVotes = gpuarray.zeros(nclasses*nclusters, dtype=np.int32)
         
         kmeans_kernel = mod.get_function('cu_vq')
@@ -280,14 +280,14 @@ class CuCKMeans():
         return obs_Code.get()
 
     def _cukmeans(self,features, clusters, thresh=1e-5):
-
         code_book = np.array(clusters, copy=True)  # My clusters centers
         avg_dist = []
         diff = thresh + 1.
         iterNum = 0
         nc = None
         while diff > thresh and iterNum < 100:
-            print "iteration number : ", iterNum
+            #print "iteration number : ", iterNum
+            print 'Iteration number %i (max %i)' %(iterNum, 100)
             nc = code_book.shape[0]  # nc : number of clusters
             
             #if max 150 clusters, do the fast method
@@ -305,13 +305,14 @@ class CuCKMeans():
                 while limits <nc:
                     obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, obs_code, distort, instanceVotes, limits)
                     print limits, "-", limits + 50, "finished"
-                    limits+=50
+                    limits += 50
 
             # Assign full sketches to their own clusters
             nclusters = clusters.shape[0]
             nclasses = len(np.unique(self.classId))
             voteList = np.split(instanceVotes, nclasses) # VOTE list
-            
+
+            # VOTES DOES NOT SUM UP TO NUMBER OF FEATURES
             print "Get Voting!"
             # Find the most voted cluster for every class
             classClusters = []

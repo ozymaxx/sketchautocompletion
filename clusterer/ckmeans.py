@@ -45,10 +45,10 @@ class CKMeans:
         cluster : current cluster in which we're checking the condition
         return any(bool(self.consArr[data][i] == self.MUST_LINK) != bool(i in cluster) for i in range(0,data))"""
         for i in range(0, data):
-            if (self.consArr[data][i] == self.MUST_LINK):
+            if self.consArr[data][i] == self.MUST_LINK:
                 if i not in cluster:
                     return True
-            elif (self.consArr[data][i] == self.CANNOT_LINK):
+            elif self.consArr[data][i] == self.CANNOT_LINK:
                 if i in cluster:
                     return True
         return False
@@ -61,8 +61,9 @@ class CKMeans:
 
         #Old centers of clusters
         oldCenters = np.zeros([self.k, len(self.featArr[0])])
-        while iterCounter < 20:
-            print 'Constrained k-means iteation: ' + str(iterCounter+1) + ' (max 20)'
+        maxIter = 20
+        while iterCounter < maxIter:
+            print 'Constrained k-means iteration: ' + str(iterCounter+1) + ('(max %i)'%maxIter)
             #Check for convergence
             difference = 0
             for i in range(0, self.k):
@@ -83,7 +84,7 @@ class CKMeans:
                 # line : points of that instance
 
                 availClus = []
-                for num,j in enumerate(self.clusterList):
+                for num, j in enumerate(self.clusterList):
                     # j : A cluster
                     # num : order of the iteration
 
@@ -93,7 +94,7 @@ class CKMeans:
                         availClus.append(num)
 
                 if not availClus:
-                    print "ERROR : No available clusters found for",i ,"th instance"
+                    print "ERROR : No available clusters found for", i, "th instance"
                     continue
 
                 # Find the closest cluster

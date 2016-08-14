@@ -20,7 +20,7 @@ import pickle
 from Predictor import *
 
 def main():
-    numclass, numfull, numpartial = 5, 10, 10
+    numclass, numfull, numpartial = 5, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -74,11 +74,12 @@ def main():
                           numtrainfull = numfull-numtest,
                           selectTestRandom=True)
 
-    K = [numclass] # :O
+    K = [numclass, 2*numclass] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
-    C = np.linspace(0, 100, 50, endpoint=False)
+    C = np.linspace(0, 100, 51, endpoint=True)
+    C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
 
@@ -135,12 +136,12 @@ def main():
                 clusters, centers = clusterer.cukmeans()
                 kmeansoutput = [clusters, centers]
 
-            # find heterogenous clusters and train svm
-            trainer = Trainer(kmeansoutput, train_classId, train_features)
-            heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
-            fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
-                             trainingpath, folderName)
-            svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
+                # find heterogenous clusters and train svm
+                trainer = Trainer(kmeansoutput, train_classId, train_features)
+                heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+                fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
+                                 trainingpath, folderName)
+                svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
 

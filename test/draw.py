@@ -88,9 +88,8 @@ def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull, path):
 
     numxTicks = min(5, max(N))
 
-    plt.xticks(np.linspace(0, len(nlist), numxTicks), np.linspace(1, max(N), numxTicks))
-    plt.yticks(np.linspace(0, len(clist), 9), np.linspace(0, max(C), 9))
-
+    plt.xticks(np.linspace(0, len(nlist), numxTicks), [int(f) for f in np.linspace(1, max(N), numxTicks)])
+    plt.yticks(np.linspace(0, len(clist), 11), [int(f) for f in np.linspace(0, max(C), 11)])
 
     plt.title('Reject Rate Contour Plot for different N and C for Full:%s' %str(isfull))
     plt.xlabel('N')
@@ -123,8 +122,8 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
                extent=[0, len(nlist), 0, len(acclist)])
     numxTicks = min(5, max(N))
 
-    plt.xticks(np.linspace(0, len(nlist), numxTicks), np.linspace(1, max(N), numxTicks))
-    plt.yticks(np.linspace(0, len(acclist), 9), np.linspace(0, max(C), 9))
+    plt.xticks(np.linspace(0, len(nlist), numxTicks), [int(f) for f in np.linspace(1, max(N), numxTicks)])
+    plt.yticks(np.linspace(0, len(acclist), 11), [int(f) for f in np.linspace(0, max(C), 11)])
 
     plt.title('Accuracy Contour Plot for different N and C for Full:%s' %str(isfull))
     plt.xlabel('N')
@@ -156,7 +155,7 @@ def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels, path):
     pylab.ylabel('Accuracy')
     pylab.xlim([0,90])
     pylab.ylim([miny-3,100+5])
-    pylab.title('Performance Comparison on Full Symbols Using %i Clusters' % k)
+    pylab.title('Performance Comparison on %s Symbols Using %i Clusters' % ('Full' if isfull else 'Partial',k))
 
     plt.savefig(path + '/' + 'draw_Reject_Acc_%s.png' % ('Full' if isfull else 'Partial'))
 
@@ -169,9 +168,8 @@ def draw_n_Acc(accuracy, c, k, isfull, delay_rate, path):
         if (k, n, c, isfull) in accuracy.keys():
             x.append(n)
             y.append(accuracy[(k, n, c, isfull)])
-            plt.annotate('N:%i,Acc:%i%%,Rej:%i%%' % (n, accuracy[(k, n, c, isfull)],delay_rate[(k, n, c, isfull)]),\
+            plt.annotate('N:%i,Acc:%i%%,Rej:%i%%' % (n, accuracy[(k, n, c, isfull)], delay_rate[(k, n, c, isfull)]),\
                          (n + 0.1, accuracy[(k, n, c, isfull)] + 0.1))
-
 
     # horizontal lines
     plt.plot([1 - 1, maxN + 1], [60, 60], 'r--')
@@ -187,7 +185,7 @@ def draw_n_Acc(accuracy, c, k, isfull, delay_rate, path):
     plt.scatter(x, y, alpha=1, s=100)
     plt.grid(True)
 
-    plt.savefig(path + '/' + ('draw_n_Acc_%s.png' % ('Full' if isfull else 'Partial')))
+    plt.savefig(path + '/' + ('draw_n_Acc_%i_%s.png' % (c,'Full' if isfull else 'Partial')))
 
 def draw_K_Delay_Acc(accuracy, delay_rate, K, C, n, isfull, path):
     fig = plt.figure()

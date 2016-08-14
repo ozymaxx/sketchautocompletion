@@ -25,7 +25,8 @@ def main():
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
-    C = np.linspace(0, 100, 50 , endpoint=False)
+    C = np.linspace(0, 100, 51, endpoint=True)
+    C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
 

@@ -17,9 +17,10 @@ import operator
 from draw import *
 from SVM import *
 import pickle
+from Predictor import *
 
 def main():
-    numclass = 15
+    numclass = 14
 
     extr_train = Extractor('C:/Users/1003/Desktop/nicicon/csv/train')
     train_features, \
@@ -37,7 +38,8 @@ def main():
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
-    C = np.linspace(0, 100, 50, endpoint=False)
+    C = np.linspace(0, 100, 51, endpoint=True)
+    C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
 
@@ -60,7 +62,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i' % ('nicicionWithCuda_fulldata', k)
+        folderName = '%s___%i_%i' % ('nicicionWithCuda_fulldata', max(train_classId), k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -68,8 +70,9 @@ def main():
         if os.path.exists(trainingpath) and not ForceTrain:
             # can I assume consistency with classId and others ?
             _, _, _, _, kmeansoutput, _ = fio.loadTraining(
-                trainingpath, loadFeatures=False)
-            svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + folderName, train_features)
+                trainingpath + '/' + folderName)
+            svm = SVM(kmeansoutput, train_classId, trainingpath, train_features)
+            svm.loadModels()
 
         else:
             # check if pycuda is installed
@@ -91,12 +94,12 @@ def main():
                 clusters, centers = clusterer.cukmeans()
                 kmeansoutput = [clusters, centers]
 
-            # find heterogenous clusters and train svm
-            trainer = Trainer(kmeansoutput, train_classId, train_features)
-            heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
-            fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
-                             trainingpath, folderName)
-            svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
+                # find heterogenous clusters and train svm
+                trainer = Trainer(kmeansoutput, train_classId, train_features)
+                heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+                fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
+                                 trainingpath, folderName)
+                svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
 
@@ -108,7 +111,7 @@ def main():
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
+            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
             for n in N:
@@ -124,7 +127,7 @@ def main():
                         accuracy[(k, n, c, test_isFull[test_index])] += 1
 
         print trainingpath + ' end'
-    print 'Testint End'
+    print 'Testing End'
 
     '''
     Calculate %
