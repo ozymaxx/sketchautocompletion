@@ -16,7 +16,7 @@ class Extractor:
         if (path[len(path)-1]) is '/':
             path = path[0:len(path)-1]
         self.path = path
-        self.jsonpath = path + '/json   '
+        self.jsonpath = path + '/json'
         self.csvpath = path + '/csv'
         self.fio = FileIO()
         self.prnt = False

@@ -136,9 +136,9 @@ class Predictor:
                     labels, _, svmprobs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
                     classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
                 
-            for c in range(len(classesInCluster)):
-                probabilityToBeInThatClass = 1 if clstrid in homoClstrId else svmprobs[0][c]
-                outDict[int(classesInCluster[c])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
+            for clstridx in range(len(classesInCluster)):
+                probabilityToBeInThatClass = 1 if clstrid in homoClstrId else svmprobs[0][clstridx]
+                outDict[int(classesInCluster[clstridx])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
 
         return outDict
 

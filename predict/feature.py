@@ -14,11 +14,8 @@ sys.path.append("../../libsvm-3.21/python/")
 
 print sys.path
 from ckmeans import *
-from getConstraints import *
-from Predictor import *
 from FeatureExtractor import *
 from shapecreator import *
-from svmutil import *
 
 def featureExtract(filename):
     loadedSketch = None

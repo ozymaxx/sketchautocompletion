@@ -34,6 +34,10 @@ class FileIO:
         feature: featureList
         f: name of the file to be saved
         """
+        import os
+        if not os.path.exists(f[:f.rfind('/')]):
+            os.mkdir(f[:f.rfind('/')])
+
 
         df = pd.DataFrame(data = isFull)
         df.columns = ['isFull']
@@ -64,7 +68,7 @@ class FileIO:
         return names, isFull, features
 
 
-    def saveTraining(self, names,classId, isFull, feature, kmeansoutput, path, filename, saveFeatures = True):
+    def saveTraining(self, names, classId, isFull, feature, kmeansoutput, path, filename, saveFeatures = True):
         """"
         Saves Training
         """
