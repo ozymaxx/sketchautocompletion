@@ -15,7 +15,7 @@ for folder in imagefolders:
         file = open(imgpath, 'r')
         imgxml = file.read()
 
-        # find all occurences of 'stroke'
+        # find all occurrences of 'stroke'
         import re
         allStrokeIndex = [m.start() for m in re.finditer('stroke', imgxml)]
         strokeIndices = [[0,0] for x in range(len(allStrokeIndex)/2)]

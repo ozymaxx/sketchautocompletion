@@ -17,9 +17,10 @@ import operator
 from draw import *
 from SVM import *
 import pickle
+from Predictor import *
 
 def main():
-    numclass, numfull, numpartial = 5, 80, 80
+    numclass, numfull, numpartial = 5, 10, 10
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -64,7 +65,7 @@ def main():
                             numpartial=numpartial,
                             folderList=files)
 
-    numtest = 10
+    numtest = 5
     train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
         partitionfeatures(whole_features,
                           whole_isFull,
@@ -151,7 +152,7 @@ def main():
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
+            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
             for n in N:
