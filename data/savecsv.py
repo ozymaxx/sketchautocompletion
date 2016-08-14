@@ -9,8 +9,10 @@ import os
 def isSketchFull(name):
     return not name[-1].isdigit()
 
-symbolspat = '/home/iui/Desktop/nicicon/nicicon/symbols/'
-imagefolders = [[join(symbolspat, f) + '/eval/', join(symbolspat, f) + '/test/', join(symbolspat, f) + '/train/']
+
+
+symbolspat = 'C:/Users/1003/Desktop/nicicon/symbols'
+imagefolders = [[symbolspat + '/'+ f + '/eval/', symbolspat + '/'+ f + '/test/', symbolspat + '/'+ f + '/train/']
                 for f in listdir(symbolspat) if not isfile(join(symbolspat, f))]
 
 # concatenate all inner lists
@@ -31,24 +33,26 @@ for folder in imagefolders:
 
     features, isFull, names = [], [], []
     for imgpath in imgpaths:
+        print 'Writing ' + imgpath
         file = open(imgpath, 'r')
         imgxml = file.read()
 
         idx = imgpath.rfind("/")
         name = imgpath[idx+1:]
         name = name[:len(name)-4]
-
-        loadedSketch = shapecreator.buildSketch('xml', imgxml)
-        featextractor = IDMFeatureExtractor()
-        imgxmlFeature = featextractor.extract(loadedSketch)
+        try:
+            loadedSketch = shapecreator.buildSketch('xml', imgxml)
+            featextractor = IDMFeatureExtractor()
+            imgxmlFeature = featextractor.extract(loadedSketch)
+        except:
+            continue
 
         features.append(imgxmlFeature)
         names.append(name)
         isFull.append(isSketchFull(name))
-        print 'Writing ' + imgpath
 
-    pathtowrite = '/home/iui/Desktop/nicicon/nicicon/csv/' + className + '/'
-    fio.save(isFull, names, features, '/home/iui/Desktop/nicicon/nicicon/csv/'+ className + '/' +  '_' + csvname)
+    pathtowrite = 'C:/Users/1003/Desktop/nicicon/csv/' + className + '/'
+    fio.save(isFull, names, features, 'C:/Users/1003/Desktop/nicicon/csv/' + type + '/' + className + '/' + csvname)
 
 
 

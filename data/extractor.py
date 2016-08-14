@@ -27,10 +27,10 @@ class Extractor:
         if os.path.isfile(fullpath):
             print 'loading ' + str(folder) + '.csv'
             names, isFull, features = self.fio.load(fullpath)
-            # because i am an idiot
 
             # remove .json prefix
             names = [name[0:len(name)-5] for name in names]
+            # because i am an idiot
             isFull = [self.isFileFull(name) for name in names]
             return features, isFull, names
 
@@ -108,6 +108,27 @@ class Extractor:
             classCount += 1
         print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
+
+    def loadniciconfolders(self):
+        if self.path[-1] == '/':
+            self.path = self.path[0:len(self.path)-1]
+
+        whole_features, whole_isFull, whole_names, whole_classId = [], [], [], []
+        symbolfolders = [self.path + "/" + f for f in os.listdir(self.path)]
+        classCounter = 0
+        for symbolfolder in symbolfolders:
+            csvfiles = [symbolfolder + "/" + f for f in os.listdir(symbolfolder)]
+            for csvfile in csvfiles:
+                if os.path.isfile(csvfile):
+                    print 'loading ' + str(csvfile) + '.csv'
+                    names, isFull, features = self.fio.load(csvfile)
+                    whole_features.extend(features)
+                    whole_isFull.extend(isFull)
+                    whole_names.extend(names)
+                    whole_classId.extend([classCounter]*len(features))
+                    # remove .xml postfix
+                    names = [name[0:len(name) - 4] for name in names]
+        return whole_features, whole_isFull, whole_classId, whole_names
 
     def loadfoldersjson(self, numclass, numfull, numpartial, folderList = []):
         features = list()
@@ -201,6 +222,5 @@ def main():
     ext = Extractor('../json/')
     ext.prnt = True
     feature = ext.loadfolder('airplane')
-    a=5
 
 if __name__ == "__main__": main()
