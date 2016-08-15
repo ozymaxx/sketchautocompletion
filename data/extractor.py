@@ -13,6 +13,7 @@ from FileIO import *
 
 class Extractor:
     def __init__(self, path):
+        print "EXTRACTOR"
         if (path[len(path)-1]) is '/':
             path = path[0:len(path)-1]
         self.path = path
@@ -29,7 +30,7 @@ class Extractor:
             names, isFull, features = self.fio.load(fullpath)
 
             # remove .json prefix
-            names = [name[0:len(name)-5] for name in names]
+            names = [(name[0:len(name)-5] if 'json' in name else name) for name in names]
             # because i am an idiot
             isFull = [self.isFileFull(name) for name in names]
             return features, isFull, names
@@ -109,6 +110,28 @@ class Extractor:
         print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
 
+    def loadfolderscsv2(self, numclass, numfull, numpartial, folderList = []):
+        if not folderList:
+            folderList = os.listdir(self.csvpath)
+            folderList.sort(key=str.lower)
+            folderList = folderList[:numclass]
+
+        if len(folderList) > numclass:
+            folderList = folderList[0:numclass]
+
+        features, isFull, classId,  names = list(), list(), list(), list()
+        classCount = 0
+        for folder in folderList:
+            featuresT, isFullT, namesT = self.loadfoldercsv(folder)
+
+            features.extend(featuresT)
+            isFull.extend(isFullT)
+            names.extend(names)
+            classId.extend([classCount] * len(featuresT))
+            classCount += 1
+        print 'Loaded %i sketches' % len(features)
+        return features, isFull, classId, names, folderList
+
     def loadniciconfolders(self):
         if self.path[-1] == '/':
             self.path = self.path[0:len(self.path)-1]
@@ -159,6 +182,7 @@ class Extractor:
         return features, isFull, classId, name
 
     def loadfolders(self, numclass, numfull, numpartial, folderList = []):
+        print 'in extractor'
         if not folderList:
             folderList = os.listdir(self.csvpath)
             folderList.sort(key=str.lower)
@@ -180,6 +204,33 @@ class Extractor:
             return whole_features, whole_isFull, whole_classId, whole_names, folderList
 
         features, isFull, classId, names, folderList = self.loadfolderscsv(numclass, numfull, numpartial, folderList)
+        print 'Loaded ' + str(len(features)) + ' features'
+        return features, isFull, classId, names, folderList
+
+
+    def loadfolders2(self, numclass, numfull, numpartial, folderList = []):
+        print 'in extractor'
+        if not folderList:
+            folderList = os.listdir(self.csvpath)
+            folderList.sort(key=str.lower)
+            folderList = folderList[:numclass]
+
+        if len(folderList) > numclass:
+            folderList = folderList[:numclass]
+
+        if numfull >= 80 and numpartial >= 80:
+            whole_features, whole_isFull, whole_names, whole_classId = [], [], [], []
+            count = 0
+            for folder in folderList:
+                features, isFull, names = self.loadfoldercsv(folder)
+                whole_features.extend(features)
+                whole_isFull.extend(isFull)
+                whole_names.extend(names)
+                whole_classId.extend([count]*len(features))
+                count += 1
+            return whole_features, whole_isFull, whole_classId, whole_names, folderList
+
+        features, isFull, classId, names, folderList = self.loadfolderscsv2(numclass, numfull, numpartial, folderList)
         print 'Loaded ' + str(len(features)) + ' features'
         return features, isFull, classId, names, folderList
 

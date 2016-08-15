@@ -19,10 +19,11 @@ from SVM import *
 import pickle
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
+from FileIO import *
 
 
 def main():
-    numclass, numfull, numpartial = 15, 10, 80
+    numclass, numfull, numpartial = 15, 15, 50
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
@@ -56,26 +57,19 @@ def main():
              'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver',
              'sea-turtle',
              'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
+    print 'lol'
+    myfio  = FileIO()
+    extr = Extractor('../testingData/')
 
-    extr = Extractor('../data/')
-    whole_features, \
-    whole_isFull, \
-    whole_classId, \
-    whole_names, \
-    folderList = extr.loadfolders(
+    test_features, \
+    test_isFull, \
+    test_classId, \
+    test_names, \
+    folderList = extr.loadfolders2(
                             numclass,
                             numfull=numfull,
                             numpartial=numpartial,
-                            folderList=files)
-
-    numtest = 5
-    train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
-        partitionfeatures(whole_features,
-                          whole_isFull,
-                          whole_classId,
-                          whole_names,
-                          numtrainfull = numfull-numtest,
-                          selectTestRandom=True)
+                            folderList=files[:20])
 
     K = [numclass, 2*numclass] # :O
     #K = [numclass]
@@ -87,7 +81,7 @@ def main():
     reject_rate = dict()
     my_n = 5
     my_files = folderList
-    my_name = 'withAllPartial'
+    my_name = 'SunumOut'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
@@ -141,7 +135,7 @@ def main():
 
         print 'Starting Testing'
         for test_index in range(len(test_features)):
-            print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
+            # print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = folderList[test_classId[test_index]]
 

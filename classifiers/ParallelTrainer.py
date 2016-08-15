@@ -15,16 +15,24 @@ import numpy as np
 class ParallelTrainer:
     """Trainer Class used for the training"""
 
-    def __init__(self, n, files, doKMeans = False):
+    def __init__(self, n, files, doKMeans = True, myAllTrainingData = None):
+        self.getFromCSV = True
+        if(myAllTrainingData!=None):
+            self.myAllTrainingData = myAllTrainingData
+            self.getFromCSV=False
+
         self.n = n
         self.trainingAdress = '../data/newMethodTraining/'
         allFiles = copy.copy(files)
         self.files = []
+
         if(not doKMeans):
             random.shuffle(allFiles)
             for i in range(len(files)/self.n):
                 self.files.append(allFiles[i*n :(i+1)*n])
+
         else:
+            print "NOW DOING NORMAL KMEANS FOR CLUSTERING CLASSES"
             f = FileIO()
             names, isFull,my_features = f.load('../data/csv/allCenters.csv')
             features = []
@@ -42,10 +50,31 @@ class ParallelTrainer:
                     l.append(allFiles[j])
                 self.files.append(l)
 
+    def getFiles(self):
+        return self.files
+
+    def set(self,f):
+        self.files = f
+
+    def getFeatures(self, i, numclass, numfull,numpartial, normal = False):
+        if(normal):
+            extr = Extractor('../data/')
+            features, isFull, classId, names, folderList = extr.loadfolders(  numclass   = numclass,
+                                                                              numfull    = numfull,
+                                                                              numpartial = numpartial,
+                                                                       folderList = self.files[i])
+        else:
+            extr = Extractor('../trainingData/')
+            features, isFull, classId, names, folderList = extr.loadfolders(  numclass   = numclass,
+                                                                              numfull    = numfull,
+                                                                              numpartial = numpartial,
+                                                                       folderList = self.files[i])
+
+        return features,isFull,classId,names,folderList
+
 
     def trainSWM(self, numclass, numfull, numpartial, k, name):
         n = self.n
-        extr = Extractor('../data/')
         fio = FileIO()
         normalProb = []
         import os
@@ -54,16 +83,29 @@ class ParallelTrainer:
         if not os.path.exists(path):
             os.mkdir(path)
 
+        import imp
+        try:
+            imp.find_module('pycuda')
+            found = True
+        except ImportError:
+            found = False
+
+
         for i in range(len(self.files)):
             trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
             trainingpath = path +'/'+ trainingName
-            features, isFull, classId, names, folderList = extr.loadfolders(  numclass   = numclass,
-                                                                              numfull    = numfull,
-                                                                              numpartial = numpartial,
-                                                                              folderList = self.files[i])
-            constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-            ckmeans = CKMeans(constarr, np.transpose(features), k)
-            kmeansoutput = ckmeans.getCKMeans()
+            features, isFull, classId, names, folderList = self.getFeatures(i,numclass,numfull,numpartial,self.getFromCSV)
+
+            if not found:
+                constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
+                ckmeans = CKMeans(constarr, np.transpose(features), k)
+                kmeansoutput = ckmeans.getCKMeans()
+            else:
+                print "CUDDDDAAAAAAAAAAAAAAAAAAAAAAAA"
+                from cudackmeans import *
+                clusterer = CuCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
+                clusters, centers = clusterer.cukmeans()
+                kmeansoutput = [clusters, centers]
 
             # find heterogenous clusters and train svm
             trainer = Trainer(kmeansoutput, classId, features)
