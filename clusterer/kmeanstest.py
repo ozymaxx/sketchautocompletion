@@ -6,7 +6,7 @@ import matplotlib.cm as cm
 from random import randint
 import copy
 import matplotlib.markers as mark
-from cudackmeans import *
+#from cudackmeans import *
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
 sys.path.append('../clusterer/')
@@ -17,6 +17,7 @@ from extractor import *
 from FileIO import *
 from Predictor import *
 from visualise import *
+from fastCKMeans import *
 import random
 def visualiseAfterClustering(out, features, classId, centers, isFull, title, sv):
     def getMarkerList():
@@ -58,7 +59,7 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title, sv)
         color = colorList[index - 1]
         edgecolor = colorList[random.randint(0, len(clisEdge)) - 1]
 
-        for i in cluster.astype(int):
+        for i in cluster:
 
             x = features.tolist()[i]
             scale = 80
@@ -100,6 +101,7 @@ def main():
     numclass = 10
     features,isFull,classId,centers = getFeatures(numpoint, numclass)
     constArray = getConstraints(numpoint, isFull, classId)
+    '''
     l = CKMeans(constArray, features, 10)
     kmeansoutput = l.getCKMeans()
 
@@ -112,10 +114,16 @@ def main():
     svkmeans = predictor.getSV()
 
     visualiseAfterClustering( kmeansoutput, features, classId, centers, isFull, 'k-means', sv=svkmeans)
-
-    clusterer = CuCKMeans(np.transpose(features), numclass, classId, isFull)
+    '''
+    '''
+     clusterer = CuCKMeans(np.transpose(features), numclass, classId, isFull)
     clusters, centersx = clusterer.cukmeans()
     kmeansoutput = [clusters, centersx]
+
+    '''
+
+    ckmeans = fastCKMeans(np.transpose(features), isFull, classId, k=numclass, maxiter=20, thres=10 ** -10)
+    kmeansoutput = ckmeans.getCKMeans()
 
     trainer = Trainer(kmeansoutput, classId, np.transpose(features))
     heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
@@ -127,13 +135,9 @@ def main():
 
     visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'ck-means', sv=sv)
 
-    for cluster in kmeansoutput[0]:
-        currCLass = -1
-        for pointIn in range(len(cluster)):
-            if currCLass == -1 and isFull[cluster[pointIn]]:
-                currCLass =  classId[cluster[pointIn]]
-            if currCLass != classId[cluster[pointIn]] and isFull[cluster[pointIn]]:
-                print 'Nope'
 
-    raw_input()
+    clusterclassid = [[classId[featureidx] for featureidx in cluster if isFull[featureidx]] for cluster in kmeansoutput[0]]
+    print any([(len(set(cluster)) != 1) for cluster in clusterclassid])
+
+
 if __name__ == "__main__": main()

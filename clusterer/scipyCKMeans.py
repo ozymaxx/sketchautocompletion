@@ -1,10 +1,12 @@
+from scipy.cluster.vq import *
+
 import numpy as np
 import random
 import copy
 from random import shuffle
-import scipy
+import scipy.cluster.vq.kmeans2
 class fastCKMeans:
-    def __init__(self, features, isFull, classId, k, maxiter = 20, thres = 10**-10):
+    def __init__(self, features, isFull, classId, k, maxiter = 20, votefreq = 2, thres = 10**-10):
         self.features = features
         self.k = k
         self.isFull = isFull
@@ -27,6 +29,8 @@ class fastCKMeans:
 
     def getCKMeans(self):
         for curriter in range(self.maxiter):
+            kmeans2(self.features,  )
+
             print 'FastCKMeans iteration %i (max %i)' % (curriter, self.maxiter)
             print 'Assigning features to clusters'
             self.feature2cluster(self.features, self.clusterFeatures, self.classId)

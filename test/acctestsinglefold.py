@@ -18,9 +18,10 @@ from draw import *
 from SVM import *
 import pickle
 from Predictor import *
+from fastCKMeans import *
 
 def main():
-    numclass, numfull, numpartial = 5, 10, 10
+    numclass, numfull, numpartial = 15, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -65,7 +66,7 @@ def main():
                             numpartial=numpartial,
                             folderList=files)
 
-    numtest = 5
+    numtest = 10
     train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
         partitionfeatures(whole_features,
                           whole_isFull,
@@ -74,7 +75,7 @@ def main():
                           numtrainfull = numfull-numtest,
                           selectTestRandom=True)
 
-    K = [numclass, 2*numclass] # :O
+    K = [numclass] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
@@ -83,9 +84,6 @@ def main():
     accuracy = dict()
     reject_rate = dict()
 
-    accuracySVM = dict()
-    delay_rateSVM = dict()
-    testcount = 0
     for k in K:
         for n in N:
             for c in C:
@@ -105,7 +103,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i_%i_%i' % ('singlefoldacctest-newCUDA', numclass, numfull, numpartial, k)
+        folderName = '%s___%i_%i_%i_%i' % ('singlefoldacctest-fastCKMeans', numclass, numfull, numpartial, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -126,9 +124,20 @@ def main():
                 found = False
 
             if not found:
+                '''
                 constarr = getConstraints(size=len(train_features), isFull=train_isFull, classId=train_classId)
-                ckmeans = CKMeans(constarr, np.transpose(train_features), k)
+                ckmeans = fastCKMeans(constarr, np.transpose(train_features), k)
                 kmeansoutput = ckmeans.getCKMeans()
+                '''
+
+                ckmeans = fastCKMeans(train_features, train_isFull, train_classId, k, maxiter=40, thres=10 ** -10)
+                kmeansoutput = ckmeans.getCKMeans()
+
+                trainer = Trainer(kmeansoutput, train_classId, train_features)
+                heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+                fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
+                                 trainingpath, folderName)
+                svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
             else:
                 from cudackmeans import *
                 clusterer = CuCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
