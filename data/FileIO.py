@@ -54,7 +54,7 @@ class FileIO:
     def load(self, f):
         """"Load features from csv file
         INPUT
-        f: name of the file to be saved
+        f: name of the file to be loaded
         OUTPUT
         isFull: array of 1 or 0
         names: name array of the instances

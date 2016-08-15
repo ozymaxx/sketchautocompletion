@@ -41,13 +41,21 @@ class ParallelPredictorMaster:
             b = fio.loadOneFeature(trainingpath +'/' + str(i) + "__Training_Center_")
             self.l.append(b)
             names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
-            predictor = ParallelPredictorSlave(kmeansoutput, classId, trainingpath, loadedFolders)
+            nowSwm = Trainer.loadSvm(kmeansoutput, classId, trainingpath, features)
+            predictor = ParallelPredictorSlave(kmeansoutput, classId, trainingpath, loadedFolders, nowSwm)
             self.predictors.append(predictor)
 
     def probToSavings(self, jstring,  centers, normalProb):
         loadedSketch = shapecreator.buildSketch('json', jstring)
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(loadedSketch)
+        probTup = []
+        for i in range(len(centers)):
+            dist = self.getDistance(instance, centers[i])
+            probTup.append(math.exp(-1*abs(dist))*normalProb[i])
+        return probTup
+
+    def probToSavingsByFeature(self,instance, centers, normalProb):
         probTup = []
         for i in range(len(centers)):
             dist = self.getDistance(instance, centers[i])
@@ -68,9 +76,24 @@ class ParallelPredictorMaster:
         l = self.l
         savingProbs = self.probToSavings(q, l, normalProb)
         savingProbs = [x/sum(savingProbs) for x in savingProbs]
+        print savingProbs
         out = dict()
         for i in range(self.numOfTrains):
             a = self.predictors[i].predictByString(q)
+            for m in a.keys():
+                out[m] = a[m]*savingProbs[i]
+        return out
+
+    def calculatePosteriorProb(self, ins):
+
+        normalProb = self.normalProb
+        l = self.l
+        savingProbs = self.probToSavingsByFeature(ins, l, normalProb)
+        savingProbs = [x/sum(savingProbs) for x in savingProbs]
+        print savingProbs
+        out = dict()
+        for i in range(self.numOfTrains):
+            a = self.predictors[i].predictIt(ins)
             for m in a.keys():
                 out[m] = a[m]*savingProbs[i]
         return out
