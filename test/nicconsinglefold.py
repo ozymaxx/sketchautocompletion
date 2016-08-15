@@ -62,7 +62,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i' % ('nicicionWithoutCuda_fulldata', max(train_classId), k)
+        folderName = '%s___%i_%i' % ('nicicionWithVotingCuda_fulldata', max(train_classId), k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import

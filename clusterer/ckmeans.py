@@ -39,16 +39,16 @@ class CKMeans:
             center = copy.copy(self.featArr[point])
             self.centerList.append(center)
         
-    def violateConstraints(self, data, cluster):
+    def violateConstraints(self, featIdx, cluster):
         """method to check if the instance violates the constraints (part of CK-Means)
         data : id of the instance
         cluster : current cluster in which we're checking the condition
         return any(bool(self.consArr[data][i] == self.MUST_LINK) != bool(i in cluster) for i in range(0,data))"""
-        for i in range(0, data):
-            if self.consArr[data][i] == self.MUST_LINK:
+        for i in range(0, featIdx):
+            if self.consArr[featIdx][i] == self.MUST_LINK:
                 if i not in cluster:
                     return True
-            elif self.consArr[data][i] == self.CANNOT_LINK:
+            elif self.consArr[featIdx][i] == self.CANNOT_LINK:
                 if i in cluster:
                     return True
         return False

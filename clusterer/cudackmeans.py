@@ -165,8 +165,6 @@ class CuCKMeans():
         blocks = int(math.ceil(float(points) / block_size))
         cluster = None
         min_dist = None
-        instanceVotes = None
-        
         kernel_code = kernel_code_template % {
             'DIMENSIONS': dimensions}
         mod = compiler.SourceModule(kernel_code)
@@ -219,6 +217,9 @@ class CuCKMeans():
                           grid=(blocks, 1),
                           block=(block_size, 1, 1),
                           )
+
+        del classIds
+        del isFulls
         return cluster.get(), min_dist.get()
 
     def cu_av(self, obs, clusters, obs_code, classCluster):
@@ -265,7 +266,9 @@ class CuCKMeans():
             grid=(blocks, 1),
             block=(block_size, 1, 1),
         )
-    
+        del classIds
+        del isFulls
+        del classClusters
         return obs_Code.get()
 
     def _cukmeans(self,features, clusters, thresh=1e-5):
@@ -283,16 +286,16 @@ class CuCKMeans():
             if nc <=150:
                 #compute membership and distances between features and code_book
                 print "Apply K Means!"
-                obs_code, distort, instanceVotes = self.cu_vq(features, code_book)
+                obs_code, distort = self.cu_vq(features, code_book)
             else:
                 #Compute membership with little tasks
                 print "Apply K Means!"
                 limits = 0
-                obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, None, None, limits)
+                obs_code, distort = self.cu_v2q(features, code_book, None, None, limits)
                 print limits, "-", limits + 50, "finished"
                 limits += 50
                 while limits <nc:
-                    obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, obs_code, distort, limits)
+                    obs_code, distort = self.cu_v2q(features, code_book, obs_code, distort, limits)
                     print limits, "-", limits + 50, "finished"
                     limits += 50
 
@@ -363,8 +366,8 @@ class CuCKMeans():
         return  clusterList, centerList, avg_dist[-1]
 
     
-    def cukmeans(self, thresh=1e-5):
-        ITER = 1
+    def cukmeans(self, thresh=1e-10):
+        ITER = 50
         features = self.features
         if type(self.k) == type(np.array([])):
             guess = self.k
@@ -381,6 +384,7 @@ class CuCKMeans():
                 raise ValueError("Asked for 0 cluster ? ")
             for i in range(ITER):
                 #the intial code book is randomly selected from observations
+                print 'Iteration %i (max %i)'%(i, ITER)
                 guess = np.take(features, randint(0, No, k), 0) # randomly select cluster centers
                 clusters, centers, dist = self._cukmeans(features, guess, thresh=thresh)
                 if dist < best_dist:

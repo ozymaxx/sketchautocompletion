@@ -119,7 +119,6 @@ class Extractor:
         for symbolfolder in symbolfolders:
             csvfiles = [symbolfolder + "/" + f for f in os.listdir(symbolfolder)]
             for csvfile in csvfiles:
-                classCounter += 1
                 if os.path.isfile(csvfile):
                     print 'loading ' + str(csvfile)
                     names, isFull, features = self.fio.load(csvfile)
@@ -128,6 +127,7 @@ class Extractor:
                     whole_names.extend(names)
                     whole_classId.extend([classCounter]*len(features))
                     # remove .xml postfix
+                classCounter += 1
         print 'Loaded %i sketches'%len(whole_features)
         return whole_features, whole_isFull, whole_classId, whole_names
 
