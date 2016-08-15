@@ -15,6 +15,7 @@ class CuCKMeans():
         self.k = k
         self.classId = np.asarray(classId)
         self.isFull = np.asarray(isFull)
+        self.fullIndex = [idx for idx in range(len(isFull)) if isFull[idx]]
         
     def cu_vq(self, obs, clusters):
         kernel_code_template = """
@@ -47,7 +48,6 @@ class CuCKMeans():
               }
               cluster[valindex]=myCentroid;
               min_dist[valindex]=sqrt(minDistance);
-              if(isFull[valindex] == 1) {votes[(classId[valindex])*numClusters + myCentroid]++;}
             }
           }
         """
@@ -76,7 +76,7 @@ class CuCKMeans():
         cluster = gpuarray.zeros(points, dtype=np.int32)
         min_dist = gpuarray.zeros(points, dtype=np.float32)
 
-        instanceVotes = gpuarray.zeros(nclasses*nclusters, dtype=np.int32)
+        instanceVotes = gpuarray.zeros(points, dtype=np.int32)
         
         kmeans_kernel = mod.get_function('cu_vq')
         kmeans_kernel(driver.In(dataT),
@@ -309,8 +309,15 @@ class CuCKMeans():
 
             # Assign full sketches to their own clusters
             nclusters = clusters.shape[0]
+
             nclasses = len(np.unique(self.classId))
-            voteList = np.split(instanceVotes, nclasses) # VOTE list
+            voteList = np.zeros(nc*nclasses).astype(np.int32)
+            for idx in self.fullIndex:
+                featclass = self.classId[idx]
+                featvote = obs_code[idx]
+                voteList[featclass*nc + featvote]+=1
+
+            voteList = np.split(voteList, nclasses) # VOTE list
 
             # VOTES DOES NOT SUM UP TO NUMBER OF FEATURES
             print "Get Voting!"
