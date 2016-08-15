@@ -53,10 +53,9 @@ def getBestPredictions(classProb, n):
         l1 = l1[:-1]
         return l + l1
 
-def newTraining(n,files, numclass, numfull,numpartial,k, name):
-    myParallelTrainer = ParallelTrainer (n,files)
-    global normalProb
-    normalProb = myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, name)
+def newTraining(n,files, numclass, numfull,numpartial,k, name, doKMeans = True):
+    myParallelTrainer = ParallelTrainer (n,files, doKMeans = doKMeans)
+    myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, name)
 
 
 @app.route("/", methods=['POST','GET'])
@@ -69,6 +68,7 @@ def handle_data():
         classProb = predictor.predictByString(queryjson)
 
         print 'Server responded in %.3f seconds' % float(time.time()-timeStart)
+        print 'Sending ',getBestPredictions(classProb, 5)
         return getBestPredictions(classProb, 5)
     except Exception as e:
         flash(e)
@@ -89,18 +89,20 @@ def main():
 
     global predictor
     ForceTrain = True
-    my_numclass = 50
-    my_numfull = 20
-    my_numpartial= 10
+    my_numclass = 10
+    my_numfull = 7
+    my_numpartial= 3
     my_k = my_numclass
     n = 5
-    nameOfTheTraining = 'kola'
+    nameOfTheTraining = 'ykko'
+    import os
+    trainingpath = '../data/newMethodTraining/' + nameOfTheTraining
 
     # if training data is already computed, import
-    if not ForceTrain:
+    if os.path.exists(trainingpath) and (not ForceTrain):
         predictor = ParallelPredictorMaster(nameOfTheTraining)
     else:
-        newTraining(n, files, my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
+        newTraining(n, files[:my_numclass], my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
         predictor = ParallelPredictorMaster(nameOfTheTraining)
 
     app.secret_key = 'super secret key'

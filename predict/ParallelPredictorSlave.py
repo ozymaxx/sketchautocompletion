@@ -17,11 +17,12 @@ from FeatureExtractor import *
 
 class ParallelPredictorSlave:
     """The predictor class implementing functions to return probabilities"""
-    def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = None):
+    def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = None, svm = None):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
         self.subDirectory = subDirectory
         self.files = file
+        self.svm = svm
 
 
     def probToSavings(self, jstring,  centers, normalProb):
@@ -100,6 +101,7 @@ class ParallelPredictorSlave:
         #p  robability : P(Ck)
         # Returns P(Si|x)
         """
+
         # dict of probabilities of given instance belonging to every possible class
         # initially zero
         outDict = dict.fromkeys([i for i in set(self.classId)], 0.0)
@@ -123,13 +125,17 @@ class ParallelPredictorSlave:
 
                 # if homogeneous then only a single class which is the first
                 # feature points class
-                classesInCluster = [self.classId[self.kmeansoutput[0][clstrid][0]]]
+                classesInCluster = [self.classId[int(self.kmeansoutput[0][clstrid][0])]]
 
             elif clstrid in heteClstrId:
-                modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) +".model"
-                m = svm_load_model(modelName)
-                classesInCluster = m.get_labels()
-                labels, probs = self.svmProb(m, [instance.tolist()])
+                if not self.svm:
+                    modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) + ".model"
+                    m = svm_load_model(modelName)
+                    classesInCluster = m.get_labels()
+                    labels, probs = self.svmProb(m, [instance.tolist()])
+                else:
+                    labels, _, probs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
+                    classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
 
             for c in range(len(classesInCluster)):
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else probs[0][c]
