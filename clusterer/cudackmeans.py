@@ -26,7 +26,7 @@ class CuCKMeans():
               for( int i = 0; i < dimensions; i++ ) target[i] = source[i];
           }
           __global__ void cu_vq(float *g_idata, float *g_centroids,
-            int *classId, int *isFull, int *votes,
+            int *classId, int *isFull,
             int *cluster, float *min_dist, int numClusters, int numDim, int numPoints) {
             int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
             __shared__ float mean[%(DIMENSIONS)s];
@@ -76,14 +76,12 @@ class CuCKMeans():
         cluster = gpuarray.zeros(points, dtype=np.int32)
         min_dist = gpuarray.zeros(points, dtype=np.float32)
 
-        instanceVotes = gpuarray.zeros(points, dtype=np.int32)
         
         kmeans_kernel = mod.get_function('cu_vq')
         kmeans_kernel(driver.In(dataT),
                       driver.In(clusters),
                       driver.In(classIds),
                       driver.In(isFulls),
-                      instanceVotes,
                       cluster,
                       min_dist,
                       np.int32(nclusters),
@@ -93,11 +91,11 @@ class CuCKMeans():
             block=(block_size, 1, 1),
         )
     
-        return cluster.get(), min_dist.get(), instanceVotes.get()
+        return cluster.get(), min_dist.get()
     
     
     
-    def cu_v2q(self, obs, clusters, obs_code, distort, votes, limits):
+    def cu_v2q(self, obs, clusters, obs_code, distort, limits):
         kernel_code_template = """
          #include "float.h" // for FLT_MAX
            // the kernel definition
@@ -106,7 +104,7 @@ class CuCKMeans():
               for( int i = 0; i < dimensions; i++ ) target[i] = source[i];
           }
           __global__ void cu_v2q(float *g_idata, float *g_centroids,
-            int *classId, int *isFull, int *votes,
+            int *classId, int *isFull,
             int * cluster, float *min_dist, int numClusters, int numDim, int numPoints, int numIter) {
             int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
             __shared__ float mean[%(DIMENSIONS)s];
@@ -127,17 +125,13 @@ class CuCKMeans():
                 }
               }
               if(minDistance < (min_dist[valindex]*min_dist[valindex])){
-                if(isFull[valindex] == 1) {
-                  votes[(classId[valindex])*numClusters + cluster[valindex]]--;
-                  votes[(classId[valindex])*numClusters + myCentroid]++;
-                  }
                 cluster[valindex]=myCentroid;
                 min_dist[valindex]=sqrt(minDistance);
               }
             }
           }
           __global__ void cu_v2qinit(float *g_idata, float *g_centroids,
-            int *classId, int *isFull, int *votes,
+            int *classId, int *isFull,
             int * cluster, float *min_dist, int numClusters, int numDim, int numPoints, int numIter) {
             int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
             __shared__ float mean[%(DIMENSIONS)s];
@@ -159,7 +153,6 @@ class CuCKMeans():
               }
               cluster[valindex]=myCentroid;
               min_dist[valindex]=sqrt(minDistance);
-              if(isFull[valindex] == 1) {votes[(classId[valindex])*numClusters + myCentroid]++;}
             }
           }
         """
@@ -195,13 +188,11 @@ class CuCKMeans():
         if(obs_code is None):
             cluster = gpuarray.zeros(points, dtype=np.int32)
             min_dist = gpuarray.zeros(points, dtype=np.float32)
-            instanceVotes = gpuarray.zeros(nclasses*nclusters, dtype=np.int32)
             kmeans_kernel = mod.get_function('cu_v2qinit')
             kmeans_kernel(driver.In(dataT),
                           driver.In(clusters),
                           driver.In(classIds),
                           driver.In(isFulls),
-                          instanceVotes,
                           cluster,
                           min_dist,
                           np.int32(nclusters),
@@ -214,13 +205,11 @@ class CuCKMeans():
         else:
             cluster = gpuarray.to_gpu(obs_code)
             min_dist = gpuarray.to_gpu(distort)
-            instanceVotes = gpuarray.to_gpu(votes)
             kmeans_kernel = mod.get_function('cu_v2q')
             kmeans_kernel(driver.In(dataT),
                           driver.In(clusters),
                           driver.In(classIds),
                           driver.In(isFulls),
-                          instanceVotes,
                           cluster,
                           min_dist,
                           np.int32(nclusters),
@@ -230,7 +219,7 @@ class CuCKMeans():
                           grid=(blocks, 1),
                           block=(block_size, 1, 1),
                           )
-        return cluster.get(), min_dist.get(), instanceVotes.get()
+        return cluster.get(), min_dist.get()
 
     def cu_av(self, obs, clusters, obs_code, classCluster):
         kernel_code_template = """
@@ -299,11 +288,11 @@ class CuCKMeans():
                 #Compute membership with little tasks
                 print "Apply K Means!"
                 limits = 0
-                obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, None, None, None, limits)
+                obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, None, None, limits)
                 print limits, "-", limits + 50, "finished"
                 limits += 50
                 while limits <nc:
-                    obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, obs_code, distort, instanceVotes, limits)
+                    obs_code, distort, instanceVotes = self.cu_v2q(features, code_book, obs_code, distort, limits)
                     print limits, "-", limits + 50, "finished"
                     limits += 50
 
