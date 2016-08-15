@@ -344,7 +344,7 @@ class CuCKMeans():
                         code_book[i] = np.mean(cell_members, 0)
                         has_members.append(i)
                 #remove code_books that didn't have any members
-                #code_book = np.take(code_book, has_members, 0)
+                code_book = np.take(code_book, has_members, 0)
             if len(avg_dist) > 1:
                 diff = avg_dist[-2] - avg_dist[-1]
             iterNum += 1
@@ -364,8 +364,8 @@ class CuCKMeans():
         return  clusterList, centerList, avg_dist[-1]
 
     
-    def cukmeans(self, thresh=1e-10):
-        ITER = 50
+    def cukmeans(self, thresh=1e-15):
+        ITER = 100
         features = self.features
         if type(self.k) == type(np.array([])):
             guess = self.k
@@ -387,6 +387,7 @@ class CuCKMeans():
                 clusters, centers, dist = self._cukmeans(features, guess, thresh=thresh)
                 print i,"th CK Means iteration finished"
                 if dist < best_dist:
+                    print "BEST DISTANCE FOUND, Changed"
                     best_clusters = clusters
                     best_dist = dist
                     best_centers = centers
