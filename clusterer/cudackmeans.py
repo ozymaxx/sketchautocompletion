@@ -93,8 +93,6 @@ class CuCKMeans():
     
         return cluster.get(), min_dist.get()
     
-    
-    
     def cu_v2q(self, obs, clusters, obs_code, distort, limits):
         kernel_code_template = """
          #include "float.h" // for FLT_MAX
@@ -301,7 +299,6 @@ class CuCKMeans():
 
             # Assign full sketches to their own clusters
             nclusters = clusters.shape[0]
-
             nclasses = len(np.unique(self.classId))
             voteList = np.zeros(nc*nclasses).astype(np.int32)
             for idx in self.fullIndex:
@@ -351,7 +348,8 @@ class CuCKMeans():
             if len(avg_dist) > 1:
                 diff = avg_dist[-2] - avg_dist[-1]
             iterNum += 1
-            
+        
+        print "Doing transfer"
         # Transfer obs_code to clusters
         clusterList = []
         centerList = []
@@ -387,6 +385,7 @@ class CuCKMeans():
                 print 'Iteration %i (max %i)'%(i, ITER)
                 guess = np.take(features, randint(0, No, k), 0) # randomly select cluster centers
                 clusters, centers, dist = self._cukmeans(features, guess, thresh=thresh)
+                print i,"th CK Means iteration finished"
                 if dist < best_dist:
                     best_clusters = clusters
                     best_dist = dist
