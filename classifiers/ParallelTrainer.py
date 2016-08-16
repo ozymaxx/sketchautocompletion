@@ -12,6 +12,7 @@ from extractor import *
 from FileIO import *
 import numpy as np
 
+
 class ParallelTrainer:
     """Trainer Class used for the training"""
 
