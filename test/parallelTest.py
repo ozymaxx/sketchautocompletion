@@ -20,13 +20,14 @@ import pickle
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
 from FileIO import *
-import myAccestSin
+import parallelPartitioner
 
 
 def main():
-    numclass, numfull, numpartial = 10, 80, 80
+    numclass, numfull, numpartial = 10, 10, 10
+    debugMode = False
 
-    myAccestSin.partition(numclass,numfull,numpartial)
+    parallelPartitioner.partition(numclass, numfull, numpartial)
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
@@ -60,9 +61,9 @@ def main():
              'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver',
              'sea-turtle',
              'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
-    print 'lol'
+
     myfio  = FileIO()
-    extr = Extractor('../testingData/')
+    extr = Extractor('../data/')
 
     test_features, \
     test_isFull, \
@@ -74,6 +75,9 @@ def main():
                             numpartial=numpartial,
                             folderList=files[:20])
 
+    if(debugMode):
+        print "NOWOINODNF POJFD[O AINDAF[IUBS AD[9UOBH[ADSINUB [ASIFJDN [IJFNBF[DSAIJN"
+
     K = [numclass, 2*numclass] # :O
     #K = [numclass]
     N = range(1, numclass)
@@ -84,7 +88,7 @@ def main():
     reject_rate = dict()
     my_n = 5
     my_files = folderList
-    my_name = 'SunumOut'
+    my_name = 'DEneme'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
@@ -130,7 +134,7 @@ def main():
             if not found:
 
                 myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
-                myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, my_name)
+                myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
             else:
                 pass
         nameOfTheTraining = my_name
