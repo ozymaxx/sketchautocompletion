@@ -13,7 +13,9 @@ from FileIO import *
 
 class Extractor:
     def __init__(self, path):
-        print "EXTRACTOR"
+        self.debugMode = True
+        if self.debugMode:
+            print "EXTRACTOR"
         if (path[len(path)-1]) is '/':
             path = path[0:len(path)-1]
         self.path = path
@@ -107,6 +109,7 @@ class Extractor:
 
                 classId.extend([classCount] * mask.count(True))
             classCount += 1
+
         print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
 
@@ -126,7 +129,7 @@ class Extractor:
 
             features.extend(featuresT)
             isFull.extend(isFullT)
-            names.extend(names)
+            names.extend(namesT)
             classId.extend([classCount] * len(featuresT))
             classCount += 1
         print 'Loaded %i sketches' % len(features)
@@ -231,7 +234,11 @@ class Extractor:
             return whole_features, whole_isFull, whole_classId, whole_names, folderList
 
         features, isFull, classId, names, folderList = self.loadfolderscsv2(numclass, numfull, numpartial, folderList)
-        print 'Loaded ' + str(len(features)) + ' features'
+        if self.debugMode:
+            print names
+            print 'Loaded ' + str(len(features)) + ' features'
+
+
         return features, isFull, classId, names, folderList
 
     def processName(self, name):

@@ -1,3 +1,7 @@
+"""
+Ahmet BAGLAN
+"""
+
 import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
@@ -20,13 +24,16 @@ import pickle
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
 from FileIO import *
-import myAccestSin
+import parallelPartitioner
 
 
 def main():
-    numclass, numfull, numpartial = 10, 80, 80
+    numclass, numfull, numpartial = 10, 10, 10
+    numtest = 5
+    debugMode = False
 
-    myAccestSin.partition(numclass,numfull,numpartial)
+    #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
+    parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
@@ -60,20 +67,25 @@ def main():
              'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver',
              'sea-turtle',
              'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
-    print 'lol'
+
     myfio  = FileIO()
-    extr = Extractor('../testingData/')
+    extr = Extractor('../data/testingData/')#We will get our testing data from testingData folder
+
 
     test_features, \
     test_isFull, \
     test_classId, \
     test_names, \
-    folderList = extr.loadfolders2(
+    folderList = extr.loadfolders2(#I have written this func this just gives without caring if the sketch is nearly full or what
                             numclass,
                             numfull=numfull,
                             numpartial=numpartial,
-                            folderList=files[:20])
+                            folderList=files[:20])#[:20]Because not all folders are in testingData folder
 
+    if(debugMode):
+        print "NOWOINODNF POJFD[O AINDAF[IUBS AD[9UOBH[ADSINUB [ASIFJDN [IJFNBF[DSAIJN"
+
+    #After this Semih knows
     K = [numclass, 2*numclass] # :O
     #K = [numclass]
     N = range(1, numclass)
@@ -82,9 +94,9 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-    my_n = 5
+    my_n = numtest
     my_files = folderList
-    my_name = 'SunumOut'
+    my_name = 'DEneme'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
@@ -130,7 +142,7 @@ def main():
             if not found:
 
                 myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
-                myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, my_name)
+                myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
             else:
                 pass
         nameOfTheTraining = my_name

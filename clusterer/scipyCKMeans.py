@@ -4,41 +4,55 @@ import numpy as np
 import random
 import copy
 from random import shuffle
-import scipy.cluster.vq.kmeans2
-class fastCKMeans:
-    def __init__(self, features, isFull, classId, k, maxiter = 20, votefreq = 2, thres = 10**-10):
+from  scipy.cluster.vq import *
+class scipyCKMeans:
+    def __init__(self, features, isFull, classId, k, maxiter = 20, votefreq = 3, thres = 10**-10):
         self.features = features
         self.k = k
         self.isFull = isFull
         self.classId = classId
         self.numclass = len(set(self.classId))
-        self.clusterFeatures = [[] for i in range(self.k)]
-        self.clusterCenters = [[0]*len(features[0])]*k
-        self.featureCluster = [0]*len(features)
-        self.fullIndex = [idx for idx in range(len(features)) if isFull[idx]]
-        self.classvotes = [[0]*k for i in range(max(classId)+1)]
-        self.class2cluster = [0]*self.numclass
+        self.clusterFeatures = [[] for i in range(self.k)] # features in cluster
+        self.clusterCenters = [[0]*len(features[0])]*k # centers of clusters
+        self.featureCluster = [0]*len(features) # which cluster a feature belongs to
+        self.fullIndex = [idx for idx in range(len(features)) if isFull[idx]] # index of full sketches
+        self.classvotes = [[0]*k for i in range(max(classId)+1)] # votes of the classes for cluster, row for class
+        self.class2cluster = [0]*self.numclass # assigned class to cluster
 
         self.maxiter = maxiter
         self.thres = thres
+        self.votefreq = votefreq # after which k-means iteration voting should be done
         # init clusters
         self.initClusters()
 
     def initClusters(self, rand=True):
+        # randomly select from features
         self.clusterCenters = copy.copy(random.sample(self.features, self.k))
 
     def getCKMeans(self):
-        for curriter in range(self.maxiter):
-            kmeans2(self.features,  )
+        for iter in range(self.maxiter):
+            print 'Running scipy.kmeans2 for %i iteration %i (max %i)' % (self.votefreq, iter, self.maxiter)
+            self.clusterCenters, label = kmeans2(np.asarray(self.features), k=np.asarray(self.clusterCenters), missing='warn',
+                                                 iter=self.votefreq)
 
-            print 'FastCKMeans iteration %i (max %i)' % (curriter, self.maxiter)
-            print 'Assigning features to clusters'
-            self.feature2cluster(self.features, self.clusterFeatures, self.classId)
-            print 'Calculating cluster centers'
-            dist = self.clusterMove(self.features, self.clusterFeatures, self.clusterCenters)
+            #self.clusterCenters, label = kmeans2(np.asarray(self.features), k=np.asarray(self.clusterCenters), missing='warn',
+            #                                     iter=self.votefreq)
 
-            #if dist < self.thres:len(0
-            #    break
+            self.clusterCenters, label = kmeans2(np.asarray(self.features), k=np.asarray(self.clusterCenters), missing='warn',
+                                                 iter=self.votefreq)
+
+            # end when no label change
+            for lidx in range(len(label)):
+                self.clusterFeatures[label[lidx]].append(lidx)
+
+            print 'Running for voting'
+            self.classvotes = [[0] * self.k for i in range(max(self.classId) + 1)]
+            for fullidx in self.fullIndex:
+                self.classvotes[self.classId[fullidx]][label[fullidx]] += 1
+
+            self.feature2cluster(self.features, self.clusterFeatures, self.classId, label)
+            self.clusterMove(self.features, self.clusterFeatures, self.clusterCenters)
+
 
         return [self.clusterFeatures, self.clusterCenters]
 
@@ -55,12 +69,13 @@ class fastCKMeans:
             clusterCenters[cIdx] = featuresum
         return distsum
 
-    def feature2cluster(self, features, clusterFeatures, classId):
+    def feature2cluster(self, features, clusterFeatures, classId, label):
         self.clusterFeatures = [[] for i in range(self.k)]
+
         self.classvotes = [[0]*self.k for i in range(max(classId)+1)]
 
         for fIdx in range(len(features)):
-            _, cc = self.closestClusterCenter(features[fIdx], self.clusterCenters)
+            cc = label[fIdx]
             if self.isFull[fIdx]:
                 self.classvotes[classId[fIdx]][cc] += 1
             else:

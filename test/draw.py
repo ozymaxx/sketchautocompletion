@@ -154,7 +154,7 @@ def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels, path):
     pylab.xlabel('Reject Rate')
     pylab.ylabel('Accuracy')
     pylab.xlim([0,90])
-    pylab.ylim([miny-3,100+5])
+    pylab.ylim([80,100+5])
     pylab.title('Performance Comparison on %s Symbols Using %i Clusters' % ('Full' if isfull else 'Partial',k))
 
     plt.savefig(path + '/' + 'draw_Reject_Acc_%s.png' % ('Full' if isfull else 'Partial'))
@@ -180,8 +180,8 @@ def draw_n_Acc(accuracy, c, k, isfull, delay_rate, path):
     plt.ylabel('Accuracy')
     plt.title('C:%i k:%i Full:%s' % (c, k, str(isfull)))
 
-    plt.ylim(0, 100 * 1.1)
-    plt.xlim(1 - 1, maxN + 1)
+    plt.ylim(40, 100 * 1.1)
+    plt.xlim(1 - 1, 10)
     plt.scatter(x, y, alpha=1, s=100)
     plt.grid(True)
 

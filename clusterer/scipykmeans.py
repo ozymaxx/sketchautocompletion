@@ -4,10 +4,9 @@ import numpy as np
 import random
 import copy
 from random import shuffle
-import scipy.cluster.vq.kmeans2
 from scipy.cluster.vq import kmeans2
-class fastCKMeans:
-    def __init__(self, features, isFull, classId, k, maxiter = 20, votefreq = 2, thres = 10**-10):
+class scipykmeans:
+    def __init__(self, features, isFull, classId, k, maxiter = 20, votefreq = 1, thres = 10**-10):
         self.features = features
         self.k = k
         self.isFull = isFull
@@ -29,7 +28,7 @@ class fastCKMeans:
         #self.clusterCenters = copy.copy(random.sample(self.features, self.k))
         pass
     def getCKMeans(self):
-
+        print 'Start k-means'
         '''
         for curriter in range(self.maxiter):
             kmeans2(self.features,  )
@@ -46,63 +45,12 @@ class fastCKMeans:
         return [self.clusterFeatures, self.clusterCenters]
         '''
 
-        kmeans2(self.features, k=self.maxiter, )
+        self.clusterCenters, label = kmeans2(np.asarray(self.features), k=self.numclass)
+
+        for lidx in range(len(label)):
+            self.clusterFeatures[label[lidx]].append(lidx)
 
 
-    def clusterMove(self, features, clusterFeatures, clusterCenters):
-        distsum = 0
-        for cIdx in range(len(clusterFeatures)):
-            featuresum = [0] * len(features[0])
-            numFeaturesInCluster = len(clusterFeatures[cIdx])
-            for f in clusterFeatures[cIdx]:
-                featuresum = [self.features[f][idx] + featuresum[idx] for idx in range(len(self.features[0]))]
-            featuresum = [featuresum[idx]/numFeaturesInCluster for idx in range(len(featuresum))]
+        print 'End k-means'
+        return [self.clusterFeatures, self.clusterCenters]
 
-            # assign the new cluster center
-            clusterCenters[cIdx] = featuresum
-        return distsum
-
-    def feature2cluster(self, features, clusterFeatures, classId):
-        self.clusterFeatures = [[] for i in range(self.k)]
-        self.classvotes = [[0]*self.k for i in range(max(classId)+1)]
-
-        for fIdx in range(len(features)):
-            _, cc = self.closestClusterCenter(features[fIdx], self.clusterCenters)
-            if self.isFull[fIdx]:
-                self.classvotes[classId[fIdx]][cc] += 1
-            else:
-                self.clusterFeatures[cc].append(fIdx)
-
-        # now honour the voting
-        print 'Voting'
-        for classIdx in range(len(self.classvotes)):
-            currclassvotes = self.classvotes[classIdx]
-            votedCluster = currclassvotes.index(max(currclassvotes))
-            self.class2cluster[classIdx] = votedCluster
-
-            for i in range(self.numclass):
-                # so that it cannot be selected by another class
-                self.classvotes[i][votedCluster] = -1
-
-        # now voting is done, send full sketches to corresponding
-        # clusters
-        for fullidx in self.fullIndex:
-            clusterforfullidx = self.class2cluster[classId[fullidx]]
-            self.clusterFeatures[clusterforfullidx].append(fullidx)
-
-    def closestClusterCenter(self, f, clusterCenters):
-        smldist = self.euclidiandist(f, clusterCenters[0])
-        cc = 0
-
-        for cIdx in range(len(clusterCenters)):
-            dist = self.euclidiandist(f, clusterCenters[cIdx])
-            if dist < smldist:
-                smldist = dist
-                cc = cIdx
-
-        return smldist, cc
-
-    def euclidiandist(self, x, y):
-        # we might get rid of square root
-        return scipy.spatial.distance.euclidean(x, y)
-        #return sum([(x_ - y_)*(x_ - y_) for x_, y_ in zip(x, y)])
