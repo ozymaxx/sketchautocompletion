@@ -25,7 +25,8 @@ class Trainer:
         Outputs : Support Vectors
         """
         self.svm = SVM(self.kmeansoutput, self.classId, directory, self.featArr)
-        self.svm.trainSVM(clusterIdArr, directory)
+        #self.svm.trainSVM(clusterIdArr, directory)
+        self.svm.doSVM(clusterIdArr, directory)
         return self.svm
 
     def getHeterogenous(self):

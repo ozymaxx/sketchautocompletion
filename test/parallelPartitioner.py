@@ -9,8 +9,44 @@ sys.path.append("../../libsvm-3.21/python/")
 from extractor import *
 from featureutil import *
 from SVM import *
-from my_featutil import *
 from Predictor import *
+from FileIO import *
+
+
+def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True, saveName = None):
+    print "IN THE FUNC"
+    numclass = len(set(classId))
+    #test_features, test_names, test_classId, test_isFull = [], [], [], []
+
+    # Find the
+    '''
+    sketchPartialMax = dict()
+    for name in names:
+        classname, sketchid, partialid = processName(name)
+        sketchPartialMax[classname + '_' + sketchid] = max(sketchPartialMax[classname + '_' + sketchid], partialid)
+    '''
+    # condition for being training data
+    print type(features), type(isFull),type(names), type(classId)
+    cond = [bool(processName(names[index])[1] < numtrainfull) for index in range(len(features))]
+
+    test_features = [features[index] for index in range(len(features)) if not cond[index]]
+    test_isFull = [isFull[index] for index in range(len(isFull)) if not cond[index]]
+    test_names = [names[index] for index in range(len(names)) if not cond[index]]
+    test_classId = [classId[index] for index in range(len(classId)) if not cond[index]]
+
+    # remove any partial sketch from the traning data
+    train_features = [features[index] for index in range(len(features)) if cond[index]]
+    train_names = [names[index] for index in range(len(names)) if cond[index]]
+    train_isFull = [isFull[index] for index in range(len(isFull)) if cond[index]]
+    train_classId = [classId[index] for index in range(len(classId)) if cond[index]]
+
+
+    myfio = FileIO()
+    print "now I am gonna save"
+    myfio.save(train_isFull, train_names, train_features, '../trainingData/csv/' + saveName+'/'+saveName+'.csv')
+    myfio.save(test_isFull,test_names,test_features, '../testingData/csv/'+ saveName+'/'+saveName+'.csv')
+    print "now saved"
+    m = 5
 
 def partition(numclass, numfull, numpartial):
 
@@ -62,14 +98,13 @@ def partition(numclass, numfull, numpartial):
 
         numtest = 5
         saveName = files[i:][0]
+        print "hello"
+        print type(whole_classId),type(whole_features),type(whole_isFull),type(whole_names)
         print "doing for ", saveName
-        train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
-            partitionfeatures(whole_features,
-                              whole_isFull,
-                              whole_classId,
-                              whole_names,
-                              numtrainfull = numfull-numtest,
-                              selectTestRandom=True, saveName = saveName)
+        partitionfeatures(whole_features,
+                          whole_isFull,
+                          whole_classId,
+                          whole_names,
+                          numtrainfull = numfull-numtest,
+                          selectTestRandom=True, saveName = saveName)
     print "PARTITION ENDED"
-
-if __name__ == "__main__": main()

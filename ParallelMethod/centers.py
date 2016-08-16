@@ -1,3 +1,7 @@
+"""
+Ahmet BAGLAN
+"""
+
 import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
@@ -5,7 +9,8 @@ from FileIO import *
 import numpy as np
 
 
-def main():
+def saveCenters():
+    """This file computes centers of classses and saves it to  the ./data/csv/allCenters.csv"""
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana',
          'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -44,6 +49,6 @@ def main():
         my_names.append(mfile)
         my_isFull.append(0)
     f.save(my_isFull,my_names,k,'../data/csv/allCenters.csv')
-    a = 5
 
-if __name__ == '__main__':main()
+
+if __name__ == '__main__':saveCenters()

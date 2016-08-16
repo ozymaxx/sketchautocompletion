@@ -1,7 +1,6 @@
 """
 Predictor
 Ahmet BAGLAN
-14.07.2016
 """
 import sys
 sys.path.append('../classifiers')
@@ -16,7 +15,8 @@ from shapecreator import *
 from FeatureExtractor import *
 
 class ParallelPredictorSlave:
-    """The predictor class implementing functions to return probabilities"""
+    """The Slave predictor class"""
+    """The main diff is that calculatePosterior gives output by name"""
     def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = None, svm = None):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
