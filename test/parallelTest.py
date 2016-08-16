@@ -23,7 +23,7 @@ from FileIO import *
 
 
 def main():
-    numclass, numfull, numpartial = 15, 15, 50
+    numclass, numfull, numpartial = 10, 80, 80
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
@@ -94,6 +94,7 @@ def main():
                 reject_rate[(k, n, c, False)] = 0
 
     for k in K:
+        print "ILERLEMEEEEEEEEEEEEEEEEEE"
         '''
         Testing and training
         data is ready
@@ -116,20 +117,10 @@ def main():
             svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + folderName, train_features)
 
         else:
-            # check if pycuda is installed
-            import imp
-            try:
-                imp.find_module('pycuda')
-                found = True
-            except ImportError:
-                found = False
+            print "IN"
+            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
+            myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, my_name)
 
-            if not found:
-
-                myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
-                myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, my_name)
-            else:
-                pass
         nameOfTheTraining = my_name
         predictor = ParallelPredictorMaster(nameOfTheTraining)
 
