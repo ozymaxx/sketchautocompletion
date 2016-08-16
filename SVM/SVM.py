@@ -103,7 +103,7 @@ class SVM:
                 svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
-            order += procId
+            order += 4
  
         print 'Training SVM is done'
     def getlabels(self, modIndex):
