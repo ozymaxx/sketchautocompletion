@@ -8,7 +8,6 @@ sys.path.append("../../libsvm-3.21/python/")
 import matplotlib.pyplot as plt
 from extractor import *
 from featureutil import *
-import itertools
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import os
@@ -18,17 +17,19 @@ from draw import *
 from SVM import *
 import pickle
 from Predictor import *
+from scipyCKMeans import *
+from scipykmeans import *
 
 def main():
     numclass = 14
 
-    extr_train = Extractor('C:/Users/1003/Desktop/nicicon/csv/train')
+    extr_train = Extractor('/home/semih/Desktop/csv/train')
     train_features, \
     train_isFull, \
     train_classId, \
-    train_names =  extr_train.loadniciconfolders()
+    train_names = extr_train.loadniciconfolders()
 
-    extr_test = Extractor('C:/Users/1003/Desktop/nicicon/csv/test')
+    extr_test = Extractor('/home/semih/Desktop/csv/test')
     test_features, \
     test_isFull, \
     test_classId, \
@@ -62,7 +63,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i' % ('nicicionWithVotingCuda_fulldata', max(train_classId), k)
+        folderName = '%s___%i_%i' % ('nicicionWithscipykmeans_fulldata', max(train_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -84,9 +85,15 @@ def main():
                 found = False
 
             if not found:
-                constarr = getConstraints(size=len(train_features), isFull=train_isFull, classId=train_classId)
-                ckmeans = CKMeans(constarr, np.transpose(train_features), k)
+                ckmeans = scipykmeans(train_features, train_isFull, train_classId, k, maxiter=20, thres=10 ** -10)
                 kmeansoutput = ckmeans.getCKMeans()
+
+                # find heterogenous clusters and train svm
+                trainer = Trainer(kmeansoutput, train_classId, train_features)
+                heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+                fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
+                                 trainingpath, folderName)
+                svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
             else:
                 from cudackmeans import *
                 clusterer = CuCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
@@ -102,7 +109,6 @@ def main():
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
-
         priorClusterProb = predictor.calculatePriorProb()
 
         print 'Starting Testing'
