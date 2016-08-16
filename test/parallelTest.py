@@ -20,10 +20,13 @@ import pickle
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
 from FileIO import *
+import myAccestSin
 
 
 def main():
-    numclass, numfull, numpartial = 15, 15, 50
+    numclass, numfull, numpartial = 10, 80, 80
+
+    myAccestSin.partition(numclass,numfull,numpartial)
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
