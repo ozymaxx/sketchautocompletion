@@ -22,6 +22,9 @@ class ParallelTrainer:
     """Trainer Class used for the parallel training"""
 
     def __init__(self, n, files, doKMeans = True):
+
+        #Use the following data
+        self.getTrainingDataFrom ='../data/trainingData/'
         #Controls if we should print
         self.debugMode = False
         #No of classes in a group
@@ -97,7 +100,7 @@ class ParallelTrainer:
             trainingpath = path +'/'+ trainingName
 
             #Get features for the
-            features, isFull, classId, names, folderlist = self.getFeatures(i,numclass,numfull,numpartial,'../trainingData/')
+            features, isFull, classId, names, folderlist = self.getFeatures(i,numclass,numfull,numpartial,self.getTrainingDataFrom)
 
             if(self.debugMode):
                 print "Names------", names
