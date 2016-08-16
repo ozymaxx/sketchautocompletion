@@ -3,6 +3,8 @@ sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python")
 sys.path.append('../data/')
 from svmutil import *
+import copy_reg
+import types
 import copy
 
 class SVM:
@@ -13,7 +15,25 @@ class SVM:
         self.models = {}
         self.features = features
         self.allSV = []
-
+        
+    def multi_run_wrapper(self, args):
+        return self.trainSVM2(*args)
+    
+    def _pickle_method(self, m):
+        if m.im_self is None:
+            return getattr, (m.im_class, m.im_func.func_name)
+        else:
+            return getattr, (m.im_self, m.im_func.func_name)
+    
+    
+    def doSVM(self, clusterIdArr, directory):
+        copy_reg.pickle(types.MethodType, self._pickle_method)
+        from multiprocessing import Pool
+        import itertools
+        pool = Pool(4)
+        pool.map(self.multi_run_wrapper,[(clusterIdArr,directory,0),(clusterIdArr,directory,1),
+            (clusterIdArr,directory,2),(clusterIdArr,directory,3)])
+    
     def trainSVM(self, clusterIdArr, directory):
         """Trains the support vector machine and saves models
         Inputs : clusterIdArr: list of cluster id's to be trained (heto)
@@ -33,19 +53,58 @@ class SVM:
 
             problem = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
-
+            
             m = svm_train(problem, param)
             self.allSV.extend(m.get_SV())
 
             import os
             if directory and not os.path.exists(directory):
                 os.mkdir(directory)
-
+            
             if directory:
                 svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
             order += 1
+        print 'Training SVM is done'
+        
+    def trainSVM2(self, clusterIdArr, directory, procId):
+        """Trains the support vector machine and saves models
+        Inputs : clusterIdArr: list of cluster id's to be trained (heto)
+        Outputs : Support VectorS
+        """
+        print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterIdArr)
+
+        #label = copy.copy(self.classId) WHY
+        label = self.classId
+        order = procId
+        while order < len(clusterIdArr):  # Foreach cluster
+            clusterFeatureId = clusterIdArr[order]
+            y = []
+            x = []
+            for featureid in clusterFeatureId:  # Foreach instance in the cluster
+                featureid = int(featureid)
+                y.append(label[featureid])
+                x.append(self.features[featureid].tolist())
+
+            problem = svm_problem(y, x)
+            param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
+
+            print "start train"
+            m = svm_train(problem, param)
+            print "finish train"
+            self.allSV.extend(m.get_SV())
+
+            import os
+            if directory and not os.path.exists(directory):
+                os.mkdir(directory)
+            
+            if directory:
+                svm_save_model(directory + "/" + "clus" + str(order) + '.model', m)  # Save the model for the cluster
+                print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
+            self.models[order] = m
+            order += procId
+ 
         print 'Training SVM is done'
     def getlabels(self, modIndex):
         return self.models[int(modIndex)].get_labels()
