@@ -14,8 +14,8 @@ def handle_data():
     print 'lol'
     try:
         if (request.method == 'POST'):
-            #jsonify(data)
-                return "airplane&angel&arm&banana&bell"
+            print 'inside if'
+            return "airplane&angel&arm&banana&bell"
         else:
             return "airplane&angel&arm&banana&bell"
                 #"Hello World - you sent me a GET " + str(request.values)

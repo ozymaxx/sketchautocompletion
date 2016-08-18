@@ -11,7 +11,7 @@ import scipy
 
 
 class complexCKMeans:
-    def __init__(self, features, isFull, classId, k, maxiter = 20, votefreq = 3, initweight = 0, stepweight = 0.2):
+    def __init__(self, features, isFull, classId, k, maxiter=20, votefreq=3, initweight=0, stepweight=0.2):
         self.features = features
         self.k = k
         self.isFull = isFull
@@ -133,12 +133,13 @@ class complexCKMeans:
 
             print 'Move Cluster Centers'
             self.clusterMove(self.features, self.clusterFeatures, self.clusterCenters)
-            self.currweight = max(self.currweight + self.stepweight, 2)
+            self.currweight = min(self.currweight + self.stepweight, self.maxweight)
 
         return [self.clusterFeatures, self.clusterCenters]
 
     def clusterMove(self, features, clusterFeatures, clusterCenters):
         distsum = 0
+
         for cIdx in range(len(clusterFeatures)):
             featuresum = [0] * len(features[0])
             numFeaturesInCluster = len(clusterFeatures[cIdx])
@@ -151,36 +152,8 @@ class complexCKMeans:
                 clusterCenters[cIdx] = featuresum
             # what to do with empty cluster
 
+
         return distsum
-
-    def feature2cluster(self, features, clusterFeatures, classId, label):
-        self.clusterFeatures = [[] for i in range(self.k)]
-
-        self.classvotes = [[0]*self.k for i in range(max(classId)+1)]
-
-        for fIdx in range(len(features)):
-            cc = label[fIdx]
-            if self.isFull[fIdx]:
-                self.classvotes[classId[fIdx]][cc] += 1
-            else:
-                self.clusterFeatures[cc].append(fIdx)
-
-        # now honour the voting
-        print 'Voting'
-        for classIdx in range(len(self.classvotes)):
-            currclassvotes = self.classvotes[classIdx]
-            votedCluster = currclassvotes.index(max(currclassvotes))
-            self.class2cluster[classIdx] = votedCluster
-
-            for i in range(self.numclass):
-                # so that it cannot be selected by another class
-                self.classvotes[i][votedCluster] = -1
-
-        # now voting is done, send full sketches to corresponding
-        # clusters
-        for fullidx in self.fullIndex:
-            clusterforfullidx = self.class2cluster[classId[fullidx]]
-            self.clusterFeatures[clusterforfullidx].append(fullidx)
 
     def closestClusterCenter(self, f, clusterCenters):
         smldist = self.euclidiandist(f, clusterCenters[0])
