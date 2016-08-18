@@ -1,3 +1,9 @@
+"""
+Ahmet BAGLAN
+
+Parallel partioner divides data as test and train and saves to testingData and trainingData
+"""
+
 import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
@@ -14,11 +20,8 @@ from FileIO import *
 
 
 def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True, saveName = None):
-    print "IN THE FUNC"
-    numclass = len(set(classId))
-    #test_features, test_names, test_classId, test_isFull = [], [], [], []
 
-    # Find the
+    numclass = len(set(classId))
     '''
     sketchPartialMax = dict()
     for name in names:
@@ -43,12 +46,13 @@ def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTest
 
     myfio = FileIO()
     print "now I am gonna save"
-    myfio.save(train_isFull, train_names, train_features, '../trainingData/csv/' + saveName+'/'+saveName+'.csv')
-    myfio.save(test_isFull,test_names,test_features, '../testingData/csv/'+ saveName+'/'+saveName+'.csv')
+    myfio.save(train_isFull, train_names, train_features, '../data/trainingData/csv/' + saveName+'/'+saveName+'.csv')
+    myfio.save(test_isFull,test_names,test_features, '../data/testingData/csv/'+ saveName+'/'+saveName+'.csv')
     print "now saved"
-    m = 5
 
-def partition(numclass, numfull, numpartial):
+
+def partition(numclass, numfull, numpartial, numtest):
+
 
     print "PARTITION STARTED"
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
@@ -96,7 +100,7 @@ def partition(numclass, numfull, numpartial):
                                 numpartial=numpartial,
                                 folderList=files[i:])
 
-        numtest = 5
+
         saveName = files[i:][0]
         print "hello"
         print type(whole_classId),type(whole_features),type(whole_isFull),type(whole_names)

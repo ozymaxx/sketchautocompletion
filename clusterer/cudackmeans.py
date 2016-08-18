@@ -365,7 +365,7 @@ class CuCKMeans():
 
     
     def cukmeans(self, thresh=1e-15):
-        ITER = 100
+        ITER = 4
         features = self.features
         if type(self.k) == type(np.array([])):
             guess = self.k
