@@ -20,9 +20,9 @@ from visualise import *
 from fastCKMeans import *
 from scipykmeans import *
 from scipyCKMeans import *
-from complexCKMeans import *
+from cudackmeans import *
+from complexcudackmeans import *
 import random
-
 def visualiseAfterClustering(out, features, classId, centers, isFull, title, sv):
     def getMarkerList():
         numClass = len(set(classId))
@@ -64,7 +64,6 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title, sv)
         edgecolor = colorList[random.randint(0, len(clisEdge)) - 1]
 
         for i in cluster:
-
             x = features.tolist()[i]
             scale = 80
             marker = classId[i]
@@ -76,7 +75,6 @@ def visualiseAfterClustering(out, features, classId, centers, isFull, title, sv)
                 count += 1
                 ax2.scatter(x[0], x[1], c=color, s=scale, label=color,
                     alpha=0.5, edgecolors='black', marker= marker_list[marker],linewidth='2')
-
 
     if sv:
         sv_x, sv_y = [], []
@@ -119,14 +117,21 @@ def main():
 
     visualiseAfterClustering( kmeansoutput, features, classId, centers, isFull, 'k-means', sv=svkmeans)
     '''
-    '''
-     clusterer = CuCKMeans(np.transpose(features), numclass, classId, isFull)
-    clusters, centersx = clusterer.cukmeans()
-    kmeansoutput = [clusters, centersx]
 
-    '''
+    clusterer = complexCudaCKMeans(np.transpose(features), numclass, classId, isFull, stepweight= 0.05, maxweight=1)
+    kmeansoutput = clusterer.cukmeans()
 
-    ckmeans = complexCKMeans(np.transpose(features), isFull, classId, k=numclass, maxiter=20, stepweight=0.01)
+    trainerkmeans = Trainer(kmeansoutput, classId, np.transpose(features))
+    heteClstrFeatureId, heteClstrId = trainerkmeans.getHeterogenous()
+
+    svmkmeans = trainerkmeans.trainSVM(heteClstrFeatureId, None)
+
+    predictor = Predictor(kmeansoutput, classId, None, svm=svmkmeans)
+    svkmeans = predictor.getSV()
+
+    visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'cudackmeans', sv=svkmeans)
+
+    ckmeans = scipyCKMeans(np.transpose(features), isFull, classId, k=numclass, maxiter=20, thres=10 ** -10)
     kmeansoutput = ckmeans.getCKMeans()
 
     trainer = Trainer(kmeansoutput, classId, np.transpose(features))
@@ -138,7 +143,6 @@ def main():
     sv = predictor.getSV()
 
     visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'ck-means', sv=sv)
-
 
     clusterclassid = [[classId[featureidx] for featureidx in cluster if isFull[featureidx]] for cluster in kmeansoutput[0]]
     print any([(len(set(cluster)) != 1) for cluster in clusterclassid])

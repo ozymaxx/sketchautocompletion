@@ -6,16 +6,73 @@ import math
 from numpy.random import randint
 from pycuda import driver, compiler, gpuarray
 import pycuda.autoinit
+import operator
 
-class CuCKMeans():
-    def __init__(self, features, k, classId, isFull):
+class complexCudaCKMeans():
+    def __init__(self, features, k, classId, isFull, initweight=0, maxweight=2, stepweight=0.2, maxiter = 20):
         features = np.asarray(features)
 
+        self.numclass = len(set(classId))
         self.features = features
         self.k = k
         self.classId = np.asarray(classId)
         self.isFull = np.asarray(isFull)
         self.fullIndex = [idx for idx in range(len(isFull)) if isFull[idx]]
+        self.clusterCenters = [[0]*len(features[0]) for i in range(k)]
+        self.clusterFeatures = [[] for i in range(k)]
+        self.classvotes = [[0]*self.k for i in range(self.numclass)] # votes of the classes for cluster, row for class
+        self.class2cluster = [0]*self.numclass
+        self.featureClusterDist = [[0]*self.k for i in range(len(self.features))] # distance of feature to cluster
+        self.featureCluster = [0]*len(features)
+
+        self.initweight = initweight
+        self.maxweight = maxweight
+        self.stepweight = stepweight
+        self.currweight = initweight
+
+        self.maxiter = maxiter
+
+        self.initClusters()
+
+    def initClusters(self):
+        # randomly select from features
+        # self.clusterCenters = copy.copy(random.sample(self.features, self.k))
+        print 'Initializing Cluster Centers'
+        numFeatureAddedForCluster = [0] * self.k
+        # initialize numclass of k cluster to be the center of the full sketches
+        if self.numclass <= self.k:
+            for fidx in self.fullIndex:
+                fclass = self.classId[fidx]
+                if fclass < self.k:
+                    # add each full sketch to the corresponding cluster, then divide
+                    self.clusterCenters[fclass] = map(operator.add,
+                                                      self.clusterCenters[fclass],
+                                                      self.features[fidx])
+                    numFeatureAddedForCluster[fclass] += 1
+
+            for clusterCenterIdx in range(self.numclass):
+                self.clusterCenters[clusterCenterIdx] = [cfloat / numFeatureAddedForCluster[clusterCenterIdx] for cfloat
+                                                         in self.clusterCenters[clusterCenterIdx]]
+
+        # for the remaining cluster centers, randomly select from the non-selected features
+        numClustSelected = self.numclass
+        while numClustSelected < self.k:
+            featIdx = randint(0, len(self.features))
+            if not self.isFull[featIdx]:
+                self.clusterCenters[numClustSelected] = self.features[featIdx]
+                numClustSelected += 1
+
+    def vote(self, votedclass, votedcluster):
+        #print '%i_%i'%(votedclass,votedcluster)
+        for clssIdx in range(self.numclass):
+            for clstrIdx in range(self.k):
+                # mustLinkDistances
+                if clssIdx == votedclass and clstrIdx != votedcluster:
+                    self.classvotes[clssIdx][clstrIdx] += 1
+                # cannotLinkDistances
+                if clssIdx != votedclass and clstrIdx == votedcluster:
+                    self.classvotes[clssIdx][clstrIdx] += 1
+
 
     def cu_vq(self, obs, clusters):
         kernel_code_template = """
@@ -27,7 +84,7 @@ class CuCKMeans():
           }
           __global__ void cu_vq(float *g_idata, float *g_centroids,
             int *classId, int *isFull,
-            int *cluster, float *min_dist, int numClusters, int numDim, int numPoints) {
+            int *cluster, float *feature2clusterDist, int numClusters, int numDim, int numPoints) {
             int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
             __shared__ float mean[%(DIMENSIONS)s];
             float minDistance = FLT_MAX;
@@ -45,9 +102,9 @@ class CuCKMeans():
                   minDistance = distance ;
                   myCentroid = k;
                 }
+				feature2clusterDist[valindex*numClusters + k] = distance;
               }
               cluster[valindex]=myCentroid;
-              min_dist[valindex]=sqrt(minDistance);
             }
           }
         """
@@ -74,16 +131,16 @@ class CuCKMeans():
         classIds = self.classId.astype(np.int32).copy()
         isFulls = self.isFull.astype(np.int32).copy()
 
-        cluster = gpuarray.zeros(points, dtype=np.int32)
-        min_dist = gpuarray.zeros(points, dtype=np.float32)
+        featureVote = gpuarray.zeros(points, dtype=np.int32)
+        feature2clusterMinDist = gpuarray.zeros(len(self.features)*self.k, dtype=np.float32)
 
         kmeans_kernel = mod.get_function('cu_vq')
         kmeans_kernel(driver.In(dataT),
                       driver.In(clusters),
                       driver.In(classIds),
                       driver.In(isFulls),
-                      cluster,
-                      min_dist,
+                      featureVote,
+                      feature2clusterMinDist,
                       np.int32(nclusters),
                       np.int32(dimensions),
                       np.int32(points),
@@ -91,7 +148,7 @@ class CuCKMeans():
                       block=(block_size, 1, 1),
                       )
 
-        return cluster.get(), min_dist.get()
+        return featureVote.get(), feature2clusterMinDist.get()
 
     def cu_v2q(self, obs, clusters, obs_code, distort, limits):
         kernel_code_template = """
@@ -234,7 +291,6 @@ class CuCKMeans():
             }
           }
         """
-        nclusters = clusters.shape[0]
         points = obs.shape[0]
         dimensions = obs.shape[1]
         block_size = 512
@@ -271,153 +327,141 @@ class CuCKMeans():
         del classClusters
         return obs_Code.get()
 
-    def _cukmeans(self, features, clusters, thresh=1e-5):
-        code_book = np.array(clusters, copy=True)  # My clusters centers
+    def cukmeans(self):
+        self.clusterCenters = np.array(self.clusterCenters, copy=True)
         avg_dist = []
-        diff = thresh + 1.
-        iterNum = 0
-        nc = None
-        while diff > thresh and iterNum < 100:
+        iter = 0
+        while iter < self.maxiter:
             # print "iteration number : ", iterNum
-            print 'Iteration number %i (max %i)' % (iterNum, 100)
-            nc = code_book.shape[0]  # nc : number of clusters
+            print 'Iteration number %i (max %i)' % (iter, self.maxiter)
+            self.classvotes = [[0] * self.k for i in
+                               range(self.numclass)]  # votes of the classes for cluster, row for class
+            self.clusterFeatures = [[] for i in range(self.k)]
 
             # if max 150 clusters, do the fast method
-            if nc <= 150:
+            if self.k <= 150:
                 # compute membership and distances between features and code_book
                 print "Apply K Means!"
-                obs_code, distort = self.cu_vq(features, code_book)
+                featureVote, self.featureClusterDist = self.cu_vq(self.features, self.clusterCenters)
             else:
                 # Compute membership with little tasks
                 print "Apply K Means!"
                 limits = 0
-                obs_code, distort = self.cu_v2q(features, code_book, None, None, limits)
+                featureVote, self.featureClusterDist = self.cu_v2q(self.features, self.clusterCenters, None, None, limits)
                 print limits, "-", limits + 50, "finished"
                 limits += 50
-                while limits < nc:
-                    obs_code, distort = self.cu_v2q(features, code_book, obs_code, distort, limits)
+                while limits < self.k:
+                    featureVote, self.featureClusterDist = self.cu_v2q(self.features, self.clusterCenters, featureVote, distort, limits)
                     print limits, "-", limits + 50, "finished"
                     limits += 50
 
-            # Assign full sketches to their own clusters
-            nclusters = clusters.shape[0]
-            nclasses = len(np.unique(self.classId))
-            voteList = np.zeros(nc * nclasses).astype(np.int32)
-            for idx in self.fullIndex:
-                featclass = self.classId[idx]
-                featvote = obs_code[idx]
-                voteList[featclass * nc + featvote] += 1
-
-            voteList = np.split(voteList, nclasses)  # VOTE list
-
-            # VOTES DOES NOT SUM UP TO NUMBER OF FEATURES
             print "Get Voting!"
-            # Find the most voted cluster for every class
-            classClusters = []
-            i = 0
+            # each feature cast their negative votes
+            for fidx in range(len(self.features)):
+                cc = featureVote[fidx]
+                if self.isFull[fidx]:
+                    # if full vote
+                    self.vote(self.classId[fidx], cc)
+                else:
+                    # else directly get assigned
+                    if self.featureCluster[fidx] != cc:
+                        noLabelChange = False
+                    self.clusterFeatures[cc].append(fidx)
 
-            for myClass in voteList:
+            # multiply votes by weight
+            for voteidx, _ in enumerate(self.classvotes):
+                self.classvotes[voteidx] = [self.currweight*v for v in self.classvotes[voteidx]]
+
+            # Honor the voting
+            print 'Assigning full features to clusters'
+            for fidx in self.fullIndex:
+                # iterate over each cluster and find the smallest distances
+                bestdist, bestclstr = self.featureClusterDist[fidx*self.k + 0] + self.classvotes[self.classId[fidx]][0], 0
+                for clstridx in range(self.k):
+                    dist = self.featureClusterDist[fidx*self.k + clstridx] + self.classvotes[self.classId[fidx]][clstridx]
+                    if dist < bestdist:
+                        bestdist = dist
+                        bestclstr = clstridx
+
+                if self.featureCluster[fidx] != bestclstr:
+                    noLabelChange = False
+
+                self.featureCluster[fidx] = bestclstr
+                self.clusterFeatures[bestclstr].append(fidx)
+
+            if noLabelChange:
+                print 'Break for no label change'
+                break
+
+            print 'Moving clusters'
+            self.clusterMove2(self.features, self.clusterFeatures, self.clusterCenters)
+            self.currweight = min(self.currweight + self.stepweight, self.maxweight)
+            iter += 1
+        return self.clusterFeatures, self.clusterCenters
+
+        '''
+        # Find the most voted cluster for every class
+        classClusters = []
+        i = 0
+
+        for myClass in voteList:
+            highestIdx = myClass.argmax()
+            failsafe = self.k
+            while (highestIdx in classClusters and failsafe > 0):
+                myClass[highestIdx] = -1
                 highestIdx = myClass.argmax()
-                failsafe = nc
-                while (highestIdx in classClusters and failsafe > 0):
-                    myClass[highestIdx] = -1
-                    highestIdx = myClass.argmax()
-                    failsafe -= 1
-                classClusters.append(highestIdx)
-                i += 1
+                failsafe -= 1
+            classClusters.append(highestIdx)
+            i += 1
 
-                if failsafe == 0:
-                    print "Failsafe actvated"
+            if failsafe == 0:
+                print "Failsafe actvated"
+        '''
 
-            # assign every full sketch to that cluster
-            print "Reassign full sketches!"
-            obs_code = self.cu_av(features, code_book, obs_code, classClusters)
-            # print nclasses, nclusters, len(voteList), len(instanceVotes)
-            # print len(voteList[0]), len(voteList[1]), sum(voteList[0])
+        '''
+        # assign every full sketch to that cluster
+        print "Reassign full sketches!"
+        #featureVote = self.cu_av(self.features, self.clusterCenters, featureVote, self.class2cluster)
+        # print nclasses, nclusters, len(voteList), len(instanceVotes)
+        # print len(voteList[0]), len(voteList[1]), sum(voteList[0])
 
-            # obs_code is the membership of points
-            avg_dist.append(np.mean(distort, axis=-1))
-            # recalc code_book as centroids of associated features
-            if (diff > thresh):
-                has_members = []
-                for i in np.arange(nc):
-                    cell_members = np.compress(np.equal(obs_code, i), features, 0)
-                    if cell_members.shape[0] > 0:
-                        code_book[i] = np.mean(cell_members, 0)
-                        has_members.append(i)
-                # remove code_books that didn't have any members
-                code_book = np.take(code_book, has_members, 0)
-            if len(avg_dist) > 1:
-                diff = avg_dist[-2] - avg_dist[-1]
-            iterNum += 1
-
-        print "Doing transfer"
-        # Transfer obs_code to clusters
-        clusterList = []
-        centerList = []
-        for clus in range(nc):
-            clusterList.append(np.array([], dtype=int))
-            centerList.append(code_book[clus])
-        for point in range(len(obs_code)):
-            clusterList[obs_code[point]] = np.append(clusterList[obs_code[point]], point)
-
-        # return  clusterList, code_book, avg_dist[-1]
-        return clusterList, centerList, avg_dist[-1]
-
-    def cukmeans(self, thresh=1e-15):
-        ITER = 100
-        features = self.features
-        if type(self.k) == type(np.array([])):
-            guess = self.k
-            if guess.size < 1:
-                raise ValueError("Asked for 0 cluster ? initial book was %s" % \
-                                 guess)
-            result = self._cukmeans(features, guess, thresh=thresh)
-        else:
-            # initialize best distance value to a large value
-            best_dist = np.inf
-            No = features.shape[0]
-            k = self.k
-            if k < 1:
-                raise ValueError("Asked for 0 cluster ? ")
-            for i in range(ITER):
-                # the intial code book is randomly selected from observations
-                print 'Iteration %i (max %i)' % (i, ITER)
-                guess = np.take(features, randint(0, No, k), 0)  # randomly select cluster centers
-                clusters, centers, dist = self._cukmeans(features, guess, thresh=thresh)
-                print i, "th CK Means iteration finished"
-                if dist < best_dist:
-                    print "BEST DISTANCE FOUND, Changed"
-                    best_clusters = clusters
-                    best_dist = dist
-                    best_centers = centers
-            result = best_clusters, best_centers
-        return result
+        # obs_code is the membership of points
+        avg_dist.append(np.mean(distort, axis=-1))
+        # recalc code_book as centroids of associated features
+        has_members = []
+        for i in np.arange(self.k):
+            cell_members = np.compress(np.equal(featureVote, i), self.features, 0)
+            if cell_members.shape[0] > 0:
+                self.clusterCenters[i] = np.mean(cell_members, 0)
+                has_members.append(i)
+        # remove code_books that didn't have any members
+        self.clusterCenters = np.take(self.clusterCenters, has_members, 0)
+        self.currweight += self.stepweight
+        iter += 1
+        '''
 
 
-################################################
+    def clusterMove(self, features, clusterFeatures, clusterCenters):
+        distsum = 0
+        for cIdx in range(len(clusterFeatures)):
+            featuresum = [0] * len(features[0])
+            numFeaturesInCluster = len(clusterFeatures[cIdx])
+            if numFeaturesInCluster != 0:
+                for f in clusterFeatures[cIdx]:
+                    featuresum = [self.features[f][idx] + featuresum[idx] for idx in range(len(self.features[0]))]
 
-if __name__ == "__main__":
-    dimensions = 720
-    nclusters = 150
+                featuresum = [featuresum[idx]/numFeaturesInCluster for idx in range(len(featuresum))]
+                # assign the new cluster center
+                clusterCenters[cIdx] = featuresum
+            # what to do with empty cluster
 
-    rounds = 1  # for timeit
-    rtol = 0.001  # for the relative error calculation
-
-    i = 400
-
-    points = 512 * i
-    features = np.random.randn(points, dimensions).astype(np.float32)  ## WILL GET THIS FROM MAIN
-    classId = np.random.randn(points).astype(np.float32)  ## WILL GET THIS FROM MAIN
-    isFull = np.random.randn(points).astype(np.float32)  ## WILL GET THIS FROM MAIN
-
-    print "points", points, "  dimensions", dimensions, "  nclusters", nclusters, "  rounds", rounds
-
-    # clusters = data[:nclusters]
-
-    clusterer = CuCKMeans(features, nclusters, classId, isFull)  # FEATURES : N x 720
-    # print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
-    clusters, centers = clusterer.cukmeans()
-
-    print type(clusters), type(clusters[0]), type(centers), type(centers[0])
-    print len(clusters), len(centers), len(centers[0])
+    def clusterMove2(self, features, clusterFeatures, clusterCenters):
+        has_members = []
+        for i in np.arange(len(clusterFeatures)):
+            #cell_members = np.compress(np.equal(self.featureCluster, i), features, 0)
+            cell_members = [features[idx] for idx in self.clusterFeatures[i]]
+            if len(cell_members) > 0:
+                self.clusterCenters[i] = np.mean(cell_members, 0)
+                has_members.append(i)
+        # remove code_books that didn't have any members
+        #self.clusterCenters[i] = np.take(self.clusterCenters[i], has_members, 0)

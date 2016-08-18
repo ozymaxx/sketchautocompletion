@@ -22,9 +22,10 @@ from fastCKMeans import *
 from scipykmeans import *
 from scipyCKMeans import *
 from complexCKMeans import *
+from complexcudackmeans import *
 
 def main():
-    numclass, numfull, numpartial = 3, 10, 10
+    numclass, numfull, numpartial = 10, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -106,7 +107,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i_%i_%i' % ('singlefoldacctest-complexCKMeans', numclass, numfull, numpartial, k)
+        folderName = '%s___%i_%i_%i_%i' % ('complexCudaCKMeans', numclass, numfull, numpartial, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -138,7 +139,7 @@ def main():
                 kmeansoutput = ckmeans.getCKMeans()
                 '''
 
-                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20)
+                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20, maxweight=0)
                 kmeansoutput = ckmeans.getCKMeans()
 
                 trainer = Trainer(kmeansoutput, train_classId, train_features)
@@ -148,10 +149,11 @@ def main():
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
             else:
                 from cudackmeans import *
-                clusterer = CuCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
+                #clusterer = CuCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
+                clusterer = complexCudaCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
                 # print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
-                clusters, centers = clusterer.cukmeans()
-                kmeansoutput = [clusters, centers]
+                kmeansoutput = clusterer.cukmeans()
+
 
                 # find heterogenous clusters and train svm
                 trainer = Trainer(kmeansoutput, train_classId, train_features)
