@@ -89,8 +89,29 @@ class Predictor:
         priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
-
-    def calculatePosteriorProb(self, instance, priorClusterProb):
+    
+    def multi_run_wrapper(self, args):
+        return self.calculatePosteriorMulti(*args)
+    
+    def _pickle_method(self, m):
+        if m.im_self is None:
+            return getattr, (m.im_class, m.im_func.func_name)
+        else:
+            return getattr, (m.im_self, m.im_func.func_name)
+    
+    def calculatePosteriorProb(self,  instances, priorClusterProb):
+        if(type(instances[0]) is list ):
+            copy_reg.pickle(types.MethodType, self._pickle_method)
+            from multiprocessing import Pool
+            import itertools
+            pool = Pool(4)
+            result = pool.map(self.multi_run_wrapper,[(instances,priorClusterProb,0),(instances,priorClusterProb,1),
+                (instances,priorClusterProb,2),(instances,priorClusterProb,3)])
+            print type(result),result[0]
+        else:
+            return self.calculatePosteriorSingle(instances,priorClusterProb)
+    
+    def calculatePosteriorSingle(self, instance, priorClusterProb):
         """
         #features : feature array
         #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
@@ -140,8 +161,66 @@ class Predictor:
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else svmprobs[0][clstridx]
                 outDict[int(classesInCluster[clstridx])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
 
-        return outDict
-
+        return outDict    
+    
+    def calculatePosteriorMulti(self, instances, priorClusterProb, procId):
+        """
+        #features : feature array
+        #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
+        #p  robability : P(Ck)
+        # Returns P(Si|x)
+        """
+        print "Thread",procId, "has started"
+        resultDict= {}
+        
+        homoClstrFeatureId, homoClstrId = self.getHomogenous()
+        heteClstrFeatureId, heteClstrId = self.getHeterogenous()
+        clusterFeatureId = self.kmeansoutput[0]
+        
+        while procId < len(instances):
+            instance = instances[procId]
+        
+            # dict of probabilities of given instance belonging to every possible class
+            # initially zero
+            outDict = dict.fromkeys([i for i in set(self.classId)], 0.0)
+            
+            clusterProb = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
+    
+            # normalize cluster probability to add up to 1
+            clustersum = sum(clusterProb)
+            clusterProb = [x/clustersum for x in clusterProb]
+    
+            for clstrid in range(len(clusterFeatureId)):
+                probabilityToBeInThatCluster = clusterProb[clstrid]
+                if clstrid in homoClstrId:
+                    
+                    # if homogeneous cluster is empty, then do not
+                    # process it and continue
+                    if len(clusterFeatureId[clstrid]) == 0:
+                        continue
+                    
+                    # if homogeneous then only a single class which is the first
+                    # feature points class
+                    classesInCluster = [self.classId[int(clusterFeatureId[clstrid][0])]]
+                    
+                elif clstrid in heteClstrId:
+                    if not self.svm:
+                        modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) + ".model"
+                        m = svm_load_model(modelName)
+                        classesInCluster = m.get_labels()
+                        labels, svmprobs = self.svmProb(m, [instance.tolist()])
+                    else:
+                        labels, _, svmprobs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
+                        classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
+                    
+                for clstridx in range(len(classesInCluster)):
+                    probabilityToBeInThatClass = 1 if clstrid in homoClstrId else svmprobs[0][clstridx]
+                    outDict[int(classesInCluster[clstridx])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
+            resultDict[i] = outDict
+            procId += 4
+        print "Thread",procId%4, "has ended"
+        return resultDict
+             
     def calculatePriorProb(self):
         """
         Returns prior probabilities list of being in a cluster
