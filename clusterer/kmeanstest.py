@@ -20,7 +20,9 @@ from visualise import *
 from fastCKMeans import *
 from scipykmeans import *
 from scipyCKMeans import *
+from complexCKMeans import *
 import random
+
 def visualiseAfterClustering(out, features, classId, centers, isFull, title, sv):
     def getMarkerList():
         numClass = len(set(classId))
@@ -124,7 +126,7 @@ def main():
 
     '''
 
-    ckmeans = scipyCKMeans(np.transpose(features), isFull, classId, k=numclass, maxiter=20, thres=10 ** -10)
+    ckmeans = complexCKMeans(np.transpose(features), isFull, classId, k=numclass, maxiter=20, stepweight=0.01)
     kmeansoutput = ckmeans.getCKMeans()
 
     trainer = Trainer(kmeansoutput, classId, np.transpose(features))

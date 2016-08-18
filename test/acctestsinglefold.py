@@ -21,9 +21,10 @@ from Predictor import *
 from fastCKMeans import *
 from scipykmeans import *
 from scipyCKMeans import *
+from complexCKMeans import *
 
 def main():
-    numclass, numfull, numpartial = 10, 80, 80
+    numclass, numfull, numpartial = 3, 10, 10
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -105,7 +106,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i_%i_%i' % ('singlefoldacctest-scipykmeans-nicicon', numclass, numfull, numpartial, k)
+        folderName = '%s___%i_%i_%i_%i' % ('singlefoldacctest-complexCKMeans', numclass, numfull, numpartial, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -137,7 +138,7 @@ def main():
                 kmeansoutput = ckmeans.getCKMeans()
                 '''
 
-                ckmeans = scipykmeans(train_features, train_isFull, train_classId, k, maxiter=20, thres=10 ** -10)
+                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20)
                 kmeansoutput = ckmeans.getCKMeans()
 
                 trainer = Trainer(kmeansoutput, train_classId, train_features)

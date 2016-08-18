@@ -25,7 +25,6 @@ class SVM:
         else:
             return getattr, (m.im_self, m.im_func.func_name)
     
-    
     def doSVM(self, clusterIdArr, directory):
         copy_reg.pickle(types.MethodType, self._pickle_method)
         from multiprocessing import Pool

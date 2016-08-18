@@ -19,6 +19,7 @@ import pickle
 from Predictor import *
 from scipyCKMeans import *
 from scipykmeans import *
+from complexCKMeans import *
 
 def main():
     numclass = 14
@@ -35,7 +36,7 @@ def main():
     test_classId, \
     test_names = extr_test.loadniciconfolders()
 
-    K = [20] # :O
+    K = [40] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
@@ -63,7 +64,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i' % ('nicicionWithscipykmeans_fulldata', max(train_classId)+1, k)
+        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_smallstep', max(train_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -85,7 +86,7 @@ def main():
                 found = False
 
             if not found:
-                ckmeans = scipykmeans(train_features, train_isFull, train_classId, k, maxiter=20, thres=10 ** -10)
+                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=25, stepweight=0.05)
                 kmeansoutput = ckmeans.getCKMeans()
 
                 # find heterogenous clusters and train svm
