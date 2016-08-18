@@ -1,7 +1,6 @@
 """
 Predictor
 Ahmet BAGLAN
-14.07.2016
 """
 
 
@@ -20,32 +19,49 @@ class ParallelPredictorMaster:
     """The predictor class implementing functions to return probabilities"""
     def __init__(self, name):
 
+        self.debugMode = True
 
+        #The path of the saved training
+        #!!newMethodTraining is static
         path = trainingpath = '../data/newMethodTraining/' + name
+
+        #Load info of the sabing
         trainInfo = np.load(path + '/trainingInfo.npy').item()
-        self.l = []
+
+
+        self.groupCenters = []
         self.name = name
+        #Get priorProb , num of groups in the training , numfull, numpartial, numclass, k in the training
         self.normalProb = trainInfo['normalProb']
         self.numOfTrains = trainInfo['numTrain']
-
-        self.predictors = []
         numclass = trainInfo['numclass']
         numfull = trainInfo['numfull']
         numpartial = trainInfo['numpartial']
         k = trainInfo['k']
 
+        #Slave predictors
+        self.predictors = []
+
+        #Load slave predictors
         fio = FileIO()
         for i in range(self.numOfTrains):
             trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
             trainingpath = '../data/newMethodTraining/' + name+ '/' + trainingName
+
+            #get the center of the group
             b = fio.loadOneFeature(trainingpath +'/' + str(i) + "__Training_Center_")
-            self.l.append(b)
+            self.groupCenters.append(b)
+
+            #get the slave predictor of the group
             names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
             nowSwm = Trainer.loadSvm(kmeansoutput, classId, trainingpath, features)
+            #WE Give the file names to the slave predictors
+            #Their output is directly by name s.a {'airplane:0.1}
             predictor = ParallelPredictorSlave(kmeansoutput, classId, trainingpath, loadedFolders, nowSwm)
             self.predictors.append(predictor)
 
-    def probToSavings(self, jstring,  centers, normalProb):
+    def probToTheGroupByJason(self, jstring, centers, normalProb):
+        #Get probability to every group depending on the distance to the group
         loadedSketch = shapecreator.buildSketch('json', jstring)
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(loadedSketch)
@@ -55,7 +71,8 @@ class ParallelPredictorMaster:
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
 
-    def probToSavingsByFeature(self,instance, centers, normalProb):
+    def probToTheGroupByFeature(self, instance, centers, normalProb):
+        """Get prob to groups when instance is given as vector"""
         probTup = []
         for i in range(len(centers)):
             dist = self.getDistance(instance, centers[i])
@@ -73,8 +90,8 @@ class ParallelPredictorMaster:
     def predictByString(self, q):
 
         normalProb = self.normalProb
-        l = self.l
-        savingProbs = self.probToSavings(q, l, normalProb)
+        l = self.groupCenters
+        savingProbs = self.probToTheGroupByJason(q, l, normalProb)
         savingProbs = [x/sum(savingProbs) for x in savingProbs]
         print savingProbs
         out = dict()
@@ -87,12 +104,17 @@ class ParallelPredictorMaster:
     def calculatePosteriorProb(self, ins):
 
         normalProb = self.normalProb
-        l = self.l
-        savingProbs = self.probToSavingsByFeature(ins, l, normalProb)
+        l = self.groupCenters
+        #The probability to being in some group
+        savingProbs = self.probToTheGroupByFeature(ins, l, normalProb)
         savingProbs = [x/sum(savingProbs) for x in savingProbs]
-        print savingProbs
+        if(self.debugMode):
+            print savingProbs
+
         out = dict()
+        #Foreach slave predictor
         for i in range(self.numOfTrains):
+            #Let the slave guess
             a = self.predictors[i].predictIt(ins)
             for m in a.keys():
                 out[m] = a[m]*savingProbs[i]

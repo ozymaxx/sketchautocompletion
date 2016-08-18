@@ -304,7 +304,7 @@ class CuCKMeans():
             for idx in self.fullIndex:
                 featclass = self.classId[idx]
                 featvote = obs_code[idx]
-                voteList[featclass*nc + featvote]+=1
+                voteList[featclass*nc + featvote] += 1
 
             voteList = np.split(voteList, nclasses) # VOTE list
 
@@ -329,7 +329,7 @@ class CuCKMeans():
                     
             # assign every full sketch to that cluster
             print "Reassign full sketches!"
-            obs_code =  self.cu_av(features, code_book, obs_code, classClusters)
+            obs_code = self.cu_av(features, code_book, obs_code, classClusters)
             #print nclasses, nclusters, len(voteList), len(instanceVotes)
             #print len(voteList[0]), len(voteList[1]), sum(voteList[0])
             
@@ -365,7 +365,7 @@ class CuCKMeans():
 
     
     def cukmeans(self, thresh=1e-15):
-        ITER = 100
+        ITER = 4
         features = self.features
         if type(self.k) == type(np.array([])):
             guess = self.k

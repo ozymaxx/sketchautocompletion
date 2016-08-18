@@ -1,3 +1,7 @@
+"""
+Ahmet BAGLAN
+"""
+
 import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
@@ -19,10 +23,17 @@ from SVM import *
 import pickle
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
+from FileIO import *
+import parallelPartitioner
 
 
 def main():
-    numclass, numfull, numpartial = 15, 10, 80
+    numclass, numfull, numpartial = 10, 10, 10
+    numtest = 5
+    debugMode = False
+
+    #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
+    parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
@@ -57,26 +68,24 @@ def main():
              'sea-turtle',
              'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
-    extr = Extractor('../data/')
-    whole_features, \
-    whole_isFull, \
-    whole_classId, \
-    whole_names, \
-    folderList = extr.loadfolders(
+    myfio  = FileIO()
+    extr = Extractor('../data/testingData/')#We will get our testing data from testingData folder
+
+
+    test_features, \
+    test_isFull, \
+    test_classId, \
+    test_names, \
+    folderList = extr.loadfolders2(#I have written this func this just gives without caring if the sketch is nearly full or what
                             numclass,
                             numfull=numfull,
                             numpartial=numpartial,
-                            folderList=files)
+                            folderList=files[:20])#[:20]Because not all folders are in testingData folder
 
-    numtest = 5
-    train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
-        partitionfeatures(whole_features,
-                          whole_isFull,
-                          whole_classId,
-                          whole_names,
-                          numtrainfull = numfull-numtest,
-                          selectTestRandom=True)
+    if(debugMode):
+        print "NOWOINODNF POJFD[O AINDAF[IUBS AD[9UOBH[ADSINUB [ASIFJDN [IJFNBF[DSAIJN"
 
+    #After this Semih knows
     K = [numclass, 2*numclass] # :O
     #K = [numclass]
     N = range(1, numclass)
@@ -85,9 +94,9 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-    my_n = 5
+    my_n = numtest
     my_files = folderList
-    my_name = 'withAllPartial'
+    my_name = 'DEneme'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
@@ -133,7 +142,7 @@ def main():
             if not found:
 
                 myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
-                myParallelTrainer.trainSWM(numclass, numfull,numpartial,k, my_name)
+                myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
             else:
                 pass
         nameOfTheTraining = my_name
@@ -141,7 +150,7 @@ def main():
 
         print 'Starting Testing'
         for test_index in range(len(test_features)):
-            print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
+            # print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = folderList[test_classId[test_index]]
 

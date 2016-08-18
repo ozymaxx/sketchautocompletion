@@ -17,11 +17,13 @@ class FileIO:
         self.startFolder = "__folders__"
 
     def saveOneFeature(self, f, data):
+        """For saving only one feature"""
         df = pd.DataFrame(data = data)
         df.columns = ['feat']
         df.to_csv(f, mode = 'w', index = False)
 
     def loadOneFeature(self,f):
+        """for loading only one feature (must have been saved by saveOneFeature"""
         a = pd.read_csv(f)
         feature = a['feat'].as_matrix()
         return  feature
@@ -133,18 +135,3 @@ class FileIO:
 
         folderList.sort()
         return names, classId, isFull, features, (k1, k2), folderList
-
-        # return (k1,k2)
-def main():
-    pass
-    fil = 'lol.csv'
-    kmean = ([np.array([1,3]),np.array([2,5,8])],[np.array([1,2,3]),np.array([4,5,7])])
-
-    f = FileIO()
-    f.saveTraining(None, None, None, None,kmean, fil)
-    a = f.loadTraining(fil)
-
-    # # print a
-    a = 5
-
-if __name__ == "__main__": main()

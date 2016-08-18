@@ -118,7 +118,7 @@ def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
             clusters, centers = clusterer.cukmeans()
             kmeansoutput = [clusters, centers]
 
-        # find heterogenous clusters and train svm
+        # find heterogenous clusters and train hos
         trainer = Trainer(kmeansoutput, classId, features)
         heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
         fio.saveTraining(names, classId, isFull, features, kmeansoutput,

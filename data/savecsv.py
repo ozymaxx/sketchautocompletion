@@ -33,7 +33,7 @@ for folder in imagefolders:
 
     features, isFull, names = [], [], []
     for imgpath in imgpaths:
-        print 'Writing ' + imgpath
+        #print 'Writing ' + imgpath
         file = open(imgpath, 'r')
         imgxml = file.read()
 
@@ -45,14 +45,15 @@ for folder in imagefolders:
             featextractor = IDMFeatureExtractor()
             imgxmlFeature = featextractor.extract(loadedSketch)
         except:
+            print 'ERROR ON ' + imgpath
             continue
 
         features.append(imgxmlFeature)
         names.append(name)
         isFull.append(isSketchFull(name))
 
-    pathtowrite = 'C:/Users/1003/Desktop/nicicon/csv/' + className + '/'
-    fio.save(isFull, names, features, 'C:/Users/1003/Desktop/nicicon/csv/' + type + '/' + className + '/' + csvname)
+    #pathtowrite = 'C:/Users/1003/Desktop/nicicon/csv/' + className + '/'
+    #fio.save(isFull, names, features, 'C:/Users/1003/Desktop/nicicon/csv/' + type + '/' + className + '/' + csvname)
 
 
 

@@ -1,4 +1,10 @@
 import numpy as np
+
+import sys
+sys.path.append('../data/')
+from FileIO import *
+
+
 def processName(name):
     name_split = name.split('_')
     classname = name_split[0]
@@ -13,7 +19,7 @@ def processName(name):
  for easier reproduction of the results
 '''
 
-def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True):
+def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True, saveName = None):
 
     numclass = len(set(classId))
     #test_features, test_names, test_classId, test_isFull = [], [], [], []
@@ -39,6 +45,10 @@ def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTest
     train_isFull = [isFull[index] for index in range(len(isFull)) if cond[index]]
     train_classId = [classId[index] for index in range(len(classId)) if cond[index]]
 
+
+    # myfio = FileIO()
+    # myfio.save(train_isFull, train_names, train_features, '../trainingData/' + saveName+'/'+saveName+'.csv')
+    # myfio.save(test_isFull,test_names,test_features, '../testingData/'+ saveName+'/'+saveName+'.csv')
 
     return train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId
 

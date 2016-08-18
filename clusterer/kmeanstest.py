@@ -18,7 +18,11 @@ from FileIO import *
 from Predictor import *
 from visualise import *
 from fastCKMeans import *
+from scipykmeans import *
+from scipyCKMeans import *
+from complexCKMeans import *
 import random
+
 def visualiseAfterClustering(out, features, classId, centers, isFull, title, sv):
     def getMarkerList():
         numClass = len(set(classId))
@@ -122,7 +126,7 @@ def main():
 
     '''
 
-    ckmeans = fastCKMeans(np.transpose(features), isFull, classId, k=numclass, maxiter=20, thres=10 ** -10)
+    ckmeans = complexCKMeans(np.transpose(features), isFull, classId, k=numclass, maxiter=20, stepweight=0.01)
     kmeansoutput = ckmeans.getCKMeans()
 
     trainer = Trainer(kmeansoutput, classId, np.transpose(features))
@@ -138,6 +142,5 @@ def main():
 
     clusterclassid = [[classId[featureidx] for featureidx in cluster if isFull[featureidx]] for cluster in kmeansoutput[0]]
     print any([(len(set(cluster)) != 1) for cluster in clusterclassid])
-
 
 if __name__ == "__main__": main()
