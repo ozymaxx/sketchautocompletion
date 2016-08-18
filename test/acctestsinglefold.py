@@ -24,7 +24,7 @@ from scipyCKMeans import *
 from complexCKMeans import *
 
 def main():
-    numclass, numfull, numpartial = 3, 10, 10
+    numclass, numfull, numpartial = 10, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -165,6 +165,9 @@ def main():
         priorClusterProb = predictor.calculatePriorProb()
 
         print 'Starting Testing'
+        classProb = predictor.calculatePosteriorProb(test_features, priorClusterProb)
+        
+        
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
