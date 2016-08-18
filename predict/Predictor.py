@@ -100,14 +100,20 @@ class Predictor:
             return getattr, (m.im_self, m.im_func.func_name)
     
     def calculatePosteriorProb(self,  instances, priorClusterProb):
-        if(type(instances[0]) is list ):
+        if isinstance(instances, list):
             copy_reg.pickle(types.MethodType, self._pickle_method)
             from multiprocessing import Pool
             import itertools
             pool = Pool(4)
             result = pool.map(self.multi_run_wrapper,[(instances,priorClusterProb,0),(instances,priorClusterProb,1),
                 (instances,priorClusterProb,2),(instances,priorClusterProb,3)])
-            print type(result),result[0]
+            
+            super_dict = {}
+            for d in result:
+                super_dict.update(d)
+            super_list = [ v for v in super_dict.values() ]
+            
+            return super_list
         else:
             return self.calculatePosteriorSingle(instances,priorClusterProb)
     
@@ -216,7 +222,7 @@ class Predictor:
                 for clstridx in range(len(classesInCluster)):
                     probabilityToBeInThatClass = 1 if clstrid in homoClstrId else svmprobs[0][clstridx]
                     outDict[int(classesInCluster[clstridx])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
-            resultDict[i] = outDict
+            resultDict[procId] = outDict
             procId += 4
         print "Thread",procId%4, "has ended"
         return resultDict
