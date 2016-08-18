@@ -103,6 +103,7 @@ class SVM:
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
             order += 4
+
  
         print 'Training SVM is done'
     def getlabels(self, modIndex):
