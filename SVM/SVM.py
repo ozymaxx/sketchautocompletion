@@ -170,5 +170,9 @@ class SVM:
         return homoCluster, homoIdClus
 
     def getSV(self):
+        self.allSV = []
+        for model in self.models.values():
+            self.allSV.extend(model.get_SV())
+
         return self.allSV
 
