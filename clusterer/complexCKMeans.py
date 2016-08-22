@@ -132,7 +132,7 @@ class complexCKMeans:
                 break
 
             print 'Move Cluster Centers'
-            self.clusterMove(self.features, self.clusterFeatures, self.clusterCenters)
+            self.clusterMove2(self.features, self.clusterFeatures, self.clusterCenters)
             self.currweight = min(self.currweight + self.stepweight, self.maxweight)
 
         return [self.clusterFeatures, self.clusterCenters]
@@ -140,20 +140,31 @@ class complexCKMeans:
     def clusterMove(self, features, clusterFeatures, clusterCenters):
         distsum = 0
 
-        for cIdx in range(len(clusterFeatures)):
+        for clstrIdx in range(len(clusterFeatures)):
             featuresum = [0] * len(features[0])
-            numFeaturesInCluster = len(clusterFeatures[cIdx])
+            numFeaturesInCluster = len(clusterFeatures[clstrIdx])
             if numFeaturesInCluster != 0:
-                for f in clusterFeatures[cIdx]:
+                for f in clusterFeatures[clstrIdx]:
                     featuresum = [self.features[f][idx] + featuresum[idx] for idx in range(len(self.features[0]))]
 
                 featuresum = [featuresum[idx]/numFeaturesInCluster for idx in range(len(featuresum))]
                 # assign the new cluster center
-                clusterCenters[cIdx] = featuresum
+                clusterCenters[clstrIdx] = featuresum
             # what to do with empty cluster
-
-
         return distsum
+
+
+    def clusterMove2(self, features, clusterFeatures, clusterCenters):
+        has_members = []
+        for i in np.arange(len(clusterFeatures)):
+            #cell_members = np.compress(np.equal(self.featureCluster, i), features, 0)
+            cell_members = [features[idx] for idx in self.clusterFeatures[i]]
+            if len(cell_members) > 0:
+                self.clusterCenters[i] = np.mean(cell_members, 0)
+                has_members.append(i)
+        # remove code_books that didn't have any members
+        #self.clusterCenters[i] = np.take(self.clusterCenters[i], has_members, 0)
+
 
     def closestClusterCenter(self, f, clusterCenters):
         smldist = self.euclidiandist(f, clusterCenters[0])

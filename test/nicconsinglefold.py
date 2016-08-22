@@ -64,7 +64,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_smallstep', max(train_classId)+1, k)
+        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(train_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -86,7 +86,7 @@ def main():
                 found = False
 
             if not found:
-                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=25, stepweight=0.05)
+                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=25)
                 kmeansoutput = ckmeans.getCKMeans()
 
                 # find heterogenous clusters and train svm

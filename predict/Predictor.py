@@ -35,10 +35,26 @@ class Predictor:
         normalProb : probability that was calculated in trainer
         instance: feature list of the instance to be queried"""
 
+        '''
+        distances = repmat(instance, 1, ckMeans.k) - ckMeans.centers;
+        distances = sqrt(sum(distances .* distances));
+        sigma = 0.3;
+        % map distances to normal distribution
+        distribution = exp(-(distances - min(distances)) ./ (2 .* sigma .* sigma));
+        % map probabilities btw 0-1
+        distribution = distribution ./ sum(distribution);
+        '''
+
         centers = self.kmeansoutput[1]
         dist = [self.getDistance(instance, centers[idx]) for idx in range(len(centers))]
-        diste_ = [math.exp(-1*abs(d)) for d in dist]
+
+        sigma = 0.3
+        mindist = min(dist)
+        diste_ = [math.exp(-1*abs(d - mindist)/(2*sigma*sigma)) for d in dist]
         clustProb = [diste_[idx]*priorProb[idx] for idx in range(len(centers))]
+
+        # normalize
+        clustProb = [c/sum(clustProb) for c in clustProb]
 
         #import numpy as np
         #import matplotlib.pyplot as plt

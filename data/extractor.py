@@ -13,9 +13,6 @@ from FileIO import *
 
 class Extractor:
     def __init__(self, path):
-        self.debugMode = True
-        if self.debugMode:
-            print "EXTRACTOR"
         if (path[len(path)-1]) is '/':
             path = path[0:len(path)-1]
         self.path = path
@@ -185,7 +182,6 @@ class Extractor:
         return features, isFull, classId, name
 
     def loadfolders(self, numclass, numfull, numpartial, folderList = []):
-        print 'in extractor'
         if not folderList:
             folderList = os.listdir(self.csvpath)
             folderList.sort(key=str.lower)
