@@ -95,10 +95,11 @@ class complexCKMeans:
                         closestcluster = cidx
                         ccdist = newdist
 
-                self.vote(self.classId[fidx], closestcluster)
-
+                if self.isFull[fidx]:
+                    # if full vote
+                    self.vote(self.classId[fidx], closestcluster)
                 # if partial, then directly sent it to the closest cluster
-                if not self.isFull[fidx]:
+                elif not self.isFull[fidx]:
                     if self.featureCluster[fidx] != closestcluster:
                         noLabelChange = False
                     self.clusterFeatures[closestcluster].append(fidx)

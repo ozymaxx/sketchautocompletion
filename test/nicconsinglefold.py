@@ -36,7 +36,7 @@ def main():
     test_classId, \
     test_names = extr_test.loadniciconfolders()
 
-    K = [40] # :O
+    K = [20] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
@@ -63,7 +63,7 @@ def main():
         Training start
         '''
 
-        ForceTrain = True
+        ForceTrain = False
         folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(train_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
