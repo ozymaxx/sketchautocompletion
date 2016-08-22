@@ -112,6 +112,7 @@ def main():
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
         priorClusterProb = predictor.calculatePriorProb()
 
+        classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         print 'Starting Testing'
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'

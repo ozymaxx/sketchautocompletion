@@ -127,11 +127,11 @@ class Predictor:
             super_dict = {}
             for d in result:
                 super_dict.update(d)
-            super_list = [ v for v in super_dict.values() ]
+            super_list = [ v for v in super_dict.values()]
             
             return super_list
         else:
-            return self.calculatePosteriorSingle(instances,priorClusterProb)
+            return self.calculatePosteriorSingle(instances, priorClusterProb)
     
     def calculatePosteriorSingle(self, instance, priorClusterProb):
         """
