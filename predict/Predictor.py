@@ -269,7 +269,8 @@ class Predictor:
                 heterogenousClusters.append(self.kmeansoutput[0][clusterId])
                 heterogenousClusterId.append(clusterId)
         return heterogenousClusters, heterogenousClusterId
-
+    def trainSVM(self):
+        self.svm.trainSVM()
     def getHomogenous(self):
         """
         Gets clusters which are homogenous

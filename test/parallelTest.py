@@ -23,7 +23,7 @@ import parallelPartitioner
 
 
 def main():
-    numclass, numfull, numpartial = 10, 10, 10
+    numclass, numfull, numpartial = 20, 80, 80
     numtest = 5
     debugMode = True
 
@@ -90,7 +90,7 @@ def main():
     reject_rate = dict()
     my_n = numtest
     my_files = folderList
-    my_name = 'ParalelDeneme'
+    my_name = 'ParalelDeneme2'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
@@ -133,7 +133,7 @@ def main():
             except ImportError:
                 found = False
 
-            if not found:
+            if found:
                 myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = False)
                 myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
             else:
