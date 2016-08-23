@@ -116,8 +116,11 @@ class ParallelPredictorMaster:
         for i in range(self.numOfTrains):
             #Let the slave guess
             a = self.predictors[i].predictIt(ins)
+            if self.debugMode:
+                print "slave predicted ",a
             for m in a.keys():
                 out[m] = a[m]*savingProbs[i]
+
         return out
 
 
