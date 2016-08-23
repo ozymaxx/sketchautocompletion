@@ -86,7 +86,7 @@ class Extractor:
         classCount = 0
         for folder in folderList:
             featuresT, isFullT, namesT = self.loadfoldercsv(folder)
-                keepFull = range(1, numfull+1)
+            keepFull = range(1, numfull+1)
             for sketchid in keepFull:
 
                 # too only load highest order partial sketches
