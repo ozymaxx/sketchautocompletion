@@ -63,15 +63,11 @@ class complexCudaCKMeans():
                 numClustSelected += 1
 
     def vote(self, votedclass, votedcluster):
-        #print '%i_%i'%(votedclass,votedcluster)
+        for clstrIdx in range(self.k):
+            self.classvotes[votedclass][clstrIdx] += 1
         for clssIdx in range(self.numclass):
-            for clstrIdx in range(self.k):
-                # mustLinkDistances
-                if clssIdx == votedclass and clstrIdx != votedcluster:
-                    self.classvotes[clssIdx][clstrIdx] += 1
-                # cannotLinkDistances
-                if clssIdx != votedclass and clstrIdx == votedcluster:
-                    self.classvotes[clssIdx][clstrIdx] += 1
+            self.classvotes[clssIdx][votedcluster] += 1
+        self.classvotes[votedclass][votedcluster] -= 2   
 
 
     def cu_vq(self, obs, clusters):
@@ -367,7 +363,6 @@ class complexCudaCKMeans():
                     if self.featureCluster[fidx] != cc:
                         noLabelChange = False
                     self.clusterFeatures[cc].append(fidx)
-
             # multiply votes by weight
             for voteidx, _ in enumerate(self.classvotes):
                 self.classvotes[voteidx] = [self.currweight*v for v in self.classvotes[voteidx]]
