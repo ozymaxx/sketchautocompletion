@@ -3,18 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classifiers/ParallelTrainer.py" afterPath="$PROJECT_DIR$/classifiers/ParallelTrainer.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/banana/banana.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/banana/banana.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/barn/barn.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/barn/barn.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/baseball-bat/baseball-bat.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/baseball-bat/baseball-bat.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/basket/basket.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/basket/basket.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/bathtub/bathtub.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/bathtub/bathtub.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/banana/banana.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/banana/banana.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/barn/barn.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/barn/barn.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/baseball-bat/baseball-bat.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/baseball-bat/baseball-bat.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/basket/basket.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/basket/basket.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/bathtub/bathtub.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/bathtub/bathtub.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" afterPath="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" />
     </list>
     <ignored path="sketchautocompletion.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -744,12 +732,6 @@
       <option name="number" value="Default" />
       <updated>1468915905006</updated>
     </task>
-    <task id="LOCAL-00034" summary="ckmeans commented">
-      <created>1469531166259</created>
-      <option name="number" value="00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1469531166259</updated>
-    </task>
     <task id="LOCAL-00035" summary="commment">
       <created>1469531287916</created>
       <option name="number" value="00035" />
@@ -1038,7 +1020,13 @@
       <option name="project" value="LOCAL" />
       <updated>1471954001924</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="ParalelPredictorSlaves Speaks better">
+      <created>1471954721878</created>
+      <option name="number" value="00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1471954721878</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -1100,7 +1088,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
-    <MESSAGE value="savingModeee" />
     <MESSAGE value="savedTrainings Dir" />
     <MESSAGE value="training names" />
     <MESSAGE value="saves" />
@@ -1125,7 +1112,8 @@
     <MESSAGE value="Extractor changed for parallel" />
     <MESSAGE value="Parallel now complex cuda ckmeans" />
     <MESSAGE value="Paralell Testing Goes on" />
-    <option name="LAST_COMMIT_MESSAGE" value="Paralell Testing Goes on" />
+    <MESSAGE value="ParalelPredictorSlaves Speaks better" />
+    <option name="LAST_COMMIT_MESSAGE" value="ParalelPredictorSlaves Speaks better" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
