@@ -112,8 +112,8 @@ def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
             ckmeans = CKMeans(constarr, np.transpose(features), k)
             kmeansoutput = ckmeans.getCKMeans()
         else:
-            from cudackmeans import *
-            clusterer = CuCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
+            from complexcudackmeans import *
+            clusterer = complexCudaCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
             # print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
             clusters, centers = clusterer.cukmeans()
             kmeansoutput = [clusters, centers]
@@ -162,7 +162,7 @@ def homepage():
 
 def main():
     ForceTrain = False
-    numclass, numfull, numpartial = 10, 80, 75
+    numclass, numfull, numpartial = 150, 75, 75
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName
