@@ -11,12 +11,7 @@ sys.path.append('../data/')
 sys.path.append("../../libsvm-3.21/python/")
 import matplotlib.pyplot as plt
 from extractor import *
-from featureutil import *
-import itertools
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
 import os
-import numpy as np
 import operator
 from draw import *
 from SVM import *
@@ -30,7 +25,7 @@ import parallelPartitioner
 def main():
     numclass, numfull, numpartial = 10, 10, 10
     numtest = 5
-    debugMode = False
+    debugMode = True
 
     #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
     parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
@@ -76,12 +71,11 @@ def main():
     test_isFull, \
     test_classId, \
     test_names, \
-    folderList = extr.loadfolders2(#I have written this func this just gives without caring if the sketch is nearly full or what
+    folderList = extr.loadFoldersParallel(#I have written this func this just gives without caring if the sketch is nearly full or what
                             numclass,
                             numfull=numfull,
                             numpartial=numpartial,
-                            folderList=files[:20])#[:20]Because not all folders are in testingData folder
-
+                            folderList=files)
     if(debugMode):
         print "NOWOINODNF POJFD[O AINDAF[IUBS AD[9UOBH[ADSINUB [ASIFJDN [IJFNBF[DSAIJN"
 
@@ -96,7 +90,7 @@ def main():
     reject_rate = dict()
     my_n = numtest
     my_files = folderList
-    my_name = 'DEneme'
+    my_name = 'ParalelDeneme'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
@@ -140,10 +134,10 @@ def main():
                 found = False
 
             if not found:
-
-                myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
+                myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = False)
                 myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
             else:
+                print "PROBLEEEEEM CUDA NOT FOUND"
                 pass
         nameOfTheTraining = my_name
         predictor = ParallelPredictorMaster(nameOfTheTraining)
@@ -156,7 +150,8 @@ def main():
 
             classProb = predictor.calculatePosteriorProb(Tfeature)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
-            print SclassProb, TtrueClass
+            if debugMode:
+                print SclassProb,"for the ans", TtrueClass
 
             for n in N:
                 for c in C:

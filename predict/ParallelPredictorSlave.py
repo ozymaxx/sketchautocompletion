@@ -24,17 +24,6 @@ class ParallelPredictorSlave:
         self.files = file
         self.svm = svm
 
-
-    def probToSavings(self, jstring,  centers, normalProb):
-        loadedSketch = shapecreator.buildSketch('json', jstring)
-        featextractor = IDMFeatureExtractor()
-        instance = featextractor.extract(loadedSketch)
-        probTup = []
-        for i in range(len(centers)):
-            dist = self.getDistance(instance, centers[i])
-            probTup.append(math.exp(-1*abs(dist))*normalProb[i])
-        return probTup
-
     def getDistance(self, x, y):
         """Computes euclidian distance between x instance and y instance
         inputs: x,y instances
@@ -76,20 +65,6 @@ class ParallelPredictorSlave:
 
     def predictIt(self, instance):
         # find the probability of given feature to belong any of athe classes
-        priorClusterProb = self.calculatePriorProb()
-        classProb = self.calculatePosteriorProb(instance, priorClusterProb)
-        return classProb
-
-    def predictByPath(self, fullsketchpath):
-        instance = featureExtract(fullsketchpath)
-        priorClusterProb = self.calculatePriorProb()
-        classProb = self.calculatePosteriorProb(instance, priorClusterProb)
-        return classProb
-
-    def predictByString(self, jstring):
-        loadedSketch = shapecreator.buildSketch('json', jstring)
-        featextractor = IDMFeatureExtractor()
-        instance = featextractor.extract(loadedSketch)
         priorClusterProb = self.calculatePriorProb()
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb

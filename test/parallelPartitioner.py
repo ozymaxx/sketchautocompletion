@@ -18,20 +18,15 @@ from SVM import *
 from Predictor import *
 from FileIO import *
 
+debugModeOn = True
 
 def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True, saveName = None):
 
     numclass = len(set(classId))
-    '''
-    sketchPartialMax = dict()
-    for name in names:
-        classname, sketchid, partialid = processName(name)
-        sketchPartialMax[classname + '_' + sketchid] = max(sketchPartialMax[classname + '_' + sketchid], partialid)
-    '''
-    # condition for being training data
-    print type(features), type(isFull),type(names), type(classId)
-    cond = [bool(processName(names[index])[1] < numtrainfull) for index in range(len(features))]
 
+    # condition for being training data
+
+    cond = [bool(processName(names[index])[1] < numtrainfull) for index in range(len(features))]
     test_features = [features[index] for index in range(len(features)) if not cond[index]]
     test_isFull = [isFull[index] for index in range(len(isFull)) if not cond[index]]
     test_names = [names[index] for index in range(len(names)) if not cond[index]]
@@ -43,16 +38,12 @@ def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTest
     train_isFull = [isFull[index] for index in range(len(isFull)) if cond[index]]
     train_classId = [classId[index] for index in range(len(classId)) if cond[index]]
 
-
     myfio = FileIO()
-    print "now I am gonna save"
     myfio.save(train_isFull, train_names, train_features, '../data/trainingData/csv/' + saveName+'/'+saveName+'.csv')
     myfio.save(test_isFull,test_names,test_features, '../data/testingData/csv/'+ saveName+'/'+saveName+'.csv')
-    print "now saved"
 
 
 def partition(numclass, numfull, numpartial, numtest):
-
 
     print "PARTITION STARTED"
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
@@ -102,9 +93,10 @@ def partition(numclass, numfull, numpartial, numtest):
 
 
         saveName = files[i:][0]
-        print "hello"
-        print type(whole_classId),type(whole_features),type(whole_isFull),type(whole_names)
-        print "doing for ", saveName
+
+        if debugModeOn:
+            print type(whole_classId),type(whole_features),type(whole_isFull),type(whole_names)
+            print "Doing for partition for ", saveName
         partitionfeatures(whole_features,
                           whole_isFull,
                           whole_classId,

@@ -63,10 +63,10 @@ class ParallelTrainer:
         if(self.debugMode):
             print "GETTING FEATURES IN THE PARALLEL TRAINER"
         extr = Extractor(trainingDataFolder)
-        features, isFull, classId, names, folderList = extr.loadfolders2(  numclass   = numclass,
-                                                                          numfull    = numfull,
-                                                                          numpartial = numpartial,
-                                                                          folderList = self.files[i])
+        features, isFull, classId, names, folderList = extr.loadFoldersParallel(numclass   = numclass,
+                                                                                numfull    = numfull,
+                                                                                numpartial = numpartial,
+                                                                                folderList = self.files[i])
         if(self.debugMode):
             print "YEP GOT THEM"
 
