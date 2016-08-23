@@ -89,9 +89,9 @@ class SVM:
             problem = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
 
-            print "start train"
+
             m = svm_train(problem, param)
-            print "finish train"
+            print order%4, ". thread finished", order/4,"models"
             self.allSV.extend(m.get_SV())
 
             import os
