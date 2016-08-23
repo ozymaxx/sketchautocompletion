@@ -118,8 +118,8 @@ class ParallelTrainer:
                 if(self.debugMode):
                     print "--------Training is Done With CUDA--------"
 
-                from cudackmeans import *
-                clusterer = CuCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
+                from complexcudackmeans import *
+                clusterer = complexCudaCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
                 clusters, centers = clusterer.cukmeans()
                 kmeansoutput = [clusters, centers]
 
