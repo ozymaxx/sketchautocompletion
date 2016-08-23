@@ -20,6 +20,7 @@ class Extractor:
         self.csvpath = path + '/csv'
         self.fio = FileIO()
         self.prnt = False
+        self.debugMode = False
 
     def loadfoldercsv(self, folder):
         # if .csv file exists, then load it directly

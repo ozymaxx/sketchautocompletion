@@ -18,7 +18,7 @@ from SVM import *
 from Predictor import *
 from FileIO import *
 
-debugModeOn = True
+debugModeOn = False
 
 def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True, saveName = None):
 

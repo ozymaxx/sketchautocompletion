@@ -23,7 +23,7 @@ import parallelPartitioner
 
 
 def main():
-    numclass, numfull, numpartial = 20, 80, 80
+    numclass, numfull, numpartial = 10, 10, 10
     numtest = 5
     debugMode = True
 
@@ -125,31 +125,24 @@ def main():
             svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + folderName, train_features)
 
         else:
-            # check if pycuda is installed
-            import imp
-            try:
-                imp.find_module('pycuda')
-                found = True
-            except ImportError:
-                found = False
+            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
+            myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
 
-            if found:
-                myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = False)
-                myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
-            else:
-                print "PROBLEEEEEM CUDA NOT FOUND"
-                pass
         nameOfTheTraining = my_name
         predictor = ParallelPredictorMaster(nameOfTheTraining)
 
         print 'Starting Testing'
         for test_index in range(len(test_features)):
+
             # print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = folderList[test_classId[test_index]]
-
+            print "--------------------------------------------------"
             classProb = predictor.calculatePosteriorProb(Tfeature)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
+
+            print "nowSclass", SclassProb,TtrueClass
+            print "---------------------------------------------------"
             if debugMode:
                 print SclassProb,"for the ans", TtrueClass
 
