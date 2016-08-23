@@ -110,7 +110,7 @@ class Extractor:
         print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
 
-    def loadfolderscsv2(self, numclass, numfull, numpartial, folderList = []):
+    def loadFoldersCsvParallel(self, numclass, numfull, numpartial, folderList = []):
         if not folderList:
             folderList = os.listdir(self.csvpath)
             folderList.sort(key=str.lower)
@@ -207,7 +207,7 @@ class Extractor:
         return features, isFull, classId, names, folderList
 
 
-    def loadfolders2(self, numclass, numfull, numpartial, folderList = []):
+    def loadFoldersParallel(self, numclass, numfull, numpartial, folderList = []):
         print 'in extractor'
         if not folderList:
             folderList = os.listdir(self.csvpath)
@@ -229,7 +229,7 @@ class Extractor:
                 count += 1
             return whole_features, whole_isFull, whole_classId, whole_names, folderList
 
-        features, isFull, classId, names, folderList = self.loadfolderscsv2(numclass, numfull, numpartial, folderList)
+        features, isFull, classId, names, folderList = self.loadFoldersCsvParallel(numclass, numfull, numpartial, folderList)
         if self.debugMode:
             print names
             print 'Loaded ' + str(len(features)) + ' features'
