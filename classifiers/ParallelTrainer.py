@@ -26,7 +26,7 @@ class ParallelTrainer:
         #Use the following data
         self.getTrainingDataFrom ='../data/trainingData/'
         #Controls if we should print
-        self.debugMode = False
+        self.debugMode = True
         #No of classes in a group
         self.n = n
         #Training address for saving and loading
@@ -57,6 +57,8 @@ class ParallelTrainer:
                 for j in i:
                     l.append(allFiles[j])
                 self.files.append(l)
+        if self.debugMode:
+            print 'Our files are ', self.files
 
     def getFeatures(self, i, numclass, numfull,numpartial, trainingDataFolder):
 

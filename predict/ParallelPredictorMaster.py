@@ -9,11 +9,12 @@ sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python/")
 sys.path.append('../data/')
 from FileIO import *
-
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
 from ParallelPredictorSlave import *
+
+import operator
 
 class ParallelPredictorMaster:
     """The predictor class implementing functions to return probabilities"""
@@ -117,7 +118,7 @@ class ParallelPredictorMaster:
             #Let the slave guess
             a = self.predictors[i].predictIt(ins)
             if self.debugMode:
-                print "slave predicted ",a
+                print "slave predicted ",sorted(a.items(), key=operator.itemgetter(1))
             for m in a.keys():
                 out[m] = a[m]*savingProbs[i]
 

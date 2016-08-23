@@ -1,8 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="Parallel training testing data moved">
+    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/classifiers/ParallelTrainer.py" afterPath="$PROJECT_DIR$/classifiers/ParallelTrainer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/banana/banana.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/banana/banana.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/barn/barn.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/barn/barn.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/baseball-bat/baseball-bat.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/baseball-bat/baseball-bat.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/basket/basket.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/basket/basket.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/testingData/csv/bathtub/bathtub.csv" afterPath="$PROJECT_DIR$/data/testingData/csv/bathtub/bathtub.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/banana/banana.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/banana/banana.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/barn/barn.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/barn/barn.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/baseball-bat/baseball-bat.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/baseball-bat/baseball-bat.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/basket/basket.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/basket/basket.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/data/trainingData/csv/bathtub/bathtub.csv" afterPath="$PROJECT_DIR$/data/trainingData/csv/bathtub/bathtub.csv" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" afterPath="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" />
     </list>
     <ignored path="sketchautocompletion.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,7 +40,7 @@
     <SUITE FILE_PATH="coverage/sketchautocompletion$feature.coverage" NAME="feature Coverage Results" MODIFIED="1469536312891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$run.coverage" NAME="run Coverage Results" MODIFIED="1469625777144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$acctestload.coverage" NAME="acctestload Coverage Results" MODIFIED="1471246373018" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$test.coverage" NAME="test Coverage Results" MODIFIED="1471512749661" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/sketchautocompletion$test.coverage" NAME="test Coverage Results" MODIFIED="1471954537602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$trainer.coverage" NAME="trainer Coverage Results" MODIFIED="1469020878813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$acctestsinglefold.coverage" NAME="acctestsinglefold Coverage Results" MODIFIED="1471277453252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$aa.coverage" NAME="aa Coverage Results" MODIFIED="1469516617385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
@@ -54,9 +66,26 @@
         <entry file="file://$PROJECT_DIR$/test/parallelTest.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="142" column="17" selection-start-line="142" selection-start-column="8" selection-end-line="142" selection-end-column="17" />
+              <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
               <folding />
             </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ParallelPredictorMaster.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/predict/ParallelPredictorMaster.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-11.354838">
+              <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="draw_n_Acc_0_Full.png" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme2/draw_n_Acc_0_Full.png">
+          <provider selected="true" editor-type-id="images">
+            <state />
           </provider>
         </entry>
       </file>
@@ -64,27 +93,17 @@
         <entry file="file://$PROJECT_DIR$/test/parallelPartitioner.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="99" column="25" selection-start-line="99" selection-start-column="8" selection-end-line="99" selection-end-column="25" />
+              <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="extractor.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/data/extractor.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.5742822">
-              <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="parallelMain.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/ParallelMethod/parallelMain.py">
+      <file leaf-file-name="ParallelTrainer.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/classifiers/ParallelTrainer.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
+              <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -150,12 +169,12 @@
         <option value="$PROJECT_DIR$/ParallelMethod/centers.py" />
         <option value="$PROJECT_DIR$/ParallelMethod/newMain.py" />
         <option value="$PROJECT_DIR$/ParallelMethod/parallelMain.py" />
-        <option value="$PROJECT_DIR$/classifiers/ParallelTrainer.py" />
-        <option value="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" />
         <option value="$PROJECT_DIR$/predict/ParallelPredictorSlave.py" />
+        <option value="$PROJECT_DIR$/classifiers/ParallelTrainer.py" />
+        <option value="$PROJECT_DIR$/data/extractor.py" />
         <option value="$PROJECT_DIR$/test/parallelPartitioner.py" />
         <option value="$PROJECT_DIR$/test/parallelTest.py" />
-        <option value="$PROJECT_DIR$/data/extractor.py" />
+        <option value="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" />
       </list>
     </option>
   </component>
@@ -195,7 +214,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -225,20 +243,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="test" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
               <option name="myItemId" value="data" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
@@ -257,11 +261,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="trainingData" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="csv" />
+              <option name="myItemId" value="newMethodTraining" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -279,20 +279,17 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="trainingData" />
+              <option name="myItemId" value="newMethodTraining" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="csv" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="airplane" />
+              <option name="myItemId" value="ParalelDeneme2" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -338,9 +335,8 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/SVM/SVM.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/clusterer/complexcudackmeans.py</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/server/Main.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/predict/Predictor.py</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/test/parallelTest.py</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -748,36 +744,6 @@
       <option name="number" value="Default" />
       <updated>1468915905006</updated>
     </task>
-    <task id="LOCAL-00029" summary="clusterProb2">
-      <created>1469437338172</created>
-      <option name="number" value="00029" />
-      <option name="project" value="LOCAL" />
-      <updated>1469437338172</updated>
-    </task>
-    <task id="LOCAL-00030" summary="work">
-      <created>1469439343192</created>
-      <option name="number" value="00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1469439343192</updated>
-    </task>
-    <task id="LOCAL-00031" summary="FileIO">
-      <created>1469456290553</created>
-      <option name="number" value="00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1469456290553</updated>
-    </task>
-    <task id="LOCAL-00032" summary="FileIO">
-      <created>1469456332602</created>
-      <option name="number" value="00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1469456332602</updated>
-    </task>
-    <task id="LOCAL-00033" summary="Some commenting">
-      <created>1469530860280</created>
-      <option name="number" value="00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1469530860280</updated>
-    </task>
     <task id="LOCAL-00034" summary="ckmeans commented">
       <created>1469531166259</created>
       <option name="number" value="00034" />
@@ -1042,12 +1008,42 @@
       <option name="project" value="LOCAL" />
       <updated>1471948990814</updated>
     </task>
-    <option name="localTasksCounter" value="78" />
+    <task id="LOCAL-00078" summary="Parallel training testing data moved">
+      <created>1471950555294</created>
+      <option name="number" value="00078" />
+      <option name="project" value="LOCAL" />
+      <updated>1471950555294</updated>
+    </task>
+    <task id="LOCAL-00079" summary="Parallel training testing data moved">
+      <created>1471950796384</created>
+      <option name="number" value="00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1471950796385</updated>
+    </task>
+    <task id="LOCAL-00080" summary="Extractor changed for parallel">
+      <created>1471951026725</created>
+      <option name="number" value="00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1471951026725</updated>
+    </task>
+    <task id="LOCAL-00081" summary="Parallel now complex cuda ckmeans">
+      <created>1471951334553</created>
+      <option name="number" value="00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1471951334553</updated>
+    </task>
+    <task id="LOCAL-00082" summary="Paralell Testing Goes on">
+      <created>1471954001924</created>
+      <option name="number" value="00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1471954001924</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21024258" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1055,19 +1051,19 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28649837" sideWeight="0.5020986" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35641548" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15376782" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15376782" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.49389002" sideWeight="0.49790135" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23645833" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31771895" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.013238289" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5580448" sideWeight="0.49790135" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31771895" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1104,9 +1100,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
-    <MESSAGE value="Main debugged, FileIO now have saveTraining, loadTraining" />
-    <MESSAGE value="FileIO debugged" />
-    <MESSAGE value="getBestPredictions changed" />
     <MESSAGE value="savingModeee" />
     <MESSAGE value="savedTrainings Dir" />
     <MESSAGE value="training names" />
@@ -1129,7 +1122,10 @@
     <MESSAGE value="Parallel Training Some comments" />
     <MESSAGE value="Changes on extractor" />
     <MESSAGE value="Parallel training testing data moved" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parallel training testing data moved" />
+    <MESSAGE value="Extractor changed for parallel" />
+    <MESSAGE value="Parallel now complex cuda ckmeans" />
+    <MESSAGE value="Paralell Testing Goes on" />
+    <option name="LAST_COMMIT_MESSAGE" value="Paralell Testing Goes on" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1204,6 +1200,11 @@
           <line>38</line>
           <option name="timeStamp" value="438" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/test/parallelTest.py</url>
+          <line>104</line>
+          <option name="timeStamp" value="441" />
+        </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
         <breakpoints-dialog />
@@ -1215,7 +1216,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="441" />
+      <option name="time" value="442" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -1226,16 +1227,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/kolGIbi/draw_N_C_Acc_Contour_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/kolGIbi/draw_n_Acc_0_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/newMethodTraining/kolGIbi/draw_n_Acc_0_Partial.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -1482,14 +1473,6 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/ParallelTrainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="0" selection-start-line="39" selection-start-column="0" selection-end-line="39" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/data/newMethodTraining/DEneme/draw_n_Acc_0_Full.png">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -1504,7 +1487,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ParallelMethod/parallelMain.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state vertical-scroll-proportion="0.82397">
           <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
           <folding />
         </state>
@@ -1512,22 +1495,40 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/acctestsinglefold.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42322096">
-          <caret line="60" column="0" selection-start-line="60" selection-start-column="0" selection-end-line="60" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.2309613">
+          <caret line="35" column="24" selection-start-line="35" selection-start-column="14" selection-end-line="35" selection-end-column="24" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/predict/ParallelPredictorMaster.py">
+    <entry file="file://$PROJECT_DIR$/data/extractor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="2.565126">
-          <caret line="117" column="27" selection-start-line="117" selection-start-column="27" selection-end-line="117" selection-end-column="27" />
+        <state vertical-scroll-proportion="0.16336633">
+          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/numpy/lib/npyio.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="361" column="0" selection-start-line="361" selection-start-column="0" selection-end-line="361" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/ParallelTrainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test/parallelPartitioner.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="99" column="25" selection-start-line="99" selection-start-column="8" selection-end-line="99" selection-end-column="25" />
+          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
           <folding />
         </state>
       </provider>
@@ -1535,17 +1536,22 @@
     <entry file="file://$PROJECT_DIR$/test/parallelTest.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="142" column="17" selection-start-line="142" selection-start-column="8" selection-end-line="142" selection-end-column="17" />
+          <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/extractor.py">
+    <entry file="file://$PROJECT_DIR$/predict/ParallelPredictorMaster.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.5742822">
-          <caret line="88" column="0" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
+        <state vertical-scroll-proportion="-11.354838">
+          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme2/draw_n_Acc_0_Full.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
   </component>
