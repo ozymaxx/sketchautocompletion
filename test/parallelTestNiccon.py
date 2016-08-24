@@ -55,13 +55,14 @@ def main():
              'sea-turtle',
              'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
+
     numclass, numfull, numpartial = 10, 20, 20
     numtest = 5
     debugMode = True
 
-    trainingFolder = '/home/semih/Desktop/csv/train'
+    trainingFolder = '../data/Nichocon/csv/train'
 
-    extr_test = Extractor('/home/semih/Desktop/csv/test')
+    extr_test = Extractor('../data/Nichocon/csv/test')
     test_features, \
     test_isFull, \
     test_classId, \
