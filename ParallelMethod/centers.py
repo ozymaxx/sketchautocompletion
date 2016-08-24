@@ -9,7 +9,7 @@ from FileIO import *
 import numpy as np
 
 
-def saveCenters():
+def saveCenters(doOnlyFulls = False):
     """This file computes centers of classses and saves it to  the ./data/csv/allCenters.csv"""
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana',
@@ -38,12 +38,21 @@ def saveCenters():
     my_isFull = []
     f = FileIO()
     for mfile in files[:]:
-        print mfile
+
         names, isFull, features = f.load('../data/csv/' + mfile + '/' + mfile + '.csv')
         nowCenter = np.zeros(len(features[0]))
-        totalNumOfInstances = len(features)
-        for instance in features:
-            nowCenter += instance
+
+        if not doOnlyFulls:
+            totalNumOfInstances = len(features)
+            for instance in features:
+                nowCenter += instance
+        else:
+            totalNumOfInstances = 0
+            for i in range(len(features)):
+                if isFull[i] == False:
+                    nowCenter+=features[i]
+                    totalNumOfInstances+=1
+        print mfile, totalNumOfInstances
         nowCenter = nowCenter/totalNumOfInstances
         k.append(nowCenter)
         my_names.append(mfile)
@@ -51,4 +60,4 @@ def saveCenters():
     f.save(my_isFull,my_names,k,'../data/csv/allCenters.csv')
 
 
-if __name__ == '__main__':saveCenters()
+if __name__ == '__main__':saveCenters(True)

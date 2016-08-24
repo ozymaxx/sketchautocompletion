@@ -13,6 +13,7 @@ from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
 from ParallelPredictorSlave import *
+from scipy.spatial import distance
 
 import operator
 
@@ -72,21 +73,38 @@ class ParallelPredictorMaster:
             probTup.append(math.exp(-1*abs(dist))*normalProb[i])
         return probTup
 
-    def probToTheGroupByFeature(self, instance, centers, normalProb):
+    def probToTheGroupByFeature(self, instance, centers, priorProb):
         """Get prob to groups when instance is given as vector"""
-        probTup = []
-        for i in range(len(centers)):
-            dist = self.getDistance(instance, centers[i])
-            probTup.append(math.exp(-1*abs(dist))*normalProb[i])
-        return probTup
+        # probTup = []
+        # for i in range(len(centers)):
+        #     dist = self.getDistance(instance, centers[i])
+        #     probTup.append(math.exp(-1*abs(dist))*normalProb[i])
+        # return probTup
+
+        dist = [self.getDistance(instance, centers[idx]) for idx in range(len(centers))]
+
+        sigma = 0.3
+        mindist = min(dist)
+        diste_ = [math.exp(-1*abs(d - mindist)/(2*sigma*sigma)) for d in dist]
+        clustProb = [diste_[idx]*priorProb[idx] for idx in range(len(centers))]
+
+        # normalize
+        clustProb = [c/sum(clustProb) for c in clustProb]
+
+        #import numpy as np
+        #import matplotlib.pyplot as plt
+
+        #fig = plt.figure()
+        #plt.scatter(range(len(diste_)), diste_, alpha=0.5)
+        #plt.show()
+
+        return clustProb
 
     def getDistance(self, x, y):
         """Computes euclidian distance between x instance and y instance
         inputs: x,y instances
         kmeansoutput: distance"""
-        x = np.asarray(x)
-        y = np.asarray(y)
-        return np.sqrt(np.sum((x-y)**2))
+        return distance.euclidean(x, y)
 
     def predictByString(self, q):
 

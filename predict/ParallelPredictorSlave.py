@@ -13,6 +13,7 @@ from svmutil import *
 from trainer import *
 from shapecreator import *
 from FeatureExtractor import *
+from scipy.spatial import distance
 
 class ParallelPredictorSlave:
     """The Slave predictor class"""
@@ -28,20 +29,28 @@ class ParallelPredictorSlave:
         """Computes euclidian distance between x instance and y instance
         inputs: x,y instances
         kmeansoutput: distance"""
-        x = np.asarray(x)
-        y = np.asarray(y)
-        return np.sqrt(np.sum((x-y)**2))
+        return distance.euclidean(x, y)
 
-    def clusterProb(self, instance, normalProb):
-        """
-        Returns P(Ck|x)
-        normalProb : probability that was calculated in trainer
-        instance: feature list of the instance to be queried"""
-        probTup = []
-        for i in range(len(self.kmeansoutput[1])):
-            dist = self.getDistance(instance, self.kmeansoutput[1][i])
-            probTup.append(math.exp(-1*abs(dist))*normalProb[i])
-        return probTup
+    def clusterProb(self, instance, priorProb):
+        centers = self.kmeansoutput[1]
+        dist = [self.getDistance(instance, centers[idx]) for idx in range(len(centers))]
+
+        sigma = 0.3
+        mindist = min(dist)
+        diste_ = [math.exp(-1*abs(d - mindist)/(2*sigma*sigma)) for d in dist]
+        clustProb = [diste_[idx]*priorProb[idx] for idx in range(len(centers))]
+
+        # normalize
+        clustProb = [c/sum(clustProb) for c in clustProb]
+
+        #import numpy as np
+        #import matplotlib.pyplot as plt
+
+        #fig = plt.figure()
+        #plt.scatter(range(len(diste_)), diste_, alpha=0.5)
+        #plt.show()
+
+        return clustProb
 
     def svmProb(self, model, instance):
         """Predicts the probability of the given model"""
