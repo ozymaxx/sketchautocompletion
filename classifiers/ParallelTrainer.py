@@ -21,10 +21,10 @@ import numpy as np
 class ParallelTrainer:
     """Trainer Class used for the parallel training"""
 
-    def __init__(self, n, files, doKMeans = True):
+    def __init__(self, n, files, doKMeans = True, getTrainingDataFrom = '../data/trainingData/'):
 
         #Use the following data
-        self.getTrainingDataFrom ='../data/trainingData/'
+        self.getTrainingDataFrom = getTrainingDataFrom
         #Controls if we should print
         self.debugMode = True
         #No of classes in a group
