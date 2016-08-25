@@ -27,7 +27,7 @@ def main():
 
     files = ['accident','bomb','car','casualty','electricity','fire','firebrigade','flood','gas','injury','paramedics','person','police','roadblock']
 
-    numclass, numfull, numpartial = 10, 10, 10
+    numclass, numfull, numpartial = 10, 5, 5
     numtest = 5
     debugMode = True
 
@@ -89,20 +89,21 @@ def main():
         else:
             myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/csv/allCentersNic.csv')
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
-        return 0#FINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
-        predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
-        priorClusterProb = predictor.calculatePriorProb()
+        nameOfTheTraining = my_name
+        predictor = ParallelPredictorMaster(nameOfTheTraining)
 
-        classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         print 'Starting Testing'
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+            print "--------------------------------------------------"
+            classProb = predictor.calculatePosteriorProb(Tfeature)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
+            print "nowSclass", SclassProb,TtrueClass
+            print "--------------------------------------------------"
 
             for n in N:
                 for c in C:
