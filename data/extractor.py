@@ -34,6 +34,9 @@ class Extractor:
             # because i am an idiot
             isFull = [self.isFileFull(name) for name in names]
             return features, isFull, names
+        else:
+            print "no such folder as ", fullpath
+            raise Exception
 
     def loadfolderjson(self, folder):
         fullpath = self.path + '/' + folder

@@ -23,7 +23,7 @@ import parallelPartitioner
 
 
 def main():
-    numclass, numfull, numpartial = 10, 20, 20
+    numclass, numfull, numpartial = 10, 10, 10
     numtest = 5
     debugMode = True
 

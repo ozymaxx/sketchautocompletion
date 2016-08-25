@@ -20,54 +20,29 @@ from Predictor import *
 from scipyCKMeans import *
 from scipykmeans import *
 from complexCKMeans import *
+from ParallelPredictorMaster import *
+from ParallelTrainer import *
 
 def main():
-    files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
-             'banana',
-             'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
-             'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf', 'boomerang', 'bottle-opener', 'bowl', 'brain',
-             'bread',
-             'bridge', 'bulldozer', 'bus', 'bush', 'butterfly', 'cabinet', 'cactus', 'cake', 'calculator', 'camel',
-             'camera', 'candle', 'cannon', 'canoe', 'car-(sedan)', 'carrot', 'castle', 'cat', 'cell-phone', 'chair',
-             'chandelier',
-             'church', 'cigarette', 'cloud', 'comb', 'computer-monitor', 'computer-mouse', 'couch', 'cow', 'crab',
-             'crane-(machine)', 'crocodile', 'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut', 'door',
-             'door-handle',
-             'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye', 'eyeglasses', 'face', 'fan', 'feather',
-             'fire-hydrant',
-             'fish', 'flashlight', 'floor-lamp', 'flower-with-stem', 'flying-bird', 'flying-saucer', 'foot', 'fork',
-             'frog',
-             'frying-pan', 'giraffe', 'grapes', 'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp', 'hat',
-             'head',
-             'head-phones', 'hedgehog', 'helicopter', 'helmet', 'horse', 'hot-air-balloon', 'hot-dog', 'hourglass',
-             'house',
-             'human-skeleton', 'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife', 'ladder', 'laptop',
-             'leaf',
-             'lightbulb', 'lighter', 'lion', 'lobster', 'loudspeaker', 'mailbox', 'megaphone', 'mermaid', 'microphone',
-             'microscope', 'monkey', 'moon', 'mosquito', 'motorbike', 'mouse-(animal)', 'mouth', 'mug', 'mushroom',
-             'nose',
-             'octopus', 'owl', 'palm-tree', 'panda', 'paper-clip', 'parachute', 'parking-meter', 'parrot', 'pear',
-             'pen',
-             'penguin', 'person-sitting', 'person-walking', 'piano', 'pickup-truck', 'pig', 'pigeon', 'pineapple',
-             'pipe-(for-smoking)', 'pizza', 'potted-plant', 'power-outlet', 'present', 'pretzel', 'pumpkin', 'purse',
-             'rabbit', 'race-car', 'radio', 'rainbow', 'revolver', 'rifle', 'rollerblades', 'rooster', 'sailboat',
-             'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver',
-             'sea-turtle',
-             'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
+    files = ['accident','bomb','car','casualty','electricity','fire','firebrigade','flood','gas','injury','paramedics','person','police','roadblock']
 
-    numclass, numfull, numpartial = 10, 20, 20
+    numclass, numfull, numpartial = 10, 10, 10
     numtest = 5
     debugMode = True
 
-    trainingFolder = '../data/Nichocon/csv/train'
+    trainingFolder = '../data/nicicon/csv/train'
+    extr_train = Extractor(trainingFolder)
+    train_features, \
+    train_isFull, \
+    train_classId, \
+    train_names = extr_train.loadniciconfolders()
 
-    extr_test = Extractor('../data/Nichocon/csv/test')
+    extr_test = Extractor('../data/nicicon/csv/test')
     test_features, \
     test_isFull, \
     test_classId, \
     test_names = extr_test.loadniciconfolders()
-
     K = [20] # :O
     #K = [numclass]
     N = range(1, numclass)
@@ -76,9 +51,9 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-    my_n = numtest
-    my_files = []
-    my_name = 'ParalelDeneme2'
+    my_n = 4
+    my_files =files#list(set(test_classId))
+    my_name = 'ParalelDeneme2NIC'
 
     for k in K:
         for n in N:
@@ -99,7 +74,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(train_classId)+1, k)
+        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(test_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -112,8 +87,9 @@ def main():
             svm.loadModels()
 
         else:
-            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
+            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/csv/allCentersNic.csv')
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
+        return 0#FINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN
 
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
         priorClusterProb = predictor.calculatePriorProb()

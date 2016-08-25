@@ -21,7 +21,7 @@ import numpy as np
 class ParallelTrainer:
     """Trainer Class used for the parallel training"""
 
-    def __init__(self, n, files, doKMeans = True, getTrainingDataFrom = '../data/trainingData/'):
+    def __init__(self, n, files, doKMeans = True, getTrainingDataFrom = '../data/trainingData/', centersFolder = '../data/csv/allCenters.csv' ):
 
         #Use the following data
         self.getTrainingDataFrom = getTrainingDataFrom
@@ -42,7 +42,7 @@ class ParallelTrainer:
         else:#Create groups using K-Means
             print "NOW DOING NORMAL KMEANS FOR CLUSTERING CLASSES"
             f = FileIO()
-            names, isFull,my_features = f.load('../data/csv/allCenters.csv')
+            names, isFull,my_features = f.load(centersFolder)
             features = []
             for n in files:
                 features.append(my_features[names.index(n)])
