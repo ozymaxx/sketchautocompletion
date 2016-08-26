@@ -156,7 +156,7 @@ class complexCudaCKMeans():
           }
           __global__ void cu_v2q(float *g_idata, float *g_centroids,
             int *classId, int *isFull,
-            int * cluster, float *min_dist, int numClusters, int numDim, int numPoints, int numIter) {
+            int * cluster, float *feature2clusterDist, int numClusters, int numDim, int numPoints, int numIter) {
             int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
             __shared__ float mean[%(DIMENSIONS)s];
             float minDistance = FLT_MAX;
@@ -174,11 +174,9 @@ class complexCudaCKMeans():
                   minDistance = distance ;
                   myCentroid = k;
                 }
+                feature2clusterDist[valindex*numClusters + k] = distance;
               }
-              if(minDistance < (min_dist[valindex]*min_dist[valindex])){
-                cluster[valindex]=myCentroid;
-                min_dist[valindex]=sqrt(minDistance);
-              }
+              cluster[valindex]=myCentroid;
             }
           }
           __global__ void cu_v2qinit(float *g_idata, float *g_centroids,
@@ -237,7 +235,7 @@ class complexCudaCKMeans():
 
         if (obs_code is None):
             cluster = gpuarray.zeros(points, dtype=np.int32)
-            min_dist = gpuarray.zeros(points, dtype=np.float32)
+            min_dist = gpuarray.zeros(len(self.features)*self.k, dtype=np.float32)
             kmeans_kernel = mod.get_function('cu_v2qinit')
             kmeans_kernel(driver.In(dataT),
                           driver.In(clusters),
@@ -347,7 +345,8 @@ class complexCudaCKMeans():
                 print limits, "-", limits + 50, "finished"
                 limits += 50
                 while limits < self.k:
-                    featureVote, self.featureClusterDist = self.cu_v2q(self.features, self.clusterCenters, featureVote, distort, limits)
+                    featureVote, self.featureClusterDist = self.cu_v2q(self.features, self.clusterCenters, featureVote,
+                                                                       self.featureClusterDist, limits)
                     print limits, "-", limits + 50, "finished"
                     limits += 50
 

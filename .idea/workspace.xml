@@ -1,8 +1,347 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="ParalelPredictorSlaves Speaks better">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    <list default="true" id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="fixed cuda voting">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ParallelMethod/centers.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/ParallelMethod/parallelMain.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/README.md" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/SVM/SVM.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/classifiers/ParallelTrainer.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/classifiers/trainer.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/classifiers/visualise.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/ckmeans.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/ckmeansThread.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/complexCKMeans.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/complexcudackmeans.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/cudackmeans.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/fastCKMeans.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/getConstraints.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/kmeanstest.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/scipyCKMeans.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/clusterer/scipykmeans.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/FileIO.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/airplane/airplane.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/alarm-clock/alarm-clock.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/allCenters.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/angel/angel.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/ant/ant.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/apple/apple.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/arm/arm.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/armchair/armchair.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/ashtray/ashtray.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/axe/axe.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/backpack/backpack.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/banana/banana.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/barn/barn.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/baseball-bat/baseball-bat.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/basket/basket.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bathtub/bathtub.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bear-(animal)/bear-(animal).csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bed/bed.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bee/bee.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/beer-mug/beer-mug.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bell/bell.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bench/bench.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bicycle/bicycle.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/binoculars/binoculars.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/blimp/blimp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/book/book.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bookshelf/bookshelf.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/boomerang/boomerang.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bottle-opener/bottle-opener.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bowl/bowl.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/brain/brain.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bread/bread.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bridge/bridge.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bulldozer/bulldozer.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bus/bus.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/bush/bush.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/butterfly/butterfly.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cabinet/cabinet.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cactus/cactus.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cake/cake.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/calculator/calculator.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/camel/camel.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/camera/camera.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/candle/candle.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cannon/cannon.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/canoe/canoe.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/car-(sedan)/car-(sedan).csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/carrot/carrot.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/castle/castle.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cat/cat.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cell-phone/cell-phone.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/chair/chair.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/chandelier/chandelier.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/church/church.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cigarette/cigarette.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cloud/cloud.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/comb/comb.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/computer-monitor/computer-monitor.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/computer-mouse/computer-mouse.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/couch/couch.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cow/cow.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/crab/crab.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/crane-(machine)/crane-(machine).csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/crocodile/crocodile.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/crown/crown.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/cup/cup.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/diamond/diamond.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/dog/dog.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/dolphin/dolphin.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/donut/donut.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/door-handle/door-handle.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/door/door.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/dragon/dragon.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/duck/duck.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/ear/ear.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/elephant/elephant.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/envelope/envelope.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/eye/eye.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/eyeglasses/eyeglasses.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/face/face.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/fan/fan.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/feather/feather.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/fire-hydrant/fire-hydrant.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/fish/fish.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/flashlight/flashlight.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/floor-lamp/floor-lamp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/flower-with-stem/flower-with-stem.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/flying-bird/flying-bird.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/flying-saucer/flying-saucer.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/foot/foot.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/fork/fork.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/frog/frog.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/frying-pan/frying-pan.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/giraffe/giraffe.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/grapes/grapes.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/grenade/grenade.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/guitar/guitar.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hamburger/hamburger.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hammer/hammer.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hand/hand.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/harp/harp.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hat/hat.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/head-phones/head-phones.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/head/head.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hedgehog/hedgehog.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/helicopter/helicopter.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/helmet/helmet.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/horse/horse.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hot-air-balloon/hot-air-balloon.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hot-dog/hot-dog.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/hourglass/hourglass.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/house/house.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/human-skeleton/human-skeleton.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/ice-cream-cone/ice-cream-cone.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/ipod/ipod.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/kangaroo/kangaroo.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/key/key.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/keyboard/keyboard.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/knife/knife.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/ladder/ladder.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/laptop/laptop.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/leaf/leaf.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/lightbulb/lightbulb.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/lighter/lighter.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/lion/lion.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/lobster/lobster.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/loudspeaker/loudspeaker.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/mailbox/mailbox.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/megaphone/megaphone.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/mermaid/mermaid.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/microphone/microphone.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/microscope/microscope.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/monkey/monkey.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/moon/moon.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/mosquito/mosquito.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/motorbike/motorbike.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/mouse-(animal)/mouse-(animal).csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/mouth/mouth.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/mug/mug.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/mushroom/mushroom.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/nose/nose.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/octopus/octopus.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/owl/owl.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/palm-tree/palm-tree.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/panda/panda.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/paper-clip/paper-clip.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/parachute/parachute.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/parking-meter/parking-meter.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/parrot/parrot.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pear/pear.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pen/pen.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/penguin/penguin.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/person-sitting/person-sitting.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/person-walking/person-walking.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/piano/piano.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pickup-truck/pickup-truck.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pig/pig.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pigeon/pigeon.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pineapple/pineapple.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pipe-(for-smoking)/pipe-(for-smoking).csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pizza/pizza.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/potted-plant/potted-plant.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/power-outlet/power-outlet.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/present/present.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pretzel/pretzel.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/pumpkin/pumpkin.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/purse/purse.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/rabbit/rabbit.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/race-car/race-car.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/radio/radio.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/rainbow/rainbow.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/revolver/revolver.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/rifle/rifle.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/rollerblades/rollerblades.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/rooster/rooster.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/sailboat/sailboat.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/santa-claus/santa-claus.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/satellite-dish/satellite-dish.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/satellite/satellite.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/saxophone/saxophone.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/scissors/scissors.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/scorpion/scorpion.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/screwdriver/screwdriver.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/sea-turtle/sea-turtle.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/seagull/seagull.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/shark/shark.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/sheep/sheep.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/ship/ship.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/shoe/shoe.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/shovel/shovel.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/csv/skateboard/skateboard.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/extractor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/finddefecientxml.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/generatepartial.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/missingNicicon.txt" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/airplane/airplane.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/alarm-clock/alarm-clock.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/angel/angel.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/ant/ant.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/apple/apple.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/arm/arm.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/armchair/armchair.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/ashtray/ashtray.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/axe/axe.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/newMethodTraining/trainingData/csv/backpack/backpack.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/savecsv.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/airplane/airplane.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/alarm-clock/alarm-clock.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/angel/angel.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/ant/ant.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/apple/apple.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/arm/arm.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/armchair/armchair.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/ashtray/ashtray.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/axe/axe.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/backpack/backpack.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/banana/banana.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/barn/barn.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/baseball-bat/baseball-bat.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/basket/basket.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/bathtub/bathtub.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/testingData/csv/bear-(animal)/bear-(animal).csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/CUDAtraining__CFPK_10_75_10_10" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/CUDAtraining__CFPK_10_75_10_10__Centers__" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/CUDAtraining__CFPK_10_75_10_10__Cluster__" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus0.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus1.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus2.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus3.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus4.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus5.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus6.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus7.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus8.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_75_10_10/clus9.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus0.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus1.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus2.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus3.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus4.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus5.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus6.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus7.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus8.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/clus9.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/training__CFPK_10_80_80_10" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/training__CFPK_10_80_80_10__Centers__" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/CUDAtraining__CFPK_10_80_80_10/training__CFPK_10_80_80_10__Cluster__" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/accuracy.p" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus0.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus1.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus10.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus11.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus12.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus13.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus14.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus15.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus16.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus17.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus18.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus19.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus2.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus3.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus4.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus5.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus6.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus7.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus8.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/clus9.model" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_N_C_Acc_Contour_Full.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_N_C_Acc_Contour_Partial.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_N_C_Acc_Full.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_N_C_Acc_Partial.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_N_C_Reject_Contour_Full.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_N_C_Reject_Contour_Partial.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_Reject_Acc_Full.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_Reject_Acc_Partial.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_n_Acc_Full.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/draw_n_Acc_Partial.png" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/nicicionWithCuda_fulldata___20" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/nicicionWithCuda_fulldata___20__Centers__" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/nicicionWithCuda_fulldata___20__Cluster__" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/training/nicicionWithCuda_fulldata___20/reject.p" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/airplane/airplane.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/alarm-clock/alarm-clock.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/angel/angel.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/ant/ant.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/apple/apple.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/arm/arm.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/armchair/armchair.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/ashtray/ashtray.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/axe/axe.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/backpack/backpack.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/banana/banana.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/barn/barn.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/baseball-bat/baseball-bat.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/basket/basket.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/bathtub/bathtub.csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/data/trainingData/csv/bear-(animal)/bear-(animal).csv" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/predict/ParallelPredictorSlave.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/predict/Predictor.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/predict/feature.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/Main.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/run.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/server.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/static/canvas.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/static/jquery-3.1.0.min.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/static/sketcher.js" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/server/templates/index.html" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/acctestload.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/acctestnotin.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/acctestsinglefold.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/acctestxfold.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/draw.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/featureutil.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/my_featutil.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/nicconsinglefold.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/parallelPartitioner.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/parallelTestNiccon.py" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test/parallelTestSingle.py" afterPath="" />
     </list>
     <ignored path="sketchautocompletion.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -14,7 +353,6 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/sketchautocompletion$Main__1_.coverage" NAME="Main (1) Coverage Results" MODIFIED="1470138094929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$loll.coverage" NAME="loll Coverage Results" MODIFIED="1469780917617" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
@@ -27,14 +365,11 @@
     <SUITE FILE_PATH="coverage/sketchautocompletion$server.coverage" NAME="server Coverage Results" MODIFIED="1469622423561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$feature.coverage" NAME="feature Coverage Results" MODIFIED="1469536312891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$run.coverage" NAME="run Coverage Results" MODIFIED="1469625777144" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$acctestload.coverage" NAME="acctestload Coverage Results" MODIFIED="1471246373018" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$test.coverage" NAME="test Coverage Results" MODIFIED="1471954537602" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/sketchautocompletion$test.coverage" NAME="test Coverage Results" MODIFIED="1468936425324" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$trainer.coverage" NAME="trainer Coverage Results" MODIFIED="1469020878813" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$acctestsinglefold.coverage" NAME="acctestsinglefold Coverage Results" MODIFIED="1471277453252" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$aa.coverage" NAME="aa Coverage Results" MODIFIED="1469516617385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$trainer1.coverage" NAME="trainer1 Coverage Results" MODIFIED="1468916138472" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/classifiers" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$newMain.coverage" NAME="newMain Coverage Results" MODIFIED="1471289245903" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ParallelMethod" />
-    <SUITE FILE_PATH="coverage/sketchautocompletion$myAccestSin.coverage" NAME="myAccestSin Coverage Results" MODIFIED="1471324199055" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/test" />
+    <SUITE FILE_PATH="coverage/sketchautocompletion$newMain.coverage" NAME="newMain Coverage Results" MODIFIED="1470231704634" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/anotherMethod" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$deneme.coverage" NAME="deneme Coverage Results" MODIFIED="1469799225580" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$svmPredict.coverage" NAME="svmPredict Coverage Results" MODIFIED="1469003956108" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
     <SUITE FILE_PATH="coverage/sketchautocompletion$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1469709976206" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/predict" />
@@ -49,50 +384,36 @@
     <favorites_list name="sketchautocompletion" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="parallelTest.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/parallelTest.py">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
+      <file leaf-file-name="parallelTestNiccon.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/test/parallelTestNiccon.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
+            <state relative-caret-position="1474">
+              <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ParallelPredictorMaster.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/predict/ParallelPredictorMaster.py">
+      <file leaf-file-name="Main.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/server/Main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
+            <state relative-caret-position="310">
+              <caret line="105" column="27" selection-start-line="105" selection-start-column="27" selection-end-line="105" selection-end-column="27" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="draw_n_Acc_0_Full.png" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme2/draw_n_Acc_0_Full.png">
-          <provider selected="true" editor-type-id="images">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="parallelPartitioner.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/test/parallelPartitioner.py">
+      <file leaf-file-name="complexcudackmeans.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/clusterer/complexcudackmeans.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ParallelTrainer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/classifiers/ParallelTrainer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
-              <folding />
+            <state relative-caret-position="2398">
+              <caret line="191" column="32" selection-start-line="191" selection-start-column="32" selection-end-line="191" selection-end-column="32" />
+              <folding>
+                <element signature="e#3166#6284#0" expanded="false" />
+                <element signature="e#11733#13597#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -107,11 +428,14 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="UPDATE_TYPE" value="REBASE" />
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
+        <option value="$PROJECT_DIR$/predict/aa.py" />
+        <option value="$PROJECT_DIR$/predict/extractor.py" />
         <option value="$PROJECT_DIR$/clusterer/getConstraints.py" />
         <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/Main/main.py" />
@@ -134,35 +458,33 @@
         <option value="$PROJECT_DIR$/anotherMethod/newMain.py" />
         <option value="$USER_HOME$/Anaconda2/Lib/site-packages/pycuda/compiler.py" />
         <option value="$PROJECT_DIR$/classifiers/trainer.py" />
-        <option value="$PROJECT_DIR$/SVM/SVM.py" />
-        <option value="$PROJECT_DIR$/predict/Predictor.py" />
         <option value="$PROJECT_DIR$/testCUDA.py" />
         <option value="$PROJECT_DIR$/data/generatepartial.py" />
-        <option value="$PROJECT_DIR$/data/savecsv.py" />
-        <option value="$PROJECT_DIR$/clusterer/cudackmeans.py" />
-        <option value="$PROJECT_DIR$/clusterer/ckmeans.py" />
         <option value="$PROJECT_DIR$/test/draw.py" />
         <option value="$PROJECT_DIR$/test/acctestload.py" />
         <option value="$PROJECT_DIR$/test/acctestxfold.py" />
         <option value="$PROJECT_DIR$/test/acctestnotin.py" />
-        <option value="$PROJECT_DIR$/test/nicconsinglefold.py" />
-        <option value="$PROJECT_DIR$/test/test.py" />
-        <option value="$PROJECT_DIR$/test/newFeatUtil.py" />
-        <option value="$PROJECT_DIR$/test/featureutil.py" />
-        <option value="$PROJECT_DIR$/test/acctestsinglefold.py" />
-        <option value="$PROJECT_DIR$/server/Main.py" />
-        <option value="$PROJECT_DIR$/test/my_featutil.py" />
-        <option value="$PROJECT_DIR$/test/myAccestSin.py" />
-        <option value="$PROJECT_DIR$/data/FileIO.py" />
-        <option value="$PROJECT_DIR$/ParallelMethod/centers.py" />
-        <option value="$PROJECT_DIR$/ParallelMethod/newMain.py" />
-        <option value="$PROJECT_DIR$/ParallelMethod/parallelMain.py" />
-        <option value="$PROJECT_DIR$/predict/ParallelPredictorSlave.py" />
+        <option value="$PROJECT_DIR$/clusterer/ckmeans.py" />
+        <option value="$PROJECT_DIR$/clusterer/fastCKMeans.py" />
+        <option value="$PROJECT_DIR$/clusterer/cudackmeans.py" />
         <option value="$PROJECT_DIR$/classifiers/ParallelTrainer.py" />
+        <option value="$PROJECT_DIR$/server/server.py" />
+        <option value="$PROJECT_DIR$/data/savecsv.py" />
+        <option value="$PROJECT_DIR$/data/trainingData/finddefecientxml.py" />
+        <option value="$PROJECT_DIR$/data/finddefecientxml.py" />
+        <option value="$PROJECT_DIR$/data/FileIO.py" />
+        <option value="$PROJECT_DIR$/clusterer/complexCKMeans.py" />
+        <option value="$PROJECT_DIR$/predict/Predictor.py" />
+        <option value="$PROJECT_DIR$/clusterer/kmeanstest.py" />
+        <option value="$PROJECT_DIR$/test/acctestsinglefold.py" />
+        <option value="$PROJECT_DIR$/test/nicconsinglefold.py" />
         <option value="$PROJECT_DIR$/data/extractor.py" />
-        <option value="$PROJECT_DIR$/test/parallelPartitioner.py" />
+        <option value="$PROJECT_DIR$/SVM/SVM.py" />
         <option value="$PROJECT_DIR$/test/parallelTest.py" />
-        <option value="$PROJECT_DIR$/predict/ParallelPredictorMaster.py" />
+        <option value="$PROJECT_DIR$/ParallelMethod/centers.py" />
+        <option value="$PROJECT_DIR$/test/parallelTestNiccon.py" />
+        <option value="$PROJECT_DIR$/clusterer/complexcudackmeans.py" />
+        <option value="$PROJECT_DIR$/server/Main.py" />
       </list>
     </option>
   </component>
@@ -172,10 +494,10 @@
     <detection-done>true</detection-done>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="65" />
-    <option name="y" value="24" />
-    <option name="width" value="1855" />
-    <option name="height" value="1056" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -202,6 +524,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -244,44 +568,16 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="newMethodTraining" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sketchautocompletion" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="data" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="newMethodTraining" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ParalelDeneme2" />
+              <option name="myItemId" value="clusterer" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="210" />
@@ -300,16 +596,17 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1135" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../youtubeToDrive/YoutubeDownloader/main.py" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Downloads/libsvm-3.17-GPU_x64-v1.2/windows/libsvm.dll" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/data" />
+      <recent name="C:\Users\1003\PycharmProjects\sketchautocompletion\data" />
+      <recent name="C:\Users\1003\PycharmProjects\sketchautocompletion\data\newMethodTraining" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/Main" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.test">
+  <component name="RunManager" selected="Python.Main">
     <configuration default="false" name="acctestsinglefold" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -328,7 +625,7 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="acctestload" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="nicconsinglefold" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -341,30 +638,30 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="sketchautocompletion" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/acctestload.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/nicconsinglefold.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="newMain" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="Main" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ParallelMethod" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/server" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="sketchautocompletion" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ParallelMethod/parallelMain.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/Main.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="test" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="parallelTest" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -382,73 +679,22 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="false" name="myAccestSin" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration default="false" name="centers" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ParallelMethod" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <module name="sketchautocompletion" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/parallelPartitioner.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ParallelMethod/centers.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
-      <method />
-    </configuration>
-    <configuration default="true" type="DjangoTestsConfigurationType" factoryName="Django tests">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="sketchautocompletion" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="TARGET" value="" />
-      <option name="SETTINGS_FILE" value="" />
-      <option name="CUSTOM_SETTINGS" value="false" />
-      <option name="USE_OPTIONS" value="false" />
-      <option name="OPTIONS" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="JavascriptDebugType" factoryName="JavaScript Debug">
-      <method />
-    </configuration>
-    <configuration default="true" type="PyBehaveRunConfigurationType" factoryName="Behave">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="sketchautocompletion" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="ADDITIONAL_ARGS" value="" />
-      <method />
-    </configuration>
-    <configuration default="true" type="PyLettuceRunConfigurationType" factoryName="Lettuce">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="" />
-      <option name="IS_MODULE_SDK" value="false" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="sketchautocompletion" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" enabled="false" sample_coverage="true" runner="coverage.py" />
-      <option name="ADDITIONAL_ARGS" value="" />
       <method />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
@@ -469,18 +715,16 @@
       <option name="SHOW_COMMAND_LINE" value="false" />
       <method />
     </configuration>
-    <configuration default="true" type="js.build_tools.gulp" factoryName="Gulp.js">
-      <node-options />
-      <gulpfile />
-      <tasks />
-      <arguments />
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
       <envs />
-      <method />
-    </configuration>
-    <configuration default="true" type="js.build_tools.npm" factoryName="npm">
-      <command value="run-script" />
-      <scripts />
-      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="sketchautocompletion" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Attests">
@@ -595,352 +839,404 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.acctestsinglefold" />
-      <item index="1" class="java.lang.String" itemvalue="Python.acctestload" />
-      <item index="2" class="java.lang.String" itemvalue="Python.newMain" />
-      <item index="3" class="java.lang.String" itemvalue="Python.test" />
-      <item index="4" class="java.lang.String" itemvalue="Python.myAccestSin" />
+      <item index="1" class="java.lang.String" itemvalue="Python.nicconsinglefold" />
+      <item index="2" class="java.lang.String" itemvalue="Python.Main" />
+      <item index="3" class="java.lang.String" itemvalue="Python.parallelTest" />
+      <item index="4" class="java.lang.String" itemvalue="Python.centers" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.myAccestSin" />
-        <item index="2" class="java.lang.String" itemvalue="Python.newMain" />
-        <item index="3" class="java.lang.String" itemvalue="Python.acctestsinglefold" />
-        <item index="4" class="java.lang.String" itemvalue="Python.acctestload" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Main" />
+        <item index="1" class="java.lang.String" itemvalue="Python.parallelTest" />
+        <item index="2" class="java.lang.String" itemvalue="Python.centers" />
+        <item index="3" class="java.lang.String" itemvalue="Python.nicconsinglefold" />
+        <item index="4" class="java.lang.String" itemvalue="Python.acctestsinglefold" />
       </list>
     </recent_temporary>
   </component>
-  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
   <component name="SvnConfiguration">
-    <configuration />
+    <configuration>C:\Users\1003\AppData\Roaming\Subversion</configuration>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="c185911a-3b06-465a-9bf9-88d678b9dd4f" name="Default" comment="" />
       <created>1468915905006</created>
       <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
       <updated>1468915905006</updated>
+    </task>
+    <task id="LOCAL-00025" summary="added homogeneous computation for clusters">
+      <created>1469084586580</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1469084586580</updated>
+    </task>
+    <task id="LOCAL-00026" summary="corrected Homogenous probability calculation">
+      <created>1469085301127</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1469085301127</updated>
+    </task>
+    <task id="LOCAL-00027" summary="=">
+      <created>1469085674747</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1469085674747</updated>
+    </task>
+    <task id="LOCAL-00028" summary="clusterProb2">
+      <created>1469437315532</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1469437315532</updated>
+    </task>
+    <task id="LOCAL-00029" summary="clusterProb2">
+      <created>1469437338172</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1469437338172</updated>
+    </task>
+    <task id="LOCAL-00030" summary="work">
+      <created>1469439343192</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1469439343192</updated>
+    </task>
+    <task id="LOCAL-00031" summary="FileIO">
+      <created>1469456290553</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1469456290553</updated>
+    </task>
+    <task id="LOCAL-00032" summary="FileIO">
+      <created>1469456332602</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1469456332602</updated>
+    </task>
+    <task id="LOCAL-00033" summary="Some commenting">
+      <created>1469530860280</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1469530860280</updated>
+    </task>
+    <task id="LOCAL-00034" summary="ckmeans commented">
+      <created>1469531166259</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1469531166259</updated>
+    </task>
+    <task id="LOCAL-00035" summary="commment">
+      <created>1469531287916</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1469531287916</updated>
     </task>
     <task id="LOCAL-00036" summary="subpress print">
       <created>1469532351407</created>
       <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
       <option name="project" value="LOCAL" />
       <updated>1469532351407</updated>
     </task>
     <task id="LOCAL-00037" summary="comment">
       <created>1469534803177</created>
       <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
       <option name="project" value="LOCAL" />
       <updated>1469534803177</updated>
     </task>
     <task id="LOCAL-00038" summary="main added&#10;">
       <created>1469536790755</created>
       <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
       <option name="project" value="LOCAL" />
       <updated>1469536790755</updated>
     </task>
     <task id="LOCAL-00039" summary="main class (To be improved further)">
       <created>1469537584821</created>
       <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
       <option name="project" value="LOCAL" />
       <updated>1469537584821</updated>
     </task>
     <task id="LOCAL-00040" summary="Main class improved">
       <created>1469540496784</created>
       <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
       <option name="project" value="LOCAL" />
       <updated>1469540496784</updated>
     </task>
     <task id="LOCAL-00041" summary="Prevented unnecessary printing">
       <created>1469541626147</created>
       <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
       <option name="project" value="LOCAL" />
       <updated>1469541626147</updated>
     </task>
     <task id="LOCAL-00042" summary="Main">
       <created>1469625944342</created>
       <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
       <option name="project" value="LOCAL" />
       <updated>1469625944342</updated>
     </task>
     <task id="LOCAL-00043" summary="Main finalized">
       <created>1469626252711</created>
       <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
       <option name="project" value="LOCAL" />
       <updated>1469626252711</updated>
     </task>
     <task id="LOCAL-00044" summary="Names">
       <created>1469693224606</created>
       <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
       <option name="project" value="LOCAL" />
       <updated>1469693224606</updated>
     </task>
     <task id="LOCAL-00045" summary="Class names">
       <created>1469693317703</created>
       <option name="number" value="00045" />
+      <option name="presentableId" value="LOCAL-00045" />
       <option name="project" value="LOCAL" />
       <updated>1469693317703</updated>
     </task>
     <task id="LOCAL-00046" summary="Main finalized">
       <created>1469693655061</created>
       <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
       <option name="project" value="LOCAL" />
       <updated>1469693655061</updated>
     </task>
     <task id="LOCAL-00047" summary="Main finalized">
       <created>1469781134812</created>
       <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
       <option name="project" value="LOCAL" />
       <updated>1469781134812</updated>
     </task>
     <task id="LOCAL-00048" summary="Main debugged, FileIO now have saveTraining, loadTraining">
       <created>1469781284398</created>
       <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
       <option name="project" value="LOCAL" />
       <updated>1469781284399</updated>
     </task>
     <task id="LOCAL-00049" summary="FileIO debugged">
       <created>1469781328157</created>
       <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
       <option name="project" value="LOCAL" />
       <updated>1469781328157</updated>
     </task>
     <task id="LOCAL-00050" summary="getBestPredictions changed">
       <created>1469792690684</created>
       <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
       <option name="project" value="LOCAL" />
       <updated>1469792690685</updated>
     </task>
     <task id="LOCAL-00051" summary="getBestPredictions changed">
       <created>1469792762424</created>
       <option name="number" value="00051" />
+      <option name="presentableId" value="LOCAL-00051" />
       <option name="project" value="LOCAL" />
       <updated>1469792762425</updated>
     </task>
     <task id="LOCAL-00052" summary="getBestPredictions changed">
       <created>1469792802832</created>
       <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
       <option name="project" value="LOCAL" />
       <updated>1469792802832</updated>
     </task>
     <task id="LOCAL-00053" summary="savingModeee">
       <created>1469798990821</created>
       <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
       <option name="project" value="LOCAL" />
       <updated>1469798990821</updated>
     </task>
     <task id="LOCAL-00054" summary="savedTrainings Dir">
       <created>1469799145079</created>
       <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
       <option name="project" value="LOCAL" />
       <updated>1469799145079</updated>
     </task>
     <task id="LOCAL-00055" summary="training names">
       <created>1469801579397</created>
       <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
       <option name="project" value="LOCAL" />
       <updated>1469801579397</updated>
     </task>
     <task id="LOCAL-00056" summary="saves">
       <created>1469808171543</created>
       <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
       <option name="project" value="LOCAL" />
       <updated>1469808171543</updated>
     </task>
     <task id="LOCAL-00057" summary="Saving Trainings were implemented">
       <created>1470037743155</created>
       <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
       <option name="project" value="LOCAL" />
       <updated>1470037743156</updated>
     </task>
     <task id="LOCAL-00058" summary="Saving Trainings implemented">
       <created>1470037991236</created>
       <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
       <option name="project" value="LOCAL" />
       <updated>1470037991236</updated>
     </task>
     <task id="LOCAL-00059" summary="saves now compatible at windows">
       <created>1470041444785</created>
       <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
       <option name="project" value="LOCAL" />
       <updated>1470041444785</updated>
     </task>
     <task id="LOCAL-00060" summary="Do not retrain SWM when loaded">
       <created>1470059770005</created>
       <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
       <option name="project" value="LOCAL" />
       <updated>1470059770005</updated>
     </task>
     <task id="LOCAL-00061" summary="Deleted unnecessary">
       <created>1470120824158</created>
       <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
       <option name="project" value="LOCAL" />
       <updated>1470120824158</updated>
     </task>
     <task id="LOCAL-00062" summary="main simplified&#10;new method begins&#10;classesFIle introduced">
       <created>1470139454862</created>
       <option name="number" value="00062" />
+      <option name="presentableId" value="LOCAL-00062" />
       <option name="project" value="LOCAL" />
       <updated>1470139454863</updated>
     </task>
     <task id="LOCAL-00063" summary="arda wants">
       <created>1470639610054</created>
       <option name="number" value="00063" />
+      <option name="presentableId" value="LOCAL-00063" />
       <option name="project" value="LOCAL" />
       <updated>1470639610054</updated>
     </task>
     <task id="LOCAL-00064" summary="extractor and tester for nicicon database">
       <created>1471172219010</created>
       <option name="number" value="00064" />
+      <option name="presentableId" value="LOCAL-00064" />
       <option name="project" value="LOCAL" />
       <updated>1471172219010</updated>
     </task>
     <task id="LOCAL-00065" summary="*">
       <created>1471173173254</created>
       <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
       <option name="project" value="LOCAL" />
       <updated>1471173173254</updated>
     </task>
-    <task id="LOCAL-00066" summary="Parallel Testing">
-      <created>1471258652396</created>
+    <task id="LOCAL-00066" summary="-">
+      <created>1471187499894</created>
       <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
       <option name="project" value="LOCAL" />
-      <updated>1471258652397</updated>
+      <updated>1471187499894</updated>
     </task>
-    <task id="LOCAL-00067" summary="Parallel Training CUDA">
-      <created>1471293146068</created>
+    <task id="LOCAL-00067" summary="-">
+      <created>1471187740467</created>
       <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
       <option name="project" value="LOCAL" />
-      <updated>1471293146069</updated>
+      <updated>1471187740467</updated>
     </task>
-    <task id="LOCAL-00068" summary="Parallel Training CUDA">
-      <created>1471293360823</created>
+    <task id="LOCAL-00068" summary="fixed cuda voting">
+      <created>1471245394316</created>
       <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
       <option name="project" value="LOCAL" />
-      <updated>1471293360823</updated>
+      <updated>1471245394316</updated>
     </task>
-    <task id="LOCAL-00069" summary="Parallel Training CUDA">
-      <created>1471294080249</created>
+    <task id="LOCAL-00069" summary="fixed cuda voting">
+      <created>1471252570790</created>
       <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
       <option name="project" value="LOCAL" />
-      <updated>1471294080249</updated>
+      <updated>1471252570790</updated>
     </task>
-    <task id="LOCAL-00070" summary="Parallel Training data">
-      <created>1471324724828</created>
+    <task id="LOCAL-00070" summary="fastckmeans">
+      <created>1471257748268</created>
       <option name="number" value="00070" />
+      <option name="presentableId" value="LOCAL-00070" />
       <option name="project" value="LOCAL" />
-      <updated>1471324724828</updated>
+      <updated>1471257748268</updated>
     </task>
-    <task id="LOCAL-00071" summary="Parallel Test">
-      <created>1471325685619</created>
+    <task id="LOCAL-00071" summary="find nicicon database missing .xml files">
+      <created>1471447923770</created>
       <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
       <option name="project" value="LOCAL" />
-      <updated>1471325685619</updated>
+      <updated>1471447923771</updated>
     </task>
-    <task id="LOCAL-00072" summary="Parallel Testing  CUDA">
-      <created>1471325787612</created>
+    <task id="LOCAL-00072" summary="complexcudackmeans">
+      <created>1471512366345</created>
       <option name="number" value="00072" />
+      <option name="presentableId" value="LOCAL-00072" />
       <option name="project" value="LOCAL" />
-      <updated>1471325787612</updated>
+      <updated>1471512366345</updated>
     </task>
-    <task id="LOCAL-00073" summary="Parallel Training, centers, parallelMain , parallel Tester arranged and tested">
-      <created>1471354162512</created>
+    <task id="LOCAL-00073" summary="some small change">
+      <created>1471952556808</created>
       <option name="number" value="00073" />
+      <option name="presentableId" value="LOCAL-00073" />
       <option name="project" value="LOCAL" />
-      <updated>1471354162512</updated>
+      <updated>1471952556808</updated>
     </task>
-    <task id="LOCAL-00074" summary="Parallel Training Some comments">
-      <created>1471355734778</created>
-      <option name="number" value="00074" />
-      <option name="project" value="LOCAL" />
-      <updated>1471355734778</updated>
-    </task>
-    <task id="LOCAL-00075" summary="Parallel training testing data moved">
-      <created>1471356724069</created>
-      <option name="number" value="00075" />
-      <option name="project" value="LOCAL" />
-      <updated>1471356724070</updated>
-    </task>
-    <task id="LOCAL-00076" summary="Changes on extractor">
-      <created>1471940322973</created>
-      <option name="number" value="00076" />
-      <option name="project" value="LOCAL" />
-      <updated>1471940322974</updated>
-    </task>
-    <task id="LOCAL-00077" summary="Parallel training testing data moved">
-      <created>1471948990814</created>
-      <option name="number" value="00077" />
-      <option name="project" value="LOCAL" />
-      <updated>1471948990814</updated>
-    </task>
-    <task id="LOCAL-00078" summary="Parallel training testing data moved">
-      <created>1471950555294</created>
-      <option name="number" value="00078" />
-      <option name="project" value="LOCAL" />
-      <updated>1471950555294</updated>
-    </task>
-    <task id="LOCAL-00079" summary="Parallel training testing data moved">
-      <created>1471950796384</created>
-      <option name="number" value="00079" />
-      <option name="project" value="LOCAL" />
-      <updated>1471950796385</updated>
-    </task>
-    <task id="LOCAL-00080" summary="Extractor changed for parallel">
-      <created>1471951026725</created>
-      <option name="number" value="00080" />
-      <option name="project" value="LOCAL" />
-      <updated>1471951026725</updated>
-    </task>
-    <task id="LOCAL-00081" summary="Parallel now complex cuda ckmeans">
-      <created>1471951334553</created>
-      <option name="number" value="00081" />
-      <option name="project" value="LOCAL" />
-      <updated>1471951334553</updated>
-    </task>
-    <task id="LOCAL-00082" summary="Paralell Testing Goes on">
-      <created>1471954001924</created>
-      <option name="number" value="00082" />
-      <option name="project" value="LOCAL" />
-      <updated>1471954001924</updated>
-    </task>
-    <task id="LOCAL-00083" summary="ParalelPredictorSlaves Speaks better">
-      <created>1471954721878</created>
-      <option name="number" value="00083" />
-      <option name="project" value="LOCAL" />
-      <updated>1471954721878</updated>
-    </task>
-    <task id="LOCAL-00084" summary="ParalelPredictorSlaves Speaks better">
-      <created>1471954742343</created>
-      <option name="number" value="00084" />
-      <option name="project" value="LOCAL" />
-      <updated>1471954742343</updated>
-    </task>
-    <option name="localTasksCounter" value="85" />
+    <option name="localTasksCounter" value="74" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="65" y="24" width="1855" height="1056" extended-state="6" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21024258" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.225" sideWeight="0.7746711" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28649837" sideWeight="0.5020986" order="11" side_tool="true" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35641548" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15376782" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.111964874" sideWeight="0.50416666" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.111964874" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35699373" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39736554" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23645833" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.225" sideWeight="0.22532895" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2129528" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.013238289" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49389002" sideWeight="0.49790135" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.49791667" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31771895" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -948,20 +1244,20 @@
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.111964874" sideWeight="0.50416666" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.013238289" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.15478615" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.111964874" sideWeight="0.49583334" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35699373" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.35016465" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33260155" sideWeight="0.49583334" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985386" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1123302" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.225" sideWeight="0.7746711" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3299389" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32930845" sideWeight="0.49791667" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23645833" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22832052" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.225" sideWeight="0.22532895" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2129528" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout-to-restore>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -976,7 +1272,13 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
+    <MESSAGE value="Names" />
+    <MESSAGE value="Class names" />
+    <MESSAGE value="Main finalized" />
+    <MESSAGE value="Main debugged, FileIO now have saveTraining, loadTraining" />
+    <MESSAGE value="FileIO debugged" />
+    <MESSAGE value="getBestPredictions changed" />
+    <MESSAGE value="savingModeee" />
     <MESSAGE value="savedTrainings Dir" />
     <MESSAGE value="training names" />
     <MESSAGE value="saves" />
@@ -989,98 +1291,56 @@
     <MESSAGE value="arda wants" />
     <MESSAGE value="extractor and tester for nicicon database" />
     <MESSAGE value="*" />
-    <MESSAGE value="Parallel Testing" />
-    <MESSAGE value="Parallel Training CUDA" />
-    <MESSAGE value="Parallel Training data" />
-    <MESSAGE value="Parallel Test" />
-    <MESSAGE value="Parallel Testing  CUDA" />
-    <MESSAGE value="Parallel Training, centers, parallelMain , parallel Tester arranged and tested" />
-    <MESSAGE value="Parallel Training Some comments" />
-    <MESSAGE value="Changes on extractor" />
-    <MESSAGE value="Parallel training testing data moved" />
-    <MESSAGE value="Extractor changed for parallel" />
-    <MESSAGE value="Parallel now complex cuda ckmeans" />
-    <MESSAGE value="Paralell Testing Goes on" />
-    <MESSAGE value="ParalelPredictorSlaves Speaks better" />
-    <option name="LAST_COMMIT_MESSAGE" value="ParalelPredictorSlaves Speaks better" />
+    <MESSAGE value="-" />
+    <MESSAGE value="fastckmeans" />
+    <MESSAGE value="find nicicon database missing .xml files" />
+    <MESSAGE value="complexcudackmeans" />
+    <MESSAGE value="some small change" />
+    <MESSAGE value="fixed cuda voting" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed cuda voting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint type="python-line">
+        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Main/main.py</url>
           <line>15</line>
           <option name="timeStamp" value="156" />
         </line-breakpoint>
-        <line-breakpoint type="python-line">
+        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/Main/main.py</url>
           <line>17</line>
           <option name="timeStamp" value="157" />
         </line-breakpoint>
-        <line-breakpoint type="python-line">
-          <url>file://$USER_HOME$/Anaconda2/Lib/site-packages/pycuda/compiler.py</url>
-          <line>117</line>
-          <option name="timeStamp" value="303" />
-        </line-breakpoint>
-        <line-breakpoint type="python-line">
+        <line-breakpoint enabled="true" type="python-line">
           <url>file://$USER_HOME$/Anaconda2/Lib/site-packages/pycuda/compiler.py</url>
           <line>268</line>
           <option name="timeStamp" value="304" />
         </line-breakpoint>
-        <line-breakpoint type="python-line">
-          <url>file://$USER_HOME$/Anaconda2/Lib/site-packages/pycuda/compiler.py</url>
-          <line>118</line>
-          <option name="timeStamp" value="308" />
-        </line-breakpoint>
-        <line-breakpoint type="python-line">
+        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/../libsvm-3.17-GPU_x64-v1.2/python/svm.py</url>
           <line>25</line>
           <option name="timeStamp" value="318" />
         </line-breakpoint>
-        <line-breakpoint type="python-line">
+        <line-breakpoint enabled="true" type="python-line">
           <url>file://$PROJECT_DIR$/../libsvm-3.17-GPU_x64-v1.2/python/svm.py</url>
           <line>19</line>
           <option name="timeStamp" value="320" />
         </line-breakpoint>
-        <line-breakpoint type="python-line">
-          <url>file://$PROJECT_DIR$/data/extractor.py</url>
-          <line>18</line>
-          <option name="timeStamp" value="388" />
-        </line-breakpoint>
-        <line-breakpoint type="python-line">
-          <url>file://$PROJECT_DIR$/data/extractor.py</url>
-          <line>20</line>
-          <option name="timeStamp" value="391" />
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/test/acctestload.py</url>
+          <line>17</line>
+          <option name="timeStamp" value="345" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/test/my_featutil.py</url>
-          <line>49</line>
-          <option name="timeStamp" value="402" />
+          <url>file://$PROJECT_DIR$/server/Main.py</url>
+          <line>153</line>
+          <option name="timeStamp" value="423" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/test/my_featutil.py</url>
-          <line>50</line>
-          <option name="timeStamp" value="403" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/../youtubeToDrive/YoutubeDownloader/main.py</url>
-          <line>6</line>
-          <option name="timeStamp" value="421" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/classifiers/ParallelTrainer.py</url>
-          <line>39</line>
-          <option name="timeStamp" value="437" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/classifiers/ParallelTrainer.py</url>
-          <line>38</line>
-          <option name="timeStamp" value="438" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/test/parallelTest.py</url>
-          <line>104</line>
-          <option name="timeStamp" value="441" />
+          <url>file://$PROJECT_DIR$/server/Main.py</url>
+          <line>158</line>
+          <option name="timeStamp" value="424" />
         </line-breakpoint>
       </breakpoints>
       <breakpoints-dialog>
@@ -1093,7 +1353,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="442" />
+      <option name="time" value="427" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="PythonConfigurationType">
@@ -1104,83 +1364,9 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/kolGIbi/draw_n_Acc_0_Partial.png">
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/SunumOut/draw_N_C_Acc_Contour_Partial.png">
       <provider selected="true" editor-type-id="images">
         <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_N_C_Acc_Contour_Partial.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_N_C_Acc_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_N_C_Acc_Partial.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_n_Acc_0_Partial.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_N_C_Reject_Contour_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_N_C_Reject_Contour_Partial.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_Reject_Acc_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_Reject_Acc_Partial.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/clusterer/fastCKMeans.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/training/koyoro___10_10_20_20/draw_N_C_Acc_Contour_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_N_C_Acc_Contour_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/training/koyoro___10_10_20_20/draw_n_Acc_0_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/BolGibi/draw_n_Acc_0_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/visualise.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data/newMethodTraining/SunumOut/draw_n_Acc_0_Partial.png">
@@ -1188,12 +1374,231 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/training/sunumOut___15_15_50_30/draw_n_Acc_0_Partial.png">
+    <entry file="file://$PROJECT_DIR$/data/training/singlefoldacctest-newCUDA___5_80_80_5/draw_n_Acc_Full.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/data/training/sunumOut___15_15_50_30/draw_n_Acc_0_Full.png">
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/SunumOutRandom/draw_n_Acc_0_Partial.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/ParallelTrainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-44">
+          <caret line="85" column="12" selection-start-line="85" selection-start-column="12" selection-end-line="85" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/SunumOutRandom/draw_N_C_Acc_Contour_Partial.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/my_featutil.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-3168">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/acctestxfold.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="589">
+          <caret line="48" column="4" selection-start-line="48" selection-start-column="4" selection-end-line="48" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/ckmeans.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1584">
+          <caret line="79" column="11" selection-start-line="79" selection-start-column="11" selection-end-line="137" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/run.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="257">
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="20" selection-end-line="16" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/SunumOutRandom/draw_N_C_Acc_Contour_Full.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/finddefecientxml.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="582">
+          <caret line="43" column="0" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda2/Lib/json/encoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="183" column="0" selection-start-line="183" selection-start-column="0" selection-end-line="183" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="16" column="28" selection-start-line="16" selection-start-column="19" selection-end-line="16" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/FileIO.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="715">
+          <caret line="69" column="15" selection-start-line="69" selection-start-column="15" selection-end-line="69" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/savecsv.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="0" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda2/Lib/multiprocessing/queues.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="376" column="0" selection-start-line="376" selection-start-column="0" selection-end-line="376" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/cudackmeans.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="339" column="16" selection-start-line="339" selection-start-column="16" selection-end-line="339" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/fastCKMeans.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1188">
+          <caret line="58" column="17" selection-start-line="58" selection-start-column="15" selection-end-line="58" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/complexCKMeans.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="17" column="28" selection-start-line="17" selection-start-column="28" selection-end-line="17" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="616">
+          <caret line="28" column="22" selection-start-line="28" selection-start-column="17" selection-end-line="28" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda2/Lib/multiprocessing/pool.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="566" column="0" selection-start-line="566" selection-start-column="0" selection-end-line="566" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/acctestsinglefold.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5104">
+          <caret line="232" column="33" selection-start-line="232" selection-start-column="33" selection-end-line="232" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterer/kmeanstest.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="328">
+          <caret line="130" column="0" selection-start-line="130" selection-start-column="0" selection-end-line="130" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/nicconsinglefold.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="155" column="7" selection-start-line="155" selection-start-column="7" selection-end-line="155" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda2/Lib/site-packages/numpy/lib/npyio.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="361" column="0" selection-start-line="361" selection-start-column="0" selection-end-line="361" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/ParallelPredictorMaster.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="28" column="0" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/trainingData/csv/airplane/airplane.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-543">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/testingData/csv/airplane/airplane.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme15C/draw_N_C_Acc_Contour_Full.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme15C/accuracy.p">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SVM/SVM.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="179">
+          <caret line="93" column="61" selection-start-line="93" selection-start-column="61" selection-end-line="93" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Anaconda2/Lib/site-packages/flask/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="602">
+          <caret line="1641" column="0" selection-start-line="1641" selection-start-column="0" selection-end-line="1641" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme20C/draw_n_Acc_0_Full.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme15C/draw_n_Acc_0_Full.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/predict/Predictor.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1537">
+          <caret line="119" column="27" selection-start-line="119" selection-start-column="27" selection-end-line="119" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/SunumOutRandom/draw_n_Acc_0_Full.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
@@ -1203,227 +1608,79 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/server/Main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme20C/draw_n_Acc_0_Partial.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/my_featutil.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="51" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../youtubeToDrive/YoutubeDownloader/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="9" selection-start-line="6" selection-start-column="9" selection-end-line="6" selection-end-column="9" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/trainer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="4" selection-end-column="3" />
-        </state>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme15C/draw_n_Acc_0_Partial.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/ParallelMethod/centers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="3" selection-start-line="0" selection-start-column="3" selection-end-line="0" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/FileIO.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.59016395">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict/Predictor.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="137" column="16" selection-start-line="137" selection-start-column="16" selection-end-line="137" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/ant/ant.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
+        <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/arm/arm.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/axe/axe.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/barn/barn.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/angel/angel.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/apple/apple.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/banana/banana.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/basket/basket.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/ashtray/ashtray.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/bathtub/bathtub.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file:///usr/lib/python2.7/dist-packages/pandas/core/common.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2313" column="0" selection-start-line="2313" selection-start-column="0" selection-end-line="2313" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/trainingData/csv/airplane/airplane.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/testingData/csv/airplane/airplane.csv">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/DEneme/draw_n_Acc_0_Partial.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/DEneme/draw_n_Acc_0_Full.png">
-      <provider selected="true" editor-type-id="images">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict/ParallelPredictorSlave.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="177" column="7" selection-start-line="177" selection-start-column="7" selection-end-line="177" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/ParallelMethod/parallelMain.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.82397">
-          <caret line="30" column="36" selection-start-line="30" selection-start-column="36" selection-end-line="30" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/acctestsinglefold.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2309613">
-          <caret line="35" column="24" selection-start-line="35" selection-start-column="14" selection-end-line="35" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/data/extractor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.16336633">
-          <caret line="22" column="30" selection-start-line="22" selection-start-column="30" selection-end-line="22" selection-end-column="30" />
-          <folding />
+        <state relative-caret-position="242">
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/numpy/lib/npyio.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="361" column="0" selection-start-line="361" selection-start-column="0" selection-end-line="361" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/parallelTest.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="141" column="59" selection-start-line="141" selection-start-column="59" selection-end-line="141" selection-end-column="59" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/predict/ParallelPredictorMaster.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="15" selection-start-line="16" selection-start-column="15" selection-end-line="16" selection-end-column="15" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme2/draw_n_Acc_0_Full.png">
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDeneme20C/draw_N_C_Reject_Contour_Full.png">
       <provider selected="true" editor-type-id="images">
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/parallelPartitioner.py">
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDenemeFullCenters/draw_n_Acc_0_Full.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/training/complexCudaCKMean_newprior___10_80_80_10/draw_n_Acc_0_Full.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/training/complexCudaCKMean_newprior___10_80_80_10/draw_n_Acc_0_Partial.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/data/newMethodTraining/ParalelDenemeFullCenters/draw_n_Acc_0_Partial.png">
+      <provider selected="true" editor-type-id="images">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/parallelTest.py" />
+    <entry file="file://$PROJECT_DIR$/test/parallelTestNiccon.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="19" selection-start-line="20" selection-start-column="19" selection-end-line="20" selection-end-column="19" />
+        <state relative-caret-position="1474">
+          <caret line="67" column="19" selection-start-line="67" selection-start-column="19" selection-end-line="67" selection-end-column="19" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/classifiers/ParallelTrainer.py">
+    <entry file="file://$PROJECT_DIR$/clusterer/complexcudackmeans.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="60" column="36" selection-start-line="60" selection-start-column="36" selection-end-line="60" selection-end-column="36" />
+        <state relative-caret-position="2398">
+          <caret line="191" column="32" selection-start-line="191" selection-start-column="32" selection-end-line="191" selection-end-column="32" />
+          <folding>
+            <element signature="e#3166#6284#0" expanded="false" />
+            <element signature="e#11733#13597#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/Main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="310">
+          <caret line="105" column="27" selection-start-line="105" selection-start-column="27" selection-end-line="105" selection-end-column="27" />
           <folding />
         </state>
       </provider>

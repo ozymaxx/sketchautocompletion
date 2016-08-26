@@ -79,7 +79,7 @@ def main():
                           numtrainfull=numfull-numtest,
                           selectTestRandom=True)
 
-    K = [numclass] # :O
+    K = [10] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
@@ -107,7 +107,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i_%i_%i' % ('complexCudaCKMeans', numclass, numfull, numpartial, k)
+        folderName = '%s___%i_%i_%i_%i' % ('complexCudaCKMean_newprior', numclass, numfull, numpartial, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -139,7 +139,7 @@ def main():
                 kmeansoutput = ckmeans.getCKMeans()
                 '''
 
-                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20, maxweight=0)
+                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20)
                 kmeansoutput = ckmeans.getCKMeans()
 
                 trainer = Trainer(kmeansoutput, train_classId, train_features)
@@ -168,14 +168,15 @@ def main():
 
         print 'Starting Testing'
         classProb = predictor.calculatePosteriorProb(test_features, priorClusterProb)
-        
-        
+
+        classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+            #classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+            classProb = classProbList[test_index]
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
             for n in N:

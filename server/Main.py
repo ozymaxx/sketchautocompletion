@@ -97,8 +97,7 @@ def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
         extr = Extractor('../data/')
         features, isFull, classId, names, folderList = extr.loadfolders(  numclass   = numclass,
                                                                           numfull    = numfull,
-                                                                          numpartial = numpartial,
-                                                                          folderList = files[:numclass])
+                                                                          numpartial = numpartial)
         # check if pycuda is installed
         import imp
         try:
@@ -131,7 +130,7 @@ def handle_data():
     global predictor
     timeStart = time.time()
     try:
-        queryjson = request.POST
+        queryjson = request.args['json']
 
         #print("tayp " + queryjson)
         #print("tayp " + type(queryjson))
@@ -162,7 +161,7 @@ def homepage():
 
 def main():
     ForceTrain = False
-    numclass, numfull, numpartial = 150, 75, 75
+    numclass, numfull, numpartial = 250, 80, 80
     k = numclass
     trainingName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
     trainingpath = '../data/training/' + trainingName

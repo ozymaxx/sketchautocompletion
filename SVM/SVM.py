@@ -91,7 +91,7 @@ class SVM:
 
 
             m = svm_train(problem, param)
-            print order%4, ". thread finished", order/4,"models"
+            print order%4, ". thread finished", 1 + (order/4),"models"
             self.allSV.extend(m.get_SV())
 
             import os

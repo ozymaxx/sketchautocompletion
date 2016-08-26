@@ -23,7 +23,7 @@ import parallelPartitioner
 
 
 def main():
-    numclass, numfull, numpartial = 10, 10, 10
+    numclass, numfull, numpartial = 10, 80, 80
     numtest = 5
     debugMode = True
 
@@ -90,7 +90,7 @@ def main():
     reject_rate = dict()
     my_n = numtest
     my_files = folderList
-    my_name = 'ParalelDeneme2'
+    my_name = 'ParalelDenemeFullCenters'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0

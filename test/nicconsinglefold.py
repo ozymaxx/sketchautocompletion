@@ -20,17 +20,18 @@ from Predictor import *
 from scipyCKMeans import *
 from scipykmeans import *
 from complexCKMeans import *
+from complexcudackmeans import *
 
 def main():
     numclass = 14
 
-    extr_train = Extractor('/home/semih/Desktop/csv/train')
+    extr_train = Extractor('C:/Users/1003/Desktop/nicicon/csv/train')
     train_features, \
     train_isFull, \
     train_classId, \
     train_names = extr_train.loadniciconfolders()
 
-    extr_test = Extractor('/home/semih/Desktop/csv/test')
+    extr_test = Extractor('C:/Users/1003/Desktop/nicicon/csv/test')
     test_features, \
     test_isFull, \
     test_classId, \
@@ -63,7 +64,7 @@ def main():
         Training start
         '''
 
-        ForceTrain = False
+        ForceTrain = True
         folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(train_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
@@ -97,7 +98,7 @@ def main():
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
             else:
                 from cudackmeans import *
-                clusterer = CuCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
+                clusterer = complexCudaCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
                 # print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
                 clusters, centers = clusterer.cukmeans()
                 kmeansoutput = [clusters, centers]
@@ -114,12 +115,14 @@ def main():
 
         classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         print 'Starting Testing'
+        classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+            #classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+            classProb = classProbList[test_index]
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
             for n in N:

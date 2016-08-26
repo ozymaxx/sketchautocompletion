@@ -121,10 +121,10 @@ def main():
     clusterer = complexCudaCKMeans(np.transpose(features), numclass, classId, isFull, stepweight= 0.05, maxweight=1)
     kmeansoutput = clusterer.cukmeans()
 
-    trainerkmeans = Trainer(kmeansoutput, classId, np.transpose(features))
-    heteClstrFeatureId, heteClstrId = trainerkmeans.getHeterogenous()
+    trainer = Trainer(kmeansoutput, classId, np.transpose(features))
+    heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
 
-    svmkmeans = trainerkmeans.trainSVM(heteClstrFeatureId, None)
+    svmkmeans = trainer.trainSVM(heteClstrFeatureId, None)
 
     predictor = Predictor(kmeansoutput, classId, None, svm=svmkmeans)
     svkmeans = predictor.getSV()
