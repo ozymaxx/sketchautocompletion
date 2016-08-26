@@ -56,9 +56,13 @@ class ParallelPredictorMaster:
 
             #get the slave predictor of the group
             names, classId, isFull, features, kmeansoutput, loadedFolders = fio.loadTraining(trainingpath + "/" + trainingName)
+            loadedFolders = trainInfo['files'][i]
             nowSwm = Trainer.loadSvm(kmeansoutput, classId, trainingpath, features)
-            print loadedFolders
-            return 0
+            if self.debugMode:
+                print '+++++++++++++++++++++++++++++++++++++++++++++++++'
+                print trainInfo
+                print '+++++++++++++++++++++++++++++++++++++++++++++++++'
+
             #WE Give the file names to the slave predictors
             #Their output is directly by name s.a {'airplane:0.1}
             predictor = ParallelPredictorSlave(kmeansoutput, classId, trainingpath, loadedFolders, nowSwm)

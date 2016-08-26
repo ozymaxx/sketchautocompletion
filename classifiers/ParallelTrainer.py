@@ -106,6 +106,9 @@ class ParallelTrainer:
 
             if(self.debugMode):
                 print "Names------", names
+                print 'Folders :   ', folderlist
+                print 'Gruptaki instance sayisi : ', len(features)
+                print 'Olmasi gereken ', numfull*numpartial
 
 
             #NOW GET CLUSTERING OUTPUT FOR THE SPECIFIC GROUP
@@ -155,7 +158,8 @@ class ParallelTrainer:
 
 
         #Save some important stuff  (MOSTLY FOR PASSING PRIORPROB to the predictor
-        trainingInfo = {'normalProb':normalProb, 'k':k, 'numclass':numclass, 'numfull':numfull, 'numpartial':numpartial, 'numTrain':len(self.files)}
+        trainingInfo = {'normalProb':normalProb, 'k':k, 'numclass':numclass, 'numfull':numfull, 'numpartial':numpartial, 'numTrain':len(self.files),
+                        'files':self.files}
         np.save(path+'/trainingInfo.npy', trainingInfo)
 
 

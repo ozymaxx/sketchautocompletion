@@ -90,7 +90,7 @@ def main():
     reject_rate = dict()
     my_n = numtest
     my_files = folderList
-    my_name = 'ParalelDenemeFullCenters'
+    my_name = 'ParalelDenemeFullCentersRandoom'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
@@ -125,7 +125,7 @@ def main():
             svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + folderName, train_features)
 
         else:
-            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True)
+            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = False)
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
 
         nameOfTheTraining = my_name

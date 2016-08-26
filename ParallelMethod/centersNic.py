@@ -21,7 +21,7 @@ def saveCenters(doOnlyFulls = False):
     my_isFull = []
     f = FileIO()
 
-    trainingFolder = '../data/nicicon/csv/train'
+    trainingFolder = '../data/nicicon1/csv/train'
     extr_train = Extractor(trainingFolder)
     train_features, \
     train_isFull, \
@@ -30,7 +30,7 @@ def saveCenters(doOnlyFulls = False):
 
     for mfile in files[:]:
 
-        names, isFull, features = f.load('../data/nicicon/csv/train/' + mfile + '/' + mfile + '_train.csv')
+        names, isFull, features = f.load('../data/nicicon1/csv/train/' + mfile + '/' + mfile + '_train.csv')
         nowCenter = np.zeros(len(features[0]))
 
         if not doOnlyFulls:
