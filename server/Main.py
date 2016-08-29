@@ -79,16 +79,23 @@ def drawJson(jsonString):
     plt.ylim([0, 752])
     plt.show(block=False)
 
-def getBestPredictions(classProb, n):
+def getBestPredictions(classProb, n, c = 0):
     a = sorted(classProb, key=classProb.get, reverse=True)[:n]
     l = ''
     l1 = ''
+    total = 0
     for i in a:
+        total += classProb[i]
         l1 += str(classProb[i])
         l += str(files[i])
         l += '&'
         l1 += '&'
     l1 = l1[:-1]
+
+
+    if(total<c):
+        return ''
+
     return l + l1
 
 def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
