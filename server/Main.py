@@ -86,22 +86,28 @@ def draw_json(jsonString):
     plt.ylim([0, 752])
     plt.show(block=False)
 
-
-def classProb2serverResponse(classProb, N):
+def classProb2serverResponse(classProb, N, C = 0):
     """
     :param classProb: Class Probabilities as a dictionary given by Predictor class
     :param N: Number of guesses
+    :param C: threshold
     :return: Server Response seperated by '&' sign, in the following format: airplane&cat&0.8&0.2
     """
-    a = sorted(classProb, key=classProb.get, reverse=True)[:N]
+    a = sorted(classProb, key=classProb.get, reverse=True)[:n]
     l = ''
     l1 = ''
+    total = 0
     for i in a:
+        total += classProb[i]
         l1 += str(classProb[i])
         l += str(files[i])
         l += '&'
         l1 += '&'
     l1 = l1[:-1]
+
+    if total<c:
+        return ''
+
     return l + l1
 
 
