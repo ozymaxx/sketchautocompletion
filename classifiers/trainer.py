@@ -1,6 +1,6 @@
 """
 Classifier trainer
-an Interface class for training Svm models
+an Interface class for training Svm models given kmeans output
 Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 14.07.2016
 """
@@ -11,28 +11,27 @@ import numpy as np
 from LibSVM import *
 
 class Trainer:
-    """Trainer Class used for the training"""
-    def __init__(self, kmeansoutput, classid, features = np.array([])):
-        self.features = features
-        self.kmeansoutput = kmeansoutput # [feature_ids, cluster_centers ]
+    def __init__(self, kmeansoutput, classid, features=np.array([])):
+        self.kmeansoutput = kmeansoutput  # kmeansoutput=[cluster_feature_ids, cluster_centers]
         self.classid = classid
+        self.features = features
         self.svm = None
 
-    def trainSVM(self, clusterIdArr, directory):
+    def trainSVM(self, clusterFeatureIds, directory):
         """
         trains svm models for the given cluster ids
-        :param clusterIdArr: clusters to be trained an svm model for
+        :param clusterFeatureIds: clusters to be trained an svm model for
         :param directory: directory for svm models to be saved
         :return: returns the svm class governing svm models
         """
         self.svm = LibSVM(self.kmeansoutput, self.classid, directory, self.features)
-        self.svm.doMultiCoreSVM(clusterIdArr, directory)
+        self.svm.doMultiCoreSVM(clusterFeatureIds, directory)
         return self.svm
 
     def getHeterogenousClusterId(self):
         """
-        Gets clusters which are heterogenous
-        kmeansoutput :(heterogenousClusters,heterogenousClusterId) -> heterogenous clusters, id's of heterougenous clusters
+        Gets clusters ids which contain instances of different class, therefore heterogenous
+        :return: feature ids of cluster heterogenous clusters, list of cluster ids
         """
         heterogenousClusters = list()
         heterogenousClusterId = list()
@@ -47,8 +46,8 @@ class Trainer:
 
     def getHomogenousClusterId(self):
         """
-        Gets clusters which are homogenous
-        kmeansoutput: (homoCluster,homoIdClus) -> homogenous clusters, id's of homogenous clusters
+        Gets clusters ids which contain instances of only one classes, therefore homogenous
+        :return: feature ids of cluster homogenous clusters, list of cluster ids
         """
         homoCluster = list()
         homoIdClus = list()
@@ -62,6 +61,6 @@ class Trainer:
         return homoCluster, homoIdClus
 
     @staticmethod
-    def loadSvm(kmeansoutput, classId, subDirectory, featArr):
-        svm = LibSVM(kmeansoutput, classId, subDirectory, featArr)
+    def loadSvm(kmeansoutput, classid, directory, features):
+        svm = LibSVM(kmeansoutput, classid, directory, features)
         return svm

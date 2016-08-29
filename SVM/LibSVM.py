@@ -1,5 +1,6 @@
 """
 an Interface class for calling LibSVM library -training and prediction- using multiprocessing capabilities of python
+Look https://www.csie.ntu.edu.tw/~cjlin/libsvm/ for more information and python wrapper we are using
 """
 
 import copy_reg
@@ -34,10 +35,10 @@ class LibSVM:
         else:
             return getattr, (m.im_self, m.im_func.func_name)
 
-    def doMultiCoreSVM(self, clusterIdArr, directory):
+    def doMultiCoreSVM(self, clusterFeatureIds, directory):
         """
         ARDA
-        :param clusterIdArr:
+        :param clusterFeatureIds:
         :param directory:
         :return:
         """
@@ -45,8 +46,8 @@ class LibSVM:
         from multiprocessing import Pool
         import itertools
         pool = Pool(4)
-        pool.map(self.multi_run_wrapper, [(clusterIdArr, directory, 0), (clusterIdArr, directory, 1),
-            (clusterIdArr, directory, 2), (clusterIdArr, directory, 3)])
+        pool.map(self.multi_run_wrapper, [(clusterFeatureIds, directory, 0), (clusterFeatureIds, directory, 1),
+            (clusterFeatureIds, directory, 2), (clusterFeatureIds, directory, 3)])
     
     def trainSVM(self, clusterFeatureIds, directory):
         """

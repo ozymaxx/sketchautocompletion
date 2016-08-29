@@ -1,6 +1,6 @@
 """
 Predictor
-Ahmet BAGLAN
+Ahmet BAGLAN, Semih GÜNEL
 14.07.2016
 """
 import sys

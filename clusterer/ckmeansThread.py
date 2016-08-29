@@ -16,6 +16,7 @@ import threading
 
 class workerThread (threading.Thread):
     def __init__(self, threadID, name , numThread, consArr):
+        raise DeprecationWarning
         threading.Thread.__init__(self)
         self.threadID = threadID
         self.name = name

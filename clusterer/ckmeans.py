@@ -1,5 +1,5 @@
 """
-CKMeans class
+CKMeans class for implementing a naive Constrained k-means algorithm, absolutely DEPRECATED, gives low accuracies
 Arda I - Semih G - Ahmet B
 15.07.2016
 """
@@ -14,15 +14,15 @@ import copy
 import matplotlib.markers as mark
 
 class CKMeans:
-    def __init__(self, consArr, featArr, k):
-        self.consArr = consArr
-        self.featArr = np.transpose(featArr)
+    def __init__(self, constraints, features, k):
+        raise DeprecationWarning
+        self.constraints = constraints
+        self.features = np.transpose(features)
         self.k = k
         self.clusterList = []
         self.centerList = []
         self.MUST_LINK = 1
         self.CANNOT_LINK = -1
-        raise DeprecationWarning
 
     def initCluster(self):
         """method to initialize the clusters"""
@@ -32,12 +32,12 @@ class CKMeans:
             self.clusterList.append(np.array([], dtype = int))
             
             # Select unique cluster centers randomly 
-            point = randint(0, self.featArr.shape[0]-1)
+            point = randint(0, self.features.shape[0] - 1)
             while point in usedPoints:
-                point = randint(0, self.featArr.shape[0]-1)
+                point = randint(0, self.features.shape[0] - 1)
             usedPoints.append(point)
 
-            center = copy.copy(self.featArr[point])
+            center = copy.copy(self.features[point])
             self.centerList.append(center)
         
     def violateConstraints(self, featIdx, cluster):
@@ -46,10 +46,10 @@ class CKMeans:
         cluster : current cluster in which we're checking the condition
         return any(bool(self.consArr[data][i] == self.MUST_LINK) != bool(i in cluster) for i in range(0,data))"""
         for i in range(0, featIdx):
-            if self.consArr[featIdx][i] == self.MUST_LINK:
+            if self.constraints[featIdx][i] == self.MUST_LINK:
                 if i not in cluster:
                     return True
-            elif self.consArr[featIdx][i] == self.CANNOT_LINK:
+            elif self.constraints[featIdx][i] == self.CANNOT_LINK:
                 if i in cluster:
                     return True
         return False
@@ -61,7 +61,7 @@ class CKMeans:
         iterCounter = 0
 
         #Old centers of clusters
-        oldCenters = np.zeros([self.k, len(self.featArr[0])])
+        oldCenters = np.zeros([self.k, len(self.features[0])])
         maxIter = 20
         while iterCounter < maxIter:
             print 'Constrained k-means iteration: ' + str(iterCounter+1) + ('(max %i)'%maxIter)
@@ -80,7 +80,7 @@ class CKMeans:
 
             ############ Assign each instance of feature matrix to a cluster #############
 
-            for i, line in enumerate(self.featArr):
+            for i, line in enumerate(self.features):
                 # i : id of the instance
                 # line : points of that instance
 
@@ -117,7 +117,7 @@ class CKMeans:
                 # print oldCenters[i], "Saving clusters"
 
             # Find new centers of each cluster
-            dim = self.featArr.shape[1] #720
+            dim = self.features.shape[1] #720
             for order in range(0, self.k):
 
                 clus = self.clusterList[order]
@@ -129,7 +129,7 @@ class CKMeans:
                     coorSum = 0
                     for j in clus:
                         # j : id of the instance
-                        coorSum += self.featArr[j][i]
+                        coorSum += self.features[j][i]
                     if coorSum != 0:
                         coorSum /= clusLength
                         self.centerList[order][i] = coorSum
