@@ -6,6 +6,7 @@
 # output: constraint matrix (must or cannot link)
 import numpy
 def getConstraints(size, isFull, classId):
+    raise DeprecationWarning
     """Output : the constraints matrix of size len(class) x len(class) """
     FULL = 1
     MUST_LINK = 1

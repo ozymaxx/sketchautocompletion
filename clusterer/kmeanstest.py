@@ -122,12 +122,12 @@ def main():
     kmeansoutput = clusterer.cukmeans()
 
     trainer = Trainer(kmeansoutput, classId, np.transpose(features))
-    heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+    heteClstrFeatureId, heteClstrId = trainer.getHeterogenousClusterId()
 
     svmkmeans = trainer.trainSVM(heteClstrFeatureId, None)
 
     predictor = Predictor(kmeansoutput, classId, None, svm=svmkmeans)
-    svkmeans = predictor.getSV()
+    svkmeans = predictor.getSupportVectors()
 
     visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'cudackmeans', sv=svkmeans)
 
@@ -135,12 +135,12 @@ def main():
     kmeansoutput = ckmeans.getCKMeans()
 
     trainer = Trainer(kmeansoutput, classId, np.transpose(features))
-    heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+    heteClstrFeatureId, heteClstrId = trainer.getHeterogenousClusterId()
 
     svm = trainer.trainSVM(heteClstrFeatureId, None)
 
     predictor = Predictor(kmeansoutput, classId, None, svm=svm)
-    sv = predictor.getSV()
+    sv = predictor.getSupportVectors()
 
     visualiseAfterClustering(kmeansoutput, features, classId, centers, isFull, 'ck-means', sv=sv)
 

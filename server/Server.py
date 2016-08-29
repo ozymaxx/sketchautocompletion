@@ -13,6 +13,7 @@ import os
 from LibSVM import *
 import time
 from matplotlib import pyplot as plt
+from complexCKMeans import *
 
 from flask import Flask, request, render_template, flash, json
 
@@ -86,6 +87,7 @@ def draw_json(jsonString):
     plt.ylim([0, 752])
     plt.show(block=False)
 
+
 def classProb2serverResponse(classProb, N, C = 0):
     """
     :param classProb: Class Probabilities as a dictionary given by Predictor class
@@ -110,7 +112,6 @@ def classProb2serverResponse(classProb, N, C = 0):
 
     return l + l1
 
-
 def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
     global files
     fio = FileIO()
@@ -120,19 +121,18 @@ def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
                                                                     numpartial=numpartial)
     global cudaSupport
     if not cudaSupport:
-        constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-        ckmeans = complexCKMeans(constarr, np.transpose(features), k)
+        ckmeans = complexCKMeans(features, isFull, classId, k)
         kmeansoutput = ckmeans.getCKMeans()
     else:
         # a late import in order to prevent import errors on computers without cuda support
-        from complexcudackmeans import *
+        from complexcudackmeans import complexcudackmeans
         clusterer = complexCudaCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
         clusters, centers = clusterer.cukmeans()
         kmeansoutput = [clusters, centers]
 
     # find heterogenous clusters and train svm for
     trainer = Trainer(kmeansoutput, classId, features)
-    heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+    heteClstrFeatureId, heteClstrId = trainer.getHeterogenousClusterId()
     fio.saveTraining(names, classId, isFull, features, kmeansoutput,
                      trainingpath, trainingName)
     svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)

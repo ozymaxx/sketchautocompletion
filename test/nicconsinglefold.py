@@ -92,7 +92,7 @@ def main():
 
                 # find heterogenous clusters and train svm
                 trainer = Trainer(kmeansoutput, train_classId, train_features)
-                heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+                heteClstrFeatureId, heteClstrId = trainer.getHeterogenousClusterId()
                 fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
                                  trainingpath, folderName)
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
@@ -105,7 +105,7 @@ def main():
 
                 # find heterogenous clusters and train svm
                 trainer = Trainer(kmeansoutput, train_classId, train_features)
-                heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+                heteClstrFeatureId, heteClstrId = trainer.getHeterogenousClusterId()
                 fio.saveTraining(train_names, train_classId, train_isFull, train_features, kmeansoutput,
                                  trainingpath, folderName)
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)

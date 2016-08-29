@@ -11,7 +11,6 @@ from LibSVM import *
 
 class Trainer:
     """Trainer Class used for the training"""
-    
     def __init__(self, kmeansoutput, classId, featArr = np.array([])):
         # output[0] : list of clusters
         # output[1] : list of cluster centers
@@ -26,10 +25,10 @@ class Trainer:
         """
         self.svm = LibSVM(self.kmeansoutput, self.classId, directory, self.featArr)
         #self.svm.trainSVM(clusterIdArr, directory)
-        self.svm.doSVM(clusterIdArr, directory)
+        self.svm.doMultiCoreSVM(clusterIdArr, directory)
         return self.svm
 
-    def getHeterogenous(self):
+    def getHeterogenousClusterId(self):
         """
         Gets clusters which are heterogenous
         kmeansoutput :(heterogenousClusters,heterogenousClusterId) -> heterogenous clusters, id's of heterougenous clusters
@@ -45,7 +44,7 @@ class Trainer:
                 heterogenousClusterId.append(clusterId)
         return heterogenousClusters, heterogenousClusterId
 
-    def getHomogenous(self):
+    def getHomogenousClusterId(self):
         """
         Gets clusters which are homogenous
         kmeansoutput: (homoCluster,homoIdClus) -> homogenous clusters, id's of homogenous clusters

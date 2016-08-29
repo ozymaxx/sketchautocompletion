@@ -303,6 +303,6 @@ class Predictor:
         return self.getBestPredictions(classPr, n)
 
     def getSV(self):
-        return self.svm.getSV()
+        return self.svm.getSupportVectors()
 
 

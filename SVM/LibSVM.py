@@ -1,31 +1,47 @@
+"""
+an Interface class for calling LibSVM library -train and prediction- using multiprocessing capabilities of python
+"""
+
+import copy_reg
+import types
+import copy
 import sys
 sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python")
 sys.path.append('../data/')
 from svmutil import *
-import copy_reg
-import types
-import copy
+
 
 class LibSVM:
-    def __init__(self, kmeansoutput, classId, subDirectory, features):
+    def __init__(self, kmeansoutput, classid, directory, features):
         self.kmeansoutput = kmeansoutput
-        self.classId = classId
-        self.subDirectory = subDirectory
+        self.classId = classid
+        self.directory = directory
         self.models = {}
         self.features = features
-        self.allSV = []
+        self.supportVectors = []
         
     def multi_run_wrapper(self, args):
-        return self.trainSVM2(*args)
-    
+        return self.trainMultiCoreSVM(*args)
+
     def _pickle_method(self, m):
+        """
+        ARDA
+        :param m:
+        :return:
+        """
         if m.im_self is None:
             return getattr, (m.im_class, m.im_func.func_name)
         else:
             return getattr, (m.im_self, m.im_func.func_name)
-    
-    def doSVM(self, clusterIdArr, directory):
+
+    def doMultiCoreSVM(self, clusterIdArr, directory):
+        """
+        ARDA
+        :param clusterIdArr:
+        :param directory:
+        :return:
+        """
         copy_reg.pickle(types.MethodType, self._pickle_method)
         from multiprocessing import Pool
         import itertools
@@ -33,29 +49,26 @@ class LibSVM:
         pool.map(self.multi_run_wrapper,[(clusterIdArr,directory,0),(clusterIdArr,directory,1),
             (clusterIdArr,directory,2),(clusterIdArr,directory,3)])
     
-    def trainSVM(self, clusterIdArr, directory):
-        """Trains the support vector machine and saves models
-        Inputs : clusterIdArr: list of cluster id's to be trained (heto)
-        Outputs : Support VectorS
+    def trainSVM(self, clusterFeatureId, directory):
         """
-        print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterIdArr)
+        :param clusterFeatureId: List of lists having feature ids of clusters
+        :param directory: directory to save .model files
+        """
+        print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterFeatureId)
         #label = copy.copy(self.classId) WHY
-        label = self.classId
         order = 0
-        for clusterFeatureId in clusterIdArr:  # Foreach cluster
+        for clusterFeatureId in clusterFeatureId:  # Foreach cluster
             y = []
             x = []
             for featureid in clusterFeatureId:  # Foreach instance in the cluster
                 featureid = int(featureid)
-                y.append(label[featureid])
+                y.append(self.classId[featureid])
                 x.append(self.features[featureid].tolist())
 
             problem = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
             
             m = svm_train(problem, param)
-            self.allSV.extend(m.get_SV())
-
             import os
             if directory and not os.path.exists(directory):
                 os.mkdir(directory)
@@ -67,10 +80,11 @@ class LibSVM:
             order += 1
         print 'Training SVM is done'
         
-    def trainSVM2(self, clusterIdArr, directory, procId):
-        """Trains the support vector machine and saves models
-        Inputs : clusterIdArr: list of cluster id's to be trained (heto)
-        Outputs : Support VectorS
+    def trainMultiCoreSVM(self, clusterIdArr, directory, procId):
+        """
+        :param clusterFeatureId: List of lists having feature ids of clusters
+        :param directory: directory to save .model files
+        :return:
         """
         print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterIdArr)
 
@@ -89,10 +103,9 @@ class LibSVM:
             problem = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
 
-
             m = svm_train(problem, param)
             print order%4, ". thread finished", 1 + (order/4),"models"
-            self.allSV.extend(m.get_SV())
+            self.supportVectors.extend(m.get_SV())
 
             import os
             if directory and not os.path.exists(directory):
@@ -103,26 +116,37 @@ class LibSVM:
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
             order += 4
-
- 
         print 'Training SVM is done'
-    def getlabels(self, modIndex):
-        return self.models[int(modIndex)].get_labels()
+
+    def getlabels(self, model_index):
+        """
+        :param model_index: index of the model
+        :return:labels -classes- found in the model
+        """
+        return self.models[int(model_index)].get_labels()
 
     def loadModels(self):
+        """
+        loads model files into memory from the directory given in constructor
+        """
         import os
         order = 0
-        while os.path.exists(self.subDirectory + "/" + "clus" + str(order) + '.model'):
-            print 'Loading SVM Model %s ' % str(self.subDirectory + "/" + "clus" + str(order) + '.model')
-            self.models[order] = svm_load_model(self.subDirectory + "/" + "clus" + str(order) + '.model')
+        while os.path.exists(self.directory + "/" + "clus" + str(order) + '.model'):
+            print 'Loading SVM Model %s ' % str(self.directory + "/" + "clus" + str(order) + '.model')
+            self.models[order] = svm_load_model(self.directory + "/" + "clus" + str(order) + '.model')
             order += 1
 
-    def predict(self, modIndex, instance):
+    def predict(self, model_index, instance):
+        """
+        :param model_index: svm model predicting class probabilty
+        :param instance: instance to be predicted
+        :return: libSVM outputs, p_label, p_acc, p_val; check libsvm readme for more information
+        """
         if not self.models:
             order = 0
             import os
-            while os.path.exists(self.subDirectory + "/" + "clus" + str(order) + '.model'):
-                self.models[order] = svm_load_model(self.subDirectory + "/" + "clus" + str(order) + '.model')
+            while os.path.exists(self.directory + "/" + "clus" + str(order) + '.model'):
+                self.models[order] = svm_load_model(self.directory + "/" + "clus" + str(order) + '.model')
                 order += 1
 
         import sys
@@ -133,12 +157,12 @@ class LibSVM:
         oldstdout = sys.stdout
         sys.stdout = nullwrite # disable kmeansoutput
 
-        p_label, p_acc, p_val = svm_predict([0], instance, self.models[modIndex], '-b 1')
+        p_label, p_acc, p_val = svm_predict([0], instance, self.models[model_index], '-b 1')
 
         sys.stdout = oldstdout
         return p_label, p_acc, p_val
 
-    def getHeterogenous(self):
+    def getHeterogenousClusterId(self):
         """
         Gets clusters which are heterogenous
         kmeansoutput :(heterogenousClusters,heterogenousClusterId) -> heterogenous clusters, id's of heterougenous clusters
@@ -154,7 +178,7 @@ class LibSVM:
                 heterogenousClusterId.append(clusterId)
         return heterogenousClusters, heterogenousClusterId
 
-    def getHomogenous(self):
+    def getHomogenousClusterId(self):
         """
         Gets clusters which are homogenous
         kmeansoutput: (homoCluster,homoIdClus) -> homogenous clusters, id's of homogenous clusters
@@ -170,10 +194,10 @@ class LibSVM:
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
 
-    def getSV(self):
-        self.allSV = []
+    def getSupportVectors(self):
+        self.supportVectors = []
         for model in self.models.values():
-            self.allSV.extend(model.get_SV())
+            self.supportVectors.extend(model.get_SV())
 
-        return self.allSV
+        return self.supportVectors
 
