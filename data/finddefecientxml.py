@@ -1,6 +1,10 @@
 from os import listdir
 from os.path import isfile, join
 import sys
+"""
+To check if any data is lost while converting xml -or possibly json- files to compact csv files
+"""
+
 sys.path.append('../predict/')
 sys.path.append('../data/')
 from FileIO import *

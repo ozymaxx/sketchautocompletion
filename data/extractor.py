@@ -1,10 +1,14 @@
 import sys
 import os
-sys.path.append("../../sketchfe/sketchfe")
-sys.path.append('../predict/')
-sys.path.append('../clusterer/')
-sys.path.append('../classifiers/')
-sys.path.append("../../libsvm-3.21/python/")
+"""
+Class for manipulating csv and json files
+Can load instances with given number of class, full and partial sketches
+in a super-fast manner. Can load features of 300000 sketches under a minute.
+
+Extractor class assumes the following:
+ - path + '/csv/x' includes the csv file for the class x
+ - path + '/jsv/x' includes the json files for the class x
+"""
 from trainer import *
 from FeatureExtractor import *
 from shapecreator import *
@@ -14,7 +18,7 @@ class Extractor:
     def __init__(self, path):
         if (path[len(path)-1]) is '/':
             path = path[0:len(path)-1]
-        self.path = path
+        self.path = path  # main path which includes '/json' and '/csv' subfolders
         self.jsonpath = path + '/json'
         self.csvpath = path + '/csv'
         self.fio = FileIO()
@@ -34,7 +38,7 @@ class Extractor:
             isFull = [self.isFileFull(name) for name in names]
             return features, isFull, names
         else:
-            print "no such folder as ", fullpath
+            print "No such csv file as ", fullpath
             raise Exception
 
     def loadfolderjson(self, folder):
@@ -113,28 +117,6 @@ class Extractor:
         print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
 
-    def loadFoldersCsvParallel(self, numclass, numfull, numpartial, folderList = []):
-        if not folderList:
-            folderList = os.listdir(self.csvpath)
-            folderList.sort(key=str.lower)
-            folderList = folderList[:numclass]
-
-        if len(folderList) > numclass:
-            folderList = folderList[0:numclass]
-
-        features, isFull, classId,  names = list(), list(), list(), list()
-        classCount = 0
-        for folder in folderList:
-            featuresT, isFullT, namesT = self.loadfoldercsv(folder)
-#   BU DEGISECEEEEEEEKEKKKKKKKK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            features.extend(featuresT)#[:numfull*numpartial])
-            isFull.extend(isFullT)#[:numfull*numpartial])
-            names.extend(namesT)#[:numfull*numpartial])
-            classId.extend([classCount] * len(featuresT))#[:numfull*numpartial]))
-            classCount += 1
-        print 'Loaded %i sketches' % len(features)
-        return features, isFull, classId, names, folderList
-
     def loadniciconfolders(self):
         if self.path[-1] == '/':
             self.path = self.path[0:len(self.path)-1]
@@ -185,6 +167,14 @@ class Extractor:
         return features, isFull, classId, name
 
     def loadfolders(self, numclass, numfull, numpartial, folderList = []):
+        """
+        loads names folders  with the specified number of sketches
+        :param numclass:  number of classes to be loaded.
+        :param numfull: number of full sketches to be loaded for each class.
+        :param numpartial:  number of partial sketches to be loaded for each full sketch.
+        :param folderList: preferenced classes to be load, if empty first numclass folders are loaded
+        :return:
+        """
         if not folderList:
             folderList = os.listdir(self.csvpath)
             folderList.sort(key=str.lower)
@@ -209,6 +199,27 @@ class Extractor:
         print 'Loaded ' + str(len(features)) + ' features'
         return features, isFull, classId, names, folderList
 
+    def loadFoldersCsvParallel(self, numclass, numfull, numpartial, folderList=[]):
+            if not folderList:
+                folderList = os.listdir(self.csvpath)
+                folderList.sort(key=str.lower)
+                folderList = folderList[:numclass]
+
+            if len(folderList) > numclass:
+                folderList = folderList[0:numclass]
+
+            features, isFull, classId, names = list(), list(), list(), list()
+            classCount = 0
+            for folder in folderList:
+                featuresT, isFullT, namesT = self.loadfoldercsv(folder)
+                #   BU DEGISECEEEEEEEKEKKKKKKKK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                features.extend(featuresT)  # [:numfull*numpartial])
+                isFull.extend(isFullT)  # [:numfull*numpartial])
+                names.extend(namesT)  # [:numfull*numpartial])
+                classId.extend([classCount] * len(featuresT))  # [:numfull*numpartial]))
+                classCount += 1
+            print 'Loaded %i sketches' % len(features)
+            return features, isFull, classId, names, folderList
 
     def loadFoldersParallel(self, numclass, numfull, numpartial, folderList = []):
         print 'in extractor'

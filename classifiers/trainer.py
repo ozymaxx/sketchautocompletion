@@ -30,7 +30,7 @@ class Trainer:
 
     def getHeterogenousClusterId(self):
         """
-        Gets clusters ids which contain instances of different class, therefore heterogenous
+        Gets clusters ids which contain instances of different classes, therefore heterogenous
         :return: feature ids of cluster heterogenous clusters, list of cluster ids
         """
         heterogenousClusters = list()

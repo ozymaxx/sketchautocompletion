@@ -1,15 +1,12 @@
 """
 an Interface class for calling LibSVM library -training and prediction- using multiprocessing capabilities of python
-Look https://www.csie.ntu.edu.tw/~cjlin/libsvm/ for more information and python wrapper we are using
+Look https://www.csie.ntu.edu.tw/~cjlin/libsvm/ for more information on libsvm and python wrapper we are using
 """
 
 import copy_reg
 import types
 import copy
 import sys
-sys.path.append('../classifiers')
-sys.path.append('../../libsvm-3.21/python')
-sys.path.append('../data/')
 from svmutil import *
 
 class LibSVM:

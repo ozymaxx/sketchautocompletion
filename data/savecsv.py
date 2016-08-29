@@ -1,6 +1,9 @@
 from os import listdir
 from os.path import isfile, join
 import sys
+"""
+Apply feature extraction to raw sketch files, and save them to a single csv file
+"""
 sys.path.append('../predict/')
 from feature import *
 from FileIO import *
@@ -8,8 +11,6 @@ import os
 
 def isSketchFull(name):
     return not name[-1].isdigit()
-
-
 
 symbolspat = 'C:/Users/1003/Desktop/nicicon/symbols'
 imagefolders = [[symbolspat + '/'+ f + '/eval/', symbolspat + '/'+ f + '/test/', symbolspat + '/'+ f + '/train/']

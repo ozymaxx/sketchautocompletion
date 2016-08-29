@@ -3,6 +3,9 @@ import os
 for path in os.listdir('..'):
     if not os.path.isfile(os.getcwd() + '/../' + path):
         sys.path.append(os.getcwd() + '/../' + path)
+sys.path.append('../../libsvm-3.21/python')
+sys.path.append('../../sketchfe/sketchfe')
+
 from extractor import *
 from FileIO import *
 from Predictor import *

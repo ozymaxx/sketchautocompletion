@@ -1,6 +1,8 @@
 from os import listdir
 from os.path import isfile, join
-
+"""
+Generate partial sketches from full .xml sketches
+"""
 symbolspat = '../nicicon/symbols/'
 imagefolders = [[join(symbolspat, f) + '/eval/', join(symbolspat, f) + '/test/', join(symbolspat, f) + '/train/']
                 for f in listdir(symbolspat) if not isfile(join(symbolspat, f))]
