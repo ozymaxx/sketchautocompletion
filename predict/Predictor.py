@@ -1,12 +1,22 @@
 """
+Pedictions for class probabilities, given kmeansoutput -which specifies clusters- and trained svm models.
+Predictor is written with the complience as the following paper:
+http://iui.ku.edu.tr/sezgin_publications/2012/PR%202012%20Sezgin.pdf
+with one possible deviance, which can be seen in the clusterProb method. Although paper
+does not present a scaling factor for the feature-to-cluster center distance, putting one,
+as have done in the MATLAB code written by Caglar Tirkaz, boosts accuracies significantly.
+
+If predictor is asked for multiple instances at a single time -list of instances-, it uses multiprocess
+libraries to speed up the process. This is of course not conceivable in end user experince, although might
+get handy while testing.
+"""
+
+"""
 Predictor
-Ahmet BAGLAN, Semih GÜNEL
+Ahmet BAGLAN, Semih GUNEL
 14.07.2016
 """
-import sys
-sys.path.append('../classifiers')
-sys.path.append("../../libsvm-3.21/python/")
-sys.path.append('../data/')
+
 import math
 import numpy as np
 
@@ -16,38 +26,26 @@ from FeatureExtractor import *
 from scipy.spatial import distance
 
 class Predictor:
-    """The predictor class implementing functions to return probabilities"""
-    def __init__(self, kmeansoutput, classId, subDirectory, svm = None):
+    def __init__(self, kmeansoutput, classid, directory, svm=None):
         self.kmeansoutput = kmeansoutput
-        self.classId = classId
-        self.subDirectory = subDirectory
+        self.classId = classid
+        self.directory = directory  # directory to load svm models
         self.svm = svm
 
-    def getDistance(self, x, y):
-        """Computes euclidian distance between x instance and y instance
-        inputs: x,y instances
-        kmeansoutput: distance"""
+    def euclidiandistance(self, x, y):
         return distance.euclidean(x, y)
     
     def clusterProb(self, instance, priorProb):
         """
-        Returns P(Ck|x)
-        normalProb : probability that was calculated in trainer
-        instance: feature list of the instance to be queried"""
-
-        '''
-        distances = repmat(instance, 1, ckMeans.k) - ckMeans.centers;
-        distances = sqrt(sum(distances .* distances));
-        sigma = 0.3;
-        % map distances to normal distribution
-        distribution = exp(-(distances - min(distances)) ./ (2 .* sigma .* sigma));
-        % map probabilities btw 0-1
-        distribution = distribution ./ sum(distribution);
-        '''
-
+        Returns P(C_k|x) for each cluster k as a list
+        :param instance: instance to get posterior cluster probabiltiies
+        :param priorProb: prior cluster probabilities, before seeing the instance to predict
+        :return: dictionary of cluster probs for each cluster in a dictionary, normalized
+        """
         centers = self.kmeansoutput[1]
-        dist = [self.getDistance(instance, centers[idx]) for idx in range(len(centers))]
+        dist = [self.euclidiandistance(instance, centers[idx]) for idx in range(len(centers))]
 
+        # scaling factor
         sigma = 0.3
         mindist = min(dist)
         diste_ = [math.exp(-1*abs(d - mindist)/(2*sigma*sigma)) for d in dist]
@@ -56,35 +54,7 @@ class Predictor:
         # normalize
         clustProb = [c/sum(clustProb) for c in clustProb]
 
-        #import numpy as np
-        #import matplotlib.pyplot as plt
-
-        #fig = plt.figure()
-        #plt.scatter(range(len(diste_)), diste_, alpha=0.5)
-        #plt.show()
-
         return clustProb
-
-    def svmProb(self, model, instance):
-        """Predicts the probability of the given model"""
-
-        ####Prevent Printing----------------------------------------
-        import sys
-        class NullWriter(object):
-            def write(self, arg):
-                pass
-        nullwrite = NullWriter()
-        oldstdout = sys.stdout
-        sys.stdout = nullwrite # disable kmeansoutput
-
-        y = [0]
-        p_label, p_acc, p_val = svm_predict(y, instance, model, '-b 1')
-
-        sys.stdout = oldstdout
-        ### Prevent printing ended-----------------------------------
-
-        return (p_label, p_val)
-
 
     def predictByInstance(self, instance):
         # find the probability of given feature to belong any of athe classes
@@ -107,27 +77,48 @@ class Predictor:
         return classProb
     
     def multi_run_wrapper(self, args):
+        """
+        ARDA
+        :param args:
+        :return:
+        """
         return self.calculatePosteriorMulti(*args)
     
     def _pickle_method(self, m):
+        """
+        ARDA
+        :param m:
+        :return:
+        """
         if m.im_self is None:
             return getattr, (m.im_class, m.im_func.func_name)
         else:
             return getattr, (m.im_self, m.im_func.func_name)
     
-    def calculatePosteriorProb(self,  instances, priorClusterProb):
+    def calculatePosteriorProb(self, instances, priorClusterProb):
+        """
+        Predict labels for single instance, given P(C_k) for each cluster,
+        calculate P(S_i) for each class i
+        :param instance: instance to be predicted labels for
+        :param priorClusterProb: prior cluster probabilities before seeing the data
+        :return: dictionary holding probabilities for each class
+        """
         if isinstance(instances, list):
+            # if asked for multiple predictions, use multiprocessing
             copy_reg.pickle(types.MethodType, self._pickle_method)
             from multiprocessing import Pool
             import itertools
             pool = Pool(4)
-            result = pool.map(self.multi_run_wrapper,[(instances,priorClusterProb,0),(instances,priorClusterProb,1),
-                (instances,priorClusterProb,2),(instances,priorClusterProb,3)])
+            result = pool.map(self.multi_run_wrapper,
+                                  [(instances, priorClusterProb, 0),
+                                   (instances, priorClusterProb, 1),
+                                   (instances, priorClusterProb, 2),
+                                   (instances, priorClusterProb, 3)])
             
             super_dict = {}
             for d in result:
                 super_dict.update(d)
-            super_list = [ v for v in super_dict.values()]
+            super_list = [v for v in super_dict.values()]
             
             return super_list
         else:
@@ -135,20 +126,21 @@ class Predictor:
     
     def calculatePosteriorSingle(self, instance, priorClusterProb):
         """
-        #features : feature array
-        #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
-        #p  robability : P(Ck)
-        # Returns P(Si|x)
+        Predict labels for single instance, given P(C_k) for each cluster,
+        calculate P(S_i) for each class i
+        :param instance: instance to be predicted labels for
+        :param priorClusterProb: prior cluster probabilities before seeing the data
+        :return: dictionary holding probabilities for each class
         """
 
         # dict of probabilities of given instance belonging to every possible class
         # initially zero
-        outDict = dict.fromkeys([i for i in set(self.classId)], 0.0)
+        class_prob = dict.fromkeys([i for i in set(self.classId)], 0.0)
         
         homoClstrFeatureId, homoClstrId = self.getHomogenousClusterId()
         heteClstrFeatureId, heteClstrId = self.getHeterogenousClusterId()
 
-        clusterProb = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
+        clusterProb = self.clusterProb(instance, priorClusterProb) # Probability list to be in a cluster after seeing instance
 
         # normalize cluster probability to add up to 1
         clustersum = sum(clusterProb)
@@ -170,27 +162,22 @@ class Predictor:
                 classesInCluster = [self.classId[int(clusterFeatureId[clstrid][0])]]
                 
             elif clstrid in heteClstrId:
-                if not self.svm:
-                    modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) + ".model"
-                    m = svm_load_model(modelName)
-                    classesInCluster = m.get_labels()
-                    labels, svmprobs = self.svmProb(m, [instance.tolist()])
-                else:
-                    labels, _, svmprobs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
-                    classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
+                labels, _, svmprobs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
+                classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
                 
             for clstridx in range(len(classesInCluster)):
                 probabilityToBeInThatClass = 1 if clstrid in homoClstrId else svmprobs[0][clstridx]
-                outDict[int(classesInCluster[clstridx])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
+                class_prob[int(classesInCluster[clstridx])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
 
-        return outDict    
+        return class_prob
     
     def calculatePosteriorMulti(self, instances, priorClusterProb, procId):
         """
-        #features : feature array
-        #kmeansoutput : list [ List of Cluster nparray, List of Cluster Center nparray]
-        #p  robability : P(Ck)
-        # Returns P(Si|x)
+        Predict labels for multiple instances, given P(C_k) for each cluster,
+        calculate P(S_i) for each class i
+        :param instances: instance to be predicted labels for
+        :param priorClusterProb: prior cluster probabilities before seeing the data
+        :return: dictionary holding probabilities for each class
         """
         print "Thread",procId, "has started"
         resultDict= {}
@@ -226,12 +213,6 @@ class Predictor:
                     classesInCluster = [self.classId[int(clusterFeatureId[clstrid][0])]]
                     
                 elif clstrid in heteClstrId:
-                    if not self.svm:
-                        modelName = self.subDirectory + "/clus" + str(heteClstrId.index(clstrid)) + ".model"
-                        m = svm_load_model(modelName)
-                        classesInCluster = m.get_labels()
-                        labels, svmprobs = self.svmProb(m, [instance.tolist()])
-                    else:
                         labels, _, svmprobs = self.svm.predict(int(heteClstrId.index(clstrid)), [instance.tolist()])
                         classesInCluster = self.svm.getlabels(heteClstrId.index(clstrid))
                     
@@ -240,13 +221,14 @@ class Predictor:
                     outDict[int(classesInCluster[clstridx])] += probabilityToBeInThatCluster * probabilityToBeInThatClass
             resultDict[procId] = outDict
             procId += 4
-        print "Thread",procId%4, "has ended"
+
+        print "Thread", procId % 4, "has ended"
         return resultDict
              
     def calculatePriorProb(self):
         """
-        Returns prior probabilities list of being in a cluster
-        p = len(cluster)/len(total)
+        Returns prior probabilities list of being in a cluster, before seeing instance to be predicted
+        :return: p = len(cluster)/len(total) for each cluster
         """
         clusterFeatureId = self.kmeansoutput[0]
         numFeatures = sum([len(cluster) for cluster in clusterFeatureId])

@@ -1,11 +1,8 @@
 import sys
-
-sys.path.append("../../sketchfe/sketchfe")
-sys.path.append('../predict/')
-sys.path.append('../clusterer/')
-sys.path.append('../classifiers/')
-sys.path.append('../test/')
-sys.path.append('../data/')
+import os
+for path in os.listdir('..'):
+    if not os.path.isfile(os.getcwd() + '/../' + path):
+        sys.path.append(os.getcwd() + '/../' + path)
 from extractor import *
 from FileIO import *
 from Predictor import *
@@ -91,9 +88,10 @@ def draw_json(jsonString):
 
 def classProb2serverResponse(classProb, N, C=0):
     """
+    Convert class probabilities -as a dictionary-
     :param classProb: Class Probabilities as a dictionary given by Predictor class
     :param N: Number of guesses
-    :param C: threshold
+    :param C: threshold, reject instance when probabilities less than the threshold
     :return: Server Response seperated by '&' sign, in the following format: airplane&cat&0.8&0.2
     """
     a = sorted(classProb, key=classProb.get, reverse=True)[:N]
@@ -122,7 +120,7 @@ def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
                                                                     numpartial=numpartial)
     global cudaSupport
     if not cudaSupport:
-        ckmeans = complexCKMeans(features, isFull, classId, k)
+        ckmeans = ComplexCKMeans(features, isFull, classId, k)
         kmeansoutput = ckmeans.getCKMeans()
     else:
         # a late import in order to prevent import errors on computers without cuda support
@@ -195,6 +193,7 @@ def main():
         svm = Trainer.loadSvm(kmeansoutput, classid, training_path, features)
         svm.loadModels()
     else:
+        # otherwise train from data
         kmeansoutput, classid, svm = train(training_name, training_path, numclass, numfull, numpartial, k)
 
     # form the predictor

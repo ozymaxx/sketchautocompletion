@@ -129,9 +129,11 @@ class ComplexCKMeans:
             from multiprocessing import Pool
             import itertools
 
+            # if no label change, break before reaching maxiter iterations
             noLabelChange = True
             print 'Calculate distance for each feature to each cluster'
             # calculate distance for each feature to each cluster
+            # often bottleneck
             for fidx, f in enumerate(self.features):
                 closestcluster = 0
                 ccdist = self.euclidiandist(f, self.clusterCenters[0])
@@ -161,7 +163,7 @@ class ComplexCKMeans:
             for fidx in self.fullIndex:
                 fclass = self.classid[fidx]
 
-                # iterate over each cluster and find the smallest distances
+                # iterate over each cluster and find the smallest distance
                 bestdist, bestclstr = self.featureClusterDist[fidx][0] + self.classvotes[self.classid[fidx]][0], 0
                 for clstridx in range(self.k):
                     dist = self.featureClusterDist[fidx][clstridx] + self.classvotes[self.classid[fidx]][clstridx]
@@ -202,6 +204,12 @@ class ComplexCKMeans:
         return distsum
 
     def clusterMove(self, features, clusterFeatures, clusterCenters):
+        """
+        Move cluster centers
+        :param features: id to 720-dimensional feature vectors
+        :param clusterFeatures: feature ids for each cluster
+        :param clusterCenters: centers for each cluster
+        """
         has_members = []
         for i in np.arange(len(clusterFeatures)):
             #cell_members = np.compress(np.equal(self.featureCluster, i), features, 0)
@@ -212,23 +220,10 @@ class ComplexCKMeans:
         # remove code_books that didn't have any members
         #self.clusterCenters[i] = np.take(self.clusterCenters[i], has_members, 0)
 
-
-    def closestClusterCenter(self, f, clusterCenters):
-        smldist = self.euclidiandist(f, clusterCenters[0])
-        cc = 0
-
-        for cIdx in range(len(clusterCenters)):
-            dist = self.euclidiandist(f, clusterCenters[cIdx])
-            if dist < smldist:
-                smldist = dist
-                cc = cIdx
-
-        return smldist, cc
-
     # actually returns euclidian distance sqaured
-    # this miss naming consistent in MATLAB code too
-    # therefore I do not change it
+    # this miss-naming consistent in MATLAB code too
+    # therefore I do not change it here
     def euclidiandist(self, x, y):
         # funny that taking square of scipy implementation of euc-dist is faster than
-        # pure python implementation of euclidian distance sqaured
+        # pure python implementation of euclidian distance sqaured :(
         return scipy.spatial.distance.euclidean(x, y)**2

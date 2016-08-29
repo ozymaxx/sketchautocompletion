@@ -5,7 +5,6 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append("../../libsvm-3.21/python/")
-from feature import *
 from trainer import *
 from FeatureExtractor import *
 from shapecreator import *

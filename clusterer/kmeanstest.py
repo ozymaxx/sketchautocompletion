@@ -6,13 +6,15 @@ import matplotlib.cm as cm
 from random import randint
 import copy
 import matplotlib.markers as mark
+"""
+File for testing c-kmeans implementations in with two dimensional features, then visualization to just to be sure.
+Change the implementation name in the main method to test your implementation.
+"""
+
 #from cudackmeans import *
-sys.path.append("../../sketchfe/sketchfe")
-sys.path.append('../predict/')
-sys.path.append('../clusterer/')
-sys.path.append('../classifiers/')
-sys.path.append('../test/')
-sys.path.append('../data/')
+for path in os.listdir('..'):
+    if not os.path.isfile(os.getcwd() + '/../' + path):
+        sys.path.append(os.getcwd() + '/../' + path)
 from extractor import *
 from FileIO import *
 from Predictor import *
