@@ -22,6 +22,7 @@ class CKMeans:
         self.centerList = []
         self.MUST_LINK = 1
         self.CANNOT_LINK = -1
+        raise DeprecationWarning
 
     def initCluster(self):
         """method to initialize the clusters"""

@@ -16,6 +16,7 @@ class CuCKMeans():
         self.classId = np.asarray(classId)
         self.isFull = np.asarray(isFull)
         self.fullIndex = [idx for idx in range(len(isFull)) if isFull[idx]]
+        raise DeprecationWarning
         
     def cu_vq(self, obs, clusters):
         kernel_code_template = """

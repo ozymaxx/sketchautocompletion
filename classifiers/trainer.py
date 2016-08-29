@@ -7,7 +7,7 @@ import sys
 sys.path.append("../SVM/")
 import copy
 import numpy as np
-from SVM import *
+from LibSVM import *
 
 class Trainer:
     """Trainer Class used for the training"""
@@ -24,7 +24,7 @@ class Trainer:
         Inputs : clusterIdArr ---> clusters list
         Outputs : Support Vectors
         """
-        self.svm = SVM(self.kmeansoutput, self.classId, directory, self.featArr)
+        self.svm = LibSVM(self.kmeansoutput, self.classId, directory, self.featArr)
         #self.svm.trainSVM(clusterIdArr, directory)
         self.svm.doSVM(clusterIdArr, directory)
         return self.svm
@@ -63,5 +63,5 @@ class Trainer:
 
     @staticmethod
     def loadSvm(kmeansoutput, classId, subDirectory, featArr):
-        svm = SVM(kmeansoutput, classId, subDirectory, featArr)
+        svm = LibSVM(kmeansoutput, classId, subDirectory, featArr)
         return svm

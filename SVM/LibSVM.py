@@ -7,7 +7,7 @@ import copy_reg
 import types
 import copy
 
-class SVM:
+class LibSVM:
     def __init__(self, kmeansoutput, classId, subDirectory, features):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
