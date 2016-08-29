@@ -145,8 +145,8 @@ class Predictor:
         # initially zero
         outDict = dict.fromkeys([i for i in set(self.classId)], 0.0)
         
-        homoClstrFeatureId, homoClstrId = self.getHomogenous()
-        heteClstrFeatureId, heteClstrId = self.getHeterogenous()
+        homoClstrFeatureId, homoClstrId = self.getHomogenousClusterId()
+        heteClstrFeatureId, heteClstrId = self.getHeterogenousClusterId()
 
         clusterProb = self.clusterProb(instance, priorClusterProb)#Probability list to be in a cluster
 
@@ -195,8 +195,8 @@ class Predictor:
         print "Thread",procId, "has started"
         resultDict= {}
         
-        homoClstrFeatureId, homoClstrId = self.getHomogenous()
-        heteClstrFeatureId, heteClstrId = self.getHeterogenous()
+        homoClstrFeatureId, homoClstrId = self.getHomogenousClusterId()
+        heteClstrFeatureId, heteClstrId = self.getHeterogenousClusterId()
         clusterFeatureId = self.kmeansoutput[0]
         
         while procId < len(instances):
@@ -255,7 +255,7 @@ class Predictor:
 
         return prob
 
-    def getHeterogenous(self):
+    def getHeterogenousClusterId(self):
         """
         Gets clusters which are heterogenous
         kmeansoutput :(heterogenousClusters,heterogenousClusterId) -> heterogenous clusters, id's of heterougenous clusters
@@ -269,9 +269,8 @@ class Predictor:
                 heterogenousClusters.append(self.kmeansoutput[0][clusterId])
                 heterogenousClusterId.append(clusterId)
         return heterogenousClusters, heterogenousClusterId
-    def trainSVM(self):
-        self.svm.trainSVM()
-    def getHomogenous(self):
+
+    def getHomogenousClusterId(self):
         """
         Gets clusters which are homogenous
         kmeansoutput: (homoCluster,homoIdClus) -> homogenous clusters, id's of homogenous clusters
@@ -286,23 +285,5 @@ class Predictor:
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
 
-    def getBestPredictions(self,classProb, n):
-        a = sorted(classProb, key=classProb.get, reverse=True)[:n]
-        l = ''
-        l1 = ''
-        for i in a:
-            l1 += str(classProb[i])
-            l += str(i)
-            l += '&'
-            l1 += '&'
-        l1 = l1[:-1]
-        return l + l1
-
-    def ServerOutput(self, queryjson, n):
-        classPr = self.predictByString(str(queryjson))
-        return self.getBestPredictions(classPr, n)
-
-    def getSV(self):
-        return self.svm.getSupportVectors()
 
 

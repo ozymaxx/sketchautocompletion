@@ -132,7 +132,7 @@ class ParallelTrainer:
             # find heterogenous clusters and train svm
 
             trainer = Trainer(kmeansoutput, classId, features)
-            heteClstrFeatureId, heteClstrId = trainer.getHeterogenous()
+            heteClstrFeatureId, heteClstrId = trainer.getHeterogenousClusterId()
             trainer.trainSVM(heteClstrFeatureId, trainingpath)
             fio.saveTraining(names, classId, isFull, features, kmeansoutput,
                              trainingpath, trainingName)

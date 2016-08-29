@@ -1,5 +1,5 @@
 """
-an Interface class for calling LibSVM library -train and prediction- using multiprocessing capabilities of python
+an Interface class for calling LibSVM library -training and prediction- using multiprocessing capabilities of python
 """
 
 import copy_reg
@@ -7,19 +7,18 @@ import types
 import copy
 import sys
 sys.path.append('../classifiers')
-sys.path.append("../../libsvm-3.21/python")
+sys.path.append('../../libsvm-3.21/python')
 sys.path.append('../data/')
 from svmutil import *
-
 
 class LibSVM:
     def __init__(self, kmeansoutput, classid, directory, features):
         self.kmeansoutput = kmeansoutput
-        self.classId = classid
-        self.directory = directory
-        self.models = {}
+        self.classid = classid  # classes -or labels- of features
+        self.directory = directory  # directory to save and load model files
+        self.models = {}  # libsvm models for each cluster
         self.features = features
-        self.supportVectors = []
+        self.supportVectors = []  # support vecotrs for support vector machines
         
     def multi_run_wrapper(self, args):
         return self.trainMultiCoreSVM(*args)
@@ -46,27 +45,29 @@ class LibSVM:
         from multiprocessing import Pool
         import itertools
         pool = Pool(4)
-        pool.map(self.multi_run_wrapper,[(clusterIdArr,directory,0),(clusterIdArr,directory,1),
-            (clusterIdArr,directory,2),(clusterIdArr,directory,3)])
+        pool.map(self.multi_run_wrapper, [(clusterIdArr, directory, 0), (clusterIdArr, directory, 1),
+            (clusterIdArr, directory, 2), (clusterIdArr, directory, 3)])
     
-    def trainSVM(self, clusterFeatureId, directory):
+    def trainSVM(self, clusterFeatureIds, directory):
         """
+        Train an support vector machine model for each heterogenous cluster
         :param clusterFeatureId: List of lists having feature ids of clusters
         :param directory: directory to save .model files
         """
-        print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterFeatureId)
+        print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterFeatureIds)
         #label = copy.copy(self.classId) WHY
         order = 0
-        for clusterFeatureId in clusterFeatureId:  # Foreach cluster
+        for clusterFeatureId in clusterFeatureIds:  # Foreach cluster
             y = []
             x = []
             for featureid in clusterFeatureId:  # Foreach instance in the cluster
                 featureid = int(featureid)
-                y.append(self.classId[featureid])
+                y.append(self.classid[featureid])
                 x.append(self.features[featureid].tolist())
 
             problem = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
+            # parameters taken from the MATLAB code written by Caglar Tirkaz
             
             m = svm_train(problem, param)
             import os
@@ -89,7 +90,7 @@ class LibSVM:
         print 'Training SVM with %i features' % sum(len(cluster) for cluster in clusterIdArr)
 
         #label = copy.copy(self.classId) WHY
-        label = self.classId
+        label = self.classid
         order = procId
         while order < len(clusterIdArr):  # Foreach cluster
             clusterFeatureId = clusterIdArr[order]
@@ -102,6 +103,7 @@ class LibSVM:
 
             problem = svm_problem(y, x)
             param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
+            # parameters taken from the MATLAB code written by Caglar Tirkaz
 
             m = svm_train(problem, param)
             print order%4, ". thread finished", 1 + (order/4),"models"
@@ -164,15 +166,14 @@ class LibSVM:
 
     def getHeterogenousClusterId(self):
         """
-        Gets clusters which are heterogenous
-        kmeansoutput :(heterogenousClusters,heterogenousClusterId) -> heterogenous clusters, id's of heterougenous clusters
+        Gets clusters ids which contain instances of different class, therefore heterogenous
+        :return: feature ids of cluster heterogenous clusters, list of cluster ids
         """
-        heterogenousClusters = list()
-        heterogenousClusterId = list()
+        heterogenousClusters, heterogenousClusterId  = [], []
         for clusterId in range(len(self.kmeansoutput[0])):
             # if class id of any that in cluster of clusterId is any different than the first one
             if any(x for x in range(len(self.kmeansoutput[0][clusterId])) if
-                   self.classId[int(self.kmeansoutput[0][clusterId][0])] != self.classId[
+                   self.classid[int(self.kmeansoutput[0][clusterId][0])] != self.classid[
                        int(self.kmeansoutput[0][clusterId][x])]):
                 heterogenousClusters.append(self.kmeansoutput[0][clusterId])
                 heterogenousClusterId.append(clusterId)
@@ -180,15 +181,15 @@ class LibSVM:
 
     def getHomogenousClusterId(self):
         """
-        Gets clusters which are homogenous
-        kmeansoutput: (homoCluster,homoIdClus) -> homogenous clusters, id's of homogenous clusters
+        Gets clusters ids which contain instances of only one classes, therefore homogenous
+        :return: feature ids of cluster homogenous clusters, list of cluster ids
         """
         homoCluster = list()
         homoIdClus = list()
         for clusterId in range(len(self.kmeansoutput[0])):
             # if class id of any that in cluster of clusterId is any different than the first one
             if not any(x for x in range(len(self.kmeansoutput[0][clusterId])) if
-                       self.classId[int(self.kmeansoutput[0][clusterId][0])] != self.classId[
+                       self.classid[int(self.kmeansoutput[0][clusterId][0])] != self.classid[
                            int(self.kmeansoutput[0][clusterId][x])]):
                 homoCluster.append(self.kmeansoutput[0][clusterId])
                 homoIdClus.append(clusterId)

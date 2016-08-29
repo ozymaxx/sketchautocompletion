@@ -1,5 +1,6 @@
 """
 Classifier trainer
+an Interface class for training Svm models
 Ahmet BAGLAN - Arda ICMEZ - Semih GUNEL
 14.07.2016
 """
@@ -11,20 +12,20 @@ from LibSVM import *
 
 class Trainer:
     """Trainer Class used for the training"""
-    def __init__(self, kmeansoutput, classId, featArr = np.array([])):
-        # output[0] : list of clusters
-        # output[1] : list of cluster centers
-        self.featArr = featArr
-        self.kmeansoutput = kmeansoutput
-        self.classId = classId
+    def __init__(self, kmeansoutput, classid, features = np.array([])):
+        self.features = features
+        self.kmeansoutput = kmeansoutput # [feature_ids, cluster_centers ]
+        self.classid = classid
+        self.svm = None
 
     def trainSVM(self, clusterIdArr, directory):
-        """Trains the support vector machine and saves models
-        Inputs : clusterIdArr ---> clusters list
-        Outputs : Support Vectors
         """
-        self.svm = LibSVM(self.kmeansoutput, self.classId, directory, self.featArr)
-        #self.svm.trainSVM(clusterIdArr, directory)
+        trains svm models for the given cluster ids
+        :param clusterIdArr: clusters to be trained an svm model for
+        :param directory: directory for svm models to be saved
+        :return: returns the svm class governing svm models
+        """
+        self.svm = LibSVM(self.kmeansoutput, self.classid, directory, self.features)
         self.svm.doMultiCoreSVM(clusterIdArr, directory)
         return self.svm
 
@@ -38,7 +39,7 @@ class Trainer:
         for clusterId in range(len(self.kmeansoutput[0])):
             # if class id of any that in cluster of clusterId is any different than the first one
             if any(x for x in range(len(self.kmeansoutput[0][clusterId])) if
-                   self.classId[int(self.kmeansoutput[0][clusterId][0])] != self.classId[
+                   self.classid[int(self.kmeansoutput[0][clusterId][0])] != self.classid[
                        int(self.kmeansoutput[0][clusterId][x])]):
                 heterogenousClusters.append(self.kmeansoutput[0][clusterId])
                 heterogenousClusterId.append(clusterId)
@@ -54,7 +55,7 @@ class Trainer:
         for clusterId in range(len(self.kmeansoutput[0])):
             # if class id of any that in cluster of clusterId is any different than the first one
             if not any(x for x in range(len(self.kmeansoutput[0][clusterId])) if
-                       self.classId[int(self.kmeansoutput[0][clusterId][0])] != self.classId[
+                       self.classid[int(self.kmeansoutput[0][clusterId][0])] != self.classid[
                            int(self.kmeansoutput[0][clusterId][x])]):
                 homoCluster.append(self.kmeansoutput[0][clusterId])
                 homoIdClus.append(clusterId)
