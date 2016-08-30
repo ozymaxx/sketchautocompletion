@@ -2,8 +2,11 @@ import pickle
 from draw import *
 
 """
-Loads test results - with pickle - and generates plots again
-Do that if you want different plots than templates
+Loads test results - with pickle - and generates plots, without a
+undergoing a testing process again.
+
+Do that if you want different plots than templates, or in order
+to regenerate the plots with different parameters.
 """
 
 numclass, numfull, numpartial = 10, 80, 80

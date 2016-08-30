@@ -8,6 +8,15 @@ in a super-fast manner. Can load features of 300000 sketches under a minute.
 Extractor class assumes the following:
  - path + '/csv/x' includes the csv file for the class x
  - path + '/jsv/x' includes the json files for the class x
+
+If you want to load nicicon dataset give the path of root folder of the dataset,
+and use loadniciconfolders method instead. This time extractor assumes three folders;
+eval, test and train, and each of these folders include 14 different nicicon clasees,
+including accident and bomb.
+
+Class Id's given on run time. and class id's are generated for each folder.
+Although guarenteed to be unique -for each class-they are not necessarily the
+ same for each call of extractor.
 """
 from trainer import *
 from FeatureExtractor import *
@@ -118,6 +127,9 @@ class Extractor:
         return features, isFull, classId, names, folderList
 
     def loadniciconfolders(self):
+        """
+        loads the whole nicicon dataset
+        """
         if self.path[-1] == '/':
             self.path = self.path[0:len(self.path)-1]
 
@@ -175,6 +187,7 @@ class Extractor:
         :param folderList: preferenced classes to be load, if empty first numclass folders are loaded
         :return:
         """
+        # if no class is specified get them as the first on in the root folder
         if not folderList:
             folderList = os.listdir(self.csvpath)
             folderList.sort(key=str.lower)
@@ -183,6 +196,7 @@ class Extractor:
         if len(folderList) > numclass:
             folderList = folderList[:numclass]
 
+        # if whole set of features for a class is requested, load it directly without shaping it
         if numfull >= 80 and numpartial >= 80:
             whole_features, whole_isFull, whole_names, whole_classId = [], [], [], []
             count = 0
@@ -248,48 +262,4 @@ class Extractor:
             print names
             print 'Loaded ' + str(len(features)) + ' features'
 
-
         return features, isFull, classId, names, folderList
-
-    def processName(self, name):
-        namesplt = name.split('_')
-        if len(namesplt) == 2:
-            return
-
-def main():
-    '''
-    ext = Extractor('../json/')
-    ext.prnt = True
-    features, isFull, classId, name = ext.loadfolders(numclass=3, numfull=3, numpartial=2, folderList=['airplane', 'alarm-clock', 'angel', 'ant', 'apple'])
-
-
-    f = FileIO()
-    f.save(isFull, name, features, "noldu.csv")
-    name2, full2, feature2 = f.load("noldu.csv")
-    a=5
-
-    #print ext.isFileFull('airplane_1_1')
-    #print features
-    '''
-
-    pathread = '../json/'
-    pathwrite = '../arrdata/'
-    extr = Extractor(pathread)
-    extr.prnt = True
-    fio = FileIO()
-
-    if not os.path.exists(pathwrite):
-        os.makedirs(pathwrite)
-
-    pathreaddir = os.listdir(pathread)
-    for folder in pathreaddir:
-        if not os.path.exists(pathwrite + folder):
-            os.makedirs(pathwrite + folder)
-        features, isFull, name = extr.loadfolder(folder)
-        fio.saveOneFeature(isFull, name, features, pathwrite + folder + '/' + folder + '.csv')
-
-    ext = Extractor('../json/')
-    ext.prnt = True
-    feature = ext.loadfolder('airplane')
-
-if __name__ == "__main__": main()

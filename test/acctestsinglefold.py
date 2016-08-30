@@ -1,10 +1,21 @@
+"""
+Script for accuracy test while splitting data non-overlapping test and
+training parts. Results are saved into given directory as two pickle files
+and selected graphs with selected parameters. Script saves two pickle files
+as accuracy.p and reject.p which holds the accuracy and reject rates for
+every possible k, N, C, isfull values respectively.
+
+Having the pickle files, graphs can be redrawn (possibly with different parameters)
+with acctestload script.
+"""
+
 import sys
-sys.path.append("../../sketchfe/sketchfe")
-sys.path.append('../predict/')
-sys.path.append('../clusterer/')
-sys.path.append('../classifiers/')
-sys.path.append('../data/')
-sys.path.append("../../libsvm-3.21/python/")
+import os
+for path in os.listdir('..'):
+    if not os.path.isfile(os.getcwd() + '/../' + path):
+        sys.path.append(os.getcwd() + '/../' + path)
+sys.path.append('../../libsvm-3.21/python')
+sys.path.append('../../sketchfe/sketchfe')
 import matplotlib.pyplot as plt
 from extractor import *
 from featureutil import *
@@ -15,16 +26,17 @@ import os
 import numpy as np
 import operator
 from draw import *
-from SVM import *
+from LibSVM import *
 import pickle
 from Predictor import *
 from fastCKMeans import *
 from scipykmeans import *
 from scipyCKMeans import *
 from complexCKMeans import *
-from complexcudackmeans import *
 
 def main():
+    # count for the whole data to be loaded in to memory
+    # including test and training
     numclass, numfull, numpartial = 10, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
@@ -59,6 +71,7 @@ def main():
              'sea-turtle',
              'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
+    # extract the whole data, including test and training
     extr = Extractor('../data/')
     whole_features, \
     whole_isFull, \
@@ -70,16 +83,26 @@ def main():
                             numpartial=numpartial,
                             folderList=files)
 
+    # split data into train and test
+    # for each class numtest full sketches -with all their partial sketches- are allocated for testing, and the rest
+    # for training
     numtest = 7
-    train_features, train_isFull, train_classId, train_names, test_features, test_isFull, test_names, test_classId = \
-        partitionfeatures(whole_features,
-                          whole_isFull,
-                          whole_classId,
-                          whole_names,
-                          numtrainfull=numfull-numtest,
-                          selectTestRandom=True)
+    train_features,\
+    train_isFull,\
+    train_classId,\
+    train_names,\
+    test_features,\
+    test_isFull,\
+    test_names,\
+    test_classId = partitionfeatures(
+                                whole_features,
+                                whole_isFull,
+                                whole_classId,
+                                whole_names,
+                                numtrainfull=numfull-numtest,
+                                selectTestRandom=True)
 
-    K = [10] # :O
+    K = [10] # :O # number of cluster to test. can be a list
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
@@ -100,9 +123,7 @@ def main():
         '''
         Testing and training
         data is ready
-        '''
 
-        '''
         Training start
         '''
 
@@ -128,18 +149,7 @@ def main():
                 found = False
 
             if not found:
-                '''
-                constarr = getConstraints(size=len(train_features), isFull=train_isFull, classId=train_classId)
-                ckmeans = fastCKMeans(constarr, np.transpose(train_features), k)
-                kmeansoutput = ckmeans.getCKMeans()
-                '''
-
-                '''
-                ckmeans = fastCKMeans(train_features, train_isFull, train_classId, k, maxiter=40, thres=10 ** -10)
-                kmeansoutput = ckmeans.getCKMeans()
-                '''
-
-                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20)
+                ckmeans = ComplexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20)
                 kmeansoutput = ckmeans.getCKMeans()
 
                 trainer = Trainer(kmeansoutput, train_classId, train_features)
@@ -148,7 +158,7 @@ def main():
                                  trainingpath, folderName)
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
             else:
-                from cudackmeans import *
+                from complexCudaCKMeans import *
                 #clusterer = CuCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
                 clusterer = complexCudaCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
                 # print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
@@ -163,7 +173,6 @@ def main():
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
-
         priorClusterProb = predictor.calculatePriorProb()
 
         print 'Starting Testing'
