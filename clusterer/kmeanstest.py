@@ -7,8 +7,8 @@ from random import randint
 import copy
 import matplotlib.markers as mark
 """
-File for testing c-kmeans implementations in with two dimensional features, then visualization to just to be sure.
-Change the implementation name in the main method to test your implementation.
+File for testing c-kmeans implementations in with two dimensional features, then visualizating outputs
+to just to be sure. Change the method name in the main method to test your new implementation.
 """
 
 #from cudackmeans import *

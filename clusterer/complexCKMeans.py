@@ -106,8 +106,8 @@ class ComplexCKMeans:
     def vote(self, votingclass, votedcluster):
         """
         Voting can be considered as the negative votes. Each full sketch votes for
-        to be not assigned to -to its own class and as well as other classes-. Read class header
-        for more information
+        to be not assigned to -for its own class and as well as other classes-.
+        Read class header for more information.
         """
         for clstrIdx in range(self.k):
             # vote to prevent other classes to assign to the same cluster
@@ -121,7 +121,7 @@ class ComplexCKMeans:
 
     def getCKMeans(self):
         for iter in range(self.maxiter):
-            print 'Running iteration %i (max %i)' % (iter, self.maxiter)
+            print 'Running iteration %i (max %i)' % (iter+1, self.maxiter)
             self.clusterFeatures = [[] for i in range(self.k)]  # features in cluster
             self.classvotes = [[0] * self.k for i in
                                range(max(self.classid) + 1)]  # votes of the classes for cluster, row for class

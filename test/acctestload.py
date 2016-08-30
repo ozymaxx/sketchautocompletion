@@ -25,8 +25,8 @@ trainingpath = '../data/training/' + folderName
 accuracy = pickle.load(open(trainingpath + '/' "accuracy.p", "r"))
 reject_rate = pickle.load(open(trainingpath + '/' "reject.p", "r"))
 
-draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, delay_rate=reject_rate, path=trainingpath)
-draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, delay_rate=reject_rate, path=trainingpath)
+draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)
+draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)
 
 #draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)
 #draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)

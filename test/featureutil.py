@@ -1,3 +1,6 @@
+"""
+Methods for partitioning features into test and training data
+"""
 import numpy as np
 
 import sys

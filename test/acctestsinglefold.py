@@ -134,7 +134,7 @@ def main():
         # if training data is already computed, import
         fio = FileIO()
         if os.path.exists(trainingpath) and not ForceTrain:
-            # can I assume consistency with classId and others ?
+            # can I assume consistency with classId and others?
             _, _, _, _, kmeansoutput, _ = fio.loadTraining(
                 trainingpath, loadFeatures=False)
             svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + folderName, train_features)
@@ -159,11 +159,8 @@ def main():
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
             else:
                 from complexCudaCKMeans import *
-                #clusterer = CuCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
                 clusterer = complexCudaCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
-                # print 'pycuda', timeit.timeit(lambda: clusterer.cukmeans(data, clusters), number=rounds)
                 kmeansoutput = clusterer.cukmeans()
-
 
                 # find heterogenous clusters and train svm
                 trainer = Trainer(kmeansoutput, train_classId, train_features)
@@ -176,27 +173,31 @@ def main():
         priorClusterProb = predictor.calculatePriorProb()
 
         print 'Starting Testing'
-        classProb = predictor.calculatePosteriorProb(test_features, priorClusterProb)
-
+        # get predictions -class probabilities- for every test feature
         classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            #classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
             classProb = classProbList[test_index]
+            # sort the predictions -in the dictionary-
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
             for n in N:
                 for c in C:
+                    # get the greatest n prediction
                     SPartialclassProb = SclassProb[-n:]
+                    # sum first greatest n prediction and sum
                     summedprob = sum(tup[1] for tup in SPartialclassProb) * 100
+                    # get the class id's of the greatest n prediction
                     summedclassId = [tup[0] for tup in SPartialclassProb]
 
+                    # if sum is less tran threshold C, reject
                     if summedprob < c:
                         reject_rate[(k, n, c, test_isFull[test_index])] += 1
 
+                    # if not rejected and true class is inside the predictions, count
                     if summedprob > c and TtrueClass in summedclassId:
                         accuracy[(k, n, c, test_isFull[test_index])] += 1
 
@@ -208,9 +209,12 @@ def main():
     '''
 
     for key in reject_rate:
+        # normalize the reject rate
         reject_rate[key] = (reject_rate[key]*1.0/test_isFull.count(key[3]))*100
 
     for key in accuracy:
+        # normalize the accuracy.
+        # Count the number of non-rejected sketches to find true accuracy
         total_un_answered = int(test_isFull.count(key[3])*(reject_rate[key]/100))
         total_answered = test_isFull.count(key[3]) - total_un_answered
         accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 0
@@ -226,7 +230,7 @@ def main():
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
     draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)# Surface over n and c
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=True, labels=['Ck-means'], path=trainingpath)
 
@@ -234,9 +238,8 @@ def main():
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
     draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)# Surface over n and c
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
 
-    #draw_K-C-Text_Acc(accuracy, reject_rate, 'Constrained Voting')
 if __name__ == "__main__": main()

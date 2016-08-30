@@ -163,7 +163,7 @@ def main():
     draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
     draw_N_C_Acc_Contour(accuracy, N, C, k=numclass, isfull=True) # Surface over n and c
     draw_N_C_Reject_Contour(delay_rate, N, C, k=numclass, isfull=True)
-    draw_n_Acc(accuracy, c=30, k=numclass, isfull=False, delay_rate=delay_rate) # for fixed n and c
+    draw_n_Acc(accuracy, c=30, k=numclass, isfull=False, reject_rate=delay_rate) # for fixed n and c
     draw_K_Delay_Acc(accuracy, delay_rate, K=K, C=C, n=1, isfull=True)
     draw_Reject_Acc([accuracy], [delay_rate], N=[1, 2], k=k, isfull=True, labels=['Ck-means'])
     draw_K-C-Text_Acc(accuracy, delay_rate, 'Constrained Voting')

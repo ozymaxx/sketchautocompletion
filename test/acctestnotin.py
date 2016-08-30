@@ -127,8 +127,8 @@ def main():
     pickle.dump(accuracy, open(trainingpath + '/' "accuracy.p", "wb"))
     pickle.dump(reject_rate, open(trainingpath + '/' "reject.p", "wb"))
 
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
 
     draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
