@@ -4,6 +4,7 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../data/')
+sys.path.append('../SVM/')
 sys.path.append("../../libsvm-3.21/python/")
 import matplotlib.pyplot as plt
 from extractor import *
@@ -14,7 +15,7 @@ import os
 import numpy as np
 import operator
 from draw import *
-from SVM import *
+from LibSVM import *
 import pickle
 from Predictor import *
 from scipyCKMeans import *
