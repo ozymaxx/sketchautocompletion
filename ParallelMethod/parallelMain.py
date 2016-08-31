@@ -103,7 +103,7 @@ def main():
     my_numpartial= 3
     my_k = my_numclass
     groupByN = 5
-    nameOfTheTraining = 'ykko'
+    nameOfTheTraining = 'SunumOut'
     import os
     trainingpath = '../data/newMethodTraining/' + nameOfTheTraining
 

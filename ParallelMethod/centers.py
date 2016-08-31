@@ -37,6 +37,7 @@ def saveCenters(doOnlyFulls = False):
     my_names = []
     my_isFull = []
     f = FileIO()
+
     for mfile in files[:]:
 
         names, isFull, features = f.load('../data/csv/' + mfile + '/' + mfile + '.csv')
