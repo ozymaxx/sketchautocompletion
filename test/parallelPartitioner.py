@@ -20,7 +20,7 @@ from FileIO import *
 
 debugModeOn = False
 
-def partitionfeatures(features, isFull, classId, names, numtrainfull, selectTestRandom = True, saveName = None):
+def partitionfeatures(features, isFull, classId, names, numtrainfull, saveName = None):
 
     numclass = len(set(classId))
 
@@ -97,10 +97,11 @@ def partition(numclass, numfull, numpartial, numtest):
         if debugModeOn:
             print type(whole_classId),type(whole_features),type(whole_isFull),type(whole_names)
             print "Doing for partition for ", saveName
+            print folderList
         partitionfeatures(whole_features,
                           whole_isFull,
                           whole_classId,
                           whole_names,
                           numtrainfull = numfull-numtest,
-                          selectTestRandom=True, saveName = saveName)
+                          saveName = saveName)
     print "PARTITION ENDED"

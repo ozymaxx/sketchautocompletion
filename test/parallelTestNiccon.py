@@ -4,17 +4,14 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../data/')
+sys.path.append('../SVM/')
 sys.path.append("../../libsvm-3.21/python/")
-import matplotlib.pyplot as plt
 from extractor import *
-from featureutil import *
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
 import os
 import numpy as np
 import operator
 from draw import *
-from SVM import *
+from LibSVM import *
 import pickle
 from Predictor import *
 from scipyCKMeans import *
@@ -43,6 +40,7 @@ def main():
     test_isFull, \
     test_classId, \
     test_names = extr_test.loadniciconfolders()
+
     K = [20] # :O
     #K = [numclass]
     N = range(1, numclass)
@@ -51,8 +49,10 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-    my_n = 4
-    my_files =files#list(set(test_classId))
+
+
+    groupByN = 4
+    my_files = files#list(set(test_classId))
     my_name = 'ParalelDeneme2NIC'
 
     for k in K:
@@ -96,7 +96,7 @@ def main():
             svm.loadModels()
 
         else:
-            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/csv/allCentersNic.csv')
+            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/csv/allCentersNic.csv')
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
         if debugMode:
             print 'now first training is done ------------------------------------------++++++++++++++++++'

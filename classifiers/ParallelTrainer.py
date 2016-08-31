@@ -16,6 +16,7 @@ import random
 from extractor import *
 from FileIO import *
 import numpy as np
+from trainer import *
 
 
 class ParallelTrainer:
@@ -77,7 +78,8 @@ class ParallelTrainer:
 
 
     def trainSVM(self, numclass, numfull, numpartial, k, name):
-
+        #Be careful choosing K since this will be k only for one group
+        k = k/len(self.files)#!!!!!!!!!!!!
         n = self.n
         fio = FileIO()
         normalProb = []
@@ -116,7 +118,7 @@ class ParallelTrainer:
                     print "--------Training is Done With NORMAL CKMEANS--------"
 
                 from complexCKMeans import *
-                ckmeans = ComplexCKMeans(features, isFull, classId, k = len(folderlist))
+                ckmeans = ComplexCKMeans(features, isFull, classId, k = k)
                 kmeansoutput = ckmeans.getCKMeans()
             else:
                 if(self.debugMode):

@@ -72,7 +72,7 @@ class Predictor:
         loadedSketch = shapecreator.buildSketch('json', jstring)
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(loadedSketch)
-        priorClusterProb = self.calculatePriorProb()
+
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
     
