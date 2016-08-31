@@ -3,32 +3,41 @@ Ahmet BAGLAN
 """
 
 import sys
+sys.path.append("../ParallelMethod/")
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../data/')
+sys.path.append('../SVM/')
 sys.path.append("../../libsvm-3.21/python/")
 import matplotlib.pyplot as plt
 from extractor import *
 import os
 import operator
 from draw import *
-from SVM import *
+from LibSVM import *
 import pickle
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
 from FileIO import *
 import parallelPartitioner
+from centers import *
 
 
 def main():
-    numclass, numfull, numpartial = 10, 80, 80
+    numclass, numfull, numpartial = 12, 80, 80
     numtest = 5
     debugMode = True
+    doKMeansGrouping = True
+
+
 
     #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
     parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
+
+    print "CALCULATING CLASS CENTERS"
+    saveCenters(doOnlyFulls= True, getDataFrom = "../data/trainingData/csv/", numClass = numclass)
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
@@ -76,8 +85,10 @@ def main():
                             numfull=numfull,
                             numpartial=numpartial,
                             folderList=files)
+
     if(debugMode):
-        print "NOWOINODNF POJFD[O AINDAF[IUBS AD[9UOBH[ADSINUB [ASIFJDN [IJFNBF[DSAIJN"
+        print "Test Names As Follows"
+        print test_names
 
     #After this Semih knows
     K = [numclass, 2*numclass] # :O
@@ -88,7 +99,7 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-    my_n = numtest
+    groupByN = 4
     my_files = folderList
     my_name = 'ParalelDenemeFullCentersRandoom'
     accuracySVM = dict()
@@ -119,17 +130,16 @@ def main():
         # if training data is already computed, import
         fio = FileIO()
         if os.path.exists(trainingpath) and not ForceTrain:
-            # can I assume consistency with classId and others ?
-            _, _, _, _, kmeansoutput, _ = fio.loadTraining(
-                trainingpath, loadFeatures=False)
-            svm = SVM(kmeansoutput, train_classId, trainingpath + "/" + folderName, train_features)
+            nameOfTheTraining = my_name
+            predictor = ParallelPredictorMaster(nameOfTheTraining)
 
         else:
-            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = False)
+            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = doKMeansGrouping)
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
+            nameOfTheTraining = my_name
+            predictor = ParallelPredictorMaster(nameOfTheTraining)
 
-        nameOfTheTraining = my_name
-        predictor = ParallelPredictorMaster(nameOfTheTraining)
+
 
         print 'Starting Testing'
         for test_index in range(len(test_features)):
@@ -185,7 +195,7 @@ def main():
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
     draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)# Surface over n and c
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=True, labels=['Ck-means'], path=trainingpath)
 
@@ -193,7 +203,7 @@ def main():
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
     draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)# Surface over n and c
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
 

@@ -43,13 +43,6 @@ class ParallelPredictorSlave:
         # normalize
         clustProb = [c/sum(clustProb) for c in clustProb]
 
-        #import numpy as np
-        #import matplotlib.pyplot as plt
-
-        #fig = plt.figure()
-        #plt.scatter(range(len(diste_)), diste_, alpha=0.5)
-        #plt.show()
-
         return clustProb
 
     def svmProb(self, model, instance):

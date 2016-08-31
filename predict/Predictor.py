@@ -72,7 +72,7 @@ class Predictor:
         loadedSketch = shapecreator.buildSketch('json', jstring)
         featextractor = IDMFeatureExtractor()
         instance = featextractor.extract(loadedSketch)
-        priorClusterProb = self.calculatePriorProb()
+
         classProb = self.calculatePosteriorProb(instance, priorClusterProb)
         return classProb
     
@@ -97,9 +97,12 @@ class Predictor:
     
     def calculatePosteriorProb(self, instances, priorClusterProb):
         """
-        Predict labels for single instance, given P(C_k) for each cluster,
+        Predict labels for instance(s), given P(C_k) for each cluster,
         calculate P(S_i) for each class i
-        :param instance: instance to be predicted labels for
+
+        If the input of list of instances, then a list of class probabilities
+        is returned.
+        :param instances: instance to be predicted labels for
         :param priorClusterProb: prior cluster probabilities before seeing the data
         :return: dictionary holding probabilities for each class
         """

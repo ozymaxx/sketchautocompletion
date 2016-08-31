@@ -45,7 +45,8 @@ class scipykmeans:
         return [self.clusterFeatures, self.clusterCenters]
         '''
 
-        self.clusterCenters, label = kmeans2(np.asarray(self.features), k=self.numclass)
+
+        self.clusterCenters, label = kmeans2(np.asarray(self.features), k=self.k, minit= 'points')
 
         for lidx in range(len(label)):
             self.clusterFeatures[label[lidx]].append(lidx)

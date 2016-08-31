@@ -1,7 +1,6 @@
 """
 Ahmet BAGLAN
 """
-
 import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
@@ -9,8 +8,9 @@ from FileIO import *
 import numpy as np
 
 
-def saveCenters(doOnlyFulls = False):
+def saveCenters(doOnlyFulls = False, getDataFrom = '../data/csv/', numClass =10 ** 6, savePath = '../data/csv/allCenters.csv'):
     """This file computes centers of classses and saves it to  the ./data/csv/allCenters.csv"""
+
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack', 'banana',
          'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -37,9 +37,15 @@ def saveCenters(doOnlyFulls = False):
     my_names = []
     my_isFull = []
     f = FileIO()
-    for mfile in files[:]:
 
-        names, isFull, features = f.load('../data/csv/' + mfile + '/' + mfile + '.csv')
+    if(numClass == None):
+        numClass = len(files)
+    else:
+        numClass = min(numClass, len(files))
+
+    for mfile in files[:numClass]:
+
+        names, isFull, features = f.load(getDataFrom + mfile + '/' + mfile + '.csv')
         nowCenter = np.zeros(len(features[0]))
 
         if not doOnlyFulls:
@@ -57,7 +63,7 @@ def saveCenters(doOnlyFulls = False):
         k.append(nowCenter)
         my_names.append(mfile)
         my_isFull.append(0)
-    f.save(my_isFull,my_names,k,'../data/csv/allCenters.csv')
+    f.save(my_isFull,my_names,k,savePath)
 
 
 if __name__ == '__main__':saveCenters(True)

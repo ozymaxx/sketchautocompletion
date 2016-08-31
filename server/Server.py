@@ -47,11 +47,10 @@ fig.set_size_inches(100, 200)
 predictor = None
 cudaSupport = None
 
-
 def draw_json(jsonString):
     """
     Draws given json in the matplotlib canvas
-    To test the server input if necessary
+    To test the server input, if necessary
     """
     xMatrix = []
     yMatrix = []
@@ -180,7 +179,6 @@ def main():
     k = numclass
     training_name = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
     training_path = '../data/training/' + training_name
-    fio = FileIO()
 
     # check if pycuda is installed
     global cudaSupport
@@ -193,11 +191,12 @@ def main():
 
     # if training data is already computed, import
     if os.path.exists(training_path) and not ForceTrain:
+        fio = FileIO()
         names, classid, isfull, features, kmeansoutput, myfiles = fio.loadTraining(training_path + "/" + training_name)
         svm = Trainer.loadSvm(kmeansoutput, classid, training_path, features)
         svm.loadModels()
-    else:
-        # otherwise train from data
+
+    else: # otherwise train from data
         kmeansoutput, classid, svm = train(training_name, training_path, numclass, numfull, numpartial, k)
 
     # form the predictor
@@ -207,7 +206,6 @@ def main():
     # start the server
     app.secret_key = 'super secret key'
     app.config['SESSION_TYPE'] = 'filesystem'
-    app.debug = True
     app.run(host='0.0.0.0', debug=False)
     print 'Server ended'
 if __name__ == '__main__': main()

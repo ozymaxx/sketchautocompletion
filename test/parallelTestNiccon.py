@@ -4,17 +4,14 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../data/')
+sys.path.append('../SVM/')
 sys.path.append("../../libsvm-3.21/python/")
-import matplotlib.pyplot as plt
 from extractor import *
-from featureutil import *
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
 import os
 import numpy as np
 import operator
 from draw import *
-from SVM import *
+from LibSVM import *
 import pickle
 from Predictor import *
 from scipyCKMeans import *
@@ -43,6 +40,7 @@ def main():
     test_isFull, \
     test_classId, \
     test_names = extr_test.loadniciconfolders()
+
     K = [20] # :O
     #K = [numclass]
     N = range(1, numclass)
@@ -51,8 +49,10 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-    my_n = 4
-    my_files =files#list(set(test_classId))
+
+
+    groupByN = 4
+    my_files = files#list(set(test_classId))
     my_name = 'ParalelDeneme2NIC'
 
     for k in K:
@@ -65,7 +65,6 @@ def main():
 
     for k in K:
         if debugMode:
-            print '------------------------------------------------------------------'
             print '------------------------------------------------------------------'
             print '------------------------------------------------------------------'
             print 'K = ', k
@@ -96,7 +95,7 @@ def main():
             svm.loadModels()
 
         else:
-            myParallelTrainer = ParallelTrainer (my_n,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/csv/allCentersNic.csv')
+            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/csv/allCentersNic.csv')
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
         if debugMode:
             print 'now first training is done ------------------------------------------++++++++++++++++++'
@@ -153,7 +152,7 @@ def main():
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
     draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)# Surface over n and c
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=True, labels=['Ck-means'], path=trainingpath)
 
@@ -161,7 +160,7 @@ def main():
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
     draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)# Surface over n and c
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
-    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, delay_rate=reject_rate, path=trainingpath)# for fixed n and c
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
 

@@ -11,12 +11,12 @@ from svmutil import *
 
 class LibSVM:
     def __init__(self, kmeansoutput, classid, directory, features):
-        self.kmeansoutput = kmeansoutput
-        self.classid = classid  # classes -or labels- of features
+        self.kmeansoutput = kmeansoutput # [cluster_features, cluster_centers]
+        self.classid = classid  # classes -labels- of features
         self.directory = directory  # directory to save and load model files
         self.models = {}  # libsvm models for each cluster
         self.features = features
-        self.supportVectors = []  # support vecotrs for support vector machines
+        self.supportVectors = []  # support vectors for support vector machines
         
     def multi_run_wrapper(self, args):
         return self.trainMultiCoreSVM(*args)
@@ -127,7 +127,7 @@ class LibSVM:
 
     def loadModels(self):
         """
-        loads model files into memory from the directory given in constructor
+        loadslibsvm model files into memory from the directory given in constructor
         """
         import os
         order = 0
@@ -164,7 +164,7 @@ class LibSVM:
 
     def getHeterogenousClusterId(self):
         """
-        Gets clusters ids which contain instances of different class, therefore heterogenous
+        Gets clusters ids which contain instances of different classes, therefore heterogenous
         :return: feature ids of cluster heterogenous clusters, list of cluster ids
         """
         heterogenousClusters, heterogenousClusterId  = [], []

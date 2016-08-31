@@ -71,10 +71,9 @@ def handle_data():
     timeStart = time.time()
     try:
         #Get the json file
-        queryjson = request.args.get('json')
+        queryjson = request.data
         #Get predicted dict
         classProb = predictor.predictByString(queryjson)
-
         print 'Server responded in %.3f seconds' % float(time.time()-timeStart)
 
         #Send back first N prediction
@@ -97,13 +96,13 @@ def homepage():
 def main():
 
     global predictor
-    ForceTrain = True
-    my_numclass = 10
-    my_numfull = 7
-    my_numpartial= 3
+    ForceTrain = False
+    my_numclass = 12
+    my_numfull = 80
+    my_numpartial= 80
     my_k = my_numclass
     groupByN = 5
-    nameOfTheTraining = 'ykko'
+    nameOfTheTraining = 'Yeni1123'
     import os
     trainingpath = '../data/newMethodTraining/' + nameOfTheTraining
 
@@ -111,7 +110,7 @@ def main():
     if os.path.exists(trainingpath) and (not ForceTrain):
         predictor = ParallelPredictorMaster(nameOfTheTraining)
     else:
-        trainIt(groupByN, files[:my_numclass], my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
+        trainIt(groupByN, files[:min(my_numclass,len(files))], my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
         predictor = ParallelPredictorMaster(nameOfTheTraining)
 
     app.secret_key = 'super secret key'

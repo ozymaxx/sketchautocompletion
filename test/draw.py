@@ -1,9 +1,25 @@
+"""
+Methods for plotting accuracy and reject rate results
+"""
+
 import numpy as np
 import matplotlib.pyplot as plt
 import itertools
 from mpl_toolkits.mplot3d import Axes3D
 import scipy.interpolate
+import pylab
+
+
 def draw_N_C_Acc(accuracy, N, C, k, isfull, path):
+    """
+    draws three dimensional plot for N,C versus accuracy
+    :param accuracy: dictionary of tuple to float. Tuples are formed as (k, N, C, isfull)
+    :param N: List of different n values to be drawn on the plot
+    :param C: List of different c values to be drawn on the plot
+    :param k: a single k value to ve drawn on the plot
+    :param isfull: whether plot the full sketches or partials
+    :param path: path to save the resuls
+    """
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -35,6 +51,15 @@ def draw_N_C_Acc(accuracy, N, C, k, isfull, path):
     fig.savefig(path + '/' + 'draw_N_C_Acc_%s.png' % ('Full' if isfull else 'Partial'))
 
 def draw_N_C_Reject(delay_rate, N, C, k, isfull, path):
+    """
+    draws three dimensional plot for N,C versus reject rate
+    :param delay_rate: dictionary of tuple to float. Tuples are formed as (k, N, C, isfull)
+    :param N: List of different n values to be drawn on the plot, must exists on the dictionary
+    :param C: List of different c values to be drawn on the plot, must exists on the dictionary
+    :param k: a single k value to ve drawn on the plot
+    :param isfull: whether plot the full sketches or partials
+    :param path: path to save the resuls
+    """
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
 
@@ -64,9 +89,18 @@ def draw_N_C_Reject(delay_rate, N, C, k, isfull, path):
     ax.set_zlabel('Reject Rate(%)')
     fig.savefig(path + '/' + 'draw_N_C_Reject_%s.png' % ('Full' if isfull else 'Partial'))
 
-def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull, path):
-    fig = plt.figure()
+def draw_N_C_Reject_Contour(reject_rate, N, C, k, isfull, path):
+    """
+    draws two dimensional contour plot for N,C versus reject rate
+    :param reject_rate: dictionary of tuple to float. Tuples are formed as (k, N, C, isfull)
+    :param N: List of different n values to be drawn on the plot, must exists on the dictionary
+    :param C: List of different c values to be drawn on the plot, must exists on the dictionary
+    :param k: a single k value to ve drawn on the plot
+    :param isfull: whether plot the full sketches or partials
+    :param path: path to save the resuls
+    """
 
+    fig = plt.figure()
     nmesh, cmesh = np.meshgrid(N, C)
 
     nlist, clist, rejlist =[], [], []
@@ -74,7 +108,7 @@ def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull, path):
         for c in C:
             nlist.append(n)
             clist.append(c)
-            rejlist.append(delay_rate[k, n, c, isfull])
+            rejlist.append(reject_rate[k, n, c, isfull])
 
     # Set up a regular grid of interpolation points
     xi, yi = np.linspace(min(nlist), max(nlist), 100), np.linspace(min(clist), max(clist), 100)
@@ -99,6 +133,15 @@ def draw_N_C_Reject_Contour(delay_rate, N, C, k, isfull, path):
     fig.savefig(path + '/' + 'draw_N_C_Reject_Contour_%s.png' % ('Full' if isfull else 'Partial'))
 
 def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
+    """
+    draws two dimensional contour plot for N,C versus accuracy
+    :param accuracy: dictionary of tuple to float. Tuples are formed as (k, N, C, isfull)
+    :param N: List of different n values to be drawn on the plot, must exists on the dictionary
+    :param C: List of different c values to be drawn on the plot, must exists on the dictionary
+    :param k: a single k value to ve drawn on the plot
+    :param isfull: whether plot the full sketches or partials
+    :param path: path to save the resuls
+    """
     fig = plt.figure()
 
     nmesh, cmesh = np.meshgrid(N, C)
@@ -132,8 +175,19 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
 
     fig.savefig(path + '/' + 'draw_N_C_Acc_Contour_%s.png' % ('Full' if isfull else 'Partial'))
 
-def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels, path):
-    import pylab
+def draw_Reject_Acc(Accuracy, Reject_rate, N, k, isfull, labels, path):
+    """
+    Draws two dimensional ROC-like curve, reject rate versus accuracy for multiple results
+    It enables to compare several implementations on an objective basis
+    :param Accuracy: list of accuracy dictionaries
+    :param Reject_rate: list of reject rate dictionaries
+    :param N: List of different n values to be drawn on the plot, must exists on the dictionary
+    :param k: a single k value to ve drawn on the plot
+    :param isfull: whether plot the full sketches or partials
+    :param labels: legend strings for different implementations, with the same order as dictionaries
+    :param path: path to save the resuls
+    :return:
+    """
     # the only free variable is C, so we will vary C to see reject vs accuracy rate
     fig = plt.figure()
     c_list = [[key[2] for key in accuracy.keys()] for accuracy in Accuracy]
@@ -144,7 +198,7 @@ def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels, path):
         for n in N:
             x_reject, y_acc = [], []
             for c in c_list[i]:
-                x_reject.append(Delay_rate[i][(k, n, c, isfull)])
+                x_reject.append(Reject_rate[i][(k, n, c, isfull)])
                 y_acc.append(Accuracy[i][(k, n, c, isfull)])
 
             pylab.scatter(x_reject, y_acc, alpha=1, s=100, color=color[i], marker=markers[n+i], label=labels[i] + ' N='+str(n))
@@ -159,7 +213,17 @@ def draw_Reject_Acc(Accuracy, Delay_rate, N, k, isfull, labels, path):
 
     plt.savefig(path + '/' + 'draw_Reject_Acc_%s.png' % ('Full' if isfull else 'Partial'))
 
-def draw_n_Acc(accuracy, c, k, isfull, delay_rate, path):
+def draw_n_Acc(accuracy, c, k, isfull, reject_rate, path):
+    """
+    draws a two dimensional slice of N,C versus accuracy plot in a nice format
+    :param accuracy: dictionary of tuple to float. Tuples are formed as (k, N, C, isfull)
+    :param c: a single threshold to be drawn. Determines the slice of N,C versus accuracy plot
+    :param k: a single number-of-clusters parameter to be drawn
+    :param isfull: whether plot the full sketches or partials
+    :param reject_rate: dictionary of tuple to float. Tuples are formed as (k, N, C, isfull)
+    :param path: path to save the resuls
+    :return:
+    """
     fig = plt.figure()
     maxN = max(key[1] for key in accuracy.keys())
 
@@ -168,7 +232,7 @@ def draw_n_Acc(accuracy, c, k, isfull, delay_rate, path):
         if (k, n, c, isfull) in accuracy.keys():
             x.append(n)
             y.append(accuracy[(k, n, c, isfull)])
-            plt.annotate('N:%i,Acc:%i%%,Rej:%i%%' % (n, accuracy[(k, n, c, isfull)], delay_rate[(k, n, c, isfull)]),\
+            plt.annotate('N:%i,Acc:%i%%,Rej:%i%%' % (n, accuracy[(k, n, c, isfull)], reject_rate[(k, n, c, isfull)]), \
                          (n + 0.1, accuracy[(k, n, c, isfull)] + 0.1))
 
     # horizontal lines

@@ -16,6 +16,7 @@ import random
 from extractor import *
 from FileIO import *
 import numpy as np
+from trainer import *
 
 
 class ParallelTrainer:
@@ -47,11 +48,12 @@ class ParallelTrainer:
             for n in files:
                 features.append(my_features[names.index(n)])
             features = np.array(features)
-
             classId = range(len(features))
-            constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-            ckmeans = CKMeans(constarr, np.transpose(features), len(files)/self.n)
-            kmeansoutput = ckmeans.getCKMeans()
+
+            from scipykmeans import *
+            kmeans  = scipykmeans(features, isFull, classId,len(files)/self.n)
+            kmeansoutput = kmeans.getCKMeans()
+
             for i in kmeansoutput[0]:
                 l = []
                 for j in i:
@@ -76,7 +78,8 @@ class ParallelTrainer:
 
 
     def trainSVM(self, numclass, numfull, numpartial, k, name):
-
+        #Be careful choosing K since this will be k only for one group
+        k = k/len(self.files)#!!!!!!!!!!!!
         n = self.n
         fio = FileIO()
         normalProb = []
@@ -105,10 +108,8 @@ class ParallelTrainer:
             features, isFull, classId, names, folderlist = self.getFeatures(i,numclass,numfull,numpartial,self.getTrainingDataFrom)
 
             if(self.debugMode):
-                print "Names------", names
+                print "Names", names
                 print 'Folders :   ', folderlist
-                print 'Gruptaki instance sayisi : ', len(features)
-                print 'Olmasi gereken ', numfull*numpartial
 
 
             #NOW GET CLUSTERING OUTPUT FOR THE SPECIFIC GROUP
@@ -116,8 +117,8 @@ class ParallelTrainer:
                 if(self.debugMode):
                     print "--------Training is Done With NORMAL CKMEANS--------"
 
-                constarr = getConstraints(size=len(features), isFull=isFull, classId=classId)
-                ckmeans = CKMeans(constarr, np.transpose(features), k)
+                from complexCKMeans import *
+                ckmeans = ComplexCKMeans(features, isFull, classId, k = k)
                 kmeansoutput = ckmeans.getCKMeans()
             else:
                 if(self.debugMode):

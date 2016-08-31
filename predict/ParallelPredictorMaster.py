@@ -27,7 +27,7 @@ class ParallelPredictorMaster:
         #!!newMethodTraining is static
         path = trainingpath = '../data/newMethodTraining/' + name
 
-        #Load info of the sabing
+        #Load info of the saving
         trainInfo = np.load(path + '/trainingInfo.npy').item()
 
 
@@ -68,24 +68,9 @@ class ParallelPredictorMaster:
             predictor = ParallelPredictorSlave(kmeansoutput, classId, trainingpath, loadedFolders, nowSwm)
             self.predictors.append(predictor)
 
-    def probToTheGroupByJason(self, jstring, centers, normalProb):
-        #Get probability to every group depending on the distance to the group
-        loadedSketch = shapecreator.buildSketch('json', jstring)
-        featextractor = IDMFeatureExtractor()
-        instance = featextractor.extract(loadedSketch)
-        probTup = []
-        for i in range(len(centers)):
-            dist = self.getDistance(instance, centers[i])
-            probTup.append(math.exp(-1*abs(dist))*normalProb[i])
-        return probTup
 
     def probToTheGroupByFeature(self, instance, centers, priorProb):
         """Get prob to groups when instance is given as vector"""
-        # probTup = []
-        # for i in range(len(centers)):
-        #     dist = self.getDistance(instance, centers[i])
-        #     probTup.append(math.exp(-1*abs(dist))*normalProb[i])
-        # return probTup
 
         dist = [self.getDistance(instance, centers[idx]) for idx in range(len(centers))]
 
@@ -97,13 +82,6 @@ class ParallelPredictorMaster:
         # normalize
         clustProb = [c/sum(clustProb) for c in clustProb]
 
-        #import numpy as np
-        #import matplotlib.pyplot as plt
-
-        #fig = plt.figure()
-        #plt.scatter(range(len(diste_)), diste_, alpha=0.5)
-        #plt.show()
-
         return clustProb
 
     def getDistance(self, x, y):
@@ -112,19 +90,14 @@ class ParallelPredictorMaster:
         kmeansoutput: distance"""
         return distance.euclidean(x, y)
 
-    def predictByString(self, q):
+    def predictByString(self, jstring):
 
-        normalProb = self.normalProb
-        l = self.groupCenters
-        savingProbs = self.probToTheGroupByJason(q, l, normalProb)
-        savingProbs = [x/sum(savingProbs) for x in savingProbs]
-        print savingProbs
-        out = dict()
-        for i in range(self.numOfTrains):
-            a = self.predictors[i].predictByString(q)
-            for m in a.keys():
-                out[m] = a[m]*savingProbs[i]
-        return out
+        loadedSketch = shapecreator.buildSketch('json', jstring)
+        featextractor = IDMFeatureExtractor()
+        instance = featextractor.extract(loadedSketch)
+
+        classProb = self.calculatePosteriorProb(instance)
+        return classProb
 
     def calculatePosteriorProb(self, ins):
 
