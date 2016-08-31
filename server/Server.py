@@ -174,7 +174,7 @@ def homepage():
 
 
 def main():
-    ForceTrain = True
+    ForceTrain = False
     numclass, numfull, numpartial = 250, 80, 80
     k = numclass
     training_name = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
