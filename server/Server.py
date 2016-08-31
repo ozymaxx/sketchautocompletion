@@ -126,8 +126,8 @@ def train(trainingName, trainingpath, numclass, numfull, numpartial, k):
         ckmeans = ComplexCKMeans(features, isFull, classId, k)
         kmeansoutput = ckmeans.getCKMeans()
     else:
-        # a late import in order to prevent import errors on computers without cuda support
-        from complexcudackmeans import complexcudackmeans
+        # a late import in order to prevent imporwt errors on computers without cuda support
+        from complexcudackmeans import complexCudaCKMeans
         clusterer = complexCudaCKMeans(features, k, classId, isFull)  # FEATURES : N x 720
         clusters, centers = clusterer.cukmeans()
         kmeansoutput = [clusters, centers]
@@ -175,7 +175,7 @@ def homepage():
 
 
 def main():
-    ForceTrain = False
+    ForceTrain = True
     numclass, numfull, numpartial = 250, 80, 80
     k = numclass
     training_name = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)

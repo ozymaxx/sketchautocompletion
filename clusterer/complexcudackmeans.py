@@ -103,6 +103,7 @@ class complexCudaCKMeans():
               cluster[valindex]=myCentroid;
             }
           }
+
         """
 
         nclusters = clusters.shape[0]
@@ -176,12 +177,16 @@ class complexCudaCKMeans():
                 }
                 feature2clusterDist[valindex*numClusters + k] = distance;
               }
-              cluster[valindex]=myCentroid;
+              int oldClus;
+              oldClus = cluster[valindex];
+              if(minDistance < feature2clusterDist[valindex*numClusters + oldClus]) {
+                cluster[valindex]=myCentroid;
+              }
             }
           }
           __global__ void cu_v2qinit(float *g_idata, float *g_centroids,
             int *classId, int *isFull,
-            int * cluster, float *min_dist, int numClusters, int numDim, int numPoints, int numIter) {
+            int * cluster, float *feature2clusterDist, int numClusters, int numDim, int numPoints, int numIter) {
             int valindex = blockIdx.x * blockDim.x + threadIdx.x ;
             __shared__ float mean[%(DIMENSIONS)s];
             float minDistance = FLT_MAX;
@@ -199,9 +204,9 @@ class complexCudaCKMeans():
                   minDistance = distance ;
                   myCentroid = k;
                 }
+                feature2clusterDist[valindex*numClusters + k] = distance;
               }
               cluster[valindex]=myCentroid;
-              min_dist[valindex]=sqrt(minDistance);
             }
           }
         """

@@ -25,6 +25,7 @@ class Trainer:
         :return: returns the svm class governing svm models
         """
         self.svm = LibSVM(self.kmeansoutput, self.classid, directory, self.features)
+        #self.svm.trainSVM(clusterFeatureIds, directory)
         self.svm.doMultiCoreSVM(clusterFeatureIds, directory)
         return self.svm
 
