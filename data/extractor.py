@@ -18,7 +18,7 @@ Class Id's given on run time. and class id's are generated for each folder.
 Although guarenteed to be unique -for each class-they are not necessarily the
  same for each call of extractor.
 """
-from trainer import *
+
 from FeatureExtractor import *
 from shapecreator import *
 from FileIO import *

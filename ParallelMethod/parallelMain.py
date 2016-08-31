@@ -97,12 +97,12 @@ def main():
 
     global predictor
     ForceTrain = False
-    my_numclass = 12
-    my_numfull = 80
-    my_numpartial= 80
+    my_numclass = 9
+    my_numfull = 20
+    my_numpartial= 20
     my_k = my_numclass
-    groupByN = 5
-    nameOfTheTraining = 'Yeni1123'
+    groupByN = 4
+    nameOfTheTraining = 'Yeni11236'
     import os
     trainingpath = '../data/newMethodTraining/' + nameOfTheTraining
 
