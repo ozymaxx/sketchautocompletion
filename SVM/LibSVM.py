@@ -77,7 +77,7 @@ class LibSVM:
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
             order += 1
-        print 'Training SVM is done'
+        print 'Training SVM is done '
         
     def trainMultiCoreSVM(self, clusterIdArr, directory, procId):
         """
@@ -116,7 +116,7 @@ class LibSVM:
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
             order += 4
-        print 'Training SVM is done'
+        print 'Training SVM is done for thread', order%4
 
     def getlabels(self, model_index):
         """
