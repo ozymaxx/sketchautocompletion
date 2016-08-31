@@ -45,8 +45,9 @@ class LibSVM:
         pool = Pool(4)
         pool.map(self.multi_run_wrapper, [(clusterFeatureIds, directory, 0), (clusterFeatureIds, directory, 1),
             (clusterFeatureIds, directory, 2), (clusterFeatureIds, directory, 3)])
-        pool.join()
         pool.close()
+        pool.join()
+
     def trainSVM(self, clusterFeatureIds, directory):
         """
         Train an support vector machine model for each heterogenous cluster
