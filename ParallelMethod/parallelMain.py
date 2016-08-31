@@ -19,6 +19,7 @@ from ParallelPredictorSlave import *
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
 import time
+from centers import *
 
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
@@ -97,12 +98,12 @@ def main():
 
     global predictor
     ForceTrain = False
-    my_numclass = 9
+    my_numclass = 20
     my_numfull = 20
     my_numpartial= 20
     my_k = my_numclass
     groupByN = 4
-    nameOfTheTraining = 'Yeni11236'
+    nameOfTheTraining = 'Yejjjkk12'
     import os
     trainingpath = '../data/newMethodTraining/' + nameOfTheTraining
 
@@ -110,6 +111,8 @@ def main():
     if os.path.exists(trainingpath) and (not ForceTrain):
         predictor = ParallelPredictorMaster(nameOfTheTraining)
     else:
+        print "CALCULATING CLASS CENTERS"
+        saveCenters(doOnlyFulls= True, getDataFrom = "../data/csv/", numClass = my_numclass)
         trainIt(groupByN, files[:min(my_numclass,len(files))], my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
         predictor = ParallelPredictorMaster(nameOfTheTraining)
 

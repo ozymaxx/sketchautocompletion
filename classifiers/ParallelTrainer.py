@@ -22,7 +22,7 @@ from trainer import *
 class ParallelTrainer:
     """Trainer Class used for the parallel training"""
 
-    def __init__(self, n, files, doKMeans = True, getTrainingDataFrom = '../data/trainingData/', centersFolder = '../data/csv/allCenters.csv' ):
+    def __init__(self, n, files, doKMeans = True, getTrainingDataFrom = '../data/trainingData/', centersFolder = '../data/newMethodTraining/allCenters.csv' ):
 
         #Use the following data
         self.getTrainingDataFrom = getTrainingDataFrom
@@ -79,7 +79,7 @@ class ParallelTrainer:
 
     def trainSVM(self, numclass, numfull, numpartial, k, name):
         #Be careful choosing K since this will be k only for one group
-        k = k/len(self.files)#!!!!!!!!!!!!
+        # k = k/len(self.files)#!!!!!!!!!!!!
         n = self.n
         fio = FileIO()
         normalProb = []

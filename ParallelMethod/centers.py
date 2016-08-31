@@ -8,7 +8,7 @@ from FileIO import *
 import numpy as np
 
 
-def saveCenters(doOnlyFulls = False, getDataFrom = '../data/csv/', numClass =10 ** 6, savePath = '../data/csv/allCenters.csv'):
+def saveCenters(doOnlyFulls = False, getDataFrom = '../data/csv/', numClass =10 ** 6, savePath = '../data/newMethodTraining/allCenters.csv'):
     """This file computes centers of classses and saves it to  the ./data/csv/allCenters.csv"""
 
 

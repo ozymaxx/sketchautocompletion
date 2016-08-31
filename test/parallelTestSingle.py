@@ -26,7 +26,7 @@ from centers import *
 
 
 def main():
-    numclass, numfull, numpartial = 12, 80, 80
+    numclass, numfull, numpartial = 10, 80, 80
     numtest = 5
     debugMode = True
     doKMeansGrouping = True

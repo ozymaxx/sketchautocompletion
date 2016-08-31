@@ -227,10 +227,10 @@ class Extractor:
             for folder in folderList:
                 featuresT, isFullT, namesT = self.loadfoldercsv(folder)
                 #   BU DEGISECEEEEEEEKEKKKKKKKK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                features.extend(featuresT)  # [:numfull*numpartial])
-                isFull.extend(isFullT)  # [:numfull*numpartial])
-                names.extend(namesT)  # [:numfull*numpartial])
-                classId.extend([classCount] * len(featuresT))  # [:numfull*numpartial]))
+                features.extend(featuresT)#[:numfull*numpartial])
+                isFull.extend(isFullT)#[:numfull*numpartial])
+                names.extend(namesT)#[:numfull*numpartial])
+                classId.extend([classCount] * len(featuresT))#[:numfull*numpartial]))
                 classCount += 1
             print 'Loaded %i sketches' % len(features)
             return features, isFull, classId, names, folderList

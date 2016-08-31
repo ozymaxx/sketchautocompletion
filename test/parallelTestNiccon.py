@@ -23,9 +23,9 @@ from ParallelTrainer import *
 def main():
 
     files = ['accident','bomb','car','casualty','electricity','fire','firebrigade','flood','gas','injury','paramedics','person','police','roadblock']
-
-    numclass, numfull, numpartial = 5, 10, 10
-    numtest = 5
+    numclass = 14
+    numfull = 80
+    numpartial = 80
     debugMode = True
 
     trainingFolder = '../data/nicicon/csv/train'
@@ -51,7 +51,7 @@ def main():
     reject_rate = dict()
 
 
-    groupByN = 4
+    groupByN = 5
     my_files = files#list(set(test_classId))
     my_name = 'ParalelDeneme2NIC'
 
@@ -83,7 +83,7 @@ def main():
 
         ForceTrain = True
         folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(test_classId)+1, k)
-        trainingpath = '../data/newMethodTraining/' + folderName
+        trainingpath = '../data/newMethodTraining/' + my_name+'/'+ folderName
 
         # if training data is already computed, import
         fio = FileIO()
@@ -95,7 +95,9 @@ def main():
             svm.loadModels()
 
         else:
-            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/csv/allCentersNic.csv')
+            if not os.path.exists(trainingpath):
+                 os.makedirs(trainingpath)
+            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/newMethodTraining/allCentersNic.csv')
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
         if debugMode:
             print 'now first training is done ------------------------------------------++++++++++++++++++'
@@ -108,11 +110,16 @@ def main():
             Tfeature = test_features[test_index]
             TtrueClass = files[test_classId[test_index]]
 
+            for i in files:
+                if(i in test_names[test_index]):
+                    TtrueClass = i
+
             print "--------------------------------------------------"
             classProb = predictor.calculatePosteriorProb(Tfeature)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
-            print "nowSclass", SclassProb,TtrueClass
+            print "nowSclass", SclassProb,TtrueClass,test_names[test_index]
             print "--------------------------------------------------"
+
 
             for n in N:
                 for c in C:
