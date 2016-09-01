@@ -26,7 +26,10 @@ def main():
     numclass = 14
     numfull = 80
     numpartial = 80
-    debugMode = True
+    doKMeansGrouping = False
+    groupByN = 5
+    my_name = 'ParallelNICGroupBy5RandomGroups'
+    debugMode = False
 
     trainingFolder = '../data/nicicon/csv/train'
     extr_train = Extractor(trainingFolder)
@@ -49,11 +52,8 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-
-
-    groupByN = 5
     my_files = files#list(set(test_classId))
-    my_name = 'ParalelDeneme2NIC'
+
 
     for k in K:
         for n in N:
@@ -97,7 +97,7 @@ def main():
         else:
             if not os.path.exists(trainingpath):
                  os.makedirs(trainingpath)
-            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = True, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/newMethodTraining/allCentersNic.csv')
+            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = doKMeansGrouping, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/newMethodTraining/allCentersNic.csv')
             myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
         if debugMode:
             print 'now first training is done ------------------------------------------++++++++++++++++++'

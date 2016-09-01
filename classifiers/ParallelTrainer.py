@@ -34,12 +34,19 @@ class ParallelTrainer:
         self.trainingAdress = '../data/newMethodTraining/'
         allFiles = copy.copy(files)
         self.files = []
+        numOfGroups = len(allFiles)/self.n
 
 
         if(not doKMeans):#Create groups by Random Chosen
             random.shuffle(allFiles)
-            for i in range(len(files)/self.n):
-                self.files.append(allFiles[i*n :(i+1)*n])
+
+            for i in range(numOfGroups):
+                self.files.append([])
+            f = 0
+            for i in allFiles:
+                f = f%numOfGroups
+                self.files[f].append(i)
+                f+=1
         else:#Create groups using K-Means
             print "NOW DOING NORMAL KMEANS FOR CLUSTERING CLASSES"
             f = FileIO()
@@ -78,8 +85,15 @@ class ParallelTrainer:
 
 
     def trainSVM(self, numclass, numfull, numpartial, k, name):
+
         #Be careful choosing K since this will be k only for one group
         # k = k/len(self.files)#!!!!!!!!!!!!
+        m = 0
+        for i in self.files:
+            if m<len(i):
+                m = len(i)
+        k = int(1.5*m)
+        print k
         n = self.n
         fio = FileIO()
         normalProb = []

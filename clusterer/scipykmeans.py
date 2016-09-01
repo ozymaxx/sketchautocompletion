@@ -46,10 +46,12 @@ class scipykmeans:
         '''
 
 
-        self.clusterCenters, label = kmeans2(np.asarray(self.features), k=self.k, minit= 'points')
+        self.clusterCenters, label = kmeans2(np.asarray(self.features), iter = 150, k=self.k, minit= 'points')
 
         for lidx in range(len(label)):
             self.clusterFeatures[label[lidx]].append(lidx)
+
+
 
 
         print 'End k-means'
