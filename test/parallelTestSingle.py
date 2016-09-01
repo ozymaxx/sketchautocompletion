@@ -29,7 +29,9 @@ def main():
     numclass, numfull, numpartial = 10, 80, 80
     numtest = 5
     debugMode = True
-    doKMeansGrouping = True
+    doKMeansGrouping = False
+    groupByN = 4
+    my_name = 'ParalelEatzGroupBy4RandomGroups10_80_80'
 
 
 
@@ -99,9 +101,7 @@ def main():
     C = [int(c) for c in C]
     accuracy = dict()
     reject_rate = dict()
-    groupByN = 4
     my_files = folderList
-    my_name = 'ParalelDenemeFullCentersRandoom'
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
