@@ -47,7 +47,7 @@ def draw_N_C_Acc(accuracy, N, C, k, isfull, path):
     plt.xlabel('N')
     plt.ylabel('C')
     ax.set_zlabel('Accuracy')
-    plt.title('Accuracy Contour Plot for different N and C for Full%s' % str(isfull))
+    plt.title('Accuracy Contour Plot for different N and C for for %s' % 'Full sketches' if isfull else 'Partial sketches')
     fig.savefig(path + '/' + 'draw_N_C_Acc_%s.png' % ('Full' if isfull else 'Partial'))
 
 def draw_N_C_Reject(delay_rate, N, C, k, isfull, path):
@@ -125,7 +125,7 @@ def draw_N_C_Reject_Contour(reject_rate, N, C, k, isfull, path):
     plt.xticks(np.linspace(0, len(nlist), numxTicks), [int(f) for f in np.linspace(1, max(N), numxTicks)])
     plt.yticks(np.linspace(0, len(clist), 11), [int(f) for f in np.linspace(0, max(C), 11)])
 
-    plt.title('Reject Rate Contour Plot for different N and C for Full:%s' %str(isfull))
+    plt.title('Reject Rate Contour Plot for different N and C for for %s' % 'Full sketches' if isfull else 'Partial sketches')
     plt.xlabel('N')
     plt.ylabel('C')
     plt.colorbar()
@@ -168,7 +168,7 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
     plt.xticks(np.linspace(0, len(nlist), numxTicks), [int(f) for f in np.linspace(1, max(N), numxTicks)])
     plt.yticks(np.linspace(0, len(acclist), 11), [int(f) for f in np.linspace(0, max(C), 11)])
 
-    plt.title('Accuracy Contour Plot for different N and C for Full:%s' %str(isfull))
+    plt.title('Accuracy Contour Plot for different N and C for for %s' %'Full sketches' if isfull else 'Partial sketches')
     plt.xlabel('N')
     plt.ylabel('C')
     plt.colorbar()
@@ -242,9 +242,9 @@ def draw_n_Acc(accuracy, c, k, isfull, reject_rate, path):
     # labels
     plt.xlabel('N')
     plt.ylabel('Accuracy')
-    plt.title('C:%i k:%i Full:%s' % (c, k, str(isfull)))
+    plt.title('C:%i k:%i for %s' % (c, k, 'Full sketches' if isfull else 'Partial sketches'))
 
-    plt.ylim(40, 100 * 1.1)
+    plt.ylim(min(max(0, min(y)-10),40), 100 * 1.1)
     plt.xlim(1 - 1, 10)
     plt.scatter(x, y, alpha=1, s=100)
     plt.grid(True)

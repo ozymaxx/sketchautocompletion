@@ -330,6 +330,7 @@ class complexCudaCKMeans():
         self.clusterCenters = np.array(self.clusterCenters, copy=True)
         avg_dist = []
         iter = 0
+        noLabelChange = False
         while iter < self.maxiter:
             # print "iteration number : ", iterNum
             print 'Iteration number %i (max %i)' % (iter, self.maxiter)

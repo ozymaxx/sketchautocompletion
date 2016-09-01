@@ -70,7 +70,7 @@ class FileIO:
         return names, isFull, features
 
 
-    def saveTraining(self, names, classId, isFull, feature, kmeansoutput, path, filename, saveFeatures = True):
+    def saveTraining(self, names, classId, isFull, feature, kmeansoutput, path, filename, saveFeatures = False):
         """"
         Saves Training
         """
