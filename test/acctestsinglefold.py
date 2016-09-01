@@ -37,7 +37,7 @@ from complexCKMeans import *
 def main():
     # count for the whole data to be loaded in to memory
     # including test and training
-    numclass, numfull, numpartial = 10, 80, 80
+    numclass, numfull, numpartial = 250, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe',
              'backpack', 'banana', 'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed',
              'bee', 'beer-mug', 'bell', 'bench', 'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf',
@@ -102,7 +102,7 @@ def main():
                                 numtrainfull=numfull-numtest,
                                 selectTestRandom=True)
 
-    K = [10] # :O # number of cluster to test. can be a list
+    K = [250, 275, 300, 400] # :O # number of cluster to test. can be a list
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
