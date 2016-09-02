@@ -126,7 +126,7 @@ class Extractor:
         print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
 
-    def loadniciconfolders(self):
+    def loadniciconfolders(self, numfeatures):
         """
         loads the whole nicicon dataset
         """
@@ -142,10 +142,16 @@ class Extractor:
                 if os.path.isfile(csvfile):
                     print 'loading ' + str(csvfile)
                     names, isFull, features = self.fio.load(csvfile)
-                    whole_features.extend(features)
-                    whole_isFull.extend(isFull)
-                    whole_names.extend(names)
-                    whole_classId.extend([classCounter]*len(features))
+                    if numfeatures:
+                        whole_features.extend(features[:numfeatures/14])
+                        whole_isFull.extend(isFull[:numfeatures/14])
+                        whole_names.extend(names[:numfeatures/14])
+                        whole_classId.extend([classCounter]*len(features[:numfeatures/14]))
+                    else:
+                        whole_features.extend(features)
+                        whole_isFull.extend(isFull)
+                        whole_names.extend(names)
+                        whole_classId.extend([classCounter]*len(features))
                     # remove .xml postfix
                 classCounter += 1
         print 'Loaded %i sketches'%len(whole_features)
