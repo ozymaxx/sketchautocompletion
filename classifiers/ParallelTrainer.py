@@ -90,10 +90,16 @@ class ParallelTrainer:
         # k = k/len(self.files)#!!!!!!!!!!!!
         m = 0
         for i in self.files:
+            print "one file ",len(i)
             if m<len(i):
                 m = len(i)
-        k = int(1.1*m)
-        print k
+
+        assert k>=m
+
+        #k = int(1.2*m)
+        #print k
+
+        #-------------------------------------------------------------------------
         n = self.n
         fio = FileIO()
         normalProb = []
@@ -151,7 +157,6 @@ class ParallelTrainer:
             trainer.trainSVM(heteClstrFeatureId, trainingpath)
             fio.saveTraining(names, classId, isFull, features, kmeansoutput,
                              trainingpath, trainingName)
-            trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
             #NOW CALCULATE THE CENTER OF THE GROUP
             nowCenter = np.zeros(len(features[0]))

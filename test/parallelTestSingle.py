@@ -26,13 +26,13 @@ from centers import *
 
 
 def main():
-    numclass, numfull, numpartial = 15, 80, 80
-    numtest = 5
-    debugMode = False
+    numclass, numfull, numpartial = 10, 80, 80
+    numtest = 10
+    debugMode = True
     doKMeansGrouping = True
     groupByN = 5
-    my_name = 'ParalelEatzGroupBy5KmeansGroups15_80_80'
-
+    my_name = 'ParalelEatzGroupBy10KMeansGroups10_80_80'
+    K = [10] # :O
 
 
     #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
@@ -94,7 +94,7 @@ def main():
         print test_names
 
     #After this Semih knows
-    K = [numclass, 2*numclass] # :O
+    # K = [numclass] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np

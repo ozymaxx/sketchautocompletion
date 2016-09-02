@@ -91,11 +91,18 @@ class scipykmeans:
                 for j in self.clusterFeatures[i]:
                     total += self.getDistance(j,self.clusterCenters[i])
 
-
+            changeBest = True
             if(total<bestDistance):
-                bestCenters = copy.copy(self.clusterCenters)
-                bestFeatures = copy.copy(self.clusterFeatures)
-                bestDistance = total
+                for cl in self.clusterFeatures:
+                    print self.k
+                    if(len(cl)< (len(self.features)/self.k)/2):
+                        print "There is one group which is tooo weak"
+                        changeBest =False
+
+                if changeBest:
+                    bestCenters = copy.copy(self.clusterCenters)
+                    bestFeatures = copy.copy(self.clusterFeatures)
+                    bestDistance = total
 
             if(self.debugMode):
                 print total
