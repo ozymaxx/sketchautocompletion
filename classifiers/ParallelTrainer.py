@@ -59,7 +59,7 @@ class ParallelTrainer:
 
             from scipykmeans import *
             kmeans  = scipykmeans(features, isFull, classId,len(files)/self.n)
-            kmeansoutput = kmeans.getCKMeans()
+            kmeansoutput = kmeans.getKMeansIterated(50)
 
             for i in kmeansoutput[0]:
                 l = []
@@ -92,7 +92,7 @@ class ParallelTrainer:
         for i in self.files:
             if m<len(i):
                 m = len(i)
-        k = int(1.5*m)
+        k = int(1.1*m)
         print k
         n = self.n
         fio = FileIO()

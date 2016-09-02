@@ -26,12 +26,12 @@ from centers import *
 
 
 def main():
-    numclass, numfull, numpartial = 250, 80, 80
-    numtest = 10
-    debugMode = True
+    numclass, numfull, numpartial = 15, 80, 80
+    numtest = 5
+    debugMode = False
     doKMeansGrouping = True
-    groupByN = 10
-    my_name = 'ParalelEatzGroupBy10KmeansGroups250_80_80'
+    groupByN = 5
+    my_name = 'ParalelEatzGroupBy5KmeansGroups15_80_80'
 
 
 
@@ -143,17 +143,28 @@ def main():
 
 
         print 'Starting Testing'
+        lastTrueClass = ''
         for test_index in range(len(test_features)):
+
 
             # print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = folderList[test_classId[test_index]]
-            print "--------------------------------------------------"
+
+            if lastTrueClass != TtrueClass:
+                lastTrueClass = TtrueClass
+                print "NOW TESTING THE CLASS ", lastTrueClass
+
+            if debugMode:
+                print "--------------------------------------------------"
+
             classProb = predictor.calculatePosteriorProb(Tfeature)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
-            print "nowSclass", SclassProb,TtrueClass
-            print "---------------------------------------------------"
+
+            if debugMode:
+                print "nowSclass", SclassProb,TtrueClass
+                print "---------------------------------------------------"
             if debugMode:
                 print SclassProb,"for the ans", TtrueClass
 

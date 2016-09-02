@@ -21,7 +21,7 @@ class ParallelPredictorMaster:
     """The predictor class implementing functions to return probabilities"""
     def __init__(self, name):
 
-        self.debugMode = True
+        self.debugMode = False
 
         #The path of the saved training
         #!!newMethodTraining is static
