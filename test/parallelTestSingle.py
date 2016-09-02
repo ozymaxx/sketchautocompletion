@@ -28,10 +28,10 @@ from centers import *
 def main():
     numclass, numfull, numpartial = 10, 80, 80
     numtest = 10
-    debugMode = True
+    debugMode = False
     doKMeansGrouping = True
     groupByN = 5
-    my_name = 'ParalelEatzGroupBy10KMeansGroups10_80_80'
+    my_name = 'ParalelEa222tzGroupBy10KMeansGroups10_80_80'
     K = [10] # :O
 
 

@@ -88,13 +88,13 @@ class ParallelTrainer:
 
         #Be careful choosing K since this will be k only for one group
         # k = k/len(self.files)#!!!!!!!!!!!!
-        m = 0
-        for i in self.files:
-            print "one file ",len(i)
-            if m<len(i):
-                m = len(i)
-
-        assert k>=m
+        # m = 0
+        # for i in self.files:
+        #     print "one file ",len(i)
+        #     if m<len(i):
+        #         m = len(i)
+        #
+        # assert k>=m
 
         #k = int(1.2*m)
         #print k
@@ -118,8 +118,10 @@ class ParallelTrainer:
         except ImportError:
             found = False
 
-
+        klist = []
         for i in range(len(self.files)):
+            k = len(self.files[i])#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            klist.append(k)
             #Saving name for the specific group
             trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
             trainingpath = path +'/'+ trainingName
@@ -179,7 +181,7 @@ class ParallelTrainer:
 
         #Save some important stuff  (MOSTLY FOR PASSING PRIORPROB to the predictor
         trainingInfo = {'normalProb':normalProb, 'k':k, 'numclass':numclass, 'numfull':numfull, 'numpartial':numpartial, 'numTrain':len(self.files),
-                        'files':self.files}
+                        'files':self.files, 'klist':klist}
         np.save(path+'/trainingInfo.npy', trainingInfo)
 
 

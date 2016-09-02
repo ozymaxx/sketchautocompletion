@@ -40,14 +40,14 @@ class ParallelPredictorMaster:
         numfull = trainInfo['numfull']
         numpartial = trainInfo['numpartial']
         k = trainInfo['k']
-
+        klist = trainInfo['klist']
         #Slave predictors
         self.predictors = []
 
         #Load slave predictors
         fio = FileIO()
         for i in range(self.numOfTrains):
-            trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
+            trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, klist[i])
             trainingpath = '../data/newMethodTraining/' + name+ '/' + trainingName
 
             #get the center of the group
