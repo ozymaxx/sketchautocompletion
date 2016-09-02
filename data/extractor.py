@@ -18,7 +18,7 @@ Class Id's given on run time. and class id's are generated for each folder.
 Although guarenteed to be unique -for each class-they are not necessarily the
  same for each call of extractor.
 """
-from trainer import *
+
 from FeatureExtractor import *
 from shapecreator import *
 from FileIO import *
@@ -233,10 +233,10 @@ class Extractor:
             for folder in folderList:
                 featuresT, isFullT, namesT = self.loadfoldercsv(folder)
                 #   BU DEGISECEEEEEEEKEKKKKKKKK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                features.extend(featuresT)  # [:numfull*numpartial])
-                isFull.extend(isFullT)  # [:numfull*numpartial])
-                names.extend(namesT)  # [:numfull*numpartial])
-                classId.extend([classCount] * len(featuresT))  # [:numfull*numpartial]))
+                features.extend(featuresT)#[:numfull*numpartial])
+                isFull.extend(isFullT)#[:numfull*numpartial])
+                names.extend(namesT)#[:numfull*numpartial])
+                classId.extend([classCount] * len(featuresT))#[:numfull*numpartial]))
                 classCount += 1
             print 'Loaded %i sketches' % len(features)
             return features, isFull, classId, names, folderList

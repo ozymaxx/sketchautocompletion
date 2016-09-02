@@ -11,7 +11,7 @@ from FileIO import *
 import numpy as np
 
 
-def saveCenters(doOnlyFulls = False, trainingFolder = '../data/nicicon/csv/train/csv/' , suffix = '_train.csv', savePath = '../data/csv/allCentersNic.csv'):
+def saveCenters(doOnlyFulls = False, trainingFolder = '../data/nicicon/csv/train/csv/' , suffix = '_train.csv', savePath = '../data/newMethodTraining/allCentersNic.csv'):
     """This file computes centers of classses and saves it to  the ./data/csv/allCenters.csv"""
 
     files = ['accident','bomb','car','casualty','electricity','fire','firebrigade','flood','gas','injury','paramedics', 'person', 'police','roadblock']

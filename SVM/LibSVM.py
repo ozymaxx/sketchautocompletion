@@ -45,7 +45,9 @@ class LibSVM:
         pool = Pool(4)
         pool.map(self.multi_run_wrapper, [(clusterFeatureIds, directory, 0), (clusterFeatureIds, directory, 1),
             (clusterFeatureIds, directory, 2), (clusterFeatureIds, directory, 3)])
-    
+        pool.close()
+        pool.join()
+
     def trainSVM(self, clusterFeatureIds, directory):
         """
         Train an support vector machine model for each heterogenous cluster
@@ -64,9 +66,8 @@ class LibSVM:
                 x.append(self.features[featureid].tolist())
 
             problem = svm_problem(y, x)
-            param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')
-            # parameters taken from the MATLAB code written by Caglar Tirkaz
-            
+            param = svm_parameter('-s 0 -t 2 -g 0.125 -c 8 -b 1 -q')# parameters taken from the MATLAB code written by Caglar Tirkaz
+
             m = svm_train(problem, param)
             import os
             if directory and not os.path.exists(directory):
@@ -77,7 +78,7 @@ class LibSVM:
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
             order += 1
-        print 'Training SVM is done'
+        print 'Training SVM is done '
         
     def trainMultiCoreSVM(self, clusterIdArr, directory, procId):
         """
@@ -116,7 +117,7 @@ class LibSVM:
                 print 'Saved Model %s' % str(directory + "/" + "clus" + str(order) + '.model')
             self.models[order] = m
             order += 4
-        print 'Training SVM is done'
+        print 'Training SVM is done for thread', order%4
 
     def getlabels(self, model_index):
         """
