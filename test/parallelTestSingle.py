@@ -26,12 +26,14 @@ from centers import *
 
 
 def main():
-    numclass, numfull, numpartial = 250, 80, 80
+    numclass, numfull, numpartial = 10, 80, 80
     numtest = 10
-    debugMode = True
+    debugMode = False
     doKMeansGrouping = True
-    groupByN = 10
-    my_name = 'ParalelEatzGroupBy10KmeansGroups250_80_80'
+    groupByN = 5
+    my_name = 'ParalelEa222tzGroupBy10KMeansGroups10_80_80'
+    K = [10] # :O
+
 
     #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
     parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
@@ -92,7 +94,7 @@ def main():
         print test_names
 
     #After this Semih knows
-    K = [numclass, 2*numclass] # :O
+    # K = [numclass] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
@@ -141,17 +143,28 @@ def main():
 
 
         print 'Starting Testing'
+        lastTrueClass = ''
         for test_index in range(len(test_features)):
+
 
             # print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = folderList[test_classId[test_index]]
-            print "--------------------------------------------------"
+
+            if lastTrueClass != TtrueClass:
+                lastTrueClass = TtrueClass
+                print "NOW TESTING THE CLASS ", lastTrueClass
+
+            if debugMode:
+                print "--------------------------------------------------"
+
             classProb = predictor.calculatePosteriorProb(Tfeature)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
-            print "nowSclass", SclassProb,TtrueClass
-            print "---------------------------------------------------"
+
+            if debugMode:
+                print "nowSclass", SclassProb,TtrueClass
+                print "---------------------------------------------------"
             if debugMode:
                 print SclassProb,"for the ans", TtrueClass
 

@@ -59,7 +59,7 @@ class ParallelTrainer:
 
             from scipykmeans import *
             kmeans  = scipykmeans(features, isFull, classId,len(files)/self.n)
-            kmeansoutput = kmeans.getCKMeans()
+            kmeansoutput = kmeans.getKMeansIterated(50)
 
             for i in kmeansoutput[0]:
                 l = []
@@ -88,12 +88,18 @@ class ParallelTrainer:
 
         #Be careful choosing K since this will be k only for one group
         # k = k/len(self.files)#!!!!!!!!!!!!
-        m = 0
-        for i in self.files:
-            if m<len(i):
-                m = len(i)
-        k = int(1.5*m)
-        print k
+        # m = 0
+        # for i in self.files:
+        #     print "one file ",len(i)
+        #     if m<len(i):
+        #         m = len(i)
+        #
+        # assert k>=m
+
+        #k = int(1.2*m)
+        #print k
+
+        #-------------------------------------------------------------------------
         n = self.n
         fio = FileIO()
         normalProb = []
@@ -112,8 +118,10 @@ class ParallelTrainer:
         except ImportError:
             found = False
 
-
+        klist = []
         for i in range(len(self.files)):
+            k = len(self.files[i])#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            klist.append(k)
             #Saving name for the specific group
             trainingName = '%s_%i__CFPK_%i_%i_%i_%i' % ('training',i, numclass, numfull, numpartial, k)
             trainingpath = path +'/'+ trainingName
@@ -151,7 +159,6 @@ class ParallelTrainer:
             trainer.trainSVM(heteClstrFeatureId, trainingpath)
             fio.saveTraining(names, classId, isFull, features, kmeansoutput,
                              trainingpath, trainingName)
-            trainer.trainSVM(heteClstrFeatureId, trainingpath)
 
             #NOW CALCULATE THE CENTER OF THE GROUP
             nowCenter = np.zeros(len(features[0]))
@@ -174,7 +181,7 @@ class ParallelTrainer:
 
         #Save some important stuff  (MOSTLY FOR PASSING PRIORPROB to the predictor
         trainingInfo = {'normalProb':normalProb, 'k':k, 'numclass':numclass, 'numfull':numfull, 'numpartial':numpartial, 'numTrain':len(self.files),
-                        'files':self.files}
+                        'files':self.files, 'klist':klist}
         np.save(path+'/trainingInfo.npy', trainingInfo)
 
 
