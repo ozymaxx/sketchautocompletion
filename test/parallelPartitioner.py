@@ -14,7 +14,7 @@ sys.path.append("../../libsvm-3.21/python/")
 
 from extractor import *
 from featureutil import *
-from SVM import *
+from LibSVM import *
 from Predictor import *
 from FileIO import *
 
@@ -40,7 +40,7 @@ def partitionfeatures(features, isFull, classId, names, numtrainfull, saveName =
 
     myfio = FileIO()
     myfio.save(train_isFull, train_names, train_features, '../data/trainingData/csv/' + saveName+'/'+saveName+'.csv')
-    myfio.save(test_isFull,test_names,test_features, '../data/testingData/csv/'+ saveName+'/'+saveName+'.csv')
+    myfio.save(test_isFull, test_names, test_features, '../data/testingData/csv/' + saveName+'/'+saveName+'.csv')
 
 
 def partition(numclass, numfull, numpartial, numtest):
@@ -86,11 +86,10 @@ def partition(numclass, numfull, numpartial, numtest):
         whole_classId, \
         whole_names, \
         folderList = extr.loadfolders(
-                                1,
+                                numclass=1,
                                 numfull=numfull,
                                 numpartial=numpartial,
-                                folderList=files[i:])
-
+                                folderList=files[i:i+1])
 
         saveName = files[i:][0]
 

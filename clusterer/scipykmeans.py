@@ -6,7 +6,7 @@ import copy
 from random import shuffle
 from scipy.cluster.vq import kmeans2
 class scipykmeans:
-    def __init__(self, features, isFull, classId, k, maxiter = 20, votefreq = 1, thres = 10**-10):
+    def __init__(self, features, isFull, classId, k, maxiter=20, thres=10**-10):
         self.features = features
         self.k = k
         self.isFull = isFull

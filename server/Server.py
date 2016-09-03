@@ -200,14 +200,13 @@ def main():
     except ImportError:
         cudaSupport = False
 
-    # if training data is already computed, import
+    # if training data is already computed, import the model
     if os.path.exists(training_path) and not ForceTrain:
         fio = FileIO()
         names, classid, isfull, features, kmeansoutput, myfiles = fio.loadTraining(training_path + "/" + training_name)
         svm = Trainer.loadSvm(kmeansoutput, classid, training_path, features)
         svm.loadModels()
-
-    else: # otherwise train from data
+    else:  # otherwise train from data
         kmeansoutput, classid, svm = train(training_name, training_path, numclass, numfull, numpartial, k)
 
     # form the predictor

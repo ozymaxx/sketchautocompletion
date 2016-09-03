@@ -126,7 +126,7 @@ class Extractor:
         print 'Loaded %i sketches' % len(features)
         return features, isFull, classId, names, folderList
 
-    def loadniciconfolders(self, numfeatures):
+    def loadniciconfolders(self, numfeatures=None):
         """
         loads the whole nicicon dataset
         """

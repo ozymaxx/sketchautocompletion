@@ -34,44 +34,54 @@ from scipykmeans import *
 from scipyCKMeans import *
 from complexCKMeans import *
 
+def processname(name):
+    namesplit = name.split('_')
+    sketchname = str(namesplit[0]+'_'+namesplit[1])
+    partialnumber = namesplit[2] if len(namesplit) > 2 else 0
+
+    return sketchname, partialnumber
+
 def main():
     # count for the whole data to be loaded in to memory
     # including test and training
-    numclass, numfull, numpartial = 250, 80, 80
-    files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe',
-             'backpack', 'banana', 'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed',
-             'bee', 'beer-mug', 'bell', 'bench', 'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf',
-             'boomerang', 'bottle-opener', 'bowl', 'brain', 'bread', 'bridge', 'bulldozer', 'bus', 'bush',
-             'butterfly', 'cabinet', 'cactus', 'cake', 'calculator', 'camel', 'camera', 'candle', 'cannon',
-             'canoe', 'car-(sedan)', 'carrot', 'castle', 'cat', 'cell-phone', 'chair', 'chandelier',
-             'church', 'cigarette', 'cloud', 'comb', 'computer-monitor', 'computer-mouse', 'couch', 'cow',
-             'crab', 'crane-(machine)', 'crocodile', 'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut',
-             'door', 'door-handle', 'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye', 'eyeglasses',
-             'face', 'fan', 'feather', 'fire-hydrant', 'fish', 'flashlight', 'floor-lamp', 'flower-with-stem',
-             'flying-bird', 'flying-saucer', 'foot', 'fork', 'frog', 'frying-pan', 'giraffe', 'grapes',
-             'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp', 'hat', 'head', 'head-phones',
-             'hedgehog', 'helicopter', 'helmet', 'horse', 'hot-air-balloon', 'hot-dog', 'hourglass',
-             'house', 'human-skeleton', 'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife',
-             'ladder', 'laptop', 'leaf', 'lightbulb', 'lighter', 'lion', 'lobster', 'loudspeaker',
-             'mailbox', 'megaphone', 'mermaid', 'microphone', 'microscope', 'monkey', 'moon', 'mosquito',
-             'motorbike', 'mouse-(animal)', 'mouth', 'mug', 'mushroom', 'nose', 'octopus', 'owl',
-             'palm-tree', 'panda', 'paper-clip', 'parachute', 'parking-meter', 'parrot', 'pear', 'pen',
-             'penguin', 'person-sitting', 'person-walking', 'piano', 'pickup-truck', 'pig', 'pigeon',
-             'pineapple', 'pipe-(for-smoking)', 'pizza', 'potted-plant', 'power-outlet', 'present',
-             'pretzel', 'pumpkin', 'purse', 'rabbit', 'race-car', 'radio', 'rainbow', 'revolver',
-             'rifle', 'rollerblades', 'rooster', 'sailboat', 'santa-claus', 'satellite', 'satellite-dish',
-             'saxophone', 'scissors', 'scorpion', 'screwdriver', 'sea-turtle', 'seagull', 'shark',
-             'sheep', 'ship', 'shoe', 'shovel', 'skateboard', 'skull', 'skyscraper', 'snail', 'snake',
-             'snowboard', 'snowman', 'socks', 'space-shuttle', 'speed-boat', 'spider', 'sponge-bob',
-             'spoon', 'squirrel', 'standing-bird', 'stapler', 'strawberry', 'streetlight', 'submarine',
-             'suitcase', 'sun', 'suv', 'swan', 'sword', 'syringe', 't-shirt', 'table', 'tablelamp',
-             'teacup', 'teapot', 'teddy-bear', 'telephone', 'tennis-racket', 'tent', 'tiger', 'tire',
-             'toilet', 'tomato', 'tooth', 'toothbrush', 'tractor', 'traffic-light', 'train', 'tree',
-             'trombone', 'trousers', 'truck', 'trumpet', 'tv', 'umbrella', 'van', 'vase', 'violin',
-             'walkie-talkie', 'wheel', 'wheelbarrow', 'windmill', 'wine-bottle', 'wineglass', 'wrist-watch',
-             'zebra']
+    numclass, numfull, numpartial = 3, 10, 200
+    files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
+             'banana',
+             'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
+             'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf', 'boomerang', 'bottle-opener', 'bowl', 'brain',
+             'bread',
+             'bridge', 'bulldozer', 'bus', 'bush', 'butterfly', 'cabinet', 'cactus', 'cake', 'calculator', 'camel',
+             'camera', 'candle', 'cannon', 'canoe', 'car-(sedan)', 'carrot', 'castle', 'cat', 'cell-phone', 'chair',
+             'chandelier',
+             'church', 'cigarette', 'cloud', 'comb', 'computer-monitor', 'computer-mouse', 'couch', 'cow', 'crab',
+             'crane-(machine)', 'crocodile', 'crown', 'cup', 'diamond', 'dog', 'dolphin', 'donut', 'door',
+             'door-handle',
+             'dragon', 'duck', 'ear', 'elephant', 'envelope', 'eye', 'eyeglasses', 'face', 'fan', 'feather',
+             'fire-hydrant',
+             'fish', 'flashlight', 'floor-lamp', 'flower-with-stem', 'flying-bird', 'flying-saucer', 'foot', 'fork',
+             'frog',
+             'frying-pan', 'giraffe', 'grapes', 'grenade', 'guitar', 'hamburger', 'hammer', 'hand', 'harp', 'hat',
+             'head',
+             'head-phones', 'hedgehog', 'helicopter', 'helmet', 'horse', 'hot-air-balloon', 'hot-dog', 'hourglass',
+             'house',
+             'human-skeleton', 'ice-cream-cone', 'ipod', 'kangaroo', 'key', 'keyboard', 'knife', 'ladder', 'laptop',
+             'leaf',
+             'lightbulb', 'lighter', 'lion', 'lobster', 'loudspeaker', 'mailbox', 'megaphone', 'mermaid', 'microphone',
+             'microscope', 'monkey', 'moon', 'mosquito', 'motorbike', 'mouse-(animal)', 'mouth', 'mug', 'mushroom',
+             'nose',
+             'octopus', 'owl', 'palm-tree', 'panda', 'paper-clip', 'parachute', 'parking-meter', 'parrot', 'pear',
+             'pen',
+             'penguin', 'person-sitting', 'person-walking', 'piano', 'pickup-truck', 'pig', 'pigeon', 'pineapple',
+             'pipe-(for-smoking)', 'pizza', 'potted-plant', 'power-outlet', 'present', 'pretzel', 'pumpkin', 'purse',
+             'rabbit', 'race-car', 'radio', 'rainbow', 'revolver', 'rifle', 'rollerblades', 'rooster', 'sailboat',
+             'santa-claus', 'satellite', 'satellite-dish', 'saxophone', 'scissors', 'scorpion', 'screwdriver',
+             'sea-turtle',
+             'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
     # extract the whole data, including test and training
+    from random import shuffle
+    shuffle(files)
+    files = files[0:numclass]
     extr = Extractor('../data/')
     whole_features, \
     whole_isFull, \
@@ -86,7 +96,7 @@ def main():
     # split data into train and test
     # for each class numtest full sketches -with all their partial sketches- are allocated for testing, and the rest
     # for training
-    numtest = 5
+    numtest = 3
     train_features,\
     train_isFull,\
     train_classId,\
@@ -102,14 +112,48 @@ def main():
                                 numtrainfull=numfull-numtest,
                                 selectTestRandom=True)
 
-    K = [250, 275, 300, 400] # :O # number of cluster to test. can be a list
+
+
+    K = [10] # :O # number of cluster to test. can be a list
     #K = [numclass]
-    N = range(1, numclass)
+    fulness = range(1,13) # scale of fullness
+    N = range(1, numclass+1)
     import numpy as np
     C = np.linspace(0, 100, 51, endpoint=True)
     C = [int(c) for c in C]
     accuracy = dict()
+    accuracy_fullness = dict() # accuracy dictionary taking into account the fulness
     reject_rate = dict()
+
+    sketchname2numpartial = dict()
+
+    for k in K:
+        for n in N:
+            for c in C:
+                accuracy[(k, n, c, True)] = 0
+                accuracy[(k, n, c, False)] = 0
+                reject_rate[(k, n, c, True)] = 0
+                reject_rate[(k, n, c, False)] = 0
+
+    for k in K:
+        for n in N:
+            for c in C:
+                for f in fulness:
+                    # k, n, c, isfull, fullness, success
+                    accuracy_fullness[(k, n, c, True, f, True)] = 0
+                    accuracy_fullness[(k, n, c, True, f, False)] = 0
+
+                    accuracy_fullness[(k, n, c, False, f, True)] = 0
+                    accuracy_fullness[(k, n, c, False, f, False)] = 0
+
+    for tidx in range(len(test_features)):
+        sketchname2numpartial[processname(test_names[tidx])[0]] = 0
+
+    for tidx in range(len(test_features)):
+        name = test_names[tidx]
+        currsketchname, currpartialidx = processname(name)
+        if sketchname2numpartial[currsketchname] < int(currpartialidx):
+            sketchname2numpartial[currsketchname] = int(currpartialidx)
 
     for k in K:
         '''
@@ -120,7 +164,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i_%i_%i' % ('complexCudaCKMeanTest', numclass, numfull-numtest, numpartial, k)
+        folderName = '%s___%i_%i_%i_%i' % ('complexCKMeans_newprior-2', numclass, numfull, numpartial, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -140,7 +184,7 @@ def main():
             except ImportError:
                 found = False
 
-            if not found or True:
+            if not found:
                 ckmeans = ComplexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20)
                 kmeansoutput = ckmeans.getCKMeans()
 
@@ -150,7 +194,7 @@ def main():
                                  trainingpath, folderName)
                 svm = trainer.trainSVM(heteClstrFeatureId, trainingpath)
             else:
-                from complexcudackmeans import complexCudaCKMeans
+                from complexCudaCKMeans import *
                 clusterer = complexCudaCKMeans(train_features, k, train_classId, train_isFull)  # FEATURES : N x 720
                 kmeansoutput = clusterer.cukmeans()
 
@@ -163,13 +207,6 @@ def main():
 
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
         priorClusterProb = predictor.calculatePriorProb()
-
-        for n in N:
-            for c in C:
-                accuracy[(k, n, c, True)] = 0
-                accuracy[(k, n, c, False)] = 0
-                reject_rate[(k, n, c, True)] = 0
-                reject_rate[(k, n, c, False)] = 0
 
         print 'Starting Testing'
         # get predictions -class probabilities- for every test feature
@@ -196,46 +233,72 @@ def main():
                     if summedprob < c:
                         reject_rate[(k, n, c, test_isFull[test_index])] += 1
 
-                    # if not rejected and true class is inside the predictions, count
+                    # if not rejected and true class is inside the predictions, hit
                     if summedprob > c and TtrueClass in summedclassId:
+                        # correct guess
                         accuracy[(k, n, c, test_isFull[test_index])] += 1
 
+                        Tname = test_names[test_index]
+                        currsketchname, currpartialidx = processname(test_names[test_index])
+                        numpartialsofsketch = sketchname2numpartial[currsketchname]
+
+                        # normalize completeness level to [1-12]
+                        completeness = int(11 * (float(currpartialidx) / int(numpartialsofsketch))) + 1 if currpartialidx != 0 else 12
+
+                        accuracy_fullness[(k, n, c, test_isFull[test_index], completeness, True)] += 1
+                    else:
+                        # wrong guess
+                        currsketchname, currpartialidx = processname(test_names[test_index])
+                        numpartialsofsketch = sketchname2numpartial[currsketchname]
+
+                        # normalize completeness level to [1-12]
+                        completeness = int(11 * (float(currpartialidx) / int(numpartialsofsketch))) + 1 if currpartialidx != 0 else 12
+
+                        accuracy_fullness[(k, n, c, test_isFull[test_index], completeness, False)] += 1
+
         print trainingpath + ' end'
-        for key in reject_rate:
-            # normalize the reject rate
-            reject_rate[key] = (reject_rate[key] * 1.0 / test_isFull.count(key[3])) * 100
-
-        for key in accuracy:
-            # normalize the accuracy.
-            # Count the number of non-rejected sketches to find true accuracy
-            total_un_answered = int(test_isFull.count(key[3]) * (reject_rate[key] / 100))
-            total_answered = test_isFull.count(key[3]) - total_un_answered
-            accuracy[key] = (accuracy[key] * 1.0 / total_answered) * 100 if total_answered != 0 else 0
-
-        '''
-        Save results
-        '''
-        print 'Saving plots'
-        pickle.dump(accuracy, open(trainingpath + '/' "accuracy.p", "wb"))
-        pickle.dump(reject_rate, open(trainingpath + '/' "reject.p", "wb"))
-
-        draw_N_C_Acc(accuracy, N, C, k=k, isfull=True, path=trainingpath)
-        draw_N_C_Reject_Contour(reject_rate, N, C, k=k, isfull=True, path=trainingpath)
-        draw_N_C_Acc_Contour(accuracy, N, C, k=k, isfull=True, path=trainingpath)  # Surface over n and c
-        draw_N_C_Reject_Contour(reject_rate, N, C, k=k, isfull=True, path=trainingpath)
-        draw_n_Acc(accuracy, c=0, k=k, isfull=True, reject_rate=reject_rate, path=trainingpath)  # for fixed n and c
-        # draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
-        draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=k, isfull=True, labels=['Ck-means'],
-                        path=trainingpath)
-
-        draw_N_C_Acc(accuracy, N, C, k=k, isfull=False, path=trainingpath)
-        draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
-        draw_N_C_Acc_Contour(accuracy, N, C, k=k, isfull=False, path=trainingpath)  # Surface over n and c
-        draw_N_C_Reject_Contour(reject_rate, N, C, k=k, isfull=False, path=trainingpath)
-        draw_n_Acc(accuracy, c=0, k=k, isfull=False, reject_rate=reject_rate, path=trainingpath)  # for fixed n and c
-        # draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
-        draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=k, isfull=False, labels=['Ck-means'],
-                        path=trainingpath)
-
     print 'Testint End'
+
+    '''
+    Calculate %
+    '''
+
+    for key in reject_rate:
+        # normalize the reject rate
+        reject_rate[key] = (reject_rate[key]*1.0/test_isFull.count(key[3]))*100
+
+    for key in accuracy:
+        # normalize the accuracy.
+        # Count the number of non-rejected sketches to find true accuracy
+        total_un_answered = int(test_isFull.count(key[3])*(reject_rate[key]/100))
+        total_answered = test_isFull.count(key[3]) - total_un_answered
+        accuracy[key] = (accuracy[key]*1.0/total_answered)*100 if total_answered != 0 else 0
+
+    '''
+    Save results
+    '''
+    print 'Saving plots'
+    pickle.dump(accuracy, open(trainingpath + '/' "accuracy.p", "wb"))
+    pickle.dump(reject_rate, open(trainingpath + '/' "reject.p", "wb"))
+    pickle.dump(accuracy_fullness, open(trainingpath + '/' "accuracy_fullness.p", "wb"))
+
+    draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
+    draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=True, path=trainingpath)# Surface over n and c
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=True, path=trainingpath)
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
+    #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
+    draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=True, labels=['Ck-means'], path=trainingpath)
+
+    draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
+    draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)# Surface over n and c
+    draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
+    draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
+    #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
+    draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
+
+    draw_Completeness_Accuracy(accuracy_fullness, fullness, k=K[0], n=1, C=np.linspace(0, 80, 5), isfull=False,
+                               path=trainingpath)
+
 if __name__ == "__main__": main()

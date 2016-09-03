@@ -2,8 +2,8 @@
 Constrained K-Means Implementation in pure python, without cuda support.
 Following implementation runs k-means while exploiting background knowledge for full sketches,
 so that instances are encouggrated to fall into the same cluster with the majority of their classes,
-however they are not forced to. The middle ground is between negative voting of each full sketches in
-the following manner. When a full sketch is assigned, they cast following votes
+however they are not forced to. The middle ground is found between negative voting of each full sketches in
+the following manner; when a full sketch is assigned to a cluster, they cast following votes
 
 - A Negative vote for full sketches of the same class to be assigned to other clusters
 - A Negative vote for full sketches of the other classes to be assigned to the same cluster

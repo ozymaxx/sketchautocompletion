@@ -33,8 +33,6 @@ def main():
     groupByN = 10
     my_name = 'ParalelEatzGroupBy10KmeansGroups250_80_80'
 
-
-
     #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
     parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
 

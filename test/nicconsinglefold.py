@@ -19,20 +19,20 @@ from LibSVM import *
 import pickle
 from Predictor import *
 from scipyCKMeans import *
+import time
 from scipykmeans import *
 from complexCKMeans import *
-from complexcudackmeans import *
 
 def main():
     numclass = 14
-
-    extr_train = Extractor('C:/Users/1003/Desktop/nicicon/csv/train')
+    start_time = time.time()
+    extr_train = Extractor('/home/semih/Desktop/csv/train')
     train_features, \
     train_isFull, \
     train_classId, \
     train_names = extr_train.loadniciconfolders()
 
-    extr_test = Extractor('C:/Users/1003/Desktop/nicicon/csv/test')
+    extr_test = Extractor('/home/semih/Desktop/csv/test')
     test_features, \
     test_isFull, \
     test_classId, \
@@ -66,7 +66,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(train_classId)+1, k)
+        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_last', max(train_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -75,7 +75,7 @@ def main():
             # can I assume consistency with classId and others ?
             _, _, _, _, kmeansoutput, _ = fio.loadTraining(
                 trainingpath + '/' + folderName)
-            svm = SVM(kmeansoutput, train_classId, trainingpath, train_features)
+            svm = LibSVM(kmeansoutput, train_classId, trainingpath, train_features)
             svm.loadModels()
 
         else:
@@ -88,7 +88,7 @@ def main():
                 found = False
 
             if not found:
-                ckmeans = complexCKMeans(train_features, train_isFull, train_classId, k, maxiter=25)
+                ckmeans = ComplexCKMeans(train_features, train_isFull, train_classId, k, maxiter=20)
                 kmeansoutput = ckmeans.getCKMeans()
 
                 # find heterogenous clusters and train svm

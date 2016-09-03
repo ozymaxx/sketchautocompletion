@@ -8,6 +8,7 @@ import itertools
 from mpl_toolkits.mplot3d import Axes3D
 import scipy.interpolate
 import pylab
+from mpl_toolkits.axes_grid1 import make_axes_locatable
 
 
 def draw_N_C_Acc(accuracy, N, C, k, isfull, path):
@@ -143,7 +144,6 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
     :param path: path to save the resuls
     """
     fig = plt.figure()
-
     nmesh, cmesh = np.meshgrid(N, C)
     accmesh = [[None for j in range(len(nmesh[0]))] for i in range(len(nmesh))]
 
@@ -174,6 +174,112 @@ def draw_N_C_Acc_Contour(accuracy, N, C, k, isfull, path):
     plt.colorbar()
 
     fig.savefig(path + '/' + 'draw_N_C_Acc_Contour_%s.png' % ('Full' if isfull else 'Partial'))
+
+
+def draw_N_C_Acc_Contour_Low(accuracy, N, C, k, isfull, path):
+    """
+    draws two dimensional contour plot for N,C versus accuracy
+    :param accuracy: dictionary of tuple to float. Tuples are formed as (k, N, C, isfull)
+    :param N: List of different n values to be drawn on the plot, must exists on the dictionary
+    :param C: List of different c values to be drawn on the plot, must exists on the dictionary
+    :param k: a single k value to ve drawn on the plot
+    :param isfull: whether plot the full sketches or partials
+    :param path: path to save the resuls
+    """
+    fig = plt.figure(figsize=(12, 12))
+    C = np.linspace(0,100,11)
+    nmesh, cmesh = np.meshgrid(N, C)
+    accmesh = []
+    for n in N:
+        temp = []
+        for c in C:
+            temp.extend([accuracy[(k,n,c,isfull)]])
+        accmesh.append(temp)
+
+    numxTicks = min(10, max(N))
+    plt.xticks(np.arange(0, 11, 1), np.arange(0, 1.1, 0.1))
+    plt.yticks(np.arange(0, 11, 1),np.arange(1, 11, 1))
+
+    plt.imshow(accmesh, interpolation='none', cmap='summer')
+
+    plt.title('Accuracy for  %s' %('Full sketches' if isfull else 'Partial sketches'))
+    plt.xlabel('C')
+    plt.ylabel('N')
+    #plt.grid(ls='solid')
+
+    for n in N:
+        for c in C:
+            plt.text(c/10-0.2, n-1, '%.2f' % accuracy[(k,n,c,isfull)], fontsize=10)
+
+    # create an axes on the right side of ax. The width of cax will be 5%
+    # of ax and the padding between cax and ax will be fixed at 0.05 inch.
+    divider = make_axes_locatable(plt.gca())
+    cax = divider.append_axes("right", size="5%", pad=0.2)
+    plt.colorbar(cax=cax)
+
+    #plt.show()
+    ''''
+    nlist, clist, acclist =[], [], []
+    for n in N:
+        for c in C:
+            nlist.append(n)
+            clist.append(c)
+            acclist.append(accuracy[k, n, c, isfull])
+
+    # Set up a regular grid of interpolation points
+    xi, yi = np.linspace(min(nlist), max(nlist), 100), np.linspace(min(clist), max(clist), 100)
+    xi, yi = np.meshgrid(xi, yi)
+
+    rbf = scipy.interpolate.Rbf(nlist, clist, acclist, function='linear')
+    zi = rbf(xi, yi)
+
+    plt.imshow(zi, vmin=min(acclist), vmax=max(acclist), origin='lower',
+               extent=[0, len(nlist), 0, len(acclist)])
+    numxTicks = min(10, max(N))
+
+    plt.xticks(np.linspace(0, len(nlist), numxTicks), [int(f) for f in np.linspace(1, max(N), numxTicks)])
+    plt.yticks(np.linspace(0, len(acclist), 11), [int(f) for f in np.linspace(1, max(C), 10)])
+
+    plt.title('Accuracy Contour Plot for different N and C for for %s' %'Full sketches' if isfull else 'Partial sketches')
+    plt.xlabel('C')
+    plt.ylabel('N')
+    plt.colorbar()
+    '''
+    fig.savefig(path + '/' + 'draw_N_C_Acc_Contour_%s.png' % ('Full' if isfull else 'Partial'))
+
+def draw_Completeness_Accuracy(accuracy_fullness, fullness, k, n, C, isfull, path):
+    fig = plt.figure(figsize=(12, 12))
+
+    x = fullness
+    # to make legend more appropriate
+    for c in C[::-1]:
+        y = []
+        for f in fullness:
+            succ = accuracy_fullness[(k,n,c,isfull,f,True)]
+            rej = accuracy_fullness[(k, n, c, isfull, f, False)]
+
+            perc = (float(succ)/(succ+rej))*100 if (succ+rej)!=0 else 0
+            y.extend([perc])
+        plt.plot(x,y, label='C=%.1f'%c)
+
+    plt.xlim([0, 13])
+    plt.ylim([0,100])
+
+    plt.xticks(np.linspace(0,12,13))
+    plt.yticks(np.linspace(0,100,11))
+
+    plt.ylabel('Avg. recognutuin rate(%)')
+    plt.xlabel('Completeness range[(k-1)*10%, k*10%) - last col. implies full sketches')
+    plt.title('Avg. prediction acuracy rate over completeness (N='+str(n)+')')
+    plt.grid()
+    plt.legend()
+
+    plt.show()
+
+
+
+
+    fig.savefig(path + '/' + 'draw_Completeness_Accuracy_%s.png' % ('Full' if isfull else 'Partial'))
 
 def draw_Reject_Acc(Accuracy, Reject_rate, N, k, isfull, labels, path):
     """
