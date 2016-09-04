@@ -16,8 +16,8 @@ from FeatureExtractor import *
 from scipy.spatial import distance
 
 class ParallelPredictorSlave:
-    """The Slave predictor class"""
-    """The main diff is that calculatePosterior gives output by name"""
+    """The Slave predictor class
+    The main difference between Predictor and ParallelPredictorSlave is that calculatePosterior gives output by name"""
     def __init__(self, kmeansoutput = None, classId = None, subDirectory = None, file = None, svm = None):
         self.kmeansoutput = kmeansoutput
         self.classId = classId
@@ -32,6 +32,12 @@ class ParallelPredictorSlave:
         return distance.euclidean(x, y)
 
     def clusterProb(self, instance, priorProb):
+        """
+        Returns P(C_k|x) for each cluster k as a list
+        :param instance: instance to get posterior cluster probabiltiies
+        :param priorProb: prior cluster probabilities, before seeing the instance to predict
+        :return: dictionary of cluster probs for each cluster in a dictionary, normalized
+        """
         centers = self.kmeansoutput[1]
         dist = [self.getDistance(instance, centers[idx]) for idx in range(len(centers))]
 
@@ -128,8 +134,8 @@ class ParallelPredictorSlave:
 
     def calculatePriorProb(self):
         """
-        Returns prior probabilities list of being in a cluster
-        p = len(cluster)/len(total)
+        Returns prior probabilities list of being in a cluster, before seeing instance to be predicted
+        :return: p = len(cluster)/len(total) for each cluster
         """
         prob = []
         total = 0
@@ -171,24 +177,6 @@ class ParallelPredictorSlave:
                 homoCluster.append(self.kmeansoutput[0][clusterId])
                 homoIdClus.append(clusterId)
         return homoCluster, homoIdClus
-
-    def getBestPredictions(self,classProb, n):
-        a = sorted(classProb, key=classProb.get, reverse=True)[:n]
-        l = ''
-        l1 = ''
-        for i in a:
-            l1 += str(classProb[i])
-            l += i
-            l += '&'
-            l1 += '&'
-        l1 = l1[:-1]
-        return l + l1
-
-    def giveOutput(self,queryjson, n):
-        classPr = self.predictByString(str(queryjson))
-        return self.getBestPredictions(classPr, n)
-
-
 
 
 

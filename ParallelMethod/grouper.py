@@ -1,16 +1,72 @@
 """
 Ahmet BAGLAN
 """
+
 import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
+sys.path.append('../clusterer/')
+sys.path.append('../classifiers/')
+sys.path.append('../test/')
+sys.path.append('../data/')
+sys.path.append("../../libsvm-3.21/python")
 from FileIO import *
 import numpy as np
+import copy
+import random
+
+def doKMeansGrouping(numberOfGroups, files, centersFolder ='../data/newMethodTraining/allCenters.csv'):
+    """This function create groups by clustering class representatives"""
+
+    groups = []
+    f = FileIO()
+    #Get all class representatives
+    names, isFull,my_features = f.load(centersFolder)
+    features = []
+    #Get class representatives which are going to be clustered
+
+    for n in files:
+        features.append(my_features[names.index(n)])
+    features = np.array(features)
+    classId = range(len(features))
+
+    # Run k-means on class representatives
+    from scipykmeans import *
+    kmeans  = scipykmeans(features, isFull, classId,numberOfGroups)
+    kmeansoutput = kmeans.getKMeansIterated(50)
+
+    for i in kmeansoutput[0]:
+        l = []
+        for j in i:
+            l.append(files[j])
+        groups.append(l)
+    return groups
+
+def doRandomGrouping(numOfGroups, allFiles):
+    """This function create random groups equally populated"""
+    random.shuffle(allFiles)
+    groups = []
+    for i in range(numOfGroups):
+        groups.append([])
+    f = 0
+    for i in allFiles:
+        f = f%numOfGroups
+        groups[f].append(i)
+        f+=1
+    return groups
+
+def kListGenerator(groups, s=1):
+    """This function generates klist (to be given as input to the trainer)
+    s: the coefficient to multiply with number of elements in each groups !should at least be 1
+    """
+
+    klist = []
+    for i in groups:
+        klist.append(s*len(i))
+    return klist
 
 
-def saveCenters(doOnlyFulls = True, getDataFrom = '../data/csv/', numClass =10 ** 6, savePath = '../data/newMethodTraining/allCenters.csv'):
-    """This file computes centers of classses and saves it to  the ./data/csv/allCenters.csv"""
-
+def main():
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe',
              'backpack', 'banana', 'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed',
              'bee', 'beer-mug', 'bell', 'bench', 'bicycle', 'binoculars', 'blimp', 'book', 'bookshelf',
@@ -44,37 +100,9 @@ def saveCenters(doOnlyFulls = True, getDataFrom = '../data/csv/', numClass =10 *
              'walkie-talkie', 'wheel', 'wheelbarrow', 'windmill', 'wine-bottle', 'wineglass', 'wrist-watch',
              'zebra']
 
-    k  = []
-    my_names = []
-    my_isFull = []
-    f = FileIO()
+    print doKMeansGrouping(2,files[:10])
 
-    if(numClass == None):
-        numClass = len(files)
-    else:
-        numClass = min(numClass, len(files))
-
-    for mfile in files[:numClass]:
-
-        names, isFull, features = f.load(getDataFrom + mfile + '/' + mfile + '.csv')
-        nowCenter = np.zeros(len(features[0]))
-
-        if not doOnlyFulls:
-            totalNumOfInstances = len(features)
-            for instance in features:
-                nowCenter += instance
-        else:
-            totalNumOfInstances = 0
-            for i in range(len(features)):
-                if isFull[i] == True:#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11Might be False
-                    nowCenter+=features[i]
-                    totalNumOfInstances+=1
-        print mfile, totalNumOfInstances
-        nowCenter = nowCenter/totalNumOfInstances
-        k.append(nowCenter)
-        my_names.append(mfile)
-        my_isFull.append(0)
-    f.save(my_isFull,my_names,k,savePath)
+    print doRandomGrouping(2,files[:10])
 
 
-if __name__ == '__main__':saveCenters(True)
+if __name__ == "__main__": main()

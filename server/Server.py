@@ -188,7 +188,8 @@ def main():
     ForceTrain = False
     numclass, numfull, numpartial = 250, 70, 200
     k = numclass
-    training_name = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
+    # training_name = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
+    training_name ="complexCudaAHMETCKMeanTest___40_70_80_40"
     training_path = '../data/training/' + training_name
 
     # check if pycuda is installed

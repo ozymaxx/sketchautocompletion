@@ -23,23 +23,22 @@ from ParallelPredictorMaster import *
 from ParallelTrainer import *
 from FileIO import *
 import parallelPartitioner
-from centers import *
+from centersEitz import *
+import grouper
 
 
 def main():
     doPartition = True
-    numclass, numfull, numpartial = 40, 80, 80
+    numclass, numfull, numpartial = 20, 80, 80
     numtest = 10
     debugMode = False
     doKMeansGrouping = True
-    groupByN = 6
-    my_name = 'ParalelEatzCentersGroupBy6KMeansGroups40_80_80'
-    K = [20] # :
+    numOfGroups = 2
+    my_name = '20Class2233'
 
     if doPartition:
         #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
         parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
-
         print "CALCULATING CLASS CENTERS"
         saveCenters(doOnlyFulls= True, getDataFrom = "../data/trainingData/csv/" , numClass = numclass)
 
@@ -107,6 +106,7 @@ def main():
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
+    K = [1]
     for k in K:
         for n in N:
             for c in C:
@@ -126,19 +126,26 @@ def main():
         '''
 
         ForceTrain = False
-        folderName = my_name
         trainingpath = '../data/newMethodTraining/' + my_name
         timeForTraining = "NOT CALC"
+
         # if training data is already computed, import
         fio = FileIO()
         if os.path.exists(trainingpath) and not ForceTrain:
             nameOfTheTraining = my_name
             predictor = ParallelPredictorMaster(nameOfTheTraining)
-
         else:
             start_time = time.time()
-            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = doKMeansGrouping)
-            myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
+            if doKMeansGrouping:
+                groups = grouper.doKMeansGrouping(numOfGroups,files[:numclass])
+            else:
+                groups = grouper.doRandomGrouping(numOfGroups,files[:numclass])
+
+
+            klist = grouper.kListGenerator(groups)
+            myParallelTrainer = ParallelTrainer (my_name, groups, klist)
+            myParallelTrainer.trainSVM(numclass, numfull, numpartial)
+
             nameOfTheTraining = my_name
             predictor = ParallelPredictorMaster(nameOfTheTraining)
             stop_time = time.time()

@@ -44,7 +44,7 @@ def processname(name):
 def main():
     # count for the whole data to be loaded in to memory
     # including test and training
-    numclass, numfull, numpartial = 3, 10, 200
+    numclass, numfull, numpartial = 20, 80, 80
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -164,7 +164,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i_%i_%i' % ('complexCKMeans_newprior-2', numclass, numfull, numpartial, k)
+        folderName = '%s___%i_%i_%i_%i' % ('complexAHMETCKMeans_newprior-2', numclass, numfull, numpartial, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
