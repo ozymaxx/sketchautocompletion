@@ -44,7 +44,7 @@ def processname(name):
 def main():
     # count for the whole data to be loaded in to memory
     # including test and training
-    numclass, numfull, numpartial = 3, 10, 200
+    numclass, numfull, numpartial, numtest = 10, 50, 200, 10
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -80,8 +80,9 @@ def main():
 
     # extract the whole data, including test and training
     from random import shuffle
-    shuffle(files)
-    files = files[0:numclass]
+    import random
+    rnd = random.randint(1,10)
+    files = files[10:20]
     extr = Extractor('../data/')
     whole_features, \
     whole_isFull, \
@@ -96,7 +97,6 @@ def main():
     # split data into train and test
     # for each class numtest full sketches -with all their partial sketches- are allocated for testing, and the rest
     # for training
-    numtest = 3
     train_features,\
     train_isFull,\
     train_classId,\
@@ -116,8 +116,8 @@ def main():
 
     K = [10] # :O # number of cluster to test. can be a list
     #K = [numclass]
-    fulness = range(1,13) # scale of fullness
     N = range(1, numclass+1)
+    fullness = range(1, 11)
     import numpy as np
     C = np.linspace(0, 100, 51, endpoint=True)
     C = [int(c) for c in C]
@@ -135,16 +135,6 @@ def main():
                 reject_rate[(k, n, c, True)] = 0
                 reject_rate[(k, n, c, False)] = 0
 
-    for k in K:
-        for n in N:
-            for c in C:
-                for f in fulness:
-                    # k, n, c, isfull, fullness, success
-                    accuracy_fullness[(k, n, c, True, f, True)] = 0
-                    accuracy_fullness[(k, n, c, True, f, False)] = 0
-
-                    accuracy_fullness[(k, n, c, False, f, True)] = 0
-                    accuracy_fullness[(k, n, c, False, f, False)] = 0
 
     for tidx in range(len(test_features)):
         sketchname2numpartial[processname(test_names[tidx])[0]] = 0
@@ -242,19 +232,11 @@ def main():
                         currsketchname, currpartialidx = processname(test_names[test_index])
                         numpartialsofsketch = sketchname2numpartial[currsketchname]
 
-                        # normalize completeness level to [1-12]
-                        completeness = int(11 * (float(currpartialidx) / int(numpartialsofsketch))) + 1 if currpartialidx != 0 else 12
-
-                        accuracy_fullness[(k, n, c, test_isFull[test_index], completeness, True)] += 1
-                    else:
+                    if summedprob > c and TtrueClass not in summedclassId:
                         # wrong guess
                         currsketchname, currpartialidx = processname(test_names[test_index])
                         numpartialsofsketch = sketchname2numpartial[currsketchname]
 
-                        # normalize completeness level to [1-12]
-                        completeness = int(11 * (float(currpartialidx) / int(numpartialsofsketch))) + 1 if currpartialidx != 0 else 12
-
-                        accuracy_fullness[(k, n, c, test_isFull[test_index], completeness, False)] += 1
 
         print trainingpath + ' end'
     print 'Testint End'
@@ -290,6 +272,7 @@ def main():
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=True, labels=['Ck-means'], path=trainingpath)
 
+
     draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)
     draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)# Surface over n and c
@@ -298,7 +281,9 @@ def main():
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
 
-    draw_Completeness_Accuracy(accuracy_fullness, fullness, k=K[0], n=1, C=np.linspace(0, 80, 5), isfull=False,
-                               path=trainingpath)
+    #draw_Completeness_Accuracy(accuracy_fullness, fullness=fullness, k=K[0], n=1, C=np.linspace(0, 80, 5), isfull=False,
+    #                           path=trainingpath)
+
+    draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
 
 if __name__ == "__main__": main()

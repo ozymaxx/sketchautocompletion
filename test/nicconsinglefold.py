@@ -138,6 +138,7 @@ def main():
                     if summedprob > c and TtrueClass in summedclassId:
                         accuracy[(k, n, c, test_isFull[test_index])] += 1
 
+
         print trainingpath + ' end'
     print 'Testing End'
 
@@ -176,5 +177,9 @@ def main():
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
 
+    draw_Completeness_Accuracy(accuracy_fullness, fullness=fullness, k=K[0], n=1, C=np.linspace(0, 80, 5), isfull=False,
+                               path=trainingpath)
+
+    draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
     #draw_K-C-Text_Acc(accuracy, reject_rate, 'Constrained Voting')
 if __name__ == "__main__": main()

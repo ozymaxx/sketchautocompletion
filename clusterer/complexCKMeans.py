@@ -47,6 +47,7 @@ class ComplexCKMeans:
         self.clusterCenters = [[0]*len(features[0])]*k  # centers of clusters
         self.featureCluster = [0]*len(features)  # which cluster a feature belongs to
         self.fullIndex = [idx for idx in range(len(features)) if isfull[idx]]  # index of full sketches
+        self.last_classvotes = [[0] * k for i in range(max(classid) + 1)]
         self.classvotes = [[0] * k for i in range(max(classid) + 1)]  # votes of the classes for cluster, row for class
         # think class votes a matrix having rows as classes and columns as clusters, then each feature votes -for
         # its corresponding class-
@@ -164,9 +165,9 @@ class ComplexCKMeans:
                 fclass = self.classid[fidx]
 
                 # iterate over each cluster and find the smallest distance
-                bestdist, bestclstr = self.featureClusterDist[fidx][0] + self.classvotes[self.classid[fidx]][0], 0
+                bestdist, bestclstr = self.featureClusterDist[fidx][0] + self.last_classvotes[self.classid[fidx]][0], 0
                 for clstridx in range(self.k):
-                    dist = self.featureClusterDist[fidx][clstridx] + self.classvotes[self.classid[fidx]][clstridx]
+                    dist = self.featureClusterDist[fidx][clstridx] + self.last_classvotes[self.classid[fidx]][clstridx]
                     if dist < bestdist:
                         bestdist = dist
                         bestclstr = clstridx
@@ -174,6 +175,7 @@ class ComplexCKMeans:
                 if self.featureCluster[fidx] != bestclstr:
                     noLabelChange = False
 
+                self.last_classvotes = self.classvotes
                 self.featureCluster[fidx] = bestclstr
                 self.clusterFeatures[bestclstr].append(fidx)
 
