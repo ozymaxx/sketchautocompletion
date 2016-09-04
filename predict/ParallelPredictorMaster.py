@@ -8,6 +8,7 @@ import sys
 sys.path.append('../classifiers')
 sys.path.append("../../libsvm-3.21/python/")
 sys.path.append('../data/')
+sys.path.append('../../sketchfe/sketchfe')
 from FileIO import *
 from trainer import *
 from shapecreator import *

@@ -118,7 +118,8 @@ class Predictor:
                                    (instances, priorClusterProb, 1),
                                    (instances, priorClusterProb, 2),
                                    (instances, priorClusterProb, 3)])
-            
+            pool.close()
+            pool.join()
             super_dict = {}
             for d in result:
                 super_dict.update(d)
@@ -183,7 +184,6 @@ class Predictor:
         :param priorClusterProb: prior cluster probabilities before seeing the data
         :return: dictionary holding probabilities for each class
         """
-        print "Thread",procId, "has started"
         resultDict= {}
         
         homoClstrFeatureId, homoClstrId = self.getHomogenousClusterId()
@@ -226,7 +226,7 @@ class Predictor:
             resultDict[procId] = outDict
             procId += 4
 
-        print "Thread", procId % 4, "has ended"
+        print "Thread", procId % 4, "has ended calculating tests"
         return resultDict
              
     def calculatePriorProb(self):
