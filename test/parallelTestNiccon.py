@@ -4,6 +4,7 @@ sys.path.append('../predict/')
 sys.path.append('../clusterer/')
 sys.path.append('../classifiers/')
 sys.path.append('../data/')
+sys.path.append('../ParallelMethod/')
 sys.path.append('../SVM/')
 sys.path.append("../../libsvm-3.21/python/")
 from extractor import *
@@ -19,7 +20,8 @@ from scipykmeans import *
 from complexCKMeans import *
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
-
+import grouper
+import time
 def main():
 
     files = ['accident','bomb','car','casualty','electricity','fire','firebrigade','flood','gas','injury','paramedics','person','police','roadblock']
@@ -27,7 +29,7 @@ def main():
     numfull = 80
     numpartial = 80
     doKMeansGrouping = False
-    groupByN = 5
+    numOfGroups = 2
     my_name = 'ParallelNICGroupBy5RandomGroups'
     debugMode = False
 
@@ -81,30 +83,43 @@ def main():
         Training start
         '''
 
-        ForceTrain = True
+        ForceTrain = False
         folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newprior', max(test_classId)+1, k)
         trainingpath = '../data/newMethodTraining/' + my_name+'/'+ folderName
 
         # if training data is already computed, import
         fio = FileIO()
         if os.path.exists(trainingpath) and not ForceTrain:
-            # can I assume consistency with classId and others ?
-            _, _, _, _, kmeansoutput, _ = fio.loadTraining(
-                trainingpath + '/' + folderName)
-            svm = SVM(kmeansoutput, train_classId, trainingpath, train_features)
-            svm.loadModels()
+            print 'lol'
 
         else:
+
             if not os.path.exists(trainingpath):
                  os.makedirs(trainingpath)
-            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = doKMeansGrouping, getTrainingDataFrom = '../data/nicicon/csv/train/', centersFolder =  '../data/newMethodTraining/allCentersNic.csv')
-            myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
+            start_time = time.time()
+            if doKMeansGrouping:
+                groups = grouper.doKMeansGrouping(numOfGroups,files[:numclass],centersFolder = '../data/newMethodTraining/allCentersNic.csv')
+            else:
+                groups = grouper.doRandomGrouping(numOfGroups,files[:numclass])
+
+            klist = grouper.kListGenerator(groups)
+            myParallelTrainer = ParallelTrainer (my_name, groups, klist, getTrainingDataFrom = '../data/nicicon/csv/train/')
+            myParallelTrainer.trainSVM(numclass, numfull, numpartial)
+            stop_time = time.time()
+            timeForTraining = stop_time-start_time
+            file_ = open(trainingpath+'/TraingTime.txt', 'w')
+            file_.write("Time elapsed for training = " + str(timeForTraining))
+            file_.close()
+
+            # myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = doKMeansGrouping, getTrainingDataFrom = , centersFolder =  '../data/newMethodTraining/allCentersNic.csv')
+            # myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
         if debugMode:
             print 'now first training is done ------------------------------------------++++++++++++++++++'
         nameOfTheTraining = my_name
         predictor = ParallelPredictorMaster(nameOfTheTraining)
 
         print 'Starting Testing'
+        start_timeTest = time.time()
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
@@ -114,11 +129,10 @@ def main():
                 if(i in test_names[test_index]):
                     TtrueClass = i
 
-            print "--------------------------------------------------"
             classProb = predictor.calculatePosteriorProb(Tfeature)
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
-            print "nowSclass", SclassProb,TtrueClass,test_names[test_index]
-            print "--------------------------------------------------"
+            # print "nowSclass", SclassProb,TtrueClass,test_names[test_index]
+            # print "--------------------------------------------------"
 
 
             for n in N:
@@ -134,8 +148,7 @@ def main():
                         accuracy[(k, n, c, test_isFull[test_index])] += 1
 
         print trainingpath + ' end'
-    print 'Testing End'
-
+    print 'Testing End Time Elapsed : ', (time.time()-start_timeTest)
     '''
     Calculate %
     '''

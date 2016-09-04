@@ -1,7 +1,7 @@
 """
 Ahmet BAGLAN
 """
-
+import time
 import sys
 sys.path.append("../ParallelMethod/")
 sys.path.append("../../sketchfe/sketchfe")
@@ -11,6 +11,7 @@ sys.path.append('../classifiers/')
 sys.path.append('../data/')
 sys.path.append('../SVM/')
 sys.path.append("../../libsvm-3.21/python/")
+
 import matplotlib.pyplot as plt
 from extractor import *
 import os
@@ -22,25 +23,24 @@ from ParallelPredictorMaster import *
 from ParallelTrainer import *
 from FileIO import *
 import parallelPartitioner
-from centers import *
+from centersEitz import *
+import grouper
 
 
 def main():
-    numclass, numfull, numpartial = 10, 80, 80
+    doPartition = True
+    numclass, numfull, numpartial = 20, 80, 80
     numtest = 10
     debugMode = False
     doKMeansGrouping = True
-    groupByN = 5
-    my_name = 'ParalelEa222tzGroupBy10KMeansGroups10_80_80'
-    K = [10] # :O
+    numOfGroups = 2
+    my_name = '20Class2233'
 
-
-    #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
-    parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
-
-    print "CALCULATING CLASS CENTERS"
-
-    saveCenters(doOnlyFulls= True, getDataFrom = "../data/trainingData/csv/" , numClass = numclass)
+    if doPartition:
+        #Divide Data Save testing data to testingData Folder, trainingData to trainingData folder
+        parallelPartitioner.partition(numclass, numfull, numpartial,numtest)
+        print "CALCULATING CLASS CENTERS"
+        saveCenters(doOnlyFulls= True, getDataFrom = "../data/trainingData/csv/" , numClass = numclass)
 
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe',
              'backpack', 'banana', 'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed',
@@ -106,6 +106,7 @@ def main():
     accuracySVM = dict()
     delay_rateSVM = dict()
     testcount = 0
+    K = [1]
     for k in K:
         for n in N:
             for c in C:
@@ -124,42 +125,61 @@ def main():
         Training start
         '''
 
-        ForceTrain = True
-        folderName = my_name
+        ForceTrain = False
         trainingpath = '../data/newMethodTraining/' + my_name
+        timeForTraining = "NOT CALC"
 
         # if training data is already computed, import
         fio = FileIO()
         if os.path.exists(trainingpath) and not ForceTrain:
             nameOfTheTraining = my_name
             predictor = ParallelPredictorMaster(nameOfTheTraining)
-
         else:
-            myParallelTrainer = ParallelTrainer (groupByN,my_files, doKMeans = doKMeansGrouping)
-            myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, my_name)
+            start_time = time.time()
+            if doKMeansGrouping:
+                groups = grouper.doKMeansGrouping(numOfGroups,files[:numclass])
+            else:
+                groups = grouper.doRandomGrouping(numOfGroups,files[:numclass])
+
+
+            klist = grouper.kListGenerator(groups)
+            myParallelTrainer = ParallelTrainer (my_name, groups, klist)
+            myParallelTrainer.trainSVM(numclass, numfull, numpartial)
+
             nameOfTheTraining = my_name
             predictor = ParallelPredictorMaster(nameOfTheTraining)
-
+            stop_time = time.time()
+            timeForTraining = stop_time-start_time
+            file_ = open(trainingpath+'/TraingTime.txt', 'w')
+            file_.write("Time elapsed for training = " + str(timeForTraining))
+            file_.close()
 
 
         print 'Starting Testing'
+        """
         lastTrueClass = ''
+        test_features = test_features[1000:6000]
+        test_isFull = test_isFull[1000:6000]
+        test_classId =test_classId[1000:6000]
+        test_names = test_names[1000:6000]
+        """
         for test_index in range(len(test_features)):
-
-
             # print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = folderList[test_classId[test_index]]
-
-            if lastTrueClass != TtrueClass:
-                lastTrueClass = TtrueClass
-                print "NOW TESTING THE CLASS ", lastTrueClass
-
             if debugMode:
                 print "--------------------------------------------------"
 
-            classProb = predictor.calculatePosteriorProb(Tfeature)
-            SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
+            if(test_index%100 == 0):
+                print  "Testing ", test_index, "(Out of ", len(test_features),")"
+                s= time.time()
+                classProb = predictor.calculatePosteriorProb(Tfeature)
+                SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
+                e = time.time()
+                print "Prediction time = ", e-s
+            else:
+                classProb = predictor.calculatePosteriorProb(Tfeature)
+                SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
 
             if debugMode:
@@ -218,6 +238,6 @@ def main():
     draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
-
+    print "Training Time = ", timeForTraining
     #draw_K-C-Text_Acc(accuracy, reject_rate, 'Constrained Voting')
 if __name__ == "__main__": main()

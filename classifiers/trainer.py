@@ -27,6 +27,7 @@ class Trainer:
         self.svm = LibSVM(self.kmeansoutput, self.classid, directory, self.features)
         #self.svm.trainSVM(clusterFeatureIds, directory)
         self.svm.doMultiCoreSVM(clusterFeatureIds, directory)
+        print "Training finished"
         return self.svm
 
     def getHeterogenousClusterId(self):

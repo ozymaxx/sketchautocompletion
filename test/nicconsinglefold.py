@@ -26,13 +26,13 @@ from complexCKMeans import *
 def main():
     numclass = 14
     start_time = time.time()
-    extr_train = Extractor('/home/semih/Desktop/csv/train')
+    extr_train = Extractor('../data/nicicon/csv/train')
     train_features, \
     train_isFull, \
     train_classId, \
     train_names = extr_train.loadniciconfolders()
 
-    extr_test = Extractor('/home/semih/Desktop/csv/test')
+    extr_test = Extractor('../data/nicicon/csv/test')
     test_features, \
     test_isFull, \
     test_classId, \

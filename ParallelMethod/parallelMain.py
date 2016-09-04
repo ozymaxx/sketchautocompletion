@@ -15,18 +15,19 @@ sys.path.append('../data/')
 sys.path.append("../../libsvm-3.21/python")
 from extractor import *
 from FileIO import *
-from ParallelPredictorSlave import *
 from ParallelPredictorMaster import *
 from ParallelTrainer import *
 import time
-from centers import *
+from centersEitz import *
+import grouper
 
 from flask import Flask, request, render_template, flash, json
 app = Flask(__name__)
 predictor = None
 
 global showFirstN
-showFirstN = 5
+showFirstN = 5#The number of predictions to be sent
+
 global files
 files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe',
              'backpack', 'banana', 'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed',
@@ -61,10 +62,11 @@ files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 
              'walkie-talkie', 'wheel', 'wheelbarrow', 'windmill', 'wine-bottle', 'wineglass', 'wrist-watch',
              'zebra']
 
-def getBestPredictions(classProb, n):
+def getBestPredictions(classProb, n):#The function which computes the text to be sent
+
         a = sorted(classProb, key=classProb.get, reverse=True)[:n]
-        l = ''
-        l1 = ''
+        l = ''#Text for names
+        l1 = ''#Text for probabilites
         for i in a:
             l1 += str(classProb[i])
             l += i
@@ -73,9 +75,18 @@ def getBestPredictions(classProb, n):
         l1 = l1[:-1]
         return l + l1
 
-def trainIt(n, files, numclass, numfull, numpartial, k, name, doKMeans = True):
-    myParallelTrainer = ParallelTrainer (n,files, doKMeans = doKMeans)
-    myParallelTrainer.trainSVM(numclass, numfull, numpartial, k, name)
+def trainIt(numOfGroups, files, numclass, numfull, numpartial, k, name, doKMeans = True):#The function to be called if train
+    #Get groups
+    if doKMeans:
+        groups = grouper.doKMeansGrouping(numOfGroups,files[:numclass])
+    else:
+        groups = grouper.doRandomGrouping(numOfGroups,files[:numclass])
+
+    #Get klist (here set every k is set to the number of class representative in group
+    klist = grouper.kListGenerator(groups)
+    #Train
+    myParallelTrainer = ParallelTrainer (name,groups,klist)
+    myParallelTrainer.trainSVM(numclass, numfull, numpartial)
 
 
 @app.route("/", methods=['POST','GET'])
@@ -109,13 +120,13 @@ def homepage():
 def main():
 
     global predictor
-    ForceTrain = False
-    my_numclass = 100
+    ForceTrain = True#Set true if you want to force train
+    my_numclass = 7
     my_numfull = 80
     my_numpartial= 80
     my_k = my_numclass
-    groupByN = 20
-    nameOfTheTraining = 'Yejjjkk125'
+    numOfGroups = 2
+    nameOfTheTraining = 'Yejjjkk12445'
     import os
     trainingpath = '../data/newMethodTraining/' + nameOfTheTraining
 
@@ -125,7 +136,7 @@ def main():
     else:
         print "CALCULATING CLASS CENTERS"
         saveCenters(doOnlyFulls= True, getDataFrom = "../data/csv/", numClass = my_numclass)
-        trainIt(groupByN, files[:min(my_numclass,len(files))], my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
+        trainIt(numOfGroups, files[:min(my_numclass,len(files))], my_numclass, my_numfull, my_numpartial, my_k, nameOfTheTraining)
         predictor = ParallelPredictorMaster(nameOfTheTraining)
 
     app.secret_key = 'super secret key'
