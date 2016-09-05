@@ -45,6 +45,7 @@ def draw_N_C_Acc(accuracy, N, C, k, isfull, path):
     ax.plot_surface(nmesh, cmesh, accmesh, alpha=0.8, color='w', rstride=1, cstride=1, cmap=plt.cm.hot,
                     linewidth=0, antialiased=False)
     '''
+
     plt.xlabel('N')
     plt.ylabel('C')
     ax.set_zlabel('Accuracy')
@@ -365,8 +366,8 @@ def draw_Reject_Acc(Accuracy, Reject_rate, N, k, isfull, labels, path):
     fig = plt.figure()
     c_list = [[key[2] for key in accuracy.keys()] for accuracy in Accuracy]
     miny= 0
-    color = ['r', 'g', 'b', 'y']
-    markers = ['x','.','x','.']
+    color = ['r', 'g', 'b', 'y', 'c', 'm','k','w']
+    markers = ['x','.']*20
     for i in range(len(Accuracy)):
         for n in N:
             x_reject, y_acc = [], []
@@ -381,9 +382,10 @@ def draw_Reject_Acc(Accuracy, Reject_rate, N, k, isfull, labels, path):
     pylab.xlabel('Reject Rate')
     pylab.ylabel('Accuracy')
     pylab.xlim([0,90])
-    pylab.ylim([80,100+5])
-    pylab.title('Performance Comparison on %s Symbols Using %i Clusters' % ('Full' if isfull else 'Partial',k))
+    pylab.ylim([60,100+5])
+    pylab.title('Performance Comparison on %s Symbols Using Eitz dataset' % ('Full' if isfull else 'Partial'))
 
+    plt.show()
     plt.savefig(path + '/' + 'draw_Reject_Acc_%s.png' % ('Full' if isfull else 'Partial'))
 
 def draw_n_Acc(accuracy, c, k, isfull, reject_rate, path):
@@ -399,6 +401,7 @@ def draw_n_Acc(accuracy, c, k, isfull, reject_rate, path):
     """
     fig = plt.figure()
     maxN = max(key[1] for key in accuracy.keys())
+    maxN = max(maxN, 10)
 
     x, y = [], []
     for n in range(1, maxN + 1):
@@ -417,8 +420,8 @@ def draw_n_Acc(accuracy, c, k, isfull, reject_rate, path):
     plt.ylabel('Accuracy')
     plt.title('C:%i k:%i for %s' % (c, k, 'Full sketches' if isfull else 'Partial sketches'))
 
-    plt.ylim(min(max(0, min(y)-10),40), 100 * 1.1)
-    plt.xlim(1 - 1, 10)
+    plt.ylim(min(max(0, min(y)-10),40), 60)
+    plt.xlim(1 - 1, 12)
     plt.scatter(x, y, alpha=1, s=100)
     plt.grid(True)
 

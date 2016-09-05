@@ -24,15 +24,15 @@ from scipykmeans import *
 from complexCKMeans import *
 
 def main():
-    numclass = 14
+    numclass = 20
     start_time = time.time()
-    extr_train = Extractor('../data/nicicon/csv/train')
+    extr_train = Extractor('/home/semih/Desktop/csv/train')
     train_features, \
     train_isFull, \
     train_classId, \
     train_names = extr_train.loadniciconfolders()
 
-    extr_test = Extractor('../data/nicicon/csv/test')
+    extr_test = Extractor('/home/semih/Desktop/csv/test')
     test_features, \
     test_isFull, \
     test_classId, \
@@ -66,7 +66,7 @@ def main():
         '''
 
         ForceTrain = True
-        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_last', max(train_classId)+1, k)
+        folderName = '%s___%i_%i' % ('nicicionWithComplexCKMeans_fulldata_newckmean', max(train_classId)+1, k)
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -114,16 +114,16 @@ def main():
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
         priorClusterProb = predictor.calculatePriorProb()
 
-        classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
+
         print 'Starting Testing'
-        classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
+        #classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         for test_index in range(len(test_features)):
             print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            #classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
-            classProb = classProbList[test_index]
+            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+            #classProb = classProbList[test_index]
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
 
             for n in N:
@@ -177,8 +177,8 @@ def main():
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=False, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=False, labels=['Ck-means'], path=trainingpath)
 
-    draw_Completeness_Accuracy(accuracy_fullness, fullness=fullness, k=K[0], n=1, C=np.linspace(0, 80, 5), isfull=False,
-                               path=trainingpath)
+#    draw_Completeness_Accuracy(accuracy_fullness, fullness=fullness, k=K[0], n=1, C=np.linspace(0, 80, 5), isfull=False,
+                               #path=trainingpath)
 
     draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
     #draw_K-C-Text_Acc(accuracy, reject_rate, 'Constrained Voting')

@@ -44,7 +44,7 @@ def processname(name):
 def main():
     # count for the whole data to be loaded in to memory
     # including test and training
-    numclass, numfull, numpartial, numtest = 10, 50, 200, 10
+    numclass, numfull, numpartial, numtest = 250, 80, 70, 250
     files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
              'banana',
              'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -97,6 +97,7 @@ def main():
     # split data into train and test
     # for each class numtest full sketches -with all their partial sketches- are allocated for testing, and the rest
     # for training
+    '''
     train_features,\
     train_isFull,\
     train_classId,\
@@ -112,7 +113,22 @@ def main():
                                 numtrainfull=numfull-numtest,
                                 selectTestRandom=True)
 
+    '''
 
+    train_features,\
+    train_isFull,\
+    train_classId,\
+    train_names,\
+    test_features,\
+    test_isFull,\
+    test_names,\
+    test_classId = partitionfeatures(
+                                whole_features,
+                                whole_isFull,
+                                whole_classId,
+                                whole_names,
+                                numtrainfull=numfull-numtest,
+                                selectTestRandom=True)
 
     K = [10] # :O # number of cluster to test. can be a list
     #K = [numclass]
@@ -153,7 +169,7 @@ def main():
         Training start
         '''
 
-        ForceTrain = True
+        ForceTrain = False
         folderName = '%s___%i_%i_%i_%i' % ('complexCKMeans_newprior-2', numclass, numfull, numpartial, k)
         trainingpath = '../data/training/' + folderName
 

@@ -8,7 +8,7 @@ import pylab
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import scipy.io as sio
 
-mat_contents = sio.loadmat('accresult_full__niclcon_matlab.mat')
+mat_contents = sio.loadmat('rejresult__partial_niclcon_matlab.mat')
 
 fig = plt.figure(figsize=(12, 12))
 C = np.linspace(0, 100, 11)
@@ -23,7 +23,7 @@ accmesh = []
 for nidx, n in enumerate(N):
     temp = []
     for cidx, c in enumerate(C):
-        temp.extend([mat_contents['accresult'][nidx,cidx]])
+        temp.extend([mat_contents['rejresult'][nidx, cidx]])
     accmesh.append(temp)
 
 plt.imshow(accmesh, interpolation='none', cmap='summer')
@@ -31,7 +31,7 @@ plt.imshow(accmesh, interpolation='none', cmap='summer')
 
 isfull = True
 title = 'for Matlab Implementation Using Niclcon dataset'
-plt.title('Accuracy for  %s %s' % (('Full sketches' if isfull else 'Partial sketches'), title))
+plt.title('Reject Rate for  %s %s' % (('Full sketches' if isfull else 'Partial sketches'), title))
 plt.xlabel('C')
 plt.ylabel('N')
 # plt.grid(ls='solid')
@@ -50,4 +50,4 @@ plt.clim(0,100)
 # plt.show()
 plt.show()
 
-fig.savefig('.' + '/' + 'draw_N_C_Acc_Contour_%s_Matlab.png' % ('Full' if isfull else 'Partial'))
+fig.savefig('.' + '/' + 'draw_N_C_Rej_Contour_%s_Matlab.png' % ('Full' if isfull else 'Partial'))

@@ -19,7 +19,7 @@ from SVM import *
 import pickle
 
 def main():
-    numclass, numfull, numpartial = 50, 75, 75
+    numclass, numfull, numpartial = 250, 80, 70
 
     K = [100] # :O
     #K = [numclass]

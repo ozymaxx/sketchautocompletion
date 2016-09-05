@@ -9,8 +9,8 @@ Do that if you want different plots than templates, or in order
 to regenerate the plots with different parameters.
 """
 
-numclass, numfull, numpartial = 13, 80, 80
-K = [20]  # :O
+numclass, numfull, numpartial = 10, 80, 80
+K = [250]  # :O
 fullness = range(1,11)
 # K = [numclass]
 N = range(1, numclass+1)
@@ -20,7 +20,7 @@ C = np.linspace(0, 100, 51, endpoint=True)
 C = [int(c) for c in C]
 
 #folderName = '%s___%i_%i' % ('nicicionWithCuda_fulldata', 10, 20)
-folderName = 'nicicionWithComplexCKMeans_fulldata_newprior___14_20'
+folderName = 'complexCudaCKMeanTest___250_70_80_250'
 
 trainingpath = '../data/training/' + folderName
 
@@ -33,10 +33,10 @@ reject_rate = pickle.load(open(trainingpath + '/' "reject.p", "r"))
 
 draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=False, path=trainingpath, title='For Python Implementation Using Niclcon dataset')
 draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=True, path=trainingpath, title='For Python Implementation Using Niclcon dataset')
-draw_N_C_Rej_Contour_Low(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath, title='For Python Implementation Using Niclcon dataset')
+#draw_N_C_Rej_Contour_Low(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath, title='For Python Implementation Using Niclcon dataset')
 
 #draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)
-#draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)
+draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)
 
 #draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
 #draw_N_C_Acc_Contour(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
