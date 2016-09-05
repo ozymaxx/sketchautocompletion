@@ -90,7 +90,7 @@ where `draw_json()` and `classProb2serverResponse()` can be found in `server/Ser
 The details of this pipeline can be found in `parallelMethod/` directory. The idea of this implementation can be found in the technical report (to be put on the [lab's webpage](https://iui.ku.edu.tr) soon). We just tried out this technique and it gave the same results as the original pipeline. However, it wasn't implemented to be used in the real life as it couldn't beat the original one.
 
 ## Contact
-Ozan Can Altıok - Koç University - oaltiok15 at ku dot edu dot tr<br>
+Ozan Can Altıok - [Koç University IUI Laboratory](http://iui.ku.edu.tr) - oaltiok15 at ku dot edu dot tr<br>
 Ahmet Bağlan - Boğaziçi University - ahmet.baglan at boun dot edu dot tr<br>
 Arda İçmez - Galatasaray University - aicmez at gmail dot com<br>
 Semih Günel - Bilkent University - gunelsemih at gmail dot com<br>
