@@ -65,13 +65,32 @@ The predictor of the system needs a model which is trained on a sketch data set.
   k = [number of clusters that will be created]
   kmeansoutput, classid, svm = train(training_name, training_path, numclass, numfull, numpartial, k)
   ```
-
+  
+  After these steps, the model gets ready.
+  
 ### Prediction
+To run the prediction pipeline, the first step is obtaining the JSON representation of the sketch (more information can be found in the README of [the sketch feature extractor](https://github.com/ozymaxx/sketchfe)). How you create and send this string is up to the implementation of the client.
+
+Before processing the sketch representation, firstly load the model into the memory:
+```
+# form the predictor
+predictor = Predictor(kmeansoutput, classid, training_path, svm=svm)
+```
+
+After getting the JSON representation of the sketch, you will classify it in the following way:
+```
+draw_json(str(queryjson))
+
+classProb = predictor.predictByString(str(queryjson))
+serverOutput = classProb2serverResponse(classProb, 5)
+```
+where `draw_json()` and `classProb2serverResponse()` can be found in `server/Server.py` and `serverOutput` includes the classification results (most probable classes with their probabilities) as JSON string.
+
+## Alternative implementation of the training/prediction pipeline
+The details of this pipeline can be found in `parallelMethod/` directory. The idea of this implementation can be found in the technical report (to be put on the [lab's webpage](https://iui.ku.edu.tr) soon). We just tried out this technique and it gives the same results as the original pipeline. However, it wasn't implemented to be used in the real life as it couldn't beat the original one.
 
 ## Contact
 Ozan Can Altıok - Koç University - oaltiok15 at ku dot edu dot tr<br>
 Ahmet Bağlan - Boğaziçi University - ahmet.baglan at boun dot edu dot tr<br>
 Arda İçmez - Galatasaray University - aicmez at gmail dot com<br>
 Semih Günel - Bilkent University - gunelsemih at gmail dot com<br>
-
-* CKMeans algorithm takes feature array as 720xN (720 rows, N columns).
