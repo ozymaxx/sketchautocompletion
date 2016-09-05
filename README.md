@@ -5,8 +5,8 @@ We implemented the auto-completion system for sketched symbols as described in [
 * **scipy**,
 * **numpy**,
 * **matplotlib**,
-* [sketchfe](https://github.com/ozymaxx/sketchfe)
-* **libsvm**
+* [sketchfe](https://github.com/ozymaxx/sketchfe),
+* **libsvm**,
 * **pycuda** if the graphics card supports CUDA parallelization
 
 
