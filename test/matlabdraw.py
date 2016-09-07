@@ -8,11 +8,11 @@ import pylab
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import scipy.io as sio
 
-mat_contents = sio.loadmat('rejresult__partial_niclcon_matlab.mat')
+mat_contents = sio.loadmat('accresult__niclcon_matlab.mat')
 
 fig = plt.figure(figsize=(12, 12))
-C = np.linspace(0, 100, 11)
-N = range(1,14)
+C = np.linspace(0, 90, 10)
+N = range(1,11)
 
 numxTicks = min(10, max(N))
 plt.xticks(np.arange(0, 11, 1), np.arange(0, 1.1, 0.1))
@@ -23,15 +23,15 @@ accmesh = []
 for nidx, n in enumerate(N):
     temp = []
     for cidx, c in enumerate(C):
-        temp.extend([mat_contents['rejresult'][nidx, cidx]])
+        temp.extend([mat_contents['accresult'][nidx, cidx]])
     accmesh.append(temp)
 
 plt.imshow(accmesh, interpolation='none', cmap='summer')
 
 
-isfull = True
+isfull = False
 title = 'for Matlab Implementation Using Niclcon dataset'
-plt.title('Reject Rate for  %s %s' % (('Full sketches' if isfull else 'Partial sketches'), title))
+plt.title('Accuracy for %s %s' % (('Full sketches' if isfull else 'Partial sketches'), title))
 plt.xlabel('C')
 plt.ylabel('N')
 # plt.grid(ls='solid')

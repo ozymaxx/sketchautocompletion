@@ -45,9 +45,9 @@ def main():
     # count for the whole data to be loaded in to memory
     # including test and training
 
-    K = [10]  # :O # number of cluster to test. can be a list
+    K = [40]  # :O # number of cluster to test. can be a list
     # K = [numclass]
-    N = range(1, 10)
+    N = range(1, 11)
     fullness = range(1, 11)
     import numpy as np
     C = np.linspace(0, 100, 51, endpoint=True)
@@ -55,6 +55,10 @@ def main():
     accuracy = dict()
     reject_rate = dict()
     total_answered = dict()
+
+
+    total_full = 0
+    total_partial =0
 
     sketchname2numpartial = dict()
 
@@ -69,12 +73,12 @@ def main():
                 total_answered[(k, n, c, False)] = 0
                 total_answered[(k, n, c, True)] = 0
 
-    classcounterlist = range(0,10)
+    classcounterlist = range(0,3)
     foldcounterlist = range(0,5)
 
     for classcounter in classcounterlist:
         print 'class: %i' % classcounter
-        numclass, numfull, numpartial, numtest = 10, 50, 200, 10
+        numclass, numfull, numpartial, numtest = 15, 50, 200, 10
         files = ['airplane', 'alarm-clock', 'angel', 'ant', 'apple', 'arm', 'armchair', 'ashtray', 'axe', 'backpack',
                  'banana',
                  'barn', 'baseball-bat', 'basket', 'bathtub', 'bear-(animal)', 'bed', 'bee', 'beer-mug', 'bell', 'bench',
@@ -108,11 +112,12 @@ def main():
                  'sea-turtle',
                  'seagull', 'shark', 'sheep', 'ship', 'shoe', 'shovel', 'skateboard']
 
-
         # extract the whole data, including test and training
         from random import shuffle
         import random
         rnd = random.randint(1,10)
+        files = files[:100]
+        shuffle(files)
         files = files[classcounter*10:classcounter*10+10]
         extr = Extractor('../data/')
         whole_features, \
@@ -164,7 +169,7 @@ def main():
                 '''
 
                 ForceTrain = True
-                folderName = '%s___%i_%i_%i_%i' % ('complexCKMeans_newprior-2', numclass, numfull, numpartial, k)
+                folderName = '%s___%i_%i_%i_%i' % ('complexCKMeans_newprior-3', numclass, numfull, numpartial, k)
                 trainingpath = '../data/training/' + folderName
 
                 # if training data is already computed, import
@@ -243,17 +248,24 @@ def main():
                                 # correct guess
                                 accuracy[(k, n, c, test_isFull[test_index])] += 1
 
-                print 'Partial Accuracy: %f'%(accuracy[(10, 1, 0, False)] * 1.0 / total_answered[(10, 1, 0, False)] * 100 if total_answered[(10, 1, 0, False)] != 0 else 0)
+                total_full += test_isFull.count(True)
+                total_partial += test_isFull.count(False)
+
+                print 'Partial Accuracy: %f'%(accuracy[(40, 1, 0, False)] * 1.0 / total_answered[(40, 1, 0, False)] * 100 if total_answered[(40, 1, 0, False)] != 0 else 0)
                 print trainingpath + ' end'
             print 'Testing End'
 
         '''
         Calculate %
         '''
+    print 'Saving plots'
+    pickle.dump(accuracy, open(trainingpath + '/' "accuracy.p", "wb"))
+    pickle.dump(reject_rate, open(trainingpath + '/' "reject.p", "wb"))
 
     for key in reject_rate:
         # normalize the reject rate
-        reject_rate[key] = (reject_rate[key]*1.0/total_answered[key])*100 if total_answered[key] != 0 else 0
+        reject_rate[key] = (reject_rate[key]*1.0/(total_full if key[3] else total_partial))
+                            #test_isFull.count(test_isFull[key[3]]))*100 if test_isFull.count(test_isFull[key[3]]) != 0 else 0
 
     for key in accuracy:
         # normalize the accuracy.
@@ -277,7 +289,6 @@ def main():
     draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)# for fixed n and c
     #draw_K_Delay_Acc(accuracy, reject_rate, K=K, C=C, n=1, isfull=True, path=trainingpath)
     draw_Reject_Acc([accuracy], [reject_rate], N=[1, 2], k=K[0], isfull=True, labels=['Ck-means'], path=trainingpath)
-
 
     draw_N_C_Acc(accuracy, N, C, k=K[0], isfull=False, path=trainingpath)
     draw_N_C_Reject_Contour(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath)

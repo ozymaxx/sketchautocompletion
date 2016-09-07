@@ -2,6 +2,7 @@ import sys
 sys.path.append("../../sketchfe/sketchfe")
 sys.path.append('../predict/')
 sys.path.append('../clusterer/')
+sys.path.append('../SVM/')
 sys.path.append('../classifiers/')
 sys.path.append('../data/')
 sys.path.append("../../libsvm-3.21/python/")
@@ -15,13 +16,14 @@ import os
 import numpy as np
 import operator
 from draw import *
-from SVM import *
+from LibSVM import *
 import pickle
+from Predictor import *
 
 def main():
-    numclass, numfull, numpartial = 250, 80, 70
+    numclass, numfull, numpartial = 250, 80, 80
 
-    K = [100] # :O
+    K = [800] # :O
     #K = [numclass]
     N = range(1, numclass)
     import numpy as np
@@ -40,7 +42,8 @@ def main():
 
     for k in K:
         ForceTrain = False
-        folderName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
+        #folderName = '%s__CFPK_%i_%i_%i_%i' % ('Main-CUDA', numclass, numfull, numpartial, k)
+        folderName = 'complexcudaCKMeans_newprior-2___250_80_80_800'
         trainingpath = '../data/training/' + folderName
 
         # if training data is already computed, import
@@ -48,8 +51,8 @@ def main():
         if os.path.exists(trainingpath) and not ForceTrain:
             # can I assume consistency with classId and others ?
             train_names, train_classId, train_isFull, train_features, kmeansoutput, folderList = fio.loadTraining(
-                trainingpath + '/' + folderName, loadFeatures=False)
-            svm = SVM(kmeansoutput, train_classId, trainingpath, train_features)
+                trainingpath + '/' + folderName)
+            svm = LibSVM(kmeansoutput, train_classId, trainingpath, train_features)
             svm.loadModels()
         else:
             raise Exception
@@ -78,20 +81,41 @@ def main():
                                   whole_classId,
                                   whole_names,
                                   train_names,
-                                  numtestpartial=3*75, # per class
-                                  selectTestRandom=True)
+                                  numtest=1)
+        # free the memory
+        del train_features[:]
 
         predictor = Predictor(kmeansoutput, train_classId, trainingpath, svm=svm)
         priorClusterProb = predictor.calculatePriorProb()
 
+        count_full = 0
+        count_partial = 0
+        count_full_answered = 0
+        count_partial_answered = 0
+
+        #classProbList = predictor.calculatePosteriorProb(test_features, priorClusterProb)
         print 'Starting Testing'
         for test_index in range(len(test_features)):
-            print 'Testing ' + str(test_index) + '(out of ' + str(len(test_features)) + ')'
+            print 'Testing ' + str(test_index) + ' (out of ' + str(len(test_features)) + ')'
             Tfeature = test_features[test_index]
             TtrueClass = test_classId[test_index]
 
-            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb, numericKeys=True)
+            classProb = predictor.calculatePosteriorProb(Tfeature, priorClusterProb)
+            #classProb = classProbList[test_index]
             SclassProb = sorted(classProb.items(), key=operator.itemgetter(1))
+
+            if test_isFull[test_index]:
+                count_full += 1
+            else:
+                count_partial += 1
+
+                if (count_full + count_partial)%100 == 0:
+                    print 'Full count: %i, Partial count %i, Full count answered: %i, Partial count answered %i'%(count_full, count_partial, count_full_answered, count_partial_answered)
+                    print 'Current partial accuracy %.2f'%(float(accuracy[(K[0], 1, 0.0, False)])*100/count_partial)
+
+                    print 'Saving plots'
+                    pickle.dump(accuracy, open(trainingpath + '/' "accuracy.p", "wb"))
+                    pickle.dump(reject_rate, open(trainingpath + '/' "reject.p", "wb"))
 
             for n in N:
                 for c in C:
@@ -101,6 +125,11 @@ def main():
 
                     if summedprob < c:
                         reject_rate[(k, n, c, test_isFull[test_index])] += 1
+                    else:
+                        if test_isFull[test_index]:
+                            count_full_answered += 1
+                        else:
+                            count_partial_answered += 1
 
                     if summedprob > c and TtrueClass in summedclassId:
                             accuracy[(k, n, c, test_isFull[test_index])] += 1
@@ -123,6 +152,7 @@ def main():
     '''
     Save results
     '''
+
     print 'Saving plots'
     pickle.dump(accuracy, open(trainingpath + '/' "accuracy.p", "wb"))
     pickle.dump(reject_rate, open(trainingpath + '/' "reject.p", "wb"))

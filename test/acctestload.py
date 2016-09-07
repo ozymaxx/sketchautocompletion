@@ -28,12 +28,14 @@ accuracy = pickle.load(open(trainingpath + '/' "accuracy.p", "r"))
 reject_rate = pickle.load(open(trainingpath + '/' "reject.p", "r"))
 #accuracy_fullness = pickle.load(open(trainingpath + '/' "accuracy_fullness.p", "r"))
 
+for key in reject_rate:
+    reject_rate[key] = reject_rate[key]*100
 #draw_Completeness_Accuracy(accuracy_fullness, fullness, k=K[0], n=1, C=np.linspace(0, 80, 5), isfull=False,
 #                           path=trainingpath)
 
-draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=False, path=trainingpath, title='For Python Implementation Using Niclcon dataset')
-draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=True, path=trainingpath, title='For Python Implementation Using Niclcon dataset')
-#draw_N_C_Rej_Contour_Low(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath, title='For Python Implementation Using Niclcon dataset')
+draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=False, path=trainingpath, title='For Python Implementation Using Eitz dataset')
+draw_N_C_Acc_Contour_Low(accuracy, N, C, k=K[0], isfull=True, path=trainingpath, title='For Python Implementation Using Eitz dataset')
+draw_N_C_Rej_Contour_Low(reject_rate, N, C, k=K[0], isfull=False, path=trainingpath, title='For Python Implementation Using Eitz dataset')
 
 #draw_n_Acc(accuracy, c=0, k=K[0], isfull=True, reject_rate=reject_rate, path=trainingpath)
 draw_n_Acc(accuracy, c=0, k=K[0], isfull=False, reject_rate=reject_rate, path=trainingpath)
