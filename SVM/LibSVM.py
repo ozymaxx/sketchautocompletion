@@ -48,7 +48,8 @@ class LibSVM:
                   (clusterFeatureIds, directory, 1),
                   (clusterFeatureIds, directory, 2),
                   (clusterFeatureIds, directory, 3)])
-
+        pool.close()
+        pool.join()
 
     
     def trainSVM(self, clusterFeatureIds, directory):
