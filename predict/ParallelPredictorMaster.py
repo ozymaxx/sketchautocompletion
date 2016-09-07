@@ -66,11 +66,6 @@ class ParallelPredictorMaster:
             loadedFolders = trainInfo['files'][i]
             nowSwm = Trainer.loadSvm(kmeansoutput, classId, trainingpath, features)
 
-            #WE Give the file names to the slave predictors
-            #Their output is directly by name s.a {'airplane:0.1}
-
-            # predictor = ParallelPredictorSlave(kmeansoutput, classId, trainingpath, loadedFolders, nowSwm)
-
             predictor = Predictor(kmeansoutput,classId,trainingpath,svm = nowSwm)
             self.predictors.append(predictor)
 
