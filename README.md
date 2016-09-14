@@ -39,7 +39,7 @@ The predictor of the system needs a model which is trained on a sketch data set.
 * Cluster the sketch instances by their features and construct an SVM model for each cluster. There are many alternative constrained clusterers:
   * `ckmeans.py`: The naive constrained K-means implementation, which can be found in [here](http://nichol.as/papers/Wagstaff/Constrained%20k-means%20clustering%20with%20background.pdf).
   * `cudackmeans.py`: CUDA-accelerated version of `ckmeans.py`.
-  * `complexCKmeans.py`: Constrained K-means with voting. The details of this algorithm can be found in this technical report (to be put on the [lab's web page](https://iui.ku.edu.tr) soon).
+  * `complexCKmeans.py`: Constrained K-means with voting. The details of this algorithm can be found in this technical report (see section 3.1.3 of [this report](http://iui.ku.edu.tr/KUSRP/KUSRP_IUI_16.pdf)).
   * `complexcudackmeans.py`: CUDA-accelerated version of `complexCKmeans.py`.
   The tests show that the running time of the constrained K-means algorithm is less than the naive one. Therefore our suggestion is to use the complex algorithm. Moreover, if the graphics driver of your machine supports CUDA parallelization, `complexcudackmeans.py` will be far better for you. Our trainer function named `train()` checks whether your machine has CUDA, and then calls the clusterer function accordingly. Although we included the naive implementation, we preferred to call the complex method as the default clusterer method.
   
