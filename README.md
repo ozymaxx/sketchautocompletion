@@ -7,7 +7,7 @@ We implemented an auto-completion system for sketched symbols that is described 
 * **matplotlib**,
 * [sketchfe](https://github.com/ozymaxx/sketchfe),
 * **libsvm**,
-* **pycuda** if the graphics card supports CUDA parallelization
+* **pycuda** if your graphics card supports CUDA parallelization
 
 
 You can install the first 3 libraries by typing the following in the terminal:
