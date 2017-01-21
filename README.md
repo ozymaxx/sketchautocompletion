@@ -87,7 +87,7 @@ serverOutput = classProb2serverResponse(classProb, 5)
 where `draw_json()` and `classProb2serverResponse()` can be found in `server/Server.py` and `serverOutput` includes the classification results (most probable classes with their probabilities) as a JSON string.
 
 ## Alternative implementation of the training/prediction pipeline
-The details of this pipeline can be found in `parallelMethod/` directory. The idea of this implementation can be found in section 3.1.9 of [this report](http://iui.ku.edu.tr/KUSRP/KUSRP_IUI_16.pdf). We just tried this technique out and it gave as the same results as the original pipeline.
+The details of this pipeline can be found in `parallelMethod/` directory. The story behind the implementation can be found in section 3.1.9 of [this report](http://iui.ku.edu.tr/KUSRP/KUSRP_IUI_16.pdf). We just tried this technique out and it gave as the same results as the original pipeline.
 
 ## Contact
 Ozan Can Altıok - [Koç University IUI Laboratory](http://iui.ku.edu.tr) - oaltiok15 at ku dot edu dot tr<br>
