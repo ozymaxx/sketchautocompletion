@@ -1,5 +1,5 @@
 # Auto-Completion Framework on Sketched Symbols
-We implemented an auto-completion system for sketched symbols that is described in [here](http://iui.ku.edu.tr/sezgin_publications/2012/PR%202012%20Sezgin.pdf).
+We implemented an auto-completion system for sketched symbols that is described [here](http://iui.ku.edu.tr/sezgin_publications/2012/PR%202012%20Sezgin.pdf).
 
 ## Dependencies
 * **scipy**,
